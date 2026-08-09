@@ -13,10 +13,17 @@ attempt to train a unified foundation model.
 
 Click either preview to play the full MP4.
 
-| Confidence-routed three-hand comparison | Human / silver / graphite arm comparison |
-| --- | --- |
-| [![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](demo/showcase/three-hand-confidence-routed.mp4) | [![Human, silver, and graphite arm comparison](demo/showcase/human-silver-graphite-vertical.jpg)](demo/showcase/human-silver-graphite-vertical.mp4) |
-| [MP4](demo/showcase/three-hand-confidence-routed.mp4) | [MP4](demo/showcase/human-silver-graphite-vertical.mp4) |
+### Confidence-routed three-hand comparison
+
+[![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](demo/showcase/three-hand-confidence-routed.mp4)
+
+[Play MP4](demo/showcase/three-hand-confidence-routed.mp4)
+
+### Human / silver / graphite arm comparison
+
+[![Human, silver, and graphite arm comparison](demo/showcase/human-silver-graphite-vertical.jpg)](demo/showcase/human-silver-graphite-vertical.mp4)
+
+[Play MP4](demo/showcase/human-silver-graphite-vertical.mp4)
 
 ## Primary goal
 
