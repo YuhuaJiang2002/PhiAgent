@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Playable PhiAgent-0 robot manipulation demos.">
+    <title>PhiAgent-0 Demos</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #090d16;
+        color: #eef2ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 15% 0%, rgba(73, 101, 255, 0.2), transparent 34rem),
+          #090d16;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 64px 0 80px;
+      }
+
+      header {
+        max-width: 760px;
+        margin-bottom: 40px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2.5rem, 7vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+      }
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 1.15rem;
+      }
+
+      p {
+        color: #aeb8d0;
+        line-height: 1.6;
+      }
+
+      a {
+        color: #9db2ff;
+      }
+
+      .eyebrow {
+        color: #7ee7c8;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      article {
+        overflow: hidden;
+        border: 1px solid rgba(174, 184, 208, 0.16);
+        border-radius: 18px;
+        background: rgba(18, 24, 39, 0.82);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+      }
+
+      article.featured {
+        grid-column: 1 / -1;
+      }
+
+      video {
+        display: block;
+        width: 100%;
+        max-height: 72vh;
+        background: #02040a;
+      }
+
+      .copy {
+        padding: 20px;
+      }
+
+      .copy p {
+        margin: 0;
+        font-size: 0.92rem;
+      }
+
+      .repo-link {
+        display: inline-block;
+        margin-top: 24px;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          width: min(100% - 20px, 1120px);
+          padding-top: 40px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        article.featured {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Playable research demos</p>
+        <h1>PhiAgent-0</h1>
+        <p>
+          Human demonstrations translated into robot motion, simulation, and
+          rendered video. Use the controls to play each demo directly on this page.
+        </p>
+      </header>
+
+      <section class="grid" aria-label="Demo videos">
+        <article>
+          <video controls playsinline preload="metadata"
+            poster="showcase/five-finger-shadow-arm-background-locked.jpg">
+            <source src="showcase/five-finger-shadow-arm-background-locked.mp4" type="video/mp4">
+          </video>
+          <div class="copy">
+            <h2>Shadow hand and forearm replacement</h2>
+            <p>All 621 frames of a continuous human-hand gesture retargeted to a 24-DOF hand.</p>
+          </div>
+        </article>
+
+        <article>
+          <video controls playsinline preload="metadata"
+            poster="showcase/three-hand-confidence-routed.jpg">
+            <source src="showcase/three-hand-confidence-routed.mp4" type="video/mp4">
+          </video>
+          <div class="copy">
+            <h2>Three-hand comparison</h2>
+            <p>Human, silver robot, and graphite robot-hand conditions.</p>
+          </div>
+        </article>
+
+        <article>
+          <video controls playsinline preload="metadata"
+            poster="showcase/vendor-hand-confidence-routed-comparison.jpg">
+            <source src="showcase/vendor-hand-confidence-routed-comparison.mp4" type="video/mp4">
+          </video>
+          <div class="copy">
+            <h2>Vendor-hand comparison</h2>
+            <p>Sharpa, Wonik Allegro, and Shadow conditions in the same scene.</p>
+          </div>
+        </article>
+
+        <article>
+          <video controls playsinline preload="metadata"
+            poster="showcase/four-embodiment-gripper-attempt.jpg">
+            <source src="showcase/four-embodiment-gripper-attempt.mp4" type="video/mp4">
+          </video>
+          <div class="copy">
+            <h2>Four-embodiment gripper attempt</h2>
+            <p>A retained negative result comparing dexterous hands with a two-finger gripper.</p>
+          </div>
+        </article>
+
+        <article>
+          <video controls playsinline preload="metadata"
+            poster="showcase/human-silver-graphite-sudo-vertical.jpg">
+            <source src="showcase/human-silver-graphite-sudo-vertical.mp4" type="video/mp4">
+          </video>
+          <div class="copy">
+            <h2>Robot appearance comparison</h2>
+            <p>Human, silver, graphite, and Sudo R1-style conditions.</p>
+          </div>
+        </article>
+
+        <article>
+          <video controls playsinline preload="metadata"
+            poster="showcase/sudo-r1-full-robot.jpg">
+            <source src="showcase/sudo-r1-full-robot.mp4" type="video/mp4">
+          </video>
+          <div class="copy">
+            <h2>Full Sudo R1-style robot</h2>
+            <p>A full tracked-robot appearance adaptation, not exact mechanical geometry.</p>
+          </div>
+        </article>
+      </section>
+
+      <a class="repo-link" href="https://github.com/YuhuaJiang2002/PhiAgent">
+        View source and reproducibility details on GitHub
+      </a>
+    </main>
+
+    <script>
+      const videos = document.querySelectorAll("video");
+      videos.forEach((video) => {
+        video.addEventListener("play", () => {
+          videos.forEach((other) => {
+            if (other !== video) {
+              other.pause();
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

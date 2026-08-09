@@ -15,9 +15,9 @@ Click a preview to play the full MP4.
 
 ### 20.7-second five-finger Shadow hand and forearm replacement
 
-[![Five-finger Shadow hand and forearm with source-locked background](demo/showcase/five-finger-shadow-arm-background-locked.jpg)](demo/showcase/five-finger-shadow-arm-background-locked.mp4)
+[![Five-finger Shadow hand and forearm with source-locked background](demo/showcase/five-finger-shadow-arm-background-locked.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/five-finger-shadow-arm-background-locked.mp4)
 
-[Play MP4](demo/showcase/five-finger-shadow-arm-background-locked.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/five-finger-shadow-arm-background-locked.mp4)
 
 This demo uses one uncut 20.7-second, 621-frame human-hand video from the pinned
 MIT-licensed [dex-retargeting](https://github.com/dexsuite/dex-retargeting)
@@ -33,15 +33,15 @@ official PhiZero inference.
 
 ### Confidence-routed three-hand comparison
 
-[![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](demo/showcase/three-hand-confidence-routed.mp4)
+[![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/three-hand-confidence-routed.mp4)
 
-[Play MP4](demo/showcase/three-hand-confidence-routed.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/three-hand-confidence-routed.mp4)
 
 ### Confidence-routed vendor-hand comparison
 
-[![Confidence-routed Sharpa, Wonik Allegro, and Shadow Robot Hand comparison](demo/showcase/vendor-hand-confidence-routed-comparison.jpg)](demo/showcase/vendor-hand-confidence-routed-comparison.mp4)
+[![Confidence-routed Sharpa, Wonik Allegro, and Shadow Robot Hand comparison](demo/showcase/vendor-hand-confidence-routed-comparison.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/vendor-hand-confidence-routed-comparison.mp4)
 
-[Play MP4](demo/showcase/vendor-hand-confidence-routed-comparison.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/vendor-hand-confidence-routed-comparison.mp4)
 
 This matched `hand2dex_3` comparison uses same-scene full-arm conditions,
 replacement mode, SAM2, relighting LoRA, and object-confidence routing. It is a
@@ -50,9 +50,9 @@ and temporal gates fail and the vendor hands remain partly Sharpa-like.
 
 ### Robotiq two-finger gripper attempt
 
-[![Human, Sharpa, Linker L20, and Robotiq gripper attempt](demo/showcase/four-embodiment-gripper-attempt.jpg)](demo/showcase/four-embodiment-gripper-attempt.mp4)
+[![Human, Sharpa, Linker L20, and Robotiq gripper attempt](demo/showcase/four-embodiment-gripper-attempt.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/four-embodiment-gripper-attempt.mp4)
 
-[Play MP4](demo/showcase/four-embodiment-gripper-attempt.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/four-embodiment-gripper-attempt.mp4)
 
 The existing Sharpa and Linker outputs are preserved unchanged. The fourth
 column conditions the same replacement/confidence-routing pipeline on the
@@ -63,9 +63,9 @@ gripper transfer.
 
 ### Human / silver / graphite / Sudo R1-style arm comparison
 
-[![Human, silver, graphite, and Sudo R1-style arm comparison](demo/showcase/human-silver-graphite-sudo-vertical.jpg)](demo/showcase/human-silver-graphite-sudo-vertical.mp4)
+[![Human, silver, graphite, and Sudo R1-style arm comparison](demo/showcase/human-silver-graphite-sudo-vertical.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-silver-graphite-sudo-vertical.mp4)
 
-[Play MP4](demo/showcase/human-silver-graphite-sudo-vertical.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-silver-graphite-sudo-vertical.mp4)
 
 The Sudo row is a full tracked-robot appearance adaptation with a white shell,
 black joints/chest cavity, and dual-camera face. It does not claim exact Sudo R1
@@ -73,9 +73,9 @@ mechanical geometry.
 
 ### Full Sudo R1-style robot
 
-[![Full Sudo R1-style robot](demo/showcase/sudo-r1-full-robot.jpg)](demo/showcase/sudo-r1-full-robot.mp4)
+[![Full Sudo R1-style robot](demo/showcase/sudo-r1-full-robot.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/sudo-r1-full-robot.mp4)
 
-[Play MP4](demo/showcase/sudo-r1-full-robot.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/sudo-r1-full-robot.mp4)
 
 This standalone view applies the Sudo-inspired appearance to the complete
 SAM2-tracked robot instance—head, torso, and both arms—while preserving the

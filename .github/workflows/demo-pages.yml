@@ -1,0 +1,50 @@
+name: Deploy demo page
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/demo-pages.yml"
+      - "demo/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Prepare demo site
+        run: |
+          rsync -a \
+            --exclude "showcase/flower-insertion-physics.jpg" \
+            --exclude "showcase/flower-insertion-physics.mp4" \
+            demo/ _site/
+
+      - name: Upload demo site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
