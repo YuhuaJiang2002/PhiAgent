@@ -67,7 +67,10 @@ def main() -> int:
     background_edges = np.zeros((args.height, args.width), dtype=np.uint8)
 
     frames: list[bytes] = []
+    mask_frames: list[bytes] = []
+    input_frames: list[bytes] = []
     timeline: list[dict[str, object]] = []
+    reference_rgb = np.asarray(Image.open(reference).convert("RGB"), dtype=np.uint8)
     spoon_start = (235.0, 224.0)
     bowl_final = (292.0, 218.0)
     bowl_slide_end = round((args.frames - 1) * 0.52)
@@ -171,6 +174,13 @@ def main() -> int:
         mask = mask.filter(ImageFilter.GaussianBlur(radius=0.7))
         rgb = np.repeat(np.asarray(mask)[..., None], 3, axis=2)
         frames.append(rgb.tobytes())
+        edit_mask = mask.point(lambda value: 255 if value >= 24 else 0).filter(
+            ImageFilter.MaxFilter(size=41)
+        )
+        mask_frames.append(
+            np.repeat(np.asarray(edit_mask)[..., None], 3, axis=2).tobytes()
+        )
+        input_frames.append(reference_rgb.tobytes())
         timeline.append(
             {
                 "frame": index,
@@ -189,38 +199,45 @@ def main() -> int:
             }
         )
 
+    def encode(sequence: list[bytes], destination: Path) -> None:
+        process = subprocess.Popen(
+            [
+                str(ffmpeg),
+                "-v",
+                "error",
+                "-y",
+                "-f",
+                "rawvideo",
+                "-pix_fmt",
+                "rgb24",
+                "-s",
+                f"{args.width}x{args.height}",
+                "-r",
+                str(args.fps),
+                "-i",
+                "pipe:0",
+                "-an",
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                str(destination),
+            ],
+            stdin=subprocess.PIPE,
+        )
+        assert process.stdin is not None
+        for frame in sequence:
+            process.stdin.write(frame)
+        process.stdin.close()
+        if process.wait():
+            raise RuntimeError(f"ffmpeg failed to encode {destination}")
+
     control = output / "control.mp4"
-    process = subprocess.Popen(
-        [
-            str(ffmpeg),
-            "-v",
-            "error",
-            "-y",
-            "-f",
-            "rawvideo",
-            "-pix_fmt",
-            "rgb24",
-            "-s",
-            f"{args.width}x{args.height}",
-            "-r",
-            str(args.fps),
-            "-i",
-            "pipe:0",
-            "-an",
-            "-c:v",
-            "libx264",
-            "-pix_fmt",
-            "yuv420p",
-            str(control),
-        ],
-        stdin=subprocess.PIPE,
-    )
-    assert process.stdin is not None
-    for frame in frames:
-        process.stdin.write(frame)
-    process.stdin.close()
-    if process.wait():
-        raise RuntimeError("ffmpeg failed to encode extension control")
+    edit_mask_video = output / "edit-mask.mp4"
+    input_video = output / "input-hold.mp4"
+    encode(frames, control)
+    encode(mask_frames, edit_mask_video)
+    encode(input_frames, input_video)
     (output / "timeline.json").write_text(
         json.dumps(
             {
@@ -251,6 +268,8 @@ def main() -> int:
     )
     print(f"CONTROL={control}")
     print(f"REFERENCE={reference}")
+    print(f"INPUT_VIDEO={input_video}")
+    print(f"EDIT_MASK={edit_mask_video}")
     return 0
 
 

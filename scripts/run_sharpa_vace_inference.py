@@ -9,7 +9,9 @@ import importlib.metadata
 import json
 import os
 import platform
+import shutil
 import socket
+import subprocess
 import sys
 from dataclasses import asdict
 from datetime import datetime, timezone
@@ -28,6 +30,9 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--control-video", type=Path, required=True)
     parser.add_argument("--reference-image", type=Path, required=True)
     parser.add_argument("--lora", type=Path)
+    parser.add_argument("--input-video", type=Path)
+    parser.add_argument("--edit-mask", type=Path)
+    parser.add_argument("--denoising-strength", type=float, default=1.0)
     parser.add_argument("--output-root", type=Path, default=Path("outputs/sharpa-vace-inference"))
     parser.add_argument("--prompt", default="A Sharpa dexterous robot hand manipulates an object.")
     parser.add_argument("--gpu", type=int)
@@ -49,6 +54,34 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _video_frame_count(path: Path) -> int:
+    ffprobe = shutil.which("ffprobe")
+    if ffprobe is None:
+        raise RuntimeError("ffprobe is required to validate VACE control frames")
+    completed = subprocess.run(
+        [
+            ffprobe,
+            "-v",
+            "error",
+            "-count_frames",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=nb_read_frames",
+            "-of",
+            "default=nokey=1:noprint_wrappers=1",
+            str(path),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    try:
+        return int(completed.stdout.strip())
+    except ValueError as exc:
+        raise ValueError(f"ffprobe did not report a frame count for {path}") from exc
+
+
 def main() -> int:
     args = _parser().parse_args()
     if min(
@@ -62,16 +95,32 @@ def main() -> int:
         raise ValueError("inference dimensions, frame count, FPS, steps, and memory must be positive")
     if (args.num_frames - 1) % 4:
         raise ValueError("num_frames must satisfy 4n+1")
+    if not 0 < args.denoising_strength <= 1:
+        raise ValueError("denoising-strength must be in (0, 1]")
     checkpoint = args.checkpoint_dir.expanduser().resolve()
     model_files = verify_vace_checkpoint(checkpoint)
     control = args.control_video.expanduser().resolve()
     reference = args.reference_image.expanduser().resolve()
     lora = args.lora.expanduser().resolve() if args.lora else None
+    input_video = args.input_video.expanduser().resolve() if args.input_video else None
+    edit_mask = args.edit_mask.expanduser().resolve() if args.edit_mask else None
     for label, path in (("control video", control), ("reference image", reference)):
         if not path.is_file():
             raise ValueError(f"{label} does not exist: {path}")
     if lora is not None and not lora.is_file():
         raise ValueError(f"LoRA does not exist: {lora}")
+    if (input_video is None) != (edit_mask is None):
+        raise ValueError("input-video and edit-mask must be provided together")
+    if input_video is not None and (
+        not input_video.is_file() or not edit_mask.is_file()
+    ):
+        raise ValueError("input video and edit mask must exist")
+    available_frames = _video_frame_count(control)
+    if available_frames < args.num_frames:
+        raise ValueError(
+            f"control video has {available_frames} frames, "
+            f"but --num-frames requires {args.num_frames}"
+        )
 
     gpus, inventory, processes = query_gpus()
     selected = select_gpu(gpus, args.gpu, args.minimum_free_gpu_mib)
@@ -120,10 +169,15 @@ def main() -> int:
         "inputs": {
             "control": str(control),
             "control_sha256": _sha256(control),
+            "control_available_frames": available_frames,
             "reference": str(reference),
             "reference_sha256": _sha256(reference),
             "lora": str(lora) if lora else None,
             "lora_sha256": _sha256(lora) if lora else None,
+            "input_video": str(input_video) if input_video else None,
+            "input_video_sha256": _sha256(input_video) if input_video else None,
+            "edit_mask": str(edit_mask) if edit_mask else None,
+            "edit_mask_sha256": _sha256(edit_mask) if edit_mask else None,
         },
     }
     metadata_path.write_text(json.dumps(record, indent=2, sort_keys=True, default=str) + "\n")
@@ -138,6 +192,13 @@ def main() -> int:
             pipe.load_lora(pipe.vace, str(lora), alpha=1)
         control_frames = VideoData(str(control), height=args.height, width=args.width)
         control_frames = [control_frames[index] for index in range(args.num_frames)]
+        input_frames = None
+        mask_frames = None
+        if input_video is not None:
+            input_data = VideoData(str(input_video), height=args.height, width=args.width)
+            mask_data = VideoData(str(edit_mask), height=args.height, width=args.width)
+            input_frames = [input_data[index] for index in range(args.num_frames)]
+            mask_frames = [mask_data[index] for index in range(args.num_frames)]
         output_frames = pipe(
             prompt=args.prompt,
             negative_prompt=(
@@ -145,9 +206,12 @@ def main() -> int:
                 "deformed object, flicker, duplicate object"
             ),
             vace_video=control_frames,
+            vace_video_mask=mask_frames,
             vace_reference_image=Image.open(reference).convert("RGB").resize(
                 (args.width, args.height)
             ),
+            input_video=input_frames,
+            denoising_strength=args.denoising_strength,
             height=args.height,
             width=args.width,
             num_frames=args.num_frames,
@@ -155,6 +219,29 @@ def main() -> int:
             seed=args.seed,
             tiled=True,
         )
+        outside_mask_unchanged_fraction = None
+        if input_frames is not None:
+            import numpy as np
+
+            composited = []
+            unchanged = total_outside = 0
+            for generated, source, mask in zip(output_frames, input_frames, mask_frames):
+                binary_mask = mask.convert("L").point(
+                    lambda value: 255 if value >= 128 else 0
+                )
+                merged = Image.composite(generated, source, binary_mask)
+                generated_array = np.asarray(merged)
+                source_array = np.asarray(source)
+                outside = np.asarray(binary_mask) == 0
+                unchanged += int(
+                    np.count_nonzero(
+                        np.all(generated_array[outside] == source_array[outside], axis=1)
+                    )
+                )
+                total_outside += int(np.count_nonzero(outside))
+                composited.append(merged)
+            output_frames = composited
+            outside_mask_unchanged_fraction = unchanged / total_outside
         save_video(output_frames, str(video_path), fps=args.fps, quality=5)
         record.update(
             {
@@ -162,6 +249,9 @@ def main() -> int:
                 "completed_at": datetime.now(timezone.utc).isoformat(),
                 "output": str(video_path),
                 "output_sha256": _sha256(video_path),
+                "outside_mask_unchanged_fraction_before_encode": (
+                    outside_mask_unchanged_fraction
+                ),
             }
         )
     except Exception as exc:

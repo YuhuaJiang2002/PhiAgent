@@ -5,6 +5,8 @@ import pytest
 from phiagent.evaluation.object_instance import NormalizedROI
 from phiagent.rendering.hand_style import (
     GraphiteHandConfig,
+    SudoHandConfig,
+    SudoRobotConfig,
     apply_graphite_hand_style,
 )
 
@@ -14,6 +16,15 @@ def test_graphite_hand_config_rejects_invalid_values() -> None:
         GraphiteHandConfig(opacity=1.1)
     with pytest.raises(ValueError, match="positive"):
         GraphiteHandConfig(opacity=0)
+
+
+def test_sudo_hand_config_rejects_invalid_values() -> None:
+    with pytest.raises(ValueError, match="channels"):
+        SudoHandConfig(shell_red=256)
+    with pytest.raises(ValueError, match="range"):
+        SudoHandConfig(opacity=0)
+    with pytest.raises(ValueError, match="eye radius"):
+        SudoRobotConfig(eye_radius_fraction=0)
 
 
 def test_hand_style_rejects_missing_input_before_heavy_import(tmp_path: Path) -> None:

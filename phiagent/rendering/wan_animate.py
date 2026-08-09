@@ -469,7 +469,7 @@ class WanAnimateRenderer:
                 [
                     str(self.config.python_executable),
                     "-c",
-                    "from sam2 import _C; print(_C.__file__)",
+                    "import torch; from sam2 import _C; print(_C.__file__)",
                 ],
                 env=self._execution_environment(None, 0),
                 check=False,

@@ -11,7 +11,25 @@ attempt to train a unified foundation model.
 
 ## Demos
 
-Click either preview to play the full MP4.
+Click a preview to play the full MP4.
+
+### 20.7-second five-finger Shadow hand and forearm replacement
+
+[![Five-finger Shadow hand and forearm with source-locked background](demo/showcase/five-finger-shadow-arm-background-locked.jpg)](demo/showcase/five-finger-shadow-arm-background-locked.mp4)
+
+[Play MP4](demo/showcase/five-finger-shadow-arm-background-locked.mp4)
+
+This demo uses one uncut 20.7-second, 621-frame human-hand video from the pinned
+MIT-licensed [dex-retargeting](https://github.com/dexsuite/dex-retargeting)
+example. MediaPipe and Dexpilot retarget all 621 frames to the 24-DOF,
+five-finger Shadow Dexterous Hand. Its segmented wrist and forearm replace the
+complete visible human hand and forearm. A lossless post-encode decode audit
+found zero RGB differences outside the hand-and-forearm replacement mask on
+every frame. The published version applies zero-phase smoothing to the 24-DOF
+trajectory and fixes the screen-space hand scale, removing the apparent
+morphology/size jump during the fast fist gesture around 8-9 seconds. This is a
+geometric gesture-retargeting visualization without object manipulation, not
+official PhiZero inference.
 
 ### Confidence-routed three-hand comparison
 
@@ -19,11 +37,50 @@ Click either preview to play the full MP4.
 
 [Play MP4](demo/showcase/three-hand-confidence-routed.mp4)
 
-### Human / silver / graphite arm comparison
+### Confidence-routed vendor-hand comparison
 
-[![Human, silver, and graphite arm comparison](demo/showcase/human-silver-graphite-vertical.jpg)](demo/showcase/human-silver-graphite-vertical.mp4)
+[![Confidence-routed Sharpa, Wonik Allegro, and Shadow Robot Hand comparison](demo/showcase/vendor-hand-confidence-routed-comparison.jpg)](demo/showcase/vendor-hand-confidence-routed-comparison.mp4)
 
-[Play MP4](demo/showcase/human-silver-graphite-vertical.mp4)
+[Play MP4](demo/showcase/vendor-hand-confidence-routed-comparison.mp4)
+
+This matched `hand2dex_3` comparison uses same-scene full-arm conditions,
+replacement mode, SAM2, relighting LoRA, and object-confidence routing. It is a
+`PARTIAL` proxy result: background and arm consistency improve, but strict object
+and temporal gates fail and the vendor hands remain partly Sharpa-like.
+
+### Robotiq two-finger gripper attempt
+
+[![Human, Sharpa, Linker L20, and Robotiq gripper attempt](demo/showcase/four-embodiment-gripper-attempt.jpg)](demo/showcase/four-embodiment-gripper-attempt.mp4)
+
+[Play MP4](demo/showcase/four-embodiment-gripper-attempt.mp4)
+
+The existing Sharpa and Linker outputs are preserved unchanged. The fourth
+column conditions the same replacement/confidence-routing pipeline on the
+Apache-2.0 MuJoCo Menagerie Robotiq 2F-85 asset. It is a failed morphology
+experiment: motion transfers, but Wan turns the two-finger gripper back into a
+human-like hand. The video is retained as negative evidence, not a successful
+gripper transfer.
+
+### Human / silver / graphite / Sudo R1-style arm comparison
+
+[![Human, silver, graphite, and Sudo R1-style arm comparison](demo/showcase/human-silver-graphite-sudo-vertical.jpg)](demo/showcase/human-silver-graphite-sudo-vertical.mp4)
+
+[Play MP4](demo/showcase/human-silver-graphite-sudo-vertical.mp4)
+
+The Sudo row is a full tracked-robot appearance adaptation with a white shell,
+black joints/chest cavity, and dual-camera face. It does not claim exact Sudo R1
+mechanical geometry.
+
+### Full Sudo R1-style robot
+
+[![Full Sudo R1-style robot](demo/showcase/sudo-r1-full-robot.jpg)](demo/showcase/sudo-r1-full-robot.mp4)
+
+[Play MP4](demo/showcase/sudo-r1-full-robot.mp4)
+
+This standalone view applies the Sudo-inspired appearance to the complete
+SAM2-tracked robot instance—head, torso, and both arms—while preserving the
+scene and manipulated object. It is an appearance proxy, not exact Sudo R1
+mechanical geometry or official PhiZero inference.
 
 ## Primary goal
 

@@ -19,8 +19,8 @@ locations are recorded per experiment below.
   with SHA-256 `49c6c0c4440eba79e08b65ff78e51312e94bde91880eaed9e5d61b91d7a61188`.
   This validates model execution, not the requested human-to-robot evaluation.
 - Remote regression suite: 26 tests passed and Ruff passed.
-- Local regression after the learned Linker replacement route:
-  120 tests passed and
+- Local regression after background-safe Sunday hand repair:
+  127 tests passed and
   Ruff passed; the optional MuJoCo test module was skipped because MuJoCo is not
   installed in the local lightweight environment.
 - PhiZero Milestone 0: arXiv:2607.28624v1 Figure 8(b), Appendix C.2, official
@@ -155,6 +155,30 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- Robotiq two-finger gripper attempt: the pinned MuJoCo Menagerie 2F-85 asset at
+  revision `c1a4eeb85694ae1dffe33ff1797d4e528928a133` was composited into the
+  same case-3 apple scene and run through replacement, compiled SAM2, relighting
+  LoRA, and confidence routing on `a800-2`. The generated 896x512 candidate
+  scored motion 0.848, identity 0.919, object 0.004, and regional temporal 0.350.
+  It remained human-hand-like rather than preserving two-finger geometry. The
+  new 3-second, 1280x720 four-column comparison preserves the existing Sharpa
+  and Linker results and has SHA-256
+  `0bf9146f9494861d5e3f8baf03a8fc79e15f2a47a2a7c710bad4bc704b0dda62`.
+- Linker-style confidence-routed vendor comparison: Allegro and Shadow were rerun
+  using same-scene full-arm condition images, Wan replacement mode, compiled
+  SAM2, relighting LoRA, `frame_num=89`, seed 42, object ROI
+  `(0.39, 0.60, 0.18, 0.32)`, and one routing round, matching the
+  `three-hand-apple-comparison/20260809T1100-confidence-routed` method. Both
+  routes selected `preserve_raw_candidate_source_track_unreliable`; candidate
+  object tracks cover all frames with area ratios 1.788 (Allegro) and 1.801
+  (Shadow). The 89-frame comparison is
+  `/data0/jiangyuhua/PhiAgent-0/outputs/vendor-confidence-routed/20260809T1205Z/comparison/vendor-hand-apple-comparison.mp4`
+  with SHA-256
+  `348c6e2e920c35a1eda13d06a3157935027f2ef1ebd66f0559ff0a2d4265e92f`.
+  Background and full-arm consistency improve substantially, but Wan visibly
+  normalizes both vendor hands toward a Sharpa-like white hand. Allegro scores
+  motion/identity/object/temporal 0.837/0.919/0.004/0.326 and Shadow
+  0.850/0.896/0.004/0.359; both remain rejected.
 - Wan-Animate-2 pose-matched Sharpa proxy: official Apache-2.0 source commit
   `3ad2fef7d61d6200c9c653e0fe47be7616b323f3` and ModelScope checkpoint
   revision `7053fd05166cdd99a49896364d01c06c281a9d69` ran on physical A800
@@ -223,6 +247,52 @@ locations are recorded per experiment below.
   person, clothing, and forearm remain source-identical. This composited
   geometric result is WORKING; the four-finger Allegro morphology and absence of
   object manipulation remain explicit limitations.
+- Five-finger hand-and-forearm replacement:
+  `outputs/long-human-shadow-arm/20260809T1910Z-shadow-smoothed-stable-scale-v2`
+  retargets all 621 frames to the 24-DOF, five-finger Shadow Dexterous Hand and
+  uses its rendered wrist/forearm model to replace the visible human forearm
+  through the lower frame edge. The uncut output and comparison are 20.70
+  seconds at 1280x720 and 30 FPS. A post-encode decode audit measured zero RGB
+  channel differences outside the hand-and-forearm replacement mask on every
+  frame. Manual review at frames 30, 150, 270, 390, 510, and 600 confirms five
+  distinct digits, continuous wrist-to-forearm attachment, no residual human
+  skin, and preservation of the thermos, yellow object, clothing, and wall.
+  A zero-phase Gaussian filter with sigma 4 frames reduces the 8-9 second
+  maximum 24-DOF frame delta from 0.4634 to 0.2607, while a fixed 148-pixel hand
+  scale removes the fist-induced apparent size collapse. Frame-by-frame review
+  from 7.5 through 9.5 seconds confirms continuous robot morphology with no
+  human-hand pixels.
+  This geometric gesture conversion is WORKING; it does not demonstrate object
+  manipulation or official PhiZero inference.
+- Rejected long flower-arranging visualization:
+  `outputs/full-robot-flower-demo/20260809T074000Z-pexels5893642/render-v6`
+  uses one continuous 27.5-second Pexels clip. A temporal union of all person
+  masks replaces the full visible florist with one static clean plate before a
+  pinned Unitree G1 body and Sharpa Wave or Wonik Allegro hands are composited.
+  All 660 frames and all three outputs decode fully on physical A800 GPU 7.
+  The full-body centroid has zero frame-to-frame movement; 201 hand-detection
+  gaps hold the previous robot pose instead of restoring human pixels. Maximum
+  exact source-RGB retention in the erased non-flower person region is 0.38%.
+  Manual review at frames 24, 120, 216, 312, 408, 504, and 600 found no remaining
+  face, clothing, human hand, or previous-frame human trails in sparse keyframes,
+  but full-video review found conspicuous clean-plate smearing, flower-mask
+  remnants, and distorted procedural screen-space arm links. The visualization
+  is rejected and removed from the README. A replacement must use articulated
+  3D joints without source-person pixel restoration.
+- Clean articulated flower-arranging replacement:
+  `outputs/articulated-flower-demo/20260809T120000Z-full660-v3` discards the
+  rejected screen-space compositor and renders independent MuJoCo target scenes.
+  Human pose drives the real G1 shoulder and elbow joints through bounded IK;
+  left/right Sharpa or Allegro models are scaled once and attached directly to
+  the corresponding G1 wrist frames. The 27.5-second, 660-frame outputs decode
+  fully. Maximum wrist-target error is 0.0613 m, maximum frame-to-frame arm-joint
+  step is capped at 0.1200 rad, all joint positions remain in range, and all four
+  hand-attachment errors are exactly 0 m. Target outputs contain no source-person
+  pixels and no procedural screen-space joints, so the previous ghosting and
+  stretched-joint failure modes are absent. The geometry pipeline is WORKING, but
+  the output is rejected for the README because its synthetic MuJoCo scene differs
+  too much from the real-scene Wan replacement demos. Flower contact physics,
+  photorealistic replacement, and real robot execution remain NOT STARTED.
 - Rejected edited long-demo attempt: the local CPU composition experiment
   `outputs/phizero-demo/20260809T0125-two-case-continuous-10s` combines the
   existing case-1 confidence-routed and case-2 deghosted real-input Wan proxy
@@ -316,6 +386,16 @@ locations are recorded per experiment below.
   the middle, and the graphite-arm variant on the bottom. It contains 89 frames
   at strict 30 FPS, 672x1152, with SHA-256
   `4ba1bc61a52eebe789d9de2663ae644772c8047215cbaf528e074d5c604f8ddc`.
+- Sudo R1-inspired appearance and four-row comparison: a separate SAM2 track
+  covers the complete robot (head, torso, and both arms), which is restyled with
+  a white shell, black joints/chest cavity, and dual-camera face. Object
+  confidence routing remains enabled (all frames tracked, lift recall 1.0,
+  trajectory similarity 0.9680), with no object repair. This is an
+  appearance-inspired proxy and does not claim exact Sudo R1 geometry. The
+  four-row human/silver/graphite/full-Sudo comparison is
+  `outputs/four-way-arm-comparison/human-silver-graphite-sudo-vertical.mp4`,
+  89 frames at 30 FPS, 672x1536 H.264, SHA-256
+  `24553e8c9aadf9db72411dd16f64d91666391717bd990ab0916a6792eca9ccfa`.
 - Real-world scene demo rerun on GPU 6: the official `hand2dex_1` captured human
   video and same-scene Sharpa frame produced a decodable candidate with SHA-256
   `40342d688c7f5817849b45d5896a44a871323e96ed7ba7c84886b23689e3c5a4`.
@@ -431,6 +511,68 @@ locations are recorded per experiment below.
   coherent robot identity is insufficient when the reference pose/camera differs
   strongly from the source first frame. FLUX pose-retarget assets are absent, so
   pose-aligned G1 generation remains pending rather than silently approximated.
+- The requested Sunday Robotics control now uses the exact Sharpa generation
+  route rather than the earlier animation-only controls: official case-1 source,
+  seed 42, 89-frame single clip, 896x512, Wan replacement mode, identical ROI,
+  and the official Sunday Memo hero frame as the only changed conditioning
+  input. Memo identity and arm motion remain visually coherent through the
+  lift-return cycle. The generated object becomes a white box instead of the
+  turquoise tool, so object preservation is rejected and the raw result is
+  retained only as an internal robot-model contrast.
+- Sunday correction follow-up sampled the official company video and selected
+  the t=6 s frame with visible black Memo grippers. A reference containing humans
+  caused Wan to animate the human; a SAM2-isolated Memo still decoded as a human,
+  showing that reference cleanup alone does not enforce Memo hand topology. A
+  separate source-scene compositor now changes only the union of SAM2 source-human
+  and Memo masks (27.99% mean frame area), with source table/background pixels
+  unchanged outside that region and the source tool restored. The table requirement
+  is satisfied, but the generated hands remain mitten-like. Attempts to replace
+  them with official static gripper and forearm cutouts produced duplicate hands
+  or rigid compositing artifacts and were rejected. Correct Memo hands are BLOCKED
+  on a Memo-specific identity/LoRA adapter or a generator that supports multiple
+  gripper references; no post-hoc result is presented as solved.
+- Residual-ghost diagnosis showed the blur was already present in the original
+  Wan2.2-Animate Memo hand frames, not introduced by the source-table mask. A
+  complete Wan-Animate-2 distilled backend at commit
+  `3ad2fef7d61d6200c9c653e0fe47be7616b323f3` was run on two A800 GPUs with the
+  isolated Memo reference. Its 48-frame result has stable SAM2 robot masks
+  (1.022 area ratio), crisp two-finger grippers, and no old hand trails. The
+  selected table blend preserves source-table pixels below row 375 exactly
+  before encoding (MAE 0). Memo color/identity drifts toward a generic humanoid
+  and the restored tool is not in gripper contact, so the result is labelled
+  PARTIAL rather than accepted.
+- Sunday hand-morphology v5 narrows that failure without claiming full robot
+  success. Following the Unitree full-body route, it conditions Wan on the
+  official Sunday t=6 s full-body frame and selects seed 1051 for stable identity.
+  SAM2 tracks only the active generated hand; a 0.90-width distal crop of the
+  official t=3 s Sunday gripper replaces that region and emits its exact rendered
+  mask. DINOv2 comparison against the official gripper raises mean native-hand
+  similarity from 0.491 to 0.841, worst-frame similarity from 0.321 to 0.769,
+  mean temporal similarity from 0.826 to 0.948, and worst-frame temporal
+  similarity from 0.558 to 0.898; all five hand gates pass. The decodable result
+  is `outputs/robot-model-contrast/sunday-memo-improved-20260809/sunday-memo-improved.mp4`
+  with SHA-256
+  `5a81456956cecc64f93ba00aa505113f7ecaa782bee2d8b2595555b347ac1abc`.
+  Manual review still sees reference-pose arm duplication in the underlying Wan
+  body, so this is a PARTIAL hand-shape improvement, not an accepted full-body
+  Sunday manipulation result.
+- Background/action-preserving Sunday v2 supersedes v5 for the stricter user
+  constraint. It uses the original replacement-mode `sunday-memo.mp4` as the
+  sole base, retains its 89 frames and 30 FPS, and edits only the union of the
+  SAM2-tracked original hand and rendered native-gripper mask. The allowed edit
+  region averages 10.73% of the frame. Outside that mask, decoded-pixel MAE is
+  1.46 (worst frame 1.56), changed-pixel fraction is 0.18% on average (worst
+  0.46%), and motion error is 0.00199 on average (worst 0.00372); all eight
+  background/action preservation gates pass. Using the exact rendered hand mask,
+  DINOv2 native-hand similarity is 0.892 mean and 0.844 worst-frame, while
+  temporal similarity is 0.968 mean and 0.909 worst-frame; all five hand gates
+  pass. The result is
+  `outputs/robot-model-contrast/sunday-memo-background-safe-20260809/sunday-memo-background-action-preserved.mp4`
+  with SHA-256
+  `0293ce7788ab4857894277810124679ebbd9ade6a90a87ef68690a9121a046a7`.
+  This satisfies measured background and action preservation but remains a
+  PARTIAL image-space hand replacement rather than Memo-specific learned
+  kinematics.
 - Wan replacement-mode support is implemented to preserve source background and
   object pixels outside the estimated character mask, with strict SAM2 and
   relighting-LoRA preflight checks. GPU 7 produced a real replacement candidate
@@ -529,6 +671,23 @@ locations are recorded per experiment below.
   It remains REJECTED because a duplicate spoon part appears mid-sequence,
   spoon geometry and terminal robot identity drift, and contact is not
   physically credible.
+- Verifier-selected learned extension: the trained rank-4 Sharpa VACE-1.3B LoRA
+  naturalized the dense 25-frame v9 control instead of generating from a sparse
+  outline. Seed 42 preserves the same robot identity, produces a continuous bowl
+  entry held by the robot hand, and moves one cyan spoon behind the bowl rim.
+  The phase-aware verifier separately passes bowl presence, single-spoon,
+  persistence, pre-insertion shape stability, hand-bowl contact, hand-spoon
+  contact, final containment, robot identity, temporal stability, and control
+  alignment. Measured values include identity 0.9620, hand-bowl contact 0.76,
+  hand-spoon contact 1.0, final containment 1.0, spoon area ratio 1.94, temporal
+  jerk 0.0115, and edge error 0.0468. The 25-frame extension has SHA-256
+  `1d82db860732fef38e8fcd7ae9c66f3f3661c99a64ebedc8244e7dd526816387`;
+  the 5.90-second joined result is
+  `outputs/phizero-demo/20260809T1130-vace-naturalized/final/agent-clean-apex-vace-bowl-extended.mp4`
+  with SHA-256
+  `346cd55b93efd3293e56acb940b9f14072fe34c320d4d6eb8e593de6f72283b3`.
+  This is the strongest current visual extension, but verifier contact remains
+  image-space and does not establish physical execution.
 - Robot table-slide prompt sweep: a 49-frame/12 FPS control keeps the bowl
   bottom at image y=241 px with zero support error, moves it monotonically from
   viewer-right with the in-frame robot free hand, locks the other hand to one
@@ -541,6 +700,32 @@ locations are recorded per experiment below.
   It is PARTIAL: the intended support/contact/object-count gates pass in
   screen-space keyframe review, but arm proportions remain visibly elongated
   and no 3D dynamics simulation validates contact forces.
+- Original-arm-only revision: masked VACE local-edit sweeps at denoising 0.45,
+  0.60, and 0.75 failed respectively by insufficient arm motion, block
+  artifacts, and literal control rendering. The selected fallback therefore
+  uses no generated arm pixels: both robot arms and the spoon are extracted
+  from the 2.25-second reference frame and animated as shoulder-anchored
+  source-pixel layers; only the bowl is procedural. Outside these layers,
+  original pixels remain unchanged. The 5.90-second result is
+  `outputs/spoon-bowl-extension/20260809T121000Z-original-arms-final/agent-clean-apex-original-arms-push-bowl.mp4`.
+  Bowl support, monotonic slide, hand-bowl contact, continuous spoon grasp, and
+  final image-space containment pass by construction; 30 FPS interpolation
+  reduces jerk from 0.00107 to 0.00052. It remains PARTIAL because the free arm
+  reaches via a 2D similarity transform up to 1.36x scale rather than physical
+  joint kinematics.
+- Frame-continuity correction: the former
+  `20260809T150500Z-zero-jump-original-arms-v3` passed a scalar delta test but
+  human review found severe pose-morph double exposure, so that result is
+  REJECTED and the metric-only decision is invalid. The replacement removes all
+  pose morphing and cross-video continuation: it begins directly at the first
+  pushing pose, holds 16 effectively identical frames, then runs the native
+  30-FPS C2 trajectory. Hold delta is at most 0.00290, hold-to-motion delta is
+  0.00680, moving maximum is 0.524 below the 0.845 robust limit, isolated jumps
+  are zero, and keyframe review finds no double exposure. The 4.53-second
+  standalone clip is
+  `outputs/spoon-bowl-extension/20260809T151000Z-stable-start-original-arms/stable-start-original-arms-push-bowl.mp4`.
+  It is PARTIAL and explicitly not claimed as a seamless continuation; arm
+  motion remains a 2D transform rather than physical joint motion.
 - Auxiliary Cosmos 3 robotics renderer: the pinned Cosmos3-Nano adapter, trajectory and
   verification persistence, control-video frame/FPS checks, GPU selection,
   official inference command, deterministic MuJoCo control-bundle producer,

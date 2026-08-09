@@ -30,11 +30,20 @@ License review date: 2026-08-08.
   the licenses of its detector/checkpoint dependencies.
 - dex-retargeting: MIT. Preferred permissive retargeting baseline.
 - MuJoCo: Apache-2.0. Selected first physics backend.
+- Pexels flower-arranging video 5893642 by Anna Shvets: used under the Pexels
+  License as the single continuous 27.5-second source for the README full-robot
+  geometric flower demo. The transformed comparison includes attribution even
+  though the license does not require it.
+  https://www.pexels.com/video/woman-cutting-leaves-of-flower-stems-5893642/
 - MuJoCo Menagerie: pinned externally at
   `c1a4eeb85694ae1dffe33ff1797d4e528928a133`. The Wonik Allegro model is
   BSD-2-Clause and the Shadow Hand model is Apache-2.0. Their upstream rendered
   PNGs may be used as identity-conditioning inputs, but generated transfer videos
   are visual proxies rather than vendor-validated robot executions.
+- MuJoCo Menagerie Unitree G1: BSD-3-Clause, pinned at
+  `c1a4eeb85694ae1dffe33ff1797d4e528928a133` as the full-body visualization
+  whose real arm joints and wrist frames drive the clean articulated Sharpa and
+  Allegro flower demo.
 - Sharpa RL Lab: Apache-2.0, pinned at
   `95ccda3d948801bb5da4cb7ffea766e03067a63b`. Its official `real.gif` and
   `sim.gif` show cylinder rotation with SharpaWave; they may support identity
@@ -78,9 +87,18 @@ Primary project pages:
   revision `c1a4eeb85694ae1dffe33ff1797d4e528928a133` for the robot-model
   sensitivity contrast. Assets remain under ignored `external/`.
   https://github.com/google-deepmind/mujoco_menagerie/tree/main/wonik_allegro
+- Sunday Robotics Memo hero media: official promotional media from
+  `https://www.sunday.ai/`. No redistributable media license was found; it is
+  used only as an internal research reference and must not be redistributed or
+  used commercially without permission.
+- Wan-Animate-2: Apache-2.0, pinned at
+  `3ad2fef7d61d6200c9c653e0fe47be7616b323f3`; distilled checkpoint marker
+  `modelscope:7053fd05166cdd99a49896364d01c06c281a9d69`.
+  https://github.com/Wan-Video/Wan-Animate-2
 - https://github.com/facebookresearch/spider
 - https://github.com/google-deepmind/mujoco
 - https://github.com/google-deepmind/mujoco_menagerie
+- https://www.pexels.com/license/
 - https://github.com/sharpa-robotics/sharpa-rl-lab
 - https://github.com/articraftresearch/Articraft
 - https://github.com/KlingAIResearch/RoboMaster

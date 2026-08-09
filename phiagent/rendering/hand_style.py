@@ -31,6 +31,36 @@ class GraphiteHandConfig:
             raise ValueError("graphite material opacity must be positive")
 
 
+@dataclass(frozen=True)
+class SudoHandConfig:
+    shell_blue: int = 232
+    shell_green: int = 235
+    shell_red: int = 238
+    shading: float = 0.25
+    dark_threshold: int = 105
+    opacity: float = 0.94
+
+    def __post_init__(self) -> None:
+        channels = (self.shell_blue, self.shell_green, self.shell_red)
+        if any(not 0 <= value <= 255 for value in channels):
+            raise ValueError("Sudo shell channels must be between 0 and 255")
+        if not 0 <= self.shading <= 1 or not 0 < self.opacity <= 1:
+            raise ValueError("Sudo shading/opacity values must be in range")
+        if not 0 <= self.dark_threshold <= 255:
+            raise ValueError("Sudo dark threshold must be between 0 and 255")
+
+
+@dataclass(frozen=True)
+class SudoRobotConfig(SudoHandConfig):
+    dark_threshold: int = 60
+    eye_radius_fraction: float = 0.012
+
+    def __post_init__(self) -> None:
+        super().__post_init__()
+        if not 0 < self.eye_radius_fraction < 0.1:
+            raise ValueError("Sudo eye radius fraction must be in (0, 0.1)")
+
+
 def _sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -39,13 +69,14 @@ def _sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def apply_graphite_hand_style(
+def _apply_hand_style(
     *,
     candidate: Path,
     hand_mask: Path,
     output: Path,
     object_roi: NormalizedROI,
-    config: GraphiteHandConfig,
+    config: GraphiteHandConfig | SudoHandConfig,
+    style_name: str,
 ) -> Path:
     inputs = {
         "candidate": candidate.expanduser().resolve(),
@@ -108,16 +139,44 @@ def apply_graphite_hand_style(
             * config.opacity
         )
         luminance = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY).astype(np.float32)
-        graphite = np.stack(
-            (
-                luminance * config.blue_scale,
-                luminance * config.green_scale,
-                luminance * config.red_scale,
-            ),
-            axis=2,
-        )
+        if isinstance(config, GraphiteHandConfig):
+            material = np.stack(
+                (
+                    luminance * config.blue_scale,
+                    luminance * config.green_scale,
+                    luminance * config.red_scale,
+                ),
+                axis=2,
+            )
+        else:
+            light = luminance[..., None] * config.shading
+            shell = np.array(
+                [config.shell_blue, config.shell_green, config.shell_red],
+                dtype=np.float32,
+            )
+            shell_material = np.clip(
+                shell * (1 - config.shading) + light,
+                0,
+                255,
+            )
+            dark_material = np.stack(
+                (
+                    luminance * 0.12,
+                    luminance * 0.14,
+                    luminance * 0.16,
+                ),
+                axis=2,
+            )
+            dark_weight = np.clip(
+                (config.dark_threshold + 25 - luminance) / 50,
+                0,
+                1,
+            )[..., None]
+            material = (
+                shell_material * (1 - dark_weight) + dark_material * dark_weight
+            )
         styled = np.clip(
-            frame.astype(np.float32) * (1 - alpha) + graphite * alpha,
+            frame.astype(np.float32) * (1 - alpha) + material * alpha,
             0,
             255,
         ).astype(np.uint8)
@@ -147,7 +206,10 @@ def apply_graphite_hand_style(
     metadata = {
         "schema_version": "1.0.0",
         "created_at": datetime.now(timezone.utc).isoformat(),
-        "method": "sam2_hand_instance_material_edit_with_object_confidence_routing",
+        "method": (
+            f"sam2_hand_instance_{style_name}_material_edit_"
+            "with_object_confidence_routing"
+        ),
         "config": asdict(config),
         "object_roi": asdict(object_roi),
         "route": asdict(route),
@@ -158,5 +220,157 @@ def apply_graphite_hand_style(
         "output": {"path": str(destination), "sha256": _sha256(destination)},
     }
     metadata_path = destination.with_suffix(".style.json")
+    metadata_path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")
+    return metadata_path
+
+
+def apply_graphite_hand_style(
+    *,
+    candidate: Path,
+    hand_mask: Path,
+    output: Path,
+    object_roi: NormalizedROI,
+    config: GraphiteHandConfig,
+) -> Path:
+    return _apply_hand_style(
+        candidate=candidate,
+        hand_mask=hand_mask,
+        output=output,
+        object_roi=object_roi,
+        config=config,
+        style_name="graphite",
+    )
+
+
+def apply_sudo_hand_style(
+    *,
+    candidate: Path,
+    hand_mask: Path,
+    output: Path,
+    object_roi: NormalizedROI,
+    config: SudoHandConfig,
+) -> Path:
+    return _apply_hand_style(
+        candidate=candidate,
+        hand_mask=hand_mask,
+        output=output,
+        object_roi=object_roi,
+        config=config,
+        style_name="sudo_r1_inspired",
+    )
+
+
+def apply_sudo_robot_style(
+    *,
+    candidate: Path,
+    robot_mask: Path,
+    output: Path,
+    object_roi: NormalizedROI,
+    config: SudoRobotConfig,
+) -> Path:
+    metadata_path = _apply_hand_style(
+        candidate=candidate,
+        hand_mask=robot_mask,
+        output=output,
+        object_roi=object_roi,
+        config=config,
+        style_name="sudo_r1_full_robot_inspired",
+    )
+    try:
+        import cv2
+        import numpy as np
+    except ImportError as exc:
+        raise RuntimeError("Sudo full-robot styling requires OpenCV and NumPy") from exc
+
+    styled_capture = cv2.VideoCapture(str(output))
+    mask_capture = cv2.VideoCapture(str(robot_mask))
+    fps = float(styled_capture.get(cv2.CAP_PROP_FPS))
+    width = int(styled_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(styled_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    temporary_video = output.with_suffix(".sudo.tmp.mp4")
+    writer = cv2.VideoWriter(
+        str(temporary_video),
+        cv2.VideoWriter_fourcc(*"mp4v"),
+        fps,
+        (width, height),
+    )
+    while True:
+        frame_ok, frame = styled_capture.read()
+        mask_ok, mask_frame = mask_capture.read()
+        if not (frame_ok and mask_ok):
+            break
+        robot = cv2.cvtColor(mask_frame, cv2.COLOR_BGR2GRAY) > 127
+        head = np.zeros((height, width), np.uint8)
+        cv2.ellipse(
+            head,
+            (round(0.5 * width), round(0.18 * height)),
+            (round(0.065 * width), round(0.15 * height)),
+            0,
+            0,
+            360,
+            255,
+            -1,
+        )
+        head_region = (head > 0) & robot
+        top_cleanup = (
+            robot
+            & (np.arange(height)[:, None] < round(0.08 * height))
+            & ~head_region
+        )
+        frame[top_cleanup] = (8, 8, 8)
+        head_luminance = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY).astype(np.float32)
+        head_shell = np.stack(
+            (
+                config.shell_blue * 0.72 + head_luminance * 0.28,
+                config.shell_green * 0.72 + head_luminance * 0.28,
+                config.shell_red * 0.72 + head_luminance * 0.28,
+            ),
+            axis=2,
+        )
+        frame[head_region] = np.clip(head_shell[head_region], 0, 255).astype(np.uint8)
+        chest = np.zeros((height, width), np.uint8)
+        cv2.rectangle(
+            chest,
+            (round(0.43 * width), round(0.43 * height)),
+            (round(0.57 * width), round(0.72 * height)),
+            255,
+            -1,
+        )
+        chest = cv2.GaussianBlur(chest, (21, 21), 0)
+        chest_alpha = (
+            chest.astype(np.float32)[..., None] / 255 * robot[..., None] * 0.78
+        )
+        frame = np.clip(frame.astype(np.float32) * (1 - chest_alpha), 0, 255).astype(
+            np.uint8
+        )
+        eye_radius = round(config.eye_radius_fraction * width)
+        eye_y = round(0.16 * height)
+        for eye_x in (round(0.475 * width), round(0.525 * width)):
+            cv2.circle(frame, (eye_x, eye_y), eye_radius, (15, 15, 15), -1)
+            cv2.circle(
+                frame,
+                (eye_x - eye_radius // 3, eye_y - eye_radius // 3),
+                max(1, eye_radius // 4),
+                (90, 90, 90),
+                -1,
+            )
+        writer.write(frame)
+    styled_capture.release()
+    mask_capture.release()
+    writer.release()
+    temporary_video.replace(output)
+
+    metadata = json.loads(metadata_path.read_text())
+    metadata["method"] = (
+        "sam2_full_robot_sudo_r1_inspired_edit_with_object_confidence_routing"
+    )
+    metadata["output"]["sha256"] = _sha256(output)
+    metadata["full_robot_details"] = {
+        "white_shell": True,
+        "black_joint_preservation": True,
+        "dual_camera_eyes": True,
+        "black_chest_cavity": True,
+        "exact_geometry_claimed": False,
+    }
     metadata_path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")
     return metadata_path
