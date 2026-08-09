@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "embodiment": {
+    "name": "tabletop_hinge_pusher",
+    "joint_names": ["joint1"],
+    "lower_limits_rad": [-1.5707963267948966],
+    "upper_limits_rad": [1.5707963267948966],
+    "end_effector_frame": "arm_tip",
+    "urdf_path": null
+  },
+  "timestamps_s": [0.0, 0.5, 1.0, 1.5, 2.0],
+  "joint_positions_rad": [[-0.7], [-0.4], [-0.1], [0.2], [0.5]],
+  "source_epl": "epl://demo/tabletop_push"
+}

@@ -1,0 +1,24 @@
+# Native Wan2.2-Animate dependencies. Torch is installed by environment.yml.
+# Keep the upstream Transformers upper bound: newer versions are not validated.
+opencv-python==4.10.0.84
+diffusers==0.36.0
+transformers==4.51.3
+tokenizers==0.21.1
+accelerate==1.5.2
+tqdm==4.67.1
+imageio[ffmpeg]==2.37.0
+moviepy==2.2.1
+librosa==0.11.0
+easydict==1.13
+einops==0.8.2
+ftfy==6.3.1
+dashscope==1.23.1
+numpy==1.26.4
+decord==0.6.0
+peft==0.17.1
+onnxruntime-gpu==1.20.2
+pandas==2.2.3
+matplotlib==3.10.1
+loguru==0.7.3
+sentencepiece==0.2.0
+modelscope==1.39.1

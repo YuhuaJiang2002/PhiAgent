@@ -1,0 +1,12 @@
+{
+  "embodiment": {
+    "name": "tabletop_hinge_pusher",
+    "joint_names": ["joint1"],
+    "lower_limits_rad": [-1.5707963267948966],
+    "upper_limits_rad": [1.5707963267948966],
+    "end_effector_frame": "arm_tip",
+    "urdf_path": null
+  },
+  "initial_joint_positions_rad": [-0.7],
+  "eef_twist_to_joint_delta": [[3.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
+}

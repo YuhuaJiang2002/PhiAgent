@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phiagent"
+version = "0.1.0"
+description = "Agentic physical language for human-to-robot world modeling"
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+license = {text = "Apache-2.0"}
+authors = [{name = "PhiAgent-0 contributors"}]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.3.5",
+  "ruff==0.11.2",
+]
+simulation = [
+  "imageio[ffmpeg]==2.37.0",
+  "mujoco==3.3.7",
+  "numpy==1.26.4",
+]
+retargeting = [
+  "dex_retargeting==0.4.6",
+]
+
+[project.scripts]
+phiagent-visual-transfer = "phiagent.rendering.cli:main"
+phiagent-trajectory-render = "phiagent.rendering.cosmos_cli:main"
+
+[tool.setuptools.packages.find]
+include = ["phiagent*"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

@@ -1,0 +1,3 @@
+# Version 0.5 requires NumPy >=2, which conflicts with the pinned Wan runtime.
+# 0.4.6 is the newest compatible release and remains behind an optional import.
+dex_retargeting==0.4.6

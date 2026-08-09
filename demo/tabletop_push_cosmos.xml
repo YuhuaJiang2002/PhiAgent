@@ -1,0 +1,25 @@
+<mujoco model="phiagent_tabletop_push_cosmos">
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  <worldbody>
+    <light pos="0 0 2" dir="0 0 -1"/>
+    <camera name="cosmos_control" pos="0 0 1.2" xyaxes="1 0 0 0 1 0"
+            fovy="45"/>
+    <geom name="table" type="plane" size="1 1 0.05"
+          friction="1.0 0.01 0.001" rgba="0.72 0.72 0.72 1"/>
+    <body name="arm" pos="0 0 0.055">
+      <joint name="joint1" type="hinge" axis="0 0 1" range="-90 90"
+             damping="4"/>
+      <geom name="arm_link" type="capsule" fromto="0 0 0 0.42 0 0"
+            size="0.035" mass="2" friction="1.0 0.01 0.001"
+            rgba="0.2 0.4 0.9 1"/>
+    </body>
+    <body name="object" pos="0.38 0 0.041">
+      <freejoint/>
+      <geom name="object_geom" type="box" size="0.04 0.04 0.04"
+            mass="0.2" friction="0.8 0.01 0.001" rgba="0.9 0.3 0.2 1"/>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="joint1_position" joint="joint1" kp="140"/>
+  </actuator>
+</mujoco>

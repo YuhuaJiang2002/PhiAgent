@@ -1,0 +1,24 @@
+<mujoco model="phiagent_tabletop_hinge">
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  <visual>
+    <global azimuth="135" elevation="-20"/>
+  </visual>
+  <worldbody>
+    <light pos="0 0 2" dir="0 0 -1"/>
+    <geom name="table" type="plane" size="1 1 0.05" rgba="0.7 0.7 0.7 1"/>
+    <body name="arm" pos="0 0 0.12">
+      <joint name="joint1" type="hinge" axis="0 0 1" range="-90 90"/>
+      <geom name="arm_link" type="capsule" fromto="0 0 0 0.4 0 0"
+            size="0.035" mass="1" rgba="0.2 0.4 0.8 1"/>
+    </body>
+    <body name="object" pos="0.45 0 0.04">
+      <freejoint/>
+      <geom name="object_geom" type="box" size="0.04 0.04 0.04"
+            mass="0.2" rgba="0.9 0.3 0.2 1"/>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="joint1_position" joint="joint1" kp="80"/>
+  </actuator>
+</mujoco>
+

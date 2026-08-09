@@ -1,0 +1,16 @@
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.egg-info/
+*.py[cod]
+.venv/
+.venv-gpu/
+.cache/
+
+# Research artifacts and third-party checkouts are never source files.
+checkpoints/
+external/
+outputs/
+runs/
+wandb/

@@ -1,0 +1,26 @@
+{
+  "intrinsics": {
+    "fx": 579.4112549695428,
+    "fy": 579.4112549695428,
+    "cx": 320.0,
+    "cy": 240.0,
+    "width": 640,
+    "height": 480
+  },
+  "camera_T_robot_base": {
+    "confidence": 1.0,
+    "quaternion_xyzw": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "source_frame": "robot_base:tabletop_push",
+    "target_frame": "camera:cosmos_control",
+    "translation_m": [
+      0.0,
+      0.0,
+      1.2
+    ]
+  }
+}

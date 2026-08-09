@@ -1,0 +1,16 @@
+name: phiagent
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10.16
+  - pip=25.0.1
+  - ffmpeg=7.1.1
+  - git-lfs=3.6.1
+  - pytorch=2.6.0
+  - torchvision=0.21.0
+  - torchaudio=2.6.0
+  - pytorch-cuda=12.4
+  - pip:
+      - -e .[dev]

@@ -1,0 +1,50 @@
+{
+  "schema_version": "0.1.0",
+  "name": "phizero-hand2dex-red-ball-parity",
+  "reference_only": true,
+  "reference_license": "No explicit media reuse license was published at audit time.",
+  "source": {
+    "url": "https://phi-zero.github.io/assets/videos/phizero/hand2dex_3_source.mp4",
+    "sha256": "ad33958a7e291aa2edde71f4437de2959bff2950e740a98e0ee87ee2c787a8c0"
+  },
+  "reference": {
+    "url": "https://phi-zero.github.io/assets/videos/phizero/hand2dex_3_transferred.mp4",
+    "sha256": "af57f9606c7d27696df573ccd086eee4e9f3481512e93d09f2a534ea28ccc834"
+  },
+  "media": {
+    "codec": "h264",
+    "width": 896,
+    "height": 512,
+    "fps": 11,
+    "frames": 33,
+    "duration_s": 3.0
+  },
+  "task": {
+    "object": "red ball",
+    "embodiment": "licensed dexterous robot hand",
+    "required_phases": [
+      "approach",
+      "initial_contact",
+      "roll",
+      "reposition",
+      "stable_terminal_contact"
+    ],
+    "forbidden_events": [
+      "object_drop",
+      "unreported_contact_loss",
+      "forbidden_collision",
+      "robot_identity_switch",
+      "object_identity_switch"
+    ]
+  },
+  "acceptance": {
+    "decoded_frames": 33,
+    "median_control_reprojection_error_px_max": 8.0,
+    "p95_control_reprojection_error_px_max": 20.0,
+    "robot_mask_iou_min": 0.85,
+    "object_mask_iou_min": 0.85,
+    "identity_switches_max": 0,
+    "blind_raters_min": 5,
+    "blind_majority_must_rate_not_worse": true
+  }
+}
