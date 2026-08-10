@@ -52,6 +52,17 @@ Play every video directly on the
 [web demo](https://yuhuajiang2002.github.io/PhiAgent/), or click a preview below
 to open its MP4.
 
+### Featured: real-scene action-conditioned world model
+
+[![Accepted OSCAR AC-WM counterfactuals: carry right versus lift up](demo/showcase/oscar-acwm-accepted-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#studio)
+
+[Open the interactive instruction demo](https://yuhuajiang2002.github.io/PhiAgent/#studio)
+or [play the accepted matched comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/oscar-acwm-accepted-comparison.mp4).
+The real Hand2Dex-2 source frame is held fixed while language instructions route
+to matched 81-frame OSCAR-2B action conditions. Native lift and lift-then-carry
+right pass automatic and human gates; left slide remains rejected, so the result
+is `PARTIAL` (2/3 selected action types), not arbitrary-language robot control.
+
 ### Does the current web demo use EPL?
 
 **No—not as an input or conditioning signal for the currently published
@@ -323,6 +334,73 @@ alignment diagnostic passed, but pose-level and PhiZero-reference visual
 acceptance are not yet claimed. The native Wan2.2-Animate pipeline has
 completed its official upstream sample on an A800 and remains an unconstrained
 visual teacher and diagnostic baseline. See docs/STATUS.md.
+
+## Real-scene open AC-WM demo
+
+PhiAgent now includes an agentic action-conditioned world-model branch. It
+compiles a language instruction into a typed action contract, routes that
+contract only to a model that natively supports its representation, generates
+matched candidates, evaluates five independent criteria, and requires explicit
+human review before acceptance.
+
+The current real Hand2Dex-2 demonstration ran pinned OSCAR-2B on an A800 with
+the same real first frame, seed, sampling settings, and 81-frame duration.
+Upward lifting and a revised lift-then-carry-right action are accepted as native
+OSCAR generations. The revised condition borrows the reviewed vertical motion
+of the successful lift and then follows a rightward arc, which produces
+continuous shoulder, elbow, wrist, and finger articulation while moving the
+yellow bowl. Posthoc user review rejects both the original direct-right output
+(late hand fragmentation) and its fixed-topology repair (rigid whole-hand
+translation). Leftward movement and a stronger left-condition retry remain
+rejected. The workflow is honestly `PARTIAL` (2/3 selected action types), not a
+claim that OSCAR can execute arbitrary robot actions.
+
+Serve the portable evidence UI locally:
+
+    python -m http.server 4173 --directory demo
+
+Then open `http://127.0.0.1:4173/`. The page includes the real source, native
+articulated lift-versus-carry comparison, the two rejected direct-slide repair
+attempts, action-condition videos, model router, evaluation values, human-gate
+conclusion, model revisions, and artifact hashes.
+
+OSCAR, Boundless World Model, and Kinema4D adapters are available under
+`phiagent/acwm`. BWM stays gated until native 14-channel robot-base EEF/joint
+data is supplied; Kinema4D stays gated until calibrated pointmap, URDF, and
+camera inputs exist. PhiAgent never relabels a 2D camera trace as either input.
+See [docs/ACWM_WORKFLOW.md](docs/ACWM_WORKFLOW.md) for commands and complete
+evidence.
+
+### Long real-scene cases and bounded A800 adaptation
+
+The public page now separates duration, visual-transfer quality, and native
+action conditioning instead of treating every robot-looking video as the same
+capability:
+
+| Case | Duration | Route | Honest status |
+| --- | ---: | --- | --- |
+| OSCAR bowl counterfactuals | 5.4 s each | native camera-skeleton AC-WM | `PARTIAL`: 2/3 actions accepted |
+| Human gesture to Shadow Hand | 20.7 s / 621 frames | MediaPipe + Dexpilot geometric retargeting | `WORKING`; no manipulated object |
+| Real bimanual flower observation | 27.5 s / 660 frames | unchanged real input | input/evaluation source only |
+| Flower scene to robot appearance | 27.5 s / 660 frames | H3 + EPL localized 2D replacement | `PARTIAL` / user-rejected after dense review found residual human limbs |
+| Flower VACE task adaptation | 17-frame critical window | Wan2.1-VACE-1.3B regional LoRA | `PARTIAL`; full 27.5 s expansion rejected |
+
+The first A800 smoke adaptation completed 12/12 rank-4 LoRA steps and produced
+a valid checkpoint. A larger GPU-4 run then completed 96 rank-8 optimization
+steps across four epochs and produced four approximately 10.5 MiB checkpoints.
+Its matched real critical-window comparison still passed none of the four
+semantic gates: complete human removal, two coherent robot hands, causal
+hand--stem contact, and flower identity. Background preservation improved by
+0.00043, but control-motion alignment regressed by 0.01112. The agent therefore
+did not spend compute on a misleading 27.5-second expansion. See
+[the training protocol](docs/FLOWER_TASK_ADAPTATION.md),
+[the packaged long-case manifest](demo/showcase/long-real-scene-cases.json), and
+[the public training comparison](https://yuhuajiang2002.github.io/PhiAgent/#training).
+
+For the next genuinely action-conditioned real-data stage, the workflow points
+to DROID (videos paired with robot actions, proprioception, and language) and
+BridgeData V2 (60,096 real trajectories across 24 environments). Those datasets
+are roadmap inputs only and were not mixed into the published adaptation run.
 
 ## Auxiliary Cosmos 3 pipeline
 

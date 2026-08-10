@@ -1,0 +1,29 @@
+{
+  "record_id": "2026-08-11.flower-task-real-window-ablation-v1",
+  "recorded_at": "2026-08-10T16:30:00Z",
+  "status": "PARTIAL",
+  "scope": "Matched zero-shot and task-LoRA VACE generation on the original flower video's critical contact window",
+  "summary": "The real 17-frame gate rejects both candidates and stops full-length expansion: human head and torso remain, robot geometry is fragmented, two coherent hands and causal stem contact are absent, and flower identity is unverified.",
+  "evidence": [
+    "Both runs completed on separate physical A800 GPUs with the same prompt, seed 20260811, 448x256x17 control, 20 steps, and denoising strength 0.75.",
+    "Adapted outside-edit similarity is 0.922273 versus 0.922221 zero-shot, but control-motion alignment regresses from 0.359995 to 0.358851.",
+    "The candidates differ by only 1.866561 RGB levels on average.",
+    "Uniform review of frames 0, 4, 8, 12, and 16 fails human-residue, two-hand, causal-contact, and flower-identity semantic gates for the adapted candidate.",
+    "evaluation.json records decision REJECT_FULL_EXPANSION and full_expansion_gate_pass=false."
+  ],
+  "lessons": [
+    "Task/phase contracts and original-pixel preservation cannot repair a replacement generator that fails coherent embodiment and contact on the critical window.",
+    "Relighting is downstream of geometry; applying it cannot solve retained humans, missing hands, or ambiguous contact.",
+    "Stopping at a failed short-window gate prevents an attractive but scientifically unsupported 27.5-second claim."
+  ],
+  "limitations": [
+    "The edit mask is based on a flower union rather than persistent stem instances.",
+    "Only one 17-frame real window was generated; the full video was intentionally not attempted after failure."
+  ],
+  "next_actions": [
+    "Collect persistent per-stem masks and real paired robot/flower supervision, then require complete human removal, two coherent robot hands, causal contact, and flower identity on this same window before any full expansion."
+  ],
+  "run_dir": "outputs/flower-task-adaptation/20260811T026000Z-real-window-ablation-v1",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "lora", "real-window", "rejected-expansion", "partial"]
+}

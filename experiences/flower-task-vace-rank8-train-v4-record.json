@@ -1,0 +1,19 @@
+{
+  "record_id": "2026-08-11.flower-task-vace-rank8-train-v4",
+  "recorded_at": "2026-08-10T20:40:00Z",
+  "status": "WORKING",
+  "scope": "Bounded rank-8 VACE LoRA training on the flower-task synthetic supervision",
+  "summary": "A800 GPU 4 completed all 96 planned optimization steps across four epochs and produced four reproducible rank-8 checkpoints; this establishes trainer execution, not visual quality.",
+  "evidence": [
+    "The selected physical A800 GPU 4 had 81,225 MiB free at preflight.",
+    "Effective settings were rank 8, learning rate 5e-5, four epochs, dataset repeat 2, 448x256 resolution, 17 frames, and seed 20260811.",
+    "The run returned code 0 after 4 x 24 steps.",
+    "Each checkpoint is 10,971,312 bytes; epoch-3 SHA-256 is 7d5bae3977b0482a4aeb61ed335b706b0bda714efbdf24a55388566ee705deaa."
+  ],
+  "lessons": ["The pinned VACE path remains stable at twice the adapter rank and eight times the smoke-test step count."],
+  "limitations": ["The upstream log exposes no useful loss values, and successful optimization cannot establish semantic replacement or contact quality."],
+  "next_actions": ["Evaluate the final checkpoint on the exact same real 17-frame gate before any long inference."],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T165000Z-vace-lora-rank8-e4-v4/20260810T203711Z-c251a84b",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "rank8", "training", "working"]
+}

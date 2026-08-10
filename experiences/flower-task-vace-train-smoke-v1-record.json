@@ -1,0 +1,23 @@
+{
+  "record_id": "2026-08-11.flower-task-vace-train-smoke-v1",
+  "recorded_at": "2026-08-10T16:16:00Z",
+  "status": "WORKING",
+  "scope": "Trainability smoke test for the rank-4 flower-task VACE LoRA",
+  "summary": "One bounded epoch completed all 12 steps on the selected A800 and produced a reproducible LoRA checkpoint; this is working only as a trainer execution smoke test.",
+  "evidence": [
+    "Training completed 12/12 steps with return code 0 in approximately 31 seconds.",
+    "The output checkpoint is 5,503,040 bytes with SHA-256 6f1e7fec93f761278298630745383f6a0508daf1dd703c4aef7eb0bc8995ae00.",
+    "Run metadata preserves GPU inventory, configuration, dataset manifest, DiffSynth commit, package versions, and checkpoint hashes."
+  ],
+  "lessons": [
+    "The pinned DiffSynth VACE path can train a small regional task adapter within the declared GPU budget."
+  ],
+  "limitations": [
+    "The log exposes no useful loss curve, uses only 12 synthetic clips, and includes a kernel-version and process-group cleanup warning.",
+    "Successful optimization does not establish any image or contact quality."
+  ],
+  "next_actions": [],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T014000Z-vace-lora-smoke-train-v1/20260810T161418Z-84ed3e6a",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "lora", "training-smoke", "working"]
+}

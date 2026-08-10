@@ -3,6 +3,28 @@
 License review date: 2026-08-08.
 
 - Wan2.2 / Wan2.2-Animate: Apache-2.0. Selected for the visual teacher.
+- OSCAR: Apache-2.0 source, kept under ignored `external/` and pinned at
+  `4dea2f657e221b0ff24c895fcc8ab4d46d5a9adb`. The OSCAR-2B snapshot is pinned
+  at `c9781ffa7dd8556d862d7d9f338a2ea008a58ca6`; its runtime additionally uses
+  Cosmos-Reason1-7B revision
+  `3210bec0495fdc7a8d3dbb8d58da5711eab4b423` and the Wan2.1 VAE from revision
+  `37ec512624d61f7aa208f7ea8140a131f93afc9a`. Checkpoint and transitive model
+  terms must be reviewed separately from the OSCAR code license.
+- Segment Anything 2 (SAM2): Apache-2.0, optional morphology-segmentation tool
+  pinned at `0e78a118995e66bb27d78518c4bd9a3e95b4e266`. The AC-WM canonical-hand
+  run uses the `sam2_hiera_large.pt` checkpoint with SHA-256
+  `7442e4e9b732a508f80e141e7c2913437a3610ee0c77381a66658c3a445df87b`.
+  Source and weights remain under ignored external/checkpoint directories.
+- Boundless World Model: optional external AC-WM backend pinned at source
+  `44acfd1b06f35f365f02f7bb2fc5da6beafcd6bc` and model revision
+  `738a8d3c008e637b8b1b18d5e98a82f6de9c04aa`. It also requires a separately
+  obtained Wan2.2-TI2V-5B base model and task action statistics. Nothing is
+  vendored; users must review all source and weight terms before download/use.
+- Kinema4D: optional external geometry-conditioned backend pinned at source
+  `716e80249376cb2843af41188a832d56a2d8d78d` and model revision
+  `0c52ee34ee464e9a568e84945e431f62106c4270`. It also requires the external
+  Wan2.1-I2V-14B base transformer and prepared robot RGB+pointmap data. Nothing
+  is vendored; users must review all source, base-model, and weight terms.
 - Wan-Animate-2: Apache-2.0, pinned at source commit
   `3ad2fef7d61d6200c9c653e0fe47be7616b323f3` and Hugging Face model revision
   `3c1a1ccd035b9997478d288040358891a06bf682` or official ModelScope mirror
@@ -70,6 +92,13 @@ License review date: 2026-08-08.
 Primary project pages:
 
 - https://github.com/Wan-Video/Wan2.2
+- https://github.com/wuzy2115/oscar-public
+- https://github.com/facebookresearch/sam2
+- https://huggingface.co/zywu2115/OSCAR-2B
+- https://github.com/boundless-large-model/boundless-world-model
+- https://huggingface.co/BLM-Lab/Boundless-World-Model
+- https://github.com/mutianxu/Kinema4D
+- https://huggingface.co/Minoday/Kinema4D
 - https://github.com/Wan-Video/Wan-Animate-2
 - https://github.com/modelscope/DiffSynth-Studio
 - https://phi-zero.github.io/

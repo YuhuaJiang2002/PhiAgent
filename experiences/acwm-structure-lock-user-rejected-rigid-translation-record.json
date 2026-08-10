@@ -1,0 +1,26 @@
+{
+  "evidence": [
+    "The user explicitly reported that the left comparison video moves the hand directly instead of generating articulated motion like the right video.",
+    "demo/showcase/oscar-acwm-slide-right-raw-vs-structure-lock.mp4 shows the fixed-topology repair preserving one silhouette by translating the canonical hand as a rigid image layer.",
+    "The repair implementation intentionally freezes finger articulation, so its passing topology and area gates do not measure the reported motion-quality defect."
+  ],
+  "lessons": [
+    "Stable 2-D topology is insufficient for an embodied action demo when the stabilizer removes joint articulation.",
+    "Human motion review supersedes proxy acceptance when a whole limb or hand visibly behaves like a pasted layer."
+  ],
+  "limitations": [
+    "The SAM2 canonical mask remains valid segmentation evidence, but the rigid compositor is not an accepted action-generation result."
+  ],
+  "next_actions": [
+    "Use the successful lift video's native generation method and resample the full arm and hand under a lift-arc rightward condition."
+  ],
+  "record_id": "2026-08-10.acwm-structure-lock-user-rejected-rigid-translation",
+  "recorded_at": "2026-08-10T15:59:00Z",
+  "run_dir": "outputs/acwm-hand-structure/20260810T162000Z-oscar-slide-right-lock-v1",
+  "schema_version": "1.0.0",
+  "scope": "Posthoc user review of the fixed-topology slide-right hand repair",
+  "status": "PARTIAL",
+  "summary": "The previously accepted structure-lock repair is rejected because the entire hand visibly shifts as a rigid layer instead of articulating with the arm.",
+  "supersedes": ["2026-08-10.acwm-slide-right-structure-lock-v1"],
+  "tags": ["acwm", "structure-lock", "user-rejection", "rigid-translation", "partial"]
+}

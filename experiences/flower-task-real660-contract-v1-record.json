@@ -1,0 +1,26 @@
+{
+  "record_id": "2026-08-11.flower-task-real660-contract-v1",
+  "recorded_at": "2026-08-10T16:01:00Z",
+  "status": "PARTIAL",
+  "scope": "Explicit bimanual phase, flower-instance, and contact contract for the original 660-frame flower video",
+  "summary": "The full source was compiled into immutable phase windows and contact constraints, but the available flower observation is only a SAM2 union proxy and cannot establish persistent stem identity or depth-correct contact.",
+  "evidence": [
+    "The source and audit video decode 660 frames at 832x480.",
+    "Right-hand union-proximity intervals are [0,10], [47,81], [142,170], [236,257], [272,448], [499,631], and [650,656].",
+    "The manifest records claim_ready=false and explicit blockers for incomplete flower tracks, proxy contact, low confidence, unverified depth, and a missing task adapter."
+  ],
+  "lessons": [
+    "A flower union can localize interaction windows but cannot serve as evidence for individual held-stem identity.",
+    "Long-video generation should be gated phase by phase instead of accepting frame-level candidate mixtures."
+  ],
+  "limitations": [
+    "Seven flower-union frames are empty and all flower instances are proxy declarations.",
+    "Contact distance is measured in camera pixels rather than verified 3D geometry or force."
+  ],
+  "next_actions": [
+    "Obtain persistent per-stem tracks and depth/occlusion evidence before making an exact flower-contact claim."
+  ],
+  "run_dir": "outputs/flower-task-adaptation/20260811T000500Z-real660-contract-v1",
+  "supersedes": [],
+  "tags": ["flower-task", "phase-contract", "contact", "sam2", "partial"]
+}

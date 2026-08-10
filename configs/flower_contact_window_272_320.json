@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_indices": [272, 275, 278, 281, 284, 287, 290, 293, 296, 299, 302, 305, 308, 311, 314, 317, 320],
+  "instances": [
+    {
+      "instance_id": "active-pink-stem-01",
+      "object_id": 1,
+      "anchor_source_frame": 296,
+      "box_xyxy": [430, 252, 500, 390],
+      "positive_points_xy": [[468, 282], [461, 320], [463, 360]],
+      "negative_points_xy": [[490, 291], [497, 320], [443, 245], [510, 350]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 9000,
+      "role": "right-hand manipulated flower; exact source identity must persist"
+    }
+  ],
+  "contact_roles": {
+    "left": "bouquet support",
+    "right": "active-pink-stem-01 manipulation"
+  },
+  "notes": "Manual prompts were selected from source frame 296. Positive points cover the lower pink flower head and its exposed stem; negative points exclude both source hands and adjacent bouquet flowers."
+}

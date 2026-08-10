@@ -1,0 +1,123 @@
+{
+  "automatic_gates": {
+    "adapted_control_motion_not_regressed": false,
+    "adapted_outside_edit_preserved": false,
+    "adapted_outside_not_regressed": true
+  },
+  "command": [
+    "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/.venv/bin/python",
+    "scripts/evaluate_real_flower_task_window.py",
+    "--input-video",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/real-input.mp4",
+    "--control-video",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/robot-flower-control.mp4",
+    "--edit-mask",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/localized-edit-mask.mp4",
+    "--zero-shot",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/zero-shot.mp4",
+    "--adapted",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/adapted-rank8.mp4",
+    "--human-review",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/human-review.json",
+    "--output",
+    "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/evaluation.json"
+  ],
+  "coordinate_frame": "camera:source_pixels_resampled_448x256",
+  "created_at": "2026-08-10T20:44:32.147583+00:00",
+  "decision": "REJECT_FULL_EXPANSION",
+  "edit_mask_fraction": {
+    "maximum": 0.14014543805803573,
+    "minimum": 0.13289969308035715
+  },
+  "frame_count": 17,
+  "full_expansion_gate_pass": false,
+  "human_review": {
+    "candidates": {
+      "adapted": {
+        "causal_stem_contact_visible": false,
+        "flowers_identity_preserved": false,
+        "human_residue_absent": false,
+        "notes": "The rank-8 four-epoch adapter remains visually close to zero-shot. The human head and torso survive in all sampled frames, robot geometry is fragmented, no pair of coherent hands or causal stem contact is readable, and union evidence cannot prove flower identity.",
+        "two_robot_hands_visible": false
+      },
+      "zero_shot": {
+        "causal_stem_contact_visible": false,
+        "flowers_identity_preserved": false,
+        "human_residue_absent": false,
+        "notes": "The human head and torso remain visible. Robot-like fragments appear in the edit region, but two coherent articulated hands and auditable hand--stem contact are absent; the union flower mask cannot establish persistent instance identity.",
+        "two_robot_hands_visible": false
+      }
+    },
+    "reviewed_at": "2026-08-11T04:45:00+08:00",
+    "reviewer": "Codex uniform storyboard audit",
+    "storyboard": {
+      "path": "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/storyboard.jpg",
+      "sampled_frames": [
+        0,
+        4,
+        8,
+        12,
+        16
+      ],
+      "sha256": "850dd29c938c8fc38f829705bfbfbd63d51b23ee860613282ead87cffb0bde74"
+    }
+  },
+  "inputs": {
+    "adapted": {
+      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/adapted-rank8.mp4",
+      "sha256": "111ef1b801aa585261599ae0a703d50d567fd14ff78a62e36ba5d98638e50d9e"
+    },
+    "control_video": {
+      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/robot-flower-control.mp4",
+      "sha256": "ab474929cfcab209b2782920f6e317c7b5e9c9fcb56ad988acd0f4d858934eb4"
+    },
+    "edit_mask": {
+      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/localized-edit-mask.mp4",
+      "sha256": "3e2315311bfdce1ee5baec1e5f22a06a46062507b0a83f6feb4782efefc90841"
+    },
+    "human_review": {
+      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/human-review.json",
+      "sha256": "612fef356ba398b8e6d9c6ac7e5691eb35e27564fadeef4c14a0fbf3043aea2a"
+    },
+    "input_video": {
+      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/real-input.mp4",
+      "sha256": "55397395dbc5b91d15ec0b7dbe239de11af5f610423e11330f8910b2a1fc974e"
+    },
+    "zero_shot": {
+      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2/zero-shot.mp4",
+      "sha256": "ceac4d7dec5208641ae0a5322649de53ec025c6cbd91145e91ed50586b8df2cb"
+    }
+  },
+  "limitations": [
+    "Automatic preservation and motion scores are proxies, not contact physics proof.",
+    "The edit mask is derived from union flower evidence, not persistent stem instances.",
+    "This 17-frame critical window cannot establish 27.5-second temporal quality."
+  ],
+  "metrics": {
+    "adapted_vs_zero": {
+      "control_motion_alignment_delta": -0.011124594681683864,
+      "mean_absolute_difference": 4.365224529715145,
+      "outside_similarity_delta": 0.0004337238928873166
+    },
+    "control_motion_alignment_inside_edit": {
+      "adapted": 0.3456873173467171,
+      "zero_shot": 0.35681191202840096
+    },
+    "inside_edit_mean_absolute_change": {
+      "adapted": 0.1404643682460059,
+      "zero_shot": 0.17360112807329964
+    },
+    "outside_edit_similarity_to_input": {
+      "adapted": 0.9214823998157298,
+      "zero_shot": 0.9210486759228425
+    }
+  },
+  "schema_version": "1.0.0",
+  "semantic_gates": {
+    "causal_stem_contact_visible": false,
+    "flowers_identity_preserved": false,
+    "human_residue_absent": false,
+    "two_robot_hands_visible": false
+  },
+  "status": "PARTIAL"
+}

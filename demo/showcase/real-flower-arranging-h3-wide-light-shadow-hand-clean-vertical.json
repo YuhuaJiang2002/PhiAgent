@@ -1,0 +1,11 @@
+{
+  "experiment": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/minimax-h3-shadow-removal/20260811T151500Z-wide-light-compact-hand-v59-accepted",
+  "fps": 24,
+  "frames": 660,
+  "layout": [
+    "top: real human input",
+    "bottom: H3+EPL with conservative arm-shadow attenuation"
+  ],
+  "schema_version": "1.0.0",
+  "video_sha256": "73aaa7b2544215025fc2582de3739ba4e5e2b71b7fb562ee3823a4e914c65179"
+}

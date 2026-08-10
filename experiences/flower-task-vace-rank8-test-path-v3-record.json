@@ -1,0 +1,18 @@
+{
+  "record_id": "2026-08-11.flower-task-vace-rank8-test-path-v3",
+  "recorded_at": "2026-08-10T20:34:00Z",
+  "status": "PARTIAL",
+  "scope": "Remote unit-test preflight before the rank-8 VACE retry",
+  "summary": "The guard command stopped before training because tests/test_diffsynth_vace.py was not present on the remote checkout; no optimizer step ran.",
+  "evidence": [
+    "The fixed phiagent/training/diffsynth_vace.py transferred successfully.",
+    "Pytest returned code 4 with 'file or directory not found: tests/test_diffsynth_vace.py'.",
+    "The shell used an AND gate, so the training command was never executed."
+  ],
+  "lessons": ["A remote preflight must either synchronize its test target or run the already validated entrypoint directly."],
+  "limitations": ["This is a test-distribution failure, not a model or training failure."],
+  "next_actions": ["Launch the fixed entrypoint directly in a new directory while retaining full experiment metadata."],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T164000Z-vace-lora-rank8-e4-v3",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "rank8", "remote-test", "partial"]
+}

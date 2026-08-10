@@ -1,0 +1,22 @@
+{
+  "record_id": "2026-08-11.flower-task-vace-preflight-v2",
+  "recorded_at": "2026-08-10T16:14:10Z",
+  "status": "WORKING",
+  "scope": "Pinned VACE flower-task LoRA training preflight only",
+  "summary": "The corrected preflight verifies the physical GPU, dataset, pinned DiffSynth source, and all required checkpoint files with immutable hashes.",
+  "evidence": [
+    "Physical A800 GPU 1 was selected with 81225 MiB free for a rank-4, 256x448x17 configuration.",
+    "DiffSynth commit b1c02ce76aabc989f6bf534756b2da84532249e5 and four VACE checkpoint hashes are recorded.",
+    "The dataset manifest SHA-256 is e01950cdeb5946e32ec9e15629d955e2d5e80e2dda2ef44595dd3e53eb9c3952."
+  ],
+  "lessons": [
+    "Trainer provenance must be validated as an acceptance output rather than inferred from installed packages."
+  ],
+  "limitations": [
+    "This validates readiness only; it is not adapter-quality evidence."
+  ],
+  "next_actions": [],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T013000Z-vace-lora-smoke-preflight-v2/20260810T161340Z-62d2b584",
+  "supersedes": ["2026-08-11.flower-task-vace-preflight-v1"],
+  "tags": ["flower-task", "vace", "preflight", "provenance", "working"]
+}

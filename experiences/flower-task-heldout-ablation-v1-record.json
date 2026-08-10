@@ -1,0 +1,25 @@
+{
+  "record_id": "2026-08-11.flower-task-heldout-ablation-v1",
+  "recorded_at": "2026-08-10T16:22:00Z",
+  "status": "PARTIAL",
+  "scope": "Matched zero-shot versus flower-task LoRA ablation on one synthetic held-out contact clip",
+  "summary": "The smoke LoRA slightly improves three synthetic proxy scores but remains nearly identical to zero-shot and has poor absolute similarity, so it does not justify full real-video generation.",
+  "evidence": [
+    "Contact-ROI similarity changes from 0.1319105 to 0.1344367 and contact-motion similarity from 0.5559492 to 0.5591135.",
+    "Global similarity changes only from 0.0839077 to 0.0840541, and zero-shot versus adapted mean absolute difference is 1.607 RGB levels.",
+    "Matched outputs use the same held-out target, trajectory, prompt, seed 20260811, 17 frames, and 20 inference steps."
+  ],
+  "lessons": [
+    "Tiny positive proxy deltas from a smoke LoRA are insufficient when absolute visual fidelity remains poor.",
+    "A real critical-window gate is necessary before spending compute on a full long video."
+  ],
+  "limitations": [
+    "The held-out clip is procedural synthetic data and pixel similarity is not flower-contact physics evidence."
+  ],
+  "next_actions": [
+    "Evaluate a localized real interaction window with identical zero-shot and adapted settings."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T022000Z-heldout-ablation-v1",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "lora", "heldout", "ablation", "partial"]
+}

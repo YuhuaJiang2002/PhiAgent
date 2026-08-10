@@ -1,0 +1,21 @@
+{
+  "record_id": "2026-08-11.flower-task-vace-rank8-command-failure-v2",
+  "recorded_at": "2026-08-10T20:32:00Z",
+  "status": "PARTIAL",
+  "scope": "First rank-8 VACE LoRA launch attempt on A800 GPU 4",
+  "summary": "The attempt stopped before optimization because the remote helper encoded model paths as a comma string while the pinned DiffSynth revision requires a JSON array.",
+  "evidence": [
+    "GPU preflight selected physical A800 GPU 4 with 81,225 MiB free.",
+    "The run recorded rank 8, four epochs, dataset repeat 2, 448x256x17, and learning rate 5e-5 before exiting with JSONDecodeError.",
+    "No checkpoint was produced and no training step ran."
+  ],
+  "lessons": [
+    "Training command serialization must be verified against the exact pinned DiffSynth CLI before consuming GPU time.",
+    "The local helper already contained the JSON-array fix; the remote project copy was stale."
+  ],
+  "limitations": ["This attempt provides only launch diagnostics, not trainability or visual-quality evidence."],
+  "next_actions": ["Synchronize the fixed command builder to the remote project and relaunch in a new experiment directory."],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T163000Z-vace-lora-rank8-e4-v2/20260810T203206Z-f115d230",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "rank8", "preflight", "partial"]
+}

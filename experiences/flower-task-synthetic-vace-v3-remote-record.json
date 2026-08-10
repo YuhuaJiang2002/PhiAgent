@@ -1,0 +1,23 @@
+{
+  "record_id": "2026-08-11.flower-task-synthetic-vace-v3-remote",
+  "recorded_at": "2026-08-10T16:12:00Z",
+  "status": "PARTIAL",
+  "scope": "Remote reproduction of the corrected flower-task VACE smoke dataset",
+  "summary": "The corrected 12-train/4-validation paired dataset reproduced on a800-1 with zero declared attachment error and was accepted only as synthetic trainer input.",
+  "evidence": [
+    "The remote dataset contains 16 clips of 17 frames with maximum declared contact error 0 pixels.",
+    "It was generated from the isolated code snapshot at outputs/flower-task-adaptation/20260811T003000Z-code-snapshot-v1."
+  ],
+  "lessons": [
+    "Copying a small code snapshot and regenerating data on the execution host avoids relying on unrecorded local assets during training."
+  ],
+  "limitations": [
+    "Remote reproduction does not make the procedural data representative of real flower handling."
+  ],
+  "next_actions": [
+    "Require pinned trainer and checkpoint provenance before starting any GPU job."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260811T011500Z-synthetic-vace-data-v3-remote",
+  "supersedes": ["2026-08-11.flower-task-synthetic-vace-v2"],
+  "tags": ["flower-task", "vace", "remote-reproduction", "synthetic-data", "partial"]
+}

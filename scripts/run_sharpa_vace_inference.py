@@ -167,6 +167,13 @@ def main() -> int:
             for name in ("torch", "diffsynth", "peft", "transformers")
         },
         "inputs": {
+            "checkpoint_files": [
+                {"path": str(path), "sha256": _sha256(path)} for path in model_files
+            ],
+            "entrypoint": {
+                "path": str(Path(__file__).resolve()),
+                "sha256": _sha256(Path(__file__).resolve()),
+            },
             "control": str(control),
             "control_sha256": _sha256(control),
             "control_available_frames": available_frames,

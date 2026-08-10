@@ -1,0 +1,235 @@
+{
+  "acceptance": {
+    "human_review_required": true,
+    "raw_model_accepted_cases": [
+      "lift-up",
+      "carry-right-lift-arc"
+    ],
+    "rejected_cases": [
+      "slide-left",
+      "slide-right-raw",
+      "slide-right-structure-locked"
+    ],
+    "required_threshold_per_numeric_gate": 0.75,
+    "workflow_accepted_cases": [
+      "lift-up",
+      "carry-right-lift-arc"
+    ]
+  },
+  "articulated_carry": {
+    "case_id": "carry-right-lift-arc",
+    "condition": "oscar-acwm-carry-right-condition.mp4",
+    "condition_run": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/acwm-oscar-conditions/20260810T155400Z-hand2dex2-right-lift-arc-v2",
+    "condition_sha256": "fc75f6920a78d787e2431e803d1deebc40c40994452ce3fdad52a236a5dd10f1",
+    "diagnoses": [],
+    "human_review": {
+      "case_id": "slide-right",
+      "passed": true,
+      "reason": "Dense 16-frame and full-video review confirms one coherent attached robot arm and hand with continuous shoulder, elbow, wrist, and finger articulation. The yellow bowl stays in contact with the hand and moves visibly upward and rightward along the conditioned arc while the real workcell background remains stable. The motion is native OSCAR generation rather than a rigid pasted-hand translation. This review covers image-space AC-WM evidence only and does not claim physical robot execution.",
+      "reviewed_at": "2026-08-10T16:00:36Z",
+      "reviewer": "codex-visual-review"
+    },
+    "instruction": "\u7528\u53f3\u4fa7\u673a\u5668\u4eba\u624b\u6293\u4f4f\u9ec4\u8272\u7897\u7684\u628a\u624b\uff0c\u5148\u8f7b\u8f7b\u62ac\u79bb\u684c\u9762\uff0c\u518d\u628a\u7897\u642c\u5230\u753b\u9762\u53f3\u4fa7\u76ee\u6807\u533a\u5e76\u4fdd\u6301\u3002",
+    "method": "native_oscar_articulation_with_reviewed_lift_arc_condition",
+    "metrics": {
+      "detected_frame_fraction": 1.0,
+      "direction_cosine": 0.994892873925833,
+      "duplicate_component_fraction": 0.07407407407407407,
+      "expected_start_xy": [
+        262.92968940966995,
+        290.8006936564543
+      ],
+      "expected_terminal_xy": [
+        435.7142857142857,
+        126.5625
+      ],
+      "lateral_error_pixels": 29.02280907956478,
+      "observed_start_xy": [
+        262.0587146257604,
+        294.32869611213965
+      ],
+      "observed_terminal_xy": [
+        449.4060762816553,
+        76.2058187991974
+      ],
+      "projected_progress_ratio": 1.2000071169434974,
+      "terminal_direction_passed": true,
+      "terminal_error_pixels": 52.184868213879554,
+      "transition_p95_to_median_ratio": 2.730775200235372,
+      "upper_background_mean_mad": 2.544405015076821
+    },
+    "prompt": "In a fixed real laboratory camera view, a coherent silver dexterous robot arm grasps the yellow handled bowl, lifts it slightly off the metal table, carries it along a smooth arc to the upper-right target, and holds it there. Generate natural continuous shoulder, elbow, wrist, palm, and finger articulation. Keep the hand attached to the forearm with exactly one stable five-finger robot hand, preserve causal bowl contact, and keep the real camera and background unchanged.",
+    "scores": {
+      "action_adherence": 0.9492151966977809,
+      "background_consistency": 0.9131349428858508,
+      "embodiment_consistency": 0.8556753115527114,
+      "human_review_passed": true,
+      "object_interaction": 0.9259259259259259,
+      "temporal_consistency": 1.0
+    },
+    "source_run": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/acwm-open-models/20260810T155518Z-06311bc4",
+    "status": "ACCEPTED",
+    "storyboard": "oscar-acwm-carry-right-storyboard.jpg",
+    "timeline": "0.000-0.800 s \u63a5\u8fd1\u628a\u624b\uff1b0.800-1.300 s \u5efa\u7acb\u6293\u53d6\uff1b1.300-3.600 s \u8f7b\u62ac\u5e76\u6cbf\u5f27\u7ebf\u642c\u5230\u53f3\u4fa7\uff1b3.600-5.167 s \u5728\u53f3\u4fa7\u7ec8\u70b9\u4fdd\u6301\u3002",
+    "vertical_motion_template": "lift-up",
+    "video": "oscar-acwm-carry-right.mp4",
+    "video_sha256": "39c63c25737b6ea83d1c1338a2743a01c1f4b59c7ea7051d01892b3557bc5b4c"
+  },
+  "created_at": "2026-08-10T16:02:32.047269+00:00",
+  "limitations": [
+    "This is a camera-pixel skeleton world-model rollout, not a robot-base action or physical execution.",
+    "The yellow-object detector and robot-edge metrics are proxies; explicit human review remains mandatory.",
+    "OSCAR did not preserve causal leftward bowl contact in this out-of-domain real scene.",
+    "Posthoc user review rejected the raw slide-right hand morphology and then rejected the structure-locked repair because its whole hand shifts rigidly.",
+    "The accepted rightward action is explicitly lift-then-carry along an image-space arc; it is not evidence for contact-preserving tabletop sliding.",
+    "The historical structure repair freezes one 2-D hand topology and does not add finger articulation or 3-D kinematic validity."
+  ],
+  "matched_protocol": {
+    "fps": 15.0,
+    "frames": 81,
+    "guidance_scale": 6.0,
+    "num_inference_steps": 35,
+    "resolution": [
+      640,
+      480
+    ],
+    "same_real_first_frame": true,
+    "seed": 20260810
+  },
+  "model": {
+    "model_revision": "c9781ffa7dd8556d862d7d9f338a2ea008a58ca6",
+    "name": "OSCAR-2B",
+    "repository_commit": "4dea2f657e221b0ff24c895fcc8ab4d46d5a9adb"
+  },
+  "repair": {
+    "case_id": "slide-left",
+    "change": "terminal wrist camera pixel changed from (233.5, 285.8) to (100, 309)",
+    "evidence": "Action-condition repair moved the robot across the bowl but did not move the bowl.",
+    "scores": {
+      "action_adherence": 0.0,
+      "background_consistency": 0.9185064763276788,
+      "diagnoses": [
+        "object terminal state does not follow the explicit action target",
+        "robot-region edge structure drifts from the first-frame embodiment",
+        "yellow object is missing or duplicated in generated frames",
+        "mandatory human review is pending"
+      ],
+      "embodiment_consistency": 0.7216234422364433,
+      "evaluator": "phiagent-acwm-bowl-proxy-v2",
+      "evidence": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-open-models/20260810T144421Z-efdb8fea/candidates/evaluation/000-slide-left-oscar/evaluation.json",
+      "human_review_passed": null,
+      "mean_score": 0.6169148726017133,
+      "object_interaction": 0.4444444444444444,
+      "temporal_consistency": 1.0
+    },
+    "status": "REJECTED"
+  },
+  "schema_version": "1.0.0",
+  "source": {
+    "sha256": "6c0805f6d54020e592790d749433d49106bb203393ea44e7ea74e985937badd9",
+    "video": "oscar-acwm-real-source.mp4"
+  },
+  "status": "PARTIAL",
+  "structure_repair": {
+    "canonical_hand_preview": "oscar-acwm-canonical-hand-preview.jpg",
+    "canonical_segmentation": {
+      "checkpoint_sha256": "7442e4e9b732a508f80e141e7c2913437a3610ee0c77381a66658c3a445df87b",
+      "connected_components": 1,
+      "method": "sam2_prompted_single_component_robot_hand",
+      "source_revision": "0e78a118995e66bb27d78518c4bd9a3e95b4e266"
+    },
+    "case_id": "slide-right",
+    "limitations": [
+      "The repaired hand is a rigid 2-D canonical projection; finger articulation is intentionally frozen to prevent topology drift.",
+      "This improves image-space morphology but does not validate 3-D kinematics, contact force, or real-robot execution.",
+      "The original OSCAR output remains the model result; this artifact is explicitly a structure-locked repair."
+    ],
+    "method": "sam2_canonical_hand_fixed_topology_action_projection",
+    "raw_vs_repair_video": "oscar-acwm-slide-right-raw-vs-structure-lock.mp4",
+    "raw_vs_repair_video_sha256": "f8845ea21bf61145ecd8da62d9d3b213f96b0fe57d31a8d096c353526bc43bc8",
+    "scores": {
+      "action_adherence": 0.8349489821498883,
+      "background_consistency": 0.873405468280695,
+      "embodiment_consistency": 0.9428389965068277,
+      "human_review_passed": true,
+      "object_interaction": 0.9259259259259259,
+      "temporal_consistency": 1.0
+    },
+    "status": "USER_REJECTED_RIGID_TRANSLATION",
+    "structure_gates": {
+      "accepted": true,
+      "canonical_connected_components": 1,
+      "changed_channels_outside_declared_support_preencode": 0,
+      "changed_protected_object_channels_preencode": 0,
+      "decoded_fps": 15.0,
+      "decoded_frames": 81,
+      "fixed_scale_max": 0.75,
+      "fixed_scale_min": 0.75,
+      "hand_area_max_over_min": 1.0034251675353685,
+      "hand_area_max_pixels": 6738,
+      "hand_area_min_pixels": 6715,
+      "maximum_projected_connected_components": 1,
+      "required_area_ratio_maximum": 1.08
+    },
+    "video": "oscar-acwm-slide-right-structure-locked.mp4",
+    "video_sha256": "63b231c0a05b2349c0c32274fd1217898956fa2db3c3d02e2db76ddeb23835d5"
+  },
+  "summary": "Lift-up and lift-arc carry-right are accepted as native articulated OSCAR generations. The original slide actions and rigid structure-lock repair remain user-rejected evidence.",
+  "variants": [
+    {
+      "case_id": "slide-left",
+      "condition": "oscar-acwm-slide-left-condition.mp4",
+      "diagnoses": [
+        "object terminal state does not follow the explicit action target",
+        "candidate has high transition outliers",
+        "mandatory human review rejected the visual result"
+      ],
+      "scores": {
+        "action_adherence": 0.28482301995759907,
+        "background_consistency": 0.8925685438392487,
+        "embodiment_consistency": 0.917480633209835,
+        "human_review_passed": false,
+        "object_interaction": 1.0,
+        "temporal_consistency": 0.6409243182207951
+      },
+      "status": "REJECTED",
+      "storyboard": "oscar-acwm-slide-left-storyboard.jpg",
+      "video": "oscar-acwm-slide-left-rejected.mp4",
+      "video_sha256": "ae30b793fa72cf8331ac7a8ad7c766f930e1445d15de68195a97c06f16304110"
+    },
+    {
+      "case_id": "slide-right",
+      "condition": "oscar-acwm-slide-right-condition.mp4",
+      "diagnoses": [],
+      "scores": {
+        "action_adherence": 0.8400796906626024,
+        "background_consistency": 0.9203341602413286,
+        "embodiment_consistency": 0.9514500881269027,
+        "human_review_passed": true,
+        "object_interaction": 0.9506172839506173,
+        "temporal_consistency": 1.0
+      },
+      "status": "USER_REJECTED_STRUCTURE",
+      "storyboard": "oscar-acwm-slide-right-storyboard.jpg",
+      "video": "oscar-acwm-slide-right-raw.mp4",
+      "video_sha256": "3e6edcc2c4b280e96ad353cd3a575c06f81d26ae7cc0858cc4eb6cb699cd739e"
+    },
+    {
+      "case_id": "lift-up",
+      "condition": "oscar-acwm-lift-up-condition.mp4",
+      "diagnoses": [],
+      "scores": {
+        "action_adherence": 0.9937049159783338,
+        "background_consistency": 0.9233130974543661,
+        "embodiment_consistency": 0.968002694509936,
+        "human_review_passed": true,
+        "object_interaction": 0.9753086419753086,
+        "temporal_consistency": 0.8658641289522819
+      },
+      "status": "ACCEPTED",
+      "storyboard": "oscar-acwm-lift-up-storyboard.jpg",
+      "video": "oscar-acwm-lift-up.mp4",
+      "video_sha256": "05d0a12a785f3445234d0cb92eb210bb4588d23724dc143dd9abdf40cb4c0065"
+    }
+  ]
+}

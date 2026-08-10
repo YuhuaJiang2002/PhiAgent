@@ -1,0 +1,29 @@
+{
+  "evidence": [
+    "outputs/acwm-open-models/20260810T155518Z-06311bc4 contains one 81-frame, 640x480, 15 FPS native OSCAR candidate generated with seed 20260810, 35 steps, and guidance 6.0.",
+    "Human-reviewed evaluation reports action 0.9492, embodiment 0.8557, object 0.9259, temporal 1.0000, and background 0.9131 with no diagnoses.",
+    "The observed bowl displacement projects 1.2000 times the expected target direction with direction cosine 0.9949 and 100% yellow-object detection.",
+    "Dense 16-frame and full-video review confirms one coherent attached arm and hand, continuous shoulder/elbow/wrist/finger motion, maintained bowl contact, and clear upward-right displacement in the fixed real workcell."
+  ],
+  "lessons": [
+    "For this out-of-domain scene, reusing the proven lift vertical phase and adding a rightward arc is more effective than prompt-only direct sliding or rigid postprocessing.",
+    "The accepted repair path is native model resampling of the complete articulated embodiment, not image-space hand replacement."
+  ],
+  "limitations": [
+    "This is image-space camera:skeleton world-model evidence, not calibrated robot-base control, force/contact validation, or physical robot execution.",
+    "The accepted instruction is lift-then-carry-right, not contact-preserving tabletop sliding."
+  ],
+  "next_actions": [],
+  "record_id": "2026-08-10.acwm-oscar-lift-arc-carry-right",
+  "recorded_at": "2026-08-10T16:01:00Z",
+  "run_dir": "outputs/acwm-open-models/20260810T155518Z-06311bc4",
+  "schema_version": "1.0.0",
+  "scope": "Native articulated OSCAR lift-then-carry-right action in the real Hand2Dex-2 scene",
+  "status": "WORKING",
+  "summary": "A reviewed lift-arc condition produces a native articulated arm-and-hand rollout that moves the yellow bowl clearly upward and rightward without the rigid whole-hand translation defect.",
+  "supersedes": [
+    "2026-08-10.acwm-oscar-same-seed-prompt-batch",
+    "2026-08-10.acwm-structure-lock-user-rejected-rigid-translation"
+  ],
+  "tags": ["acwm", "oscar", "native-articulation", "lift-arc", "carry-right", "working"]
+}

@@ -1,0 +1,25 @@
+{
+  "record_id": "2026-08-11.flower-task-synthetic-vace-v1",
+  "recorded_at": "2026-08-10T16:03:00Z",
+  "status": "PARTIAL",
+  "scope": "First procedural paired VACE dataset for bimanual flower contact",
+  "summary": "The first 12-train/4-validation dataset encoded exact causal attachment trajectories, but visual review rejected its oversized bouquet and active-flower proportions.",
+  "evidence": [
+    "All 16 clips contain 17 frames at 448x256 and 8 FPS.",
+    "Maximum left-bouquet and right-contact attachment errors are 0 pixels in all clips; pre-contact and post-release object step maxima are also 0 pixels.",
+    "Storyboard review found flower heads and bouquet geometry implausibly large relative to the robot hands."
+  ],
+  "lessons": [
+    "Exact procedural contact constraints do not compensate for implausible object scale in adapter supervision."
+  ],
+  "limitations": [
+    "Flowers are rigid 2D procedural objects rather than real deformable stems and petals.",
+    "The rejected scale distribution is not suitable for quality training."
+  ],
+  "next_actions": [
+    "Reduce flower geometry to hand-compatible proportions and regenerate in a new directory."
+  ],
+  "run_dir": "outputs/flower-task-adaptation/20260811T001500Z-synthetic-vace-data-v1",
+  "supersedes": [],
+  "tags": ["flower-task", "vace", "synthetic-data", "visual-rejection", "partial"]
+}
