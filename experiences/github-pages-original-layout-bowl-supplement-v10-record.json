@@ -1,0 +1,34 @@
+{
+  "record_id": "2026-08-11.github-pages-original-layout-bowl-supplement-v10",
+  "recorded_at": "2026-08-10T21:09:02Z",
+  "status": "PARTIAL",
+  "scope": "Restore the original public demo layout and retain only one supplemental bowl-grasp AC-WM comparison",
+  "summary": "The previous unified evidence-page redesign exceeded the requested public-site scope. The page is restored byte-for-byte to its pre-redesign structure except for one additional OSCAR bowl-grasp comparison card; the README likewise contains only one short supplemental entry.",
+  "evidence": [
+    "Diff against commit 245604c changes demo/index.html only by adding one ordinary video card; the original title, inline styles, featured cabbage demo, remaining five cards, and playback script are unchanged.",
+    "Local HTML audit finds exactly seven articles and seven videos, exactly one oscar-acwm-accepted-comparison.mp4 source, and no long-case, A800-training, model-router, or language-console headings.",
+    "In-app browser validation loaded all seven videos at readyState 4 with no console errors; the bowl comparison reports 1280x480 and 5.4 seconds.",
+    "ffprobe reports the supplemental comparison as 81 frames at 15 FPS with 1280x480 resolution and 5.4-second duration."
+  ],
+  "lessons": [
+    "A user request framed as a small supplement must preserve the existing public information architecture and visual design exactly, even when broader research evidence already exists in the repository.",
+    "Compare the proposed public diff against the last user-approved site commit, not merely against the current branch head."
+  ],
+  "limitations": [
+    "Production GitHub Pages publication has not yet been verified for this corrective branch.",
+    "The bowl comparison is camera-skeleton-conditioned video generation, not physical robot execution."
+  ],
+  "next_actions": [
+    "Publish the minimal corrective diff, wait for GitHub Pages deployment, and verify the production page and supplemental video before marking it WORKING."
+  ],
+  "supersedes": [
+    "2026-08-11.github-pages-unified-acwm-long-cases-v9"
+  ],
+  "tags": [
+    "github-pages",
+    "acwm",
+    "bowl-grasp",
+    "scope-correction",
+    "partial"
+  ]
+}
