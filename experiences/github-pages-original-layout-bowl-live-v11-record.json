@@ -1,0 +1,33 @@
+{
+  "record_id": "2026-08-11.github-pages-original-layout-bowl-live-v11",
+  "recorded_at": "2026-08-10T21:11:48Z",
+  "status": "WORKING",
+  "scope": "Production publication of the restored original demo layout with one supplemental bowl-grasp comparison",
+  "summary": "GitHub Pages now serves the original PhiAgent-0 demo layout and original gallery content with exactly one additional OSCAR bowl-grasp action comparison; the previously added long-case, training, router, and instruction-console homepage sections are absent.",
+  "evidence": [
+    "PR https://github.com/YuhuaJiang2002/PhiAgent/pull/3 merged as b4fa9562ade0a4810a4aad2168a7d30af8ae52da.",
+    "GitHub Pages workflow run 31432602961 completed successfully, including checkout, prepare, upload, and deploy steps.",
+    "Production HTML uses the original PhiAgent-0 Demos title, contains exactly one Action-conditioned bowl grasp comparison card, and contains none of the long-case, A800-training, model-router, or language-console headings.",
+    "The production bowl-comparison MP4 returns HTTP 200 from GitHub Pages.",
+    "In-app browser production verification loaded all seven videos at readyState 4 with no console errors; the bowl comparison reports 1280x480 and 5.4 seconds."
+  ],
+  "lessons": [
+    "A minimal public supplement should be verified both structurally against the last approved page and behaviorally against production media readiness.",
+    "Preserving unrelated research code and assets while restoring only the public entry page keeps the correction aligned with the user's requested scope."
+  ],
+  "limitations": [
+    "The supplemental bowl comparison is camera-skeleton-conditioned video generation, not robot-base control or physical robot execution."
+  ],
+  "next_actions": [],
+  "run_dir": "https://github.com/YuhuaJiang2002/PhiAgent/actions/runs/31432602961",
+  "supersedes": [
+    "2026-08-11.github-pages-original-layout-bowl-supplement-v10"
+  ],
+  "tags": [
+    "github-pages",
+    "acwm",
+    "bowl-grasp",
+    "production",
+    "working"
+  ]
+}
