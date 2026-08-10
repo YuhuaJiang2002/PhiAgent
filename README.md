@@ -9,9 +9,154 @@ simulation, and robot video:
 The project is being built as measured teacher-pipeline milestones before any
 attempt to train a unified foundation model.
 
+## Key concepts
+
+- **EPL (Embodied Physical Language)** is PhiAgent's typed, interpretable
+  intermediate representation for manipulation. An EPL sequence divides a
+  demonstration into time intervals and records the manipulation phase,
+  frame-explicit end-effector motion, wrist pose, five fingertip positions, hand
+  aperture/articulation, contact state, object pose and motion, scene relations,
+  and confidence. Coordinates carry named frames (for example, `camera`,
+  `world`, or `robot_base`) rather than being mixed implicitly. EPL is structured
+  physical state and motion—not natural-language instructions, robot joint
+  commands, or rendered video. The current v0.1 schema is defined in
+  [`phiagent/physical_language/schema.py`](phiagent/physical_language/schema.py).
+- **Robot action / retargeting** converts embodiment-independent EPL motion into
+  a particular robot's joint trajectory while respecting that robot's kinematics
+  and joint limits. Different embodiments may therefore execute the same EPL
+  with different joint commands.
+- **Simulation and verification** replay a retargeted trajectory in a physics
+  simulator and measure requirements such as contact, collision, joint limits,
+  and task success. A plausible-looking video alone is not proof of a valid
+  physical rollout.
+- **Repair** uses verifier failures to propose bounded trajectory changes, then
+  simulates and checks the result again. A repair is accepted only when the
+  relevant verification gates pass.
+- **Rendering** turns an accepted motion or control bundle into viewable video.
+  Some published visual-transfer demos instead use video-generation and
+  compositing baselines; these are appearance or motion-transfer results, not
+  automatically physics-verified robot executions.
+- **Teacher pipeline** refers to the modular perception -> EPL -> retargeting ->
+  simulation -> repair path used to generate measurable supervision and
+  diagnostics before training a unified model.
+- **PhiZero physical-language tokens are not EPL.** PhiZero describes a learned,
+  discrete 25K-symbol FSQ representation. EPL is PhiAgent's separately designed,
+  human-readable typed schema and cannot be substituted for those unreleased
+  tokens when claiming an exact PhiZero reproduction.
+
 ## Demos
 
-Click a preview to play the full MP4.
+Play every video directly on the
+[web demo](https://yuhuajiang2002.github.io/PhiAgent/), or click a preview below
+to open its MP4.
+
+### Does the current web demo use EPL?
+
+**No—not as an input or conditioning signal for the currently published
+showcase videos.** The real-world flower-arranging clip is an unprocessed human
+observation; the Shadow-hand clip uses MediaPipe plus Dexpilot geometric
+retargeting directly; and the remaining comparison videos are visual
+transfer/compositing proxies. They do not execute the complete
+`human video -> EPL -> robot action -> simulation` path, so they must not be
+presented as EPL-conditioned robot execution.
+
+EPL is implemented and exercised elsewhere in the repository: the synthetic
+human-to-simulation integration path writes `epl.json`, EPL drives
+multi-embodiment retargeting, and the matched repair-policy experiment compares
+EPL-conditioned and EPL-masked policies. These are currently research and
+validation results rather than the videos on the public demo page; see
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md) for the measured evidence.
+
+### Egocentric (ego) video examples and replacement feasibility
+
+Here **ego video** means first-person video captured by a head-, chest-, or
+wrist-mounted camera.
+
+#### Confidence-routed cabbage-cutting replacement
+
+[![Confidence-routed egocentric cabbage-cutting robot-hand replacement](demo/showcase/ego-cabbage-confidence-routed-robotized.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-cabbage-confidence-routed-robotized.mp4)
+
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-cabbage-confidence-routed-robotized.mp4)
+
+This three-second, 90-frame first-person example uses Wan2.2-Animate
+replacement mode, compiled SAM2, the released relighting LoRA, seed 42, and the
+same raw-candidate confidence-routing principle as the three-hand comparison.
+The delivered video disables framewise robot overlays, destructive object
+overwrite, deghosting, and temporal filtering. Dense review of 30 uniformly
+sampled frames found no visible long trails, duplicate hands, or human skin.
+It remains `PARTIAL`: the deterministic proxy rejects object consistency
+(`0.662`) and regional temporal consistency (`0.146`), and no robot kinematics,
+contact physics, or real execution is established.
+
+Useful follow-up test cases, ordered from easiest to hardest, are:
+
+1. **Tabletop pick-and-place:** one visible hand approaches, grasps, moves, and
+   releases one rigid object. A 3-5 second clip with little head motion is the
+   recommended first smoke test.
+2. **Drawer or cabinet opening:** the hand grasps a handle and produces an
+   articulated object motion. This tests whether replacement preserves contact
+   and the handle rather than only copying free-space hand motion.
+3. **Spoon stirring or tool manipulation:** the tool must remain visible,
+   attached to the correct grasp, and temporally stable under repeated motion.
+4. **Pouring:** the hand, container, receiving vessel, and changing object state
+   introduce severe occlusion; preserving liquid behavior is outside the current
+   replacement model's verified capabilities.
+5. **Bimanual assembly or packaging:** two hands cross and occlude each other,
+   making identity, handedness, masks, and contact substantially harder.
+
+Potential research sources include
+[Ego4D](https://ego4d-data.org/) for diverse head-mounted daily activities,
+[EPIC-KITCHENS VISOR](https://epic-kitchens.github.io/VISOR/) for hand/object
+segmentations in kitchen activities, and
+[Ego-Exo4D](https://ego-exo4d-data.org/) for synchronized first- and
+third-person skilled activities. Dataset access and redistribution terms must be
+checked before adding any clip to this repository. A short, consented
+self-recording is preferable for the first reproducible test.
+
+**Can PhiAgent replace the human hand in ego video?** The current answer is
+`PARTIAL`: the published cabbage-cutting clip demonstrates a visually coherent
+replacement without the previous framewise-overlay trails, but it does not pass
+the repository's strict object and regional-temporal gates. Ego video still adds
+head-camera motion, motion blur, hands entering at the image boundary, large
+perspective changes, self-occlusion, and frequent hand-object overlap. A target
+robot image must also match the first-person viewpoint, handedness, wrist entry,
+scale, and initial grasp; a front-facing product image is not a valid condition.
+
+The first experiment should use one authorized 77-89-frame, one-hand
+pick-and-place clip and compare:
+
+- **Source:** unchanged ego video.
+- **Visual baseline:** replacement-mode robot-hand video, with the source
+  background and manipulated object protected outside the hand/forearm mask.
+- **Geometric baseline:** MediaPipe landmarks retargeted to a dexterous hand,
+  composited into the source view.
+
+Acceptance requires reviewing the entire clip and measuring hand identity,
+motion, object retention, temporal consistency, outside-mask pixel changes, and
+contact at grasp/release—not only inspecting selected frames. Until a run passes
+those gates, ego replacement remains `PARTIAL` visual evidence rather than a
+validated physical capability.
+
+Visual ego replacement does not require EPL. A physically grounded ego pipeline
+does: moving-camera pose and depth must first place wrist, fingertips, contacts,
+and object motion into a stable `world` or `robot_base` frame before EPL
+retargeting. The EPL schema can represent these named frames, but real-ego camera
+tracking, metric reconstruction, and end-to-end simulation validation are not
+yet implemented as an accepted result.
+
+### Real-world flower arranging
+
+[![Continuous real-camera flower-arranging demonstration](demo/showcase/real-flower-arranging.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/real-flower-arranging.mp4)
+
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/real-flower-arranging.mp4)
+
+This is one continuous 27.5-second, 660-frame real-camera demonstration with a
+human florist, real flowers, tools, contact, and workspace interaction. It is
+the observation input for the flower-arranging case—not a simulator render.
+The footage is the Pexels 5893642 clip attributed in
+`docs/THIRD_PARTY.md`. No robot execution is claimed: a real-robot flower
+arrangement remains `NOT STARTED` until hardware executes and the result is
+recorded on camera.
 
 ### 20.7-second five-finger Shadow hand and forearm replacement
 

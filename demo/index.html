@@ -103,6 +103,13 @@
         margin-top: 24px;
       }
 
+      .video-link {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 0.88rem;
+        font-weight: 650;
+      }
+
       @media (max-width: 720px) {
         main {
           width: min(100% - 20px, 1120px);
@@ -131,6 +138,38 @@
       </header>
 
       <section class="grid" aria-label="Demo videos">
+        <article class="featured">
+          <video controls muted autoplay loop playsinline preload="metadata"
+            poster="showcase/ego-cabbage-confidence-routed-robotized.jpg">
+            <source src="showcase/ego-cabbage-confidence-routed-robotized.mp4" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <h2>Egocentric cabbage-cutting replacement</h2>
+            <p>
+              A three-second confidence-routed Wan/SAM2 replacement with one
+              coherent robot embodiment and no framewise-overlay trails.
+            </p>
+            <a class="video-link" href="showcase/ego-cabbage-confidence-routed-robotized.mp4">Open MP4</a>
+          </div>
+        </article>
+
+        <article class="featured">
+          <video controls playsinline preload="metadata"
+            poster="showcase/real-flower-arranging.jpg">
+            <source src="showcase/real-flower-arranging.mp4" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <h2>Real-world flower arranging</h2>
+            <p>
+              One continuous 27.5-second real-camera human demonstration with
+              real flowers, tools, contact, and workspace interaction.
+            </p>
+            <a class="video-link" href="showcase/real-flower-arranging.mp4">Open MP4</a>
+          </div>
+        </article>
+
         <article>
           <video controls playsinline preload="metadata"
             poster="showcase/five-finger-shadow-arm-background-locked.jpg">
@@ -139,6 +178,7 @@
           <div class="copy">
             <h2>Shadow hand and forearm replacement</h2>
             <p>All 621 frames of a continuous human-hand gesture retargeted to a 24-DOF hand.</p>
+            <a class="video-link" href="showcase/five-finger-shadow-arm-background-locked.mp4">Open MP4</a>
           </div>
         </article>
 
@@ -148,8 +188,9 @@
             <source src="showcase/three-hand-confidence-routed.mp4" type="video/mp4">
           </video>
           <div class="copy">
-            <h2>Three-hand comparison</h2>
-            <p>Human, silver robot, and graphite robot-hand conditions.</p>
+            <h2>Three-hand confidence-routed comparison</h2>
+            <p>Human source, silver robot hand, and graphite robot-hand condition.</p>
+            <a class="video-link" href="showcase/three-hand-confidence-routed.mp4">Open MP4</a>
           </div>
         </article>
 
@@ -161,6 +202,7 @@
           <div class="copy">
             <h2>Vendor-hand comparison</h2>
             <p>Sharpa, Wonik Allegro, and Shadow conditions in the same scene.</p>
+            <a class="video-link" href="showcase/vendor-hand-confidence-routed-comparison.mp4">Open MP4</a>
           </div>
         </article>
 
@@ -172,6 +214,7 @@
           <div class="copy">
             <h2>Four-embodiment gripper attempt</h2>
             <p>A retained negative result comparing dexterous hands with a two-finger gripper.</p>
+            <a class="video-link" href="showcase/four-embodiment-gripper-attempt.mp4">Open MP4</a>
           </div>
         </article>
 
@@ -183,6 +226,7 @@
           <div class="copy">
             <h2>Robot appearance comparison</h2>
             <p>Human, silver, graphite, and Sudo R1-style conditions.</p>
+            <a class="video-link" href="showcase/human-silver-graphite-sudo-vertical.mp4">Open MP4</a>
           </div>
         </article>
 
@@ -194,6 +238,7 @@
           <div class="copy">
             <h2>Full Sudo R1-style robot</h2>
             <p>A full tracked-robot appearance adaptation, not exact mechanical geometry.</p>
+            <a class="video-link" href="showcase/sudo-r1-full-robot.mp4">Open MP4</a>
           </div>
         </article>
       </section>
