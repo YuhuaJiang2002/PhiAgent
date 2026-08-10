@@ -71,14 +71,15 @@ validation results rather than the videos on the public demo page; see
 Here **ego video** means first-person video captured by a head-, chest-, or
 wrist-mounted camera.
 
-#### Confidence-routed cabbage-cutting replacement
+#### Confidence-routed cabbage-cutting: human vs. robot
 
-[![Confidence-routed egocentric cabbage-cutting robot-hand replacement](demo/showcase/ego-cabbage-confidence-routed-robotized.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-cabbage-confidence-routed-robotized.mp4)
+[![Confidence-routed egocentric cabbage-cutting human-versus-robot comparison](demo/showcase/ego-cabbage-human-vs-robot-confidence-routed.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4)
 
-[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-cabbage-confidence-routed-robotized.mp4)
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4)
 
-This three-second, 90-frame first-person example uses Wan2.2-Animate
-replacement mode, compiled SAM2, the released relighting LoRA, seed 42, and the
+This three-second, 90-frame side-by-side example places the human source on the
+left and the robot replacement on the right. It uses Wan2.2-Animate replacement
+mode, compiled SAM2, the released relighting LoRA, seed 42, and the
 same raw-candidate confidence-routing principle as the three-hand comparison.
 The delivered video disables framewise robot overlays, destructive object
 overwrite, deghosting, and temporal filtering. Dense review of 30 uniformly
