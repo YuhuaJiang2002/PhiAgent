@@ -53,9 +53,8 @@ to open its MP4.
 ### Does the current web demo use EPL?
 
 **No—not as an input or conditioning signal for the currently published
-showcase videos.** The real-world flower-arranging clip is an unprocessed human
-observation; the Shadow-hand clip uses MediaPipe plus Dexpilot geometric
-retargeting directly; and the remaining comparison videos are visual
+showcase videos.** The Shadow-hand clip uses MediaPipe plus Dexpilot geometric
+retargeting directly, and the remaining comparison videos are visual
 transfer/compositing proxies. They do not execute the complete
 `human video -> EPL -> robot action -> simulation` path, so they must not be
 presented as EPL-conditioned robot execution.
@@ -144,20 +143,6 @@ retargeting. The EPL schema can represent these named frames, but real-ego camer
 tracking, metric reconstruction, and end-to-end simulation validation are not
 yet implemented as an accepted result.
 
-### Real-world flower arranging
-
-[![Continuous real-camera flower-arranging demonstration](demo/showcase/real-flower-arranging.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/real-flower-arranging.mp4)
-
-[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/real-flower-arranging.mp4)
-
-This is one continuous 27.5-second, 660-frame real-camera demonstration with a
-human florist, real flowers, tools, contact, and workspace interaction. It is
-the observation input for the flower-arranging case—not a simulator render.
-The footage is the Pexels 5893642 clip attributed in
-`docs/THIRD_PARTY.md`. No robot execution is claimed: a real-robot flower
-arrangement remains `NOT STARTED` until hardware executes and the result is
-recorded on camera.
-
 ### 20.7-second five-finger Shadow hand and forearm replacement
 
 [![Five-finger Shadow hand and forearm with source-locked background](demo/showcase/five-finger-shadow-arm-background-locked.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/five-finger-shadow-arm-background-locked.mp4)
@@ -215,17 +200,6 @@ gripper transfer.
 The Sudo row is a full tracked-robot appearance adaptation with a white shell,
 black joints/chest cavity, and dual-camera face. It does not claim exact Sudo R1
 mechanical geometry.
-
-### Full Sudo R1-style robot
-
-[![Full Sudo R1-style robot](demo/showcase/sudo-r1-full-robot.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/sudo-r1-full-robot.mp4)
-
-[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/sudo-r1-full-robot.mp4)
-
-This standalone view applies the Sudo-inspired appearance to the complete
-SAM2-tracked robot instance—head, torso, and both arms—while preserving the
-scene and manipulated object. It is an appearance proxy, not exact Sudo R1
-mechanical geometry or official PhiZero inference.
 
 ## Primary goal
 
