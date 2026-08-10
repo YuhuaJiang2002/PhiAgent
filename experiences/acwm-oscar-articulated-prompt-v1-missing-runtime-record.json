@@ -1,0 +1,31 @@
+{
+  "evidence": [
+    "Remote experiment outputs/acwm-open-models/20260810T154305Z-08536aee retains trace.json, requests.json, and inference.log.",
+    "inference.log shows Hugging Face WAN VAE network retries before OSCAR sampling began.",
+    "GPU 1 returned to 3 MiB used after the exact workflow processes were stopped."
+  ],
+  "lessons": [
+    "OSCAR reruns on the isolated A800 host must receive explicit pinned Cosmos-Reason and Wan VAE paths with offline mode enabled."
+  ],
+  "limitations": [
+    "This attempt generated no candidate video and provides no visual-quality evidence."
+  ],
+  "next_actions": [
+    "Rerun the same-seed articulated prompt batch in a new experiment with the cached Cosmos snapshot and local Wan VAE passed explicitly."
+  ],
+  "record_id": "2026-08-10.acwm-oscar-articulated-prompt-v1-missing-runtime",
+  "recorded_at": "2026-08-10T15:45:00Z",
+  "run_dir": "outputs/acwm-open-models/20260810T154305Z-08536aee",
+  "schema_version": "1.0.0",
+  "scope": "Same-seed OSCAR articulated-motion prompt repair for slide-right",
+  "status": "PARTIAL",
+  "summary": "The first articulated-motion prompt batch stopped before sampling because the isolated runner did not receive explicit local runtime paths and tried to resolve the Wan VAE over an unavailable network.",
+  "supersedes": [],
+  "tags": [
+    "acwm",
+    "oscar",
+    "prompt-repair",
+    "preflight",
+    "offline-runtime"
+  ]
+}

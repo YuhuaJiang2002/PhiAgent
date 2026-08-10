@@ -1,0 +1,25 @@
+{
+  "evidence": [
+    "Remote experiment outputs/acwm-open-models/20260810T154641Z-68ad4564 retains trace.json, requests.json, manifest.json, and inference.log.",
+    "The copied Cosmos-Reason snapshot contained relative links that resolved outside the constructed OSCAR runtime tree, so model loading failed before video sampling.",
+    "The runtime was rebuilt with validated absolute blob links before the next immutable attempt."
+  ],
+  "lessons": [
+    "A cached model directory is not ready merely because filenames exist; offline preflight must dereference every required link before GPU inference starts."
+  ],
+  "limitations": [
+    "This attempt generated no candidate video and provides no visual-quality evidence."
+  ],
+  "next_actions": [
+    "Validate every pinned Cosmos and Wan runtime path offline, then rerun in a new experiment directory."
+  ],
+  "record_id": "2026-08-10.acwm-oscar-runtime-broken-symlinks",
+  "recorded_at": "2026-08-10T15:47:00Z",
+  "run_dir": "outputs/acwm-open-models/20260810T154641Z-68ad4564",
+  "schema_version": "1.0.0",
+  "scope": "Offline OSCAR runtime construction for articulated slide-right reruns",
+  "status": "PARTIAL",
+  "summary": "The second articulated OSCAR attempt stopped before sampling because relative Cosmos cache symlinks were invalid in the assembled offline runtime.",
+  "supersedes": [],
+  "tags": ["acwm", "oscar", "offline-runtime", "symlink-preflight", "partial"]
+}

@@ -1,0 +1,24 @@
+{
+  "evidence": [
+    "demo/showcase/oscar-acwm-accepted-comparison.mp4 is an 81-frame 1280x480 H.264 comparison of native lift-arc carry-right and native lift-up.",
+    "demo/showcase/oscar-acwm-carry-right.mp4 is the exact reviewed model output with SHA-256 and scores recorded in demo/showcase/oscar-acwm-evaluation.json.",
+    "The manifest marks the structure-lock attempt USER_REJECTED_RIGID_TRANSLATION and lists only native lift-up and native carry-right as accepted cases.",
+    "The local server returns the new video, the JavaScript parses, all three relevant media assets decode as 81 frames at 15 FPS, and 22 focused CPU tests pass."
+  ],
+  "lessons": [
+    "The primary comparison should show two native articulated generations; rejected rigid repairs belong in a clearly labelled historical evidence view."
+  ],
+  "limitations": [
+    "The browser demo loads retained evidence and does not execute OSCAR interactively on the client."
+  ],
+  "next_actions": [],
+  "record_id": "2026-08-10.acwm-showcase-native-articulation-v7",
+  "recorded_at": "2026-08-10T16:06:00Z",
+  "run_dir": "demo/showcase",
+  "schema_version": "1.0.0",
+  "scope": "Portable AC-WM showcase updated from rigid structure lock to native articulated carry-right",
+  "status": "WORKING",
+  "summary": "The demo now uses the reviewed native OSCAR lift-arc carry-right video on the left, keeps the native lift on the right, and demotes both direct-slide attempts to rejected history.",
+  "supersedes": ["2026-08-10.acwm-showcase-structure-lock-v6"],
+  "tags": ["acwm", "demo", "native-articulation", "honest-evidence", "working"]
+}

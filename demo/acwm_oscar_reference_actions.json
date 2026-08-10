@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "actions": [
+    {
+      "label": "slide-right",
+      "instruction": "用右侧机器人手抓住黄色碗的把手，先轻轻抬离桌面，再把碗搬到画面右侧目标区并保持。",
+      "timeline": "0.000-0.800 s 接近把手；0.800-1.300 s 建立抓取；1.300-3.600 s 轻抬并沿弧线搬到右侧；3.600-5.167 s 在右侧终点保持。",
+      "prompt": "In a fixed real laboratory camera view, a coherent silver dexterous robot arm grasps the yellow handled bowl, lifts it slightly off the metal table, carries it along a smooth arc to the upper-right target, and holds it there. Generate natural continuous shoulder, elbow, wrist, palm, and finger articulation. Keep the hand attached to the forearm with exactly one stable five-finger robot hand, preserve causal bowl contact, and keep the real camera and background unchanged."
+    }
+  ]
+}

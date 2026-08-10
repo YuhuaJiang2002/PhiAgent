@@ -324,6 +324,42 @@ acceptance are not yet claimed. The native Wan2.2-Animate pipeline has
 completed its official upstream sample on an A800 and remains an unconstrained
 visual teacher and diagnostic baseline. See docs/STATUS.md.
 
+## Real-scene open AC-WM demo
+
+PhiAgent now includes an agentic action-conditioned world-model branch. It
+compiles a language instruction into a typed action contract, routes that
+contract only to a model that natively supports its representation, generates
+matched candidates, evaluates five independent criteria, and requires explicit
+human review before acceptance.
+
+The current real Hand2Dex-2 demonstration ran pinned OSCAR-2B on an A800 with
+the same real first frame, seed, sampling settings, and 81-frame duration.
+Upward lifting and a revised lift-then-carry-right action are accepted as native
+OSCAR generations. The revised condition borrows the reviewed vertical motion
+of the successful lift and then follows a rightward arc, which produces
+continuous shoulder, elbow, wrist, and finger articulation while moving the
+yellow bowl. Posthoc user review rejects both the original direct-right output
+(late hand fragmentation) and its fixed-topology repair (rigid whole-hand
+translation). Leftward movement and a stronger left-condition retry remain
+rejected. The workflow is honestly `PARTIAL` (2/3 selected action types), not a
+claim that OSCAR can execute arbitrary robot actions.
+
+Serve the portable evidence UI locally:
+
+    python -m http.server 4173 --directory demo
+
+Then open `http://127.0.0.1:4173/`. The page includes the real source, native
+articulated lift-versus-carry comparison, the two rejected direct-slide repair
+attempts, action-condition videos, model router, evaluation values, human-gate
+conclusion, model revisions, and artifact hashes.
+
+OSCAR, Boundless World Model, and Kinema4D adapters are available under
+`phiagent/acwm`. BWM stays gated until native 14-channel robot-base EEF/joint
+data is supplied; Kinema4D stays gated until calibrated pointmap, URDF, and
+camera inputs exist. PhiAgent never relabels a 2D camera trace as either input.
+See [docs/ACWM_WORKFLOW.md](docs/ACWM_WORKFLOW.md) for commands and complete
+evidence.
+
 ## Auxiliary Cosmos 3 pipeline
 
 Prepare the pinned framework and checkpoint:

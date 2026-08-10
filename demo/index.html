@@ -1,237 +1,167 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Playable PhiAgent-0 robot manipulation demos.">
-    <title>PhiAgent-0 Demos</title>
-    <style>
-      :root {
-        color-scheme: dark;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #090d16;
-        color: #eef2ff;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        background:
-          radial-gradient(circle at 15% 0%, rgba(73, 101, 255, 0.2), transparent 34rem),
-          #090d16;
-      }
-
-      main {
-        width: min(1120px, calc(100% - 32px));
-        margin: 0 auto;
-        padding: 64px 0 80px;
-      }
-
-      header {
-        max-width: 760px;
-        margin-bottom: 40px;
-      }
-
-      h1 {
-        margin: 0 0 12px;
-        font-size: clamp(2.5rem, 7vw, 5rem);
-        line-height: 0.95;
-        letter-spacing: -0.055em;
-      }
-
-      h2 {
-        margin: 0 0 8px;
-        font-size: 1.15rem;
-      }
-
-      p {
-        color: #aeb8d0;
-        line-height: 1.6;
-      }
-
-      a {
-        color: #9db2ff;
-      }
-
-      .eyebrow {
-        color: #7ee7c8;
-        font-size: 0.78rem;
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 24px;
-      }
-
-      article {
-        overflow: hidden;
-        border: 1px solid rgba(174, 184, 208, 0.16);
-        border-radius: 18px;
-        background: rgba(18, 24, 39, 0.82);
-        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
-      }
-
-      article.featured {
-        grid-column: 1 / -1;
-      }
-
-      video {
-        display: block;
-        width: 100%;
-        max-height: 72vh;
-        background: #02040a;
-      }
-
-      .copy {
-        padding: 20px;
-      }
-
-      .copy p {
-        margin: 0;
-        font-size: 0.92rem;
-      }
-
-      .repo-link {
-        display: inline-block;
-        margin-top: 24px;
-      }
-
-      .video-link {
-        display: inline-block;
-        margin-top: 12px;
-        font-size: 0.88rem;
-        font-weight: 650;
-      }
-
-      @media (max-width: 720px) {
-        main {
-          width: min(100% - 20px, 1120px);
-          padding-top: 40px;
-        }
-
-        .grid {
-          grid-template-columns: 1fr;
-        }
-
-        article.featured {
-          grid-column: auto;
-        }
-      }
-    </style>
+    <meta name="theme-color" content="#07100d">
+    <meta name="description" content="基于真实 Hand2Dex-2 场景与 OSCAR-2B 的 action-conditioned world model 演示：语言指令编译为机器人骨架控制，并以同首帧、同 seed 的反事实视频接受门验收。">
+    <meta property="og:title" content="PhiAgent · Open AC-WM Lab">
+    <meta property="og:description" content="真实视频输入、显式机器人动作条件、OSCAR-2B 反事实生成与可复现实验门控。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="og.png">
+    <title>PhiAgent · Open AC-WM Lab</title>
+    <link rel="stylesheet" href="styles.css?v=6">
   </head>
   <body>
-    <main>
-      <header>
-        <p class="eyebrow">Playable research demos</p>
-        <h1>PhiAgent-0</h1>
-        <p>
-          Human demonstrations translated into robot motion, simulation, and
-          rendered video. Use the controls to play each demo directly on this page.
-        </p>
-      </header>
+    <header class="topbar">
+      <a class="brand" href="#top"><span class="brand-mark"><i></i><i></i><i></i></span><b>PhiAgent</b><em>/ OPEN AC-WM LAB</em></a>
+      <nav aria-label="页面导航">
+        <a href="#studio">CONTROL</a>
+        <a href="#comparison">COMPARE</a>
+        <a href="#router">ROUTER</a>
+        <a href="#evidence">EVIDENCE</a>
+      </nav>
+      <div class="runtime"><i></i><span>OSCAR-2B · NATIVE ARTICULATION · A800</span></div>
+    </header>
 
-      <section class="grid" aria-label="Demo videos">
-        <article class="featured">
-          <video controls muted autoplay loop playsinline preload="metadata"
-            poster="showcase/ego-cabbage-human-vs-robot-confidence-routed.jpg">
-            <source src="showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4" type="video/mp4">
-            Your browser does not support embedded MP4 video.
-          </video>
-          <div class="copy">
-            <h2>Ego cabbage cutting: human vs. robot</h2>
-            <p>
-              Human source on the left and the confidence-routed Wan/SAM2 robot
-              replacement on the right, synchronized frame for frame.
-            </p>
-            <a class="video-link" href="showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4">Open MP4</a>
-          </div>
-        </article>
-
-        <article>
-          <video controls playsinline preload="metadata"
-            poster="showcase/five-finger-shadow-arm-background-locked.jpg">
-            <source src="showcase/five-finger-shadow-arm-background-locked.mp4" type="video/mp4">
-          </video>
-          <div class="copy">
-            <h2>Shadow hand and forearm replacement</h2>
-            <p>All 621 frames of a continuous human-hand gesture retargeted to a 24-DOF hand.</p>
-            <a class="video-link" href="showcase/five-finger-shadow-arm-background-locked.mp4">Open MP4</a>
-          </div>
-        </article>
-
-        <article>
-          <video controls playsinline preload="metadata"
-            poster="showcase/three-hand-confidence-routed.jpg">
-            <source src="showcase/three-hand-confidence-routed.mp4" type="video/mp4">
-          </video>
-          <div class="copy">
-            <h2>Three-hand confidence-routed comparison</h2>
-            <p>Human source, silver robot hand, and graphite robot-hand condition.</p>
-            <a class="video-link" href="showcase/three-hand-confidence-routed.mp4">Open MP4</a>
-          </div>
-        </article>
-
-        <article>
-          <video controls playsinline preload="metadata"
-            poster="showcase/vendor-hand-confidence-routed-comparison.jpg">
-            <source src="showcase/vendor-hand-confidence-routed-comparison.mp4" type="video/mp4">
-          </video>
-          <div class="copy">
-            <h2>Vendor-hand comparison</h2>
-            <p>Sharpa, Wonik Allegro, and Shadow conditions in the same scene.</p>
-            <a class="video-link" href="showcase/vendor-hand-confidence-routed-comparison.mp4">Open MP4</a>
-          </div>
-        </article>
-
-        <article>
-          <video controls playsinline preload="metadata"
-            poster="showcase/four-embodiment-gripper-attempt.jpg">
-            <source src="showcase/four-embodiment-gripper-attempt.mp4" type="video/mp4">
-          </video>
-          <div class="copy">
-            <h2>Four-embodiment gripper attempt</h2>
-            <p>A retained negative result comparing dexterous hands with a two-finger gripper.</p>
-            <a class="video-link" href="showcase/four-embodiment-gripper-attempt.mp4">Open MP4</a>
-          </div>
-        </article>
-
-        <article>
-          <video controls playsinline preload="metadata"
-            poster="showcase/human-silver-graphite-sudo-vertical.jpg">
-            <source src="showcase/human-silver-graphite-sudo-vertical.mp4" type="video/mp4">
-          </video>
-          <div class="copy">
-            <h2>Robot appearance comparison</h2>
-            <p>Human, silver, graphite, and Sudo R1-style conditions.</p>
-            <a class="video-link" href="showcase/human-silver-graphite-sudo-vertical.mp4">Open MP4</a>
-          </div>
-        </article>
-
+    <main id="top">
+      <section class="hero">
+        <div>
+          <p class="kicker"><span>REAL FIRST FRAME</span><b>×</b><span>ROBOT SKELETON</span><b>×</b><span>OPEN WORLD MODEL</span></p>
+          <h1>一句动作指令，<br><em>生成不同的机器人未来。</em></h1>
+        </div>
+        <div class="hero-copy">
+          <p>语言不是只写进 prompt：agent 先把它编译成逐帧机器人骨架，再由 OSCAR-2B 在同一张真实实验台首帧上生成反事实未来。针对右移手型失真，agent 改用“先抬起、再沿弧线右搬”的条件轨迹，让肩、肘、腕和手指由模型原生连续生成；结果仍须通过动作、形态、物体、时序、背景和人工复核。</p>
+          <dl>
+            <div><dt>INPUT</dt><dd>REAL HAND2DEX-2 VIDEO</dd></div>
+            <div><dt>ACTION</dt><dd>CAMERA-PIXEL SKELETON</dd></div>
+            <div><dt>OUTPUT</dt><dd>81 FRAMES · 15 FPS</dd></div>
+          </dl>
+        </div>
       </section>
 
-      <a class="repo-link" href="https://github.com/YuhuaJiang2002/PhiAgent">
-        View source and reproducibility details on GitHub
-      </a>
+      <section class="studio" id="studio" aria-label="真实场景 AC-WM 控制台">
+        <article class="viewer">
+          <header class="panel-head">
+            <div><span>A</span><p><b id="viewTitle">ACCEPTED COUNTERFACTUALS</b><small>同首帧 · 同 seed · 仅动作条件不同</small></p></div>
+            <div class="proof-badge"><i></i> OSCAR NATIVE ARTICULATION EVIDENCE</div>
+          </header>
+          <div class="video-stage wide-stage">
+            <video id="mainVideo" controls playsinline muted loop preload="metadata" poster="showcase/oscar-acwm-accepted-comparison-poster.jpg?v=7">
+              <source src="showcase/oscar-acwm-accepted-comparison.mp4?v=7" type="video/mp4">
+            </video>
+            <div class="video-hud"><span id="videoLabel">NATIVE LIFT-ARC CARRY RIGHT vs NATIVE LIFT · BOTH ACCEPTED</span><b>1280 × 480 · H.264</b></div>
+          </div>
+          <div class="view-switcher" role="group" aria-label="选择证据视图">
+            <button class="view-button active" data-view="comparison" type="button">通过结果对照</button>
+            <button class="view-button" data-view="source" type="button">真实源视频</button>
+            <button class="view-button rejected" data-view="repairComparison" type="button">原始 vs 刚性修复 · FAIL</button>
+            <button class="view-button" data-view="slideRight" type="button">弧线右搬 · PASS</button>
+            <button class="view-button rejected" data-view="slideRightRaw" type="button">右移原始 · FAIL</button>
+            <button class="view-button" data-view="liftUp" type="button">上提 · PASS</button>
+            <button class="view-button rejected" data-view="slideLeft" type="button">左移 · FAIL</button>
+            <button class="view-button" data-view="rightCondition" type="button">右搬动作骨架</button>
+            <button class="view-button" data-view="liftCondition" type="button">上提动作骨架</button>
+          </div>
+        </article>
+
+        <aside class="command-panel">
+          <header class="panel-head">
+            <div><span>B</span><p><b>LANGUAGE → ACTION CONTRACT</b><small>自然语言 → 时间线 → camera:skeleton → OSCAR</small></p></div>
+          </header>
+          <form id="commandForm">
+            <label for="commandInput">告诉机器人在真实场景中做什么</label>
+            <textarea id="commandInput" rows="6" maxlength="700">用右侧机器人手抓住黄色碗的把手，先轻轻抬离桌面，再把碗搬到画面右侧目标区并保持。</textarea>
+            <div class="form-meta"><span><kbd>⌘</kbd> + <kbd>↵</kbd> 载入已实跑结果</span><b id="charCount">0 / 700</b></div>
+            <label for="timelineInput">动作时间线 <small>显式动作条件，不是 text-only prompt</small></label>
+            <textarea id="timelineInput" class="timeline-input" rows="4" maxlength="1600">0–0.8s 接近把手；0.8–1.3s 建立抓取；1.3–3.6s 轻抬并沿弧线搬到右侧；3.6–5.2s 在右侧终点保持。</textarea>
+            <button id="runButton" class="run-button" type="submit"><span>匹配并载入实跑证据</span><b>↗</b></button>
+          </form>
+          <div class="presets">
+            <span>OSCAR MATCHED RUN · SEED 20260810</span>
+            <button type="button" data-action="slideRight"><b class="mini-pass">PASS</b> 01 先抬起再向右搬</button>
+            <button type="button" data-action="liftUp"><b class="mini-pass">PASS</b> 02 把碗向上提起</button>
+            <button type="button" data-action="slideLeft"><b class="mini-fail">FAIL</b> 03 把碗向左移动</button>
+          </div>
+          <div class="job-state" id="jobState" data-mode="complete" aria-live="polite">
+            <i></i><div><b id="jobTitle">AGENTIC AC-WM / 2 OF 3 ACTIONS ACCEPTED</b><span id="jobDetail">原生 OSCAR 的上提与弧线右搬均通过；左移失败，直接右滑及其刚性结构锁定仅保留为拒绝证据。</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="comparison" id="comparison">
+        <header class="section-head">
+          <div><p>02 / MATCHED COUNTERFACTUALS</p><h2>动作差异清楚，<br>失败也必须展示。</h2></div>
+          <p>所有生成共享真实首帧、OSCAR-2B 权重、35 个推理步、guidance 6.0 和 seed 20260810。用户指出直接右移会出现手型碎裂，固定拓扑修复又像整只手被平移；因此主结果改为右侧视频同类的原生生成方法，并用上提轨迹作为竖直运动模板，再沿弧线向右搬运。</p>
+        </header>
+        <div class="action-grid">
+          <article class="action-card rejected-card" data-card="slideLeft">
+            <video muted loop playsinline preload="metadata" poster="showcase/oscar-acwm-slide-left-poster.jpg?v=5"><source src="showcase/oscar-acwm-slide-left-rejected.mp4?v=5" type="video/mp4"></video>
+            <div class="card-copy"><span class="status-fail">01 / SLIDE LEFT · REJECTED</span><h3>机器人向左撤回，碗未跟随</h3><p>动作遵循 <b id="leftActionScore">0.28</b>。增强末端左移条件后仍失败，因此保留为 agent repair 的负例证据。</p><button type="button" data-action="slideLeft">查看失败视频 ↗</button></div>
+          </article>
+          <article class="action-card accepted-card" data-card="slideRight">
+            <video muted loop playsinline preload="metadata" poster="showcase/oscar-acwm-carry-right-poster.jpg?v=7"><source src="showcase/oscar-acwm-carry-right.mp4?v=7" type="video/mp4"></video>
+            <div class="card-copy"><span class="status-pass">02 / LIFT-ARC CARRY RIGHT · ACCEPTED</span><h3>轻抬离桌 → 关节连续弯曲 → 向右搬运</h3><p>动作遵循 <b id="rightActionScore">0.95</b>；手臂、手腕和手指由 OSCAR 原生生成，黄碗保持接触并完成明确的右上方位移。</p><button type="button" data-action="slideRight">载入原生关节版 ↗</button></div>
+          </article>
+          <article class="action-card accepted-card" data-card="liftUp">
+            <video muted loop playsinline preload="metadata" poster="showcase/oscar-acwm-lift-up-poster.jpg?v=5"><source src="showcase/oscar-acwm-lift-up.mp4?v=5" type="video/mp4"></video>
+            <div class="card-copy"><span class="status-pass">03 / LIFT UP · ACCEPTED</span><h3>接触物体 → 向上提起 → 保持</h3><p>动作遵循 <b id="liftActionScore">0.99</b>，与右移形成明显互斥的反事实未来，并完成人工复核。</p><button type="button" data-action="liftUp">载入主播放器 ↗</button></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="router" id="router">
+        <header class="section-head">
+          <div><p>03 / MODEL ROUTER</p><h2>按动作坐标系路由，<br>不伪造模型输入。</h2></div>
+          <p>agent 先验证动作表示与坐标系，再选择后端。当前真实场景只有 camera:skeleton 条件，因此 OSCAR 可以实跑；BWM 与 Kinema4D 分支已经接入，但缺少原生机器人状态时会明确门控停止。</p>
+        </header>
+        <div class="router-grid">
+          <article class="route-card active-route"><div><b>OSCAR-2B Native</b><span>ACTIVE / RAN</span></div><p><strong>需要</strong> 真实首帧 + camera:skeleton；agent 可修订 prompt 与逐帧轨迹后重采样</p><p><strong>本次</strong> 上提与弧线右搬原生通过；刚性结构锁定被用户拒绝</p></article>
+          <article class="route-card gated-route"><div><b>Boundless World Model</b><span>GATED</span></div><p><strong>需要</strong> robot_base:EEF / joint，原生 14D 动作</p><p><strong>缺少</strong> 本场景同步机器人状态与标定，禁止从 2D 轨迹伪造</p></article>
+          <article class="route-card gated-route"><div><b>Kinema4D</b><span>GATED</span></div><p><strong>需要</strong> pointmap + URDF + 相机/机器人标定</p><p><strong>缺少</strong> 本场景几何预处理输入，保持可诊断的未启动状态</p></article>
+          <article class="route-card baseline-route"><div><b>MiniMax-H3</b><span>NEGATIVE BASELINE</span></div><p><strong>已有</strong> 真实场景三动作生成</p><p><strong>结论</strong> 机器人质量与动作差异未通过用户复核，不再作为主结果</p></article>
+        </div>
+      </section>
+
+      <section class="workflow" id="evidence">
+        <header class="section-head">
+          <div><p>04 / AGENTIC AC-WM BRANCH</p><h2>生成、验收、修复，<br>每一步都有证据。</h2></div>
+          <p>新增分支沿用现有 workflow 的候选生成、评分、修复与审计结构，但增加动作契约、模型能力路由和强制人工门。失败不会被平均分掩盖，也不会被从展示中删除。</p>
+        </header>
+        <ol class="workflow-steps five-steps">
+          <li><span>01</span><b>CONTRACT</b><p>解析语言目标、阶段和动作表示；显式声明 camera 或 robot_base 坐标系。</p></li>
+          <li><span>02</span><b>ROUTE</b><p>依据 skeleton、EEF、joint 或 pointmap 选择 OSCAR、BWM 或 Kinema4D。</p></li>
+          <li><span>03</span><b>GENERATE</b><p>GPU 预检、固定 revision、记录 seed 与环境；每次运行写入全新实验目录。</p></li>
+          <li><span>04</span><b>GATE</b><p>五项数值门与强制人工复核逐条通过才接受；本次为 2 / 3 动作通过。</p></li>
+          <li><span>05</span><b>REPAIR</b><p>右移改用上提竖直模板 + 右向弧线，并由 OSCAR 重新生成完整关节运动；刚性平移版降级为反证。</p></li>
+        </ol>
+
+        <div class="evidence-grid">
+          <article class="metric-panel">
+            <header><span>REAL RUN EVIDENCE</span><b id="evidenceStatus">LOADING</b></header>
+            <dl>
+              <div><dt>OSCAR 实跑输出</dt><dd id="outputCount">4 / 4</dd></div>
+              <div><dt>原生动作通过</dt><dd id="rawAcceptanceValue">2 / 3</dd></div>
+              <div><dt>Workflow 通过</dt><dd id="acceptanceValue">2 / 3</dd></div>
+              <div><dt>匹配协议</dt><dd id="alignmentValue">81 @ 15 FPS</dd></div>
+              <div><dt>右搬动作遵循</dt><dd id="rightMetric">0.95 · PASS</dd></div>
+              <div><dt>目标方向进度</dt><dd id="structureMetric">1.20× · PASS</dd></div>
+              <div><dt>上提动作遵循</dt><dd id="liftMetric">0.99 · PASS</dd></div>
+              <div><dt>左移动作遵循</dt><dd id="leftMetric">0.28 · FAIL</dd></div>
+              <div><dt>人工复核</dt><dd id="reviewValue">REQUIRED</dd></div>
+            </dl>
+          </article>
+          <article class="honesty-panel mixed-result">
+            <span id="honestStatus">HONEST STATUS / PARTIAL · REAL MODEL RUN</span>
+            <h3 id="honestTitle">两条原生动作通过，<br>刚性平移修复被撤回。</h3>
+            <p id="honestCopy">上提与弧线右搬均为原生 OSCAR 输出；新右搬候选保持手臂—手腕—手指连续，并带动黄碗右上移动。直接右滑因手指碎裂失败，固定拓扑版因整手刚性平移被用户拒绝；左移仍未带动物体，因此整体保持 PARTIAL。</p>
+            <a href="showcase/oscar-acwm-evaluation.json" download>下载评测、revision 与哈希 ↓</a>
+          </article>
+        </div>
+      </section>
     </main>
 
-    <script>
-      const videos = document.querySelectorAll("video");
-      videos.forEach((video) => {
-        video.addEventListener("play", () => {
-          videos.forEach((other) => {
-            if (other !== video) {
-              other.pause();
-            }
-          });
-        });
-      });
-    </script>
+    <footer><span>PHIAGENT / REAL-SCENE ACTION-CONDITIONED WORLD MODEL</span><span>OSCAR-2B · REPRODUCIBLE AGENT WORKFLOW · 2026</span></footer>
+    <script src="app.js?v=7"></script>
   </body>
 </html>

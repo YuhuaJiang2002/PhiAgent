@@ -1,0 +1,27 @@
+{
+  "evidence": [
+    "Remote experiment outputs/acwm-open-models/20260810T154728Z-e2d30e20 contains three 81-frame same-case, same-seed native OSCAR candidates and per-candidate evaluation evidence.",
+    "Candidates 000 and 001 articulate the robot but leave the yellow bowl static, producing zero action adherence.",
+    "Candidate 002 moves the bowl somewhat upward and rightward but misses the declared terminal-progress gate.",
+    "The batch exposed a duplicate-case adapter bug: dictionary pairing collapsed repeated slide-right requests and caused the workflow evaluator to revisit one evidence directory. The adapter now pairs backend results in strict request order and regression tests cover duplicate case IDs."
+  ],
+  "lessons": [
+    "Prompt-only repair cannot substitute for a trajectory whose contact and vertical phases are already demonstrated by the model.",
+    "Same-case candidate batches require order-preserving result pairing; case_id is not a unique request key."
+  ],
+  "limitations": [
+    "None of the three candidates passed the complete automatic and human acceptance protocol."
+  ],
+  "next_actions": [
+    "Compile a lift-then-carry trajectory from the successful lift-up vertical template and resample one native OSCAR candidate."
+  ],
+  "record_id": "2026-08-10.acwm-oscar-same-seed-prompt-batch",
+  "recorded_at": "2026-08-10T15:55:00Z",
+  "run_dir": "outputs/acwm-open-models/20260810T154728Z-e2d30e20",
+  "schema_version": "1.0.0",
+  "scope": "Three same-seed native OSCAR prompt-repair candidates for direct slide-right",
+  "status": "PARTIAL",
+  "summary": "Three articulated prompt variants generated successfully, but none established the required causal rightward bowl motion; the batch also revealed and led to a fix for duplicate-case result pairing.",
+  "supersedes": ["2026-08-10.acwm-oscar-articulated-prompt-v1-missing-runtime"],
+  "tags": ["acwm", "oscar", "prompt-repair", "same-seed", "adapter-fix", "partial"]
+}
