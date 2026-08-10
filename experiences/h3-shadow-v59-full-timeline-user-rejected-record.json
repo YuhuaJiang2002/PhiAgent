@@ -1,0 +1,29 @@
+{
+  "record_id": "2026-08-11.h3-shadow-v59-full-timeline-user-rejected",
+  "recorded_at": "2026-08-11T04:45:44+08:00",
+  "status": "PARTIAL",
+  "scope": "Post-publication full-timeline human review of the v59 H3 shadow and residual-hand cleanup",
+  "summary": "The v59 promotion is withdrawn: denser full-timeline review finds recognizable source-human hands and forearms in multiple intervals, including a large horizontal forearm near frame 462.",
+  "evidence": [
+    "review/frame462-lower-right-v59.png shows a clear peach human forearm extending from the generated robot/flower contact region across the lower-right work area.",
+    "review/v59-timeline-1.jpg through review/v59-timeline-4.jpg expose additional residual-human hand/forearm intervals around frames 135--240 and 405--474 that the earlier sparse review did not sample densely enough.",
+    "review/lower-roi-skin-components-440-520.jpg shows that the global connected-component selector merges the forearm with flower/table-coloured pixels and then rejects it under the 15,000-pixel maximum-area gate.",
+    "No replacement showcase is published from this audit."
+  ],
+  "lessons": [
+    "Sparse early/late frame sampling is insufficient for a 660-frame human-removal claim; all interaction phases need dense timeline coverage.",
+    "Connected components must be formed after a task-specific spatial crop or tracked negative matte because global skin-colour connectivity can merge a real forearm with flowers and table content.",
+    "Neutral shadow attenuation and recognizable human-limb removal require independent masks, strengths, and acceptance checks."
+  ],
+  "limitations": [
+    "The audit identifies the failure intervals but does not itself provide an accepted corrected video.",
+    "The source pose-arm track is spatially misaligned with the generated residual arm near frame 462 and cannot be used as a direct deletion matte."
+  ],
+  "next_actions": [
+    "Use densely reviewed, temporally interpolated residual-arm keyframes for the strong negative matte while keeping robot metal and verified flower pixels on top.",
+    "Increase only the neutral-shadow spatial reach while reducing its blend strength, then rerun all 660-frame locality, temporal, dense-review, and decode gates."
+  ],
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T161500Z-v59-user-rejection-audit",
+  "supersedes": ["2026-08-11.h3-shadow-v59-wide-light-hand-clean-accepted"],
+  "tags": ["minimax-h3", "user-rejection", "human-forearm", "dense-review", "partial"]
+}

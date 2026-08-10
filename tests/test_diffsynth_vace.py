@@ -21,6 +21,14 @@ from phiagent.training.diffsynth_vace import (
 )
 
 
+def test_vace_training_entrypoint_persists_pinned_provenance() -> None:
+    source = Path("scripts/train_sharpa_vace_lora.py").read_text()
+
+    assert '"diffsynth_commit": diffsynth_commit' in source
+    assert '"checkpoint_files": [' in source
+    assert '"manifest_sha256": _sha256' in source
+
+
 def _asset(path: Path, asset_id: str, kind: AdaptationAssetKind) -> AdaptationAsset:
     return AdaptationAsset(
         asset_id,

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_indices": [272, 275, 278, 281, 284, 287, 290, 293, 296, 299, 302, 305, 308, 311, 314, 317, 320],
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-01",
+      "object_id": 101,
+      "anchor_source_frame": 296,
+      "box_xyxy": [470, 245, 535, 305],
+      "positive_points_xy": [[487, 266], [501, 274], [514, 282]],
+      "negative_points_xy": [[468, 282], [458, 302], [532, 248], [526, 302]],
+      "minimum_area_pixels": 120,
+      "maximum_area_pixels": 7000,
+      "role": "upper mechanical hand at bouquet contact"
+    },
+    {
+      "instance_id": "robot-hand-lower-02",
+      "object_id": 102,
+      "anchor_source_frame": 296,
+      "box_xyxy": [438, 296, 505, 370],
+      "positive_points_xy": [[463, 326], [474, 337], [482, 348]],
+      "negative_points_xy": [[462, 306], [446, 292], [501, 366], [511, 331]],
+      "minimum_area_pixels": 100,
+      "maximum_area_pixels": 7000,
+      "role": "lower mechanical hand supporting stems"
+    }
+  ],
+  "notes": "Manual prompts were selected on the immutable H3 candidate at source frame 296. Tight boxes and flower/stem negatives are intended to isolate the two visible mechanical hands rather than their forearms or bouquet."
+}

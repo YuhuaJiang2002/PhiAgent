@@ -4,38 +4,39 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#07100d">
-    <meta name="description" content="基于真实 Hand2Dex-2 场景与 OSCAR-2B 的 action-conditioned world model 演示：语言指令编译为机器人骨架控制，并以同首帧、同 seed 的反事实视频接受门验收。">
-    <meta property="og:title" content="PhiAgent · Open AC-WM Lab">
-    <meta property="og:description" content="真实视频输入、显式机器人动作条件、OSCAR-2B 反事实生成与可复现实验门控。">
+    <meta name="description" content="PhiAgent 真实场景具身智能展示：语言动作控制、OSCAR action-conditioned world model、20–27 秒长时案例、A800 任务适配训练与可复现实验门控。">
+    <meta property="og:title" content="PhiAgent · Real-Scene Embodied Lab">
+    <meta property="og:description" content="真实视频输入、显式机器人动作条件、长时动作迁移、A800 训练优化与诚实的通过/失败证据。">
     <meta property="og:type" content="website">
     <meta property="og:image" content="og.png">
-    <title>PhiAgent · Open AC-WM Lab</title>
-    <link rel="stylesheet" href="styles.css?v=6">
+    <title>PhiAgent · Real-Scene Embodied Lab</title>
+    <link rel="stylesheet" href="styles.css?v=9">
   </head>
   <body>
     <header class="topbar">
-      <a class="brand" href="#top"><span class="brand-mark"><i></i><i></i><i></i></span><b>PhiAgent</b><em>/ OPEN AC-WM LAB</em></a>
+      <a class="brand" href="#top"><span class="brand-mark"><i></i><i></i><i></i></span><b>PhiAgent</b><em>/ REAL-SCENE EMBODIED LAB</em></a>
       <nav aria-label="页面导航">
-        <a href="#studio">CONTROL</a>
-        <a href="#comparison">COMPARE</a>
-        <a href="#router">ROUTER</a>
+        <a href="#studio">AC-WM</a>
+        <a href="#long-cases">LONG CASES</a>
+        <a href="#training">TRAINING</a>
+        <a href="#gallery">GALLERY</a>
         <a href="#evidence">EVIDENCE</a>
       </nav>
-      <div class="runtime"><i></i><span>OSCAR-2B · NATIVE ARTICULATION · A800</span></div>
+      <div class="runtime"><i></i><span>OSCAR · H3+EPL · VACE LORA · A800</span></div>
     </header>
 
     <main id="top">
       <section class="hero">
         <div>
-          <p class="kicker"><span>REAL FIRST FRAME</span><b>×</b><span>ROBOT SKELETON</span><b>×</b><span>OPEN WORLD MODEL</span></p>
-          <h1>一句动作指令，<br><em>生成不同的机器人未来。</em></h1>
+          <p class="kicker"><span>REAL SCENES</span><b>×</b><span>ACTION CONTROL</span><b>×</b><span>LONG-HORIZON ADAPTATION</span></p>
+          <h1>控制动作，<br><em>也验证长时未来。</em></h1>
         </div>
         <div class="hero-copy">
-          <p>语言不是只写进 prompt：agent 先把它编译成逐帧机器人骨架，再由 OSCAR-2B 在同一张真实实验台首帧上生成反事实未来。针对右移手型失真，agent 改用“先抬起、再沿弧线右搬”的条件轨迹，让肩、肘、腕和手指由模型原生连续生成；结果仍须通过动作、形态、物体、时序、背景和人工复核。</p>
+          <p>这里同时展示短时精细动作控制与长时真实场景适配。语言先被编译成逐帧动作条件，再由 OSCAR、H3+EPL 或 VACE 分支生成和优化；所有结果都区分真实观测、原生模型输出、后处理与训练适配，并保留没有通过语义门的失败案例。</p>
           <dl>
-            <div><dt>INPUT</dt><dd>REAL HAND2DEX-2 VIDEO</dd></div>
-            <div><dt>ACTION</dt><dd>CAMERA-PIXEL SKELETON</dd></div>
-            <div><dt>OUTPUT</dt><dd>81 FRAMES · 15 FPS</dd></div>
+            <div><dt>FEATURED AC-WM</dt><dd>5.4 S · 81 FRAMES</dd></div>
+            <div><dt>LONG CASES</dt><dd>20.7 S / 27.5 S</dd></div>
+            <div><dt>OPTIMIZATION</dt><dd>A800 · REGIONAL LORA</dd></div>
           </dl>
         </div>
       </section>
@@ -89,9 +90,62 @@
         </aside>
       </section>
 
+      <section class="long-cases" id="long-cases">
+        <header class="section-head">
+          <div><p>02 / LONG REAL-SCENE CASES</p><h2>不只看三秒，<br>完整时间线也要过门。</h2></div>
+          <p>长时案例不把“时间更长”冒充“能力更强”。每个卡片都标明真实输入、生成或几何路线、是否经过训练，以及它实际验证了什么。当前公开案例覆盖 20.7 秒手部姿态迁移和 27.5 秒双手插花场景。</p>
+        </header>
+        <div class="case-grid">
+          <article class="case-card case-wide">
+            <div class="case-media">
+              <video controls playsinline muted preload="metadata" poster="showcase/long-case-shadow-hand-poster.jpg?v=9">
+                <source src="showcase/five-finger-shadow-arm-background-locked.mp4?v=9" type="video/mp4">
+              </video>
+              <span class="duration-chip">20.7 S · 621 FRAMES</span>
+            </div>
+            <div class="case-copy">
+              <span class="status-pass">CASE A / LONG GESTURE · WORKING</span>
+              <h3>真实手部视频 → 24-DOF Shadow Hand</h3>
+              <p>完整 621 帧采用 MediaPipe + Dexpilot 几何重定向，并锁定背景与屏幕尺度。它验证长时五指姿态连续性，不包含物体交互，也不是生成式 AC-WM。</p>
+              <dl class="case-facts"><div><dt>SCENE</dt><dd>REAL EGO HAND</dd></div><div><dt>ROUTE</dt><dd>GEOMETRIC RETARGETING</dd></div><div><dt>LIMIT</dt><dd>NO CONTACT OBJECT</dd></div></dl>
+            </div>
+          </article>
+
+          <article class="case-card">
+            <div class="case-media portrait-media">
+              <video controls playsinline muted preload="metadata" poster="showcase/long-case-flower-source-poster.jpg?v=9">
+                <source src="showcase/real-flower-arranging.mp4?v=9" type="video/mp4">
+              </video>
+              <span class="duration-chip">27.5 S · 660 FRAMES</span>
+            </div>
+            <div class="case-copy">
+              <span class="status-neutral">CASE B / REAL OBSERVATION</span>
+              <h3>真实双手插花完整观测</h3>
+              <p>未截断的真实相机输入包含双手交叉、花枝遮挡、接触、释放和重新抓取。它是训练与评测源，不代表机器人已经完成任务。</p>
+              <dl class="case-facts"><div><dt>SCENE</dt><dd>REAL HUMAN</dd></div><div><dt>TASK</dt><dd>BIMANUAL FLOWER</dd></div><div><dt>STATUS</dt><dd>INPUT ONLY</dd></div></dl>
+            </div>
+          </article>
+
+          <article class="case-card">
+            <div class="case-media portrait-media">
+              <video controls playsinline muted preload="metadata" poster="showcase/long-case-flower-robot-poster.jpg?v=9">
+                <source src="showcase/real-flower-arranging-h3-wide-light-shadow-hand-clean-vertical.mp4?v=9" type="video/mp4">
+              </video>
+              <span class="duration-chip">27.5 S · HUMAN / ROBOT</span>
+            </div>
+            <div class="case-copy">
+              <span class="status-fail">CASE C / H3+EPL · USER REJECTED</span>
+              <h3>长时迁移为什么需要逐段密审</h3>
+              <p>上方为真实输入，下方为 H3+EPL 候选。早期稀疏复核曾误判通过；随后覆盖全部交互阶段的密集复核在约 135–240 和 405–474 帧发现残留真人手臂，包括 462 帧的大面积前臂。该视频仅保留为长时验收反例。</p>
+              <dl class="case-facts"><div><dt>DURATION</dt><dd>27.5 S</dd></div><div><dt>FAILURE</dt><dd>HUMAN LIMB RESIDUE</dd></div><div><dt>STATUS</dt><dd>PARTIAL / REJECTED</dd></div></dl>
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="comparison" id="comparison">
         <header class="section-head">
-          <div><p>02 / MATCHED COUNTERFACTUALS</p><h2>动作差异清楚，<br>失败也必须展示。</h2></div>
+          <div><p>03 / MATCHED COUNTERFACTUALS</p><h2>动作差异清楚，<br>失败也必须展示。</h2></div>
           <p>所有生成共享真实首帧、OSCAR-2B 权重、35 个推理步、guidance 6.0 和 seed 20260810。用户指出直接右移会出现手型碎裂，固定拓扑修复又像整只手被平移；因此主结果改为右侧视频同类的原生生成方法，并用上提轨迹作为竖直运动模板，再沿弧线向右搬运。</p>
         </header>
         <div class="action-grid">
@@ -110,9 +164,45 @@
         </div>
       </section>
 
+      <section class="training" id="training">
+        <header class="section-head">
+          <div><p>04 / A800 TASK ADAPTATION</p><h2>先训练短窗口，<br>再决定是否生成长视频。</h2></div>
+          <p>27.5 秒插花任务采用区域 VACE LoRA 做有界适配。训练只使用授权的合成 Sharpa/花枝监督；真实视频先切出最难的接触窗口，并要求完整去除人、双手结构、因果接触和花枝身份全部通过。短窗口失败时，workflow 会阻止昂贵的整段扩展。</p>
+        </header>
+        <div class="training-grid">
+          <article class="training-player">
+            <header><span>REAL CRITICAL WINDOW / MATCHED ABLATION</span><b id="trainingDecision">REJECT FULL EXPANSION</b></header>
+            <video controls playsinline muted preload="metadata" poster="showcase/flower-task-vace-real-window-poster.jpg?v=9">
+              <source src="showcase/flower-task-vace-real-window-ablation.mp4?v=9" type="video/mp4">
+            </video>
+            <p>左：真实输入；中：zero-shot；右：rank-8 任务 LoRA。两个候选共享区域 mask、控制、prompt、seed 和 20 个推理步。视频只展示真实关键窗口，不把失败扩展成 27.5 秒成片。</p>
+          </article>
+          <article class="training-report">
+            <div class="train-head"><span>A800 / VACE-1.3B</span><b>PARTIAL</b></div>
+            <h3>训练可以运行，<br>但语义质量决定是否继续。</h3>
+            <div class="train-metrics">
+              <div><span>SMOKE TRAIN</span><b>12 / 12 STEPS</b><small>rank 4 · GPU 1 · 31 s</small></div>
+              <div><span>OPTIMIZED TRAIN</span><b id="optimizedTrainSteps">96 STEPS</b><small id="optimizedTrainDetail">rank 8 · GPU 4 · bounded rerun</small></div>
+              <div><span>REAL WINDOW</span><b id="trainingMotionDelta">−0.0111</b><small>control-motion delta</small></div>
+              <div><span>SEMANTIC GATES</span><b id="trainingSemanticGates">0 / 4</b><small>human / hands / contact / identity</small></div>
+            </div>
+            <p class="train-note">rank-8 的 96 步训练完成并产生四个 checkpoint，但真实窗口仍保留人头与躯干、机械结构碎裂，也没有可审计的手—花枝接触；控制运动对齐还回退 0.0111。语义门未通过，因此状态保持 PARTIAL，整段扩展没有启动。</p>
+            <div class="training-links">
+              <a href="showcase/flower-task-vace-real-window-evaluation.json">下载训练对照证据 ↓</a>
+              <a href="https://github.com/YuhuaJiang2002/PhiAgent/blob/main/docs/FLOWER_TASK_ADAPTATION.md" target="_blank" rel="noreferrer">查看完整训练协议 ↗</a>
+            </div>
+          </article>
+        </div>
+        <div class="data-roadmap">
+          <div><span>NEXT REAL ACTION DATA</span><h3>从展示案例走向可训练 AC-WM</h3></div>
+          <p><b>DROID</b> 提供真实场景视频、7D 动作和语言指令，适合 camera + robot action 联合条件；<b>BridgeData V2</b> 提供 60,096 条带语言标注的真实轨迹，适合先做小规模 pick/place 与抽屉任务。二者只列为下一阶段数据入口，尚未混入本次训练。</p>
+          <div class="roadmap-links"><a href="https://droid-dataset.github.io/" target="_blank" rel="noreferrer">DROID ↗</a><a href="https://rail-berkeley.github.io/bridgedata/" target="_blank" rel="noreferrer">BridgeData V2 ↗</a></div>
+        </div>
+      </section>
+
       <section class="router" id="router">
         <header class="section-head">
-          <div><p>03 / MODEL ROUTER</p><h2>按动作坐标系路由，<br>不伪造模型输入。</h2></div>
+          <div><p>05 / MODEL ROUTER</p><h2>按动作坐标系路由，<br>不伪造模型输入。</h2></div>
           <p>agent 先验证动作表示与坐标系，再选择后端。当前真实场景只有 camera:skeleton 条件，因此 OSCAR 可以实跑；BWM 与 Kinema4D 分支已经接入，但缺少原生机器人状态时会明确门控停止。</p>
         </header>
         <div class="router-grid">
@@ -123,9 +213,22 @@
         </div>
       </section>
 
+      <section class="gallery" id="gallery">
+        <header class="section-head">
+          <div><p>06 / PRIOR REAL-SCENE EVIDENCE</p><h2>保留原画廊，<br>让能力演进可比较。</h2></div>
+          <p>旧页面中的真实场景替换案例继续保留。它们覆盖第一视角、三种灵巧手和两指夹爪失败案例，主要验证视觉迁移与 confidence routing；除非卡片明确说明，否则不等同于动作条件 world model 或物理执行。</p>
+        </header>
+        <div class="archive-grid">
+          <article class="archive-card"><video controls playsinline muted preload="metadata" poster="showcase/ego-cabbage-human-vs-robot-confidence-routed.jpg"><source src="showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4" type="video/mp4"></video><div><span>REAL EGO / PARTIAL</span><h3>卷心菜操作：人类 vs 机器人</h3><p>视觉结果连贯，但物体一致性与局部时序门未通过。</p></div></article>
+          <article class="archive-card"><video controls playsinline muted preload="metadata" poster="showcase/three-hand-confidence-routed.jpg"><source src="showcase/three-hand-confidence-routed.mp4" type="video/mp4"></video><div><span>MULTI-EMBODIMENT</span><h3>三种灵巧手同场对照</h3><p>Sharpa、Linker 与 Shadow 候选使用统一 confidence-routing 展示。</p></div></article>
+          <article class="archive-card"><video controls playsinline muted preload="metadata" poster="showcase/vendor-hand-confidence-routed-comparison.jpg"><source src="showcase/vendor-hand-confidence-routed-comparison.mp4" type="video/mp4"></video><div><span>VENDOR HANDS / PARTIAL</span><h3>Sharpa、Allegro、Shadow</h3><p>同场景外观迁移对照；严格物体和时序门仍未全部通过。</p></div></article>
+          <article class="archive-card rejected-card"><video controls playsinline muted preload="metadata" poster="showcase/four-embodiment-gripper-attempt.jpg"><source src="showcase/four-embodiment-gripper-attempt.mp4" type="video/mp4"></video><div><span>NEGATIVE EVIDENCE</span><h3>两指夹爪形态失败</h3><p>动作可迁移，但生成模型把 Robotiq 重新变成人形手，明确保留为反例。</p></div></article>
+        </div>
+      </section>
+
       <section class="workflow" id="evidence">
         <header class="section-head">
-          <div><p>04 / AGENTIC AC-WM BRANCH</p><h2>生成、验收、修复，<br>每一步都有证据。</h2></div>
+          <div><p>07 / AGENTIC EVIDENCE LOOP</p><h2>生成、训练、验收，<br>每一步都有证据。</h2></div>
           <p>新增分支沿用现有 workflow 的候选生成、评分、修复与审计结构，但增加动作契约、模型能力路由和强制人工门。失败不会被平均分掩盖，也不会被从展示中删除。</p>
         </header>
         <ol class="workflow-steps five-steps">
@@ -161,7 +264,7 @@
       </section>
     </main>
 
-    <footer><span>PHIAGENT / REAL-SCENE ACTION-CONDITIONED WORLD MODEL</span><span>OSCAR-2B · REPRODUCIBLE AGENT WORKFLOW · 2026</span></footer>
-    <script src="app.js?v=7"></script>
+    <footer><span>PHIAGENT / REAL-SCENE EMBODIED INTELLIGENCE LAB</span><span>OSCAR · H3+EPL · VACE LORA · REPRODUCIBLE WORKFLOW · 2026</span></footer>
+    <script src="app.js?v=9"></script>
   </body>
 </html>

@@ -147,7 +147,7 @@ document.querySelectorAll("[data-action]").forEach((button) => {
 document.querySelectorAll(".view-button").forEach((button) => {
   button.addEventListener("click", () => loadView(button.dataset.view));
 });
-document.querySelectorAll(".action-card video").forEach((video) => {
+document.querySelectorAll(".action-card video, .case-card video, .archive-card video").forEach((video) => {
   video.addEventListener("mouseenter", () => video.play().catch(() => {}));
   video.addEventListener("mouseleave", () => {
     video.pause();
@@ -160,7 +160,7 @@ document.addEventListener("keydown", (event) => {
   if ((event.metaKey || event.ctrlKey) && event.key === "Enter") form.requestSubmit();
 });
 
-fetch("showcase/oscar-acwm-evaluation.json?v=7")
+fetch("showcase/oscar-acwm-evaluation.json?v=9")
   .then((response) => response.ok ? response.json() : Promise.reject(new Error("manifest unavailable")))
   .then((manifest) => {
     const variants = Object.fromEntries(manifest.variants.map((item) => [item.case_id, item]));
@@ -181,6 +181,20 @@ fetch("showcase/oscar-acwm-evaluation.json?v=7")
   })
   .catch(() => {
     document.querySelector("#evidenceStatus").textContent = "PENDING SYNC";
+  });
+
+fetch("showcase/flower-task-vace-real-window-evaluation.json?v=9")
+  .then((response) => response.ok ? response.json() : Promise.reject(new Error("training evidence unavailable")))
+  .then((evidence) => {
+    const semanticPasses = Object.values(evidence.semantic_gates || {}).filter(Boolean).length;
+    const semanticTotal = Object.keys(evidence.semantic_gates || {}).length;
+    const motionDelta = evidence.metrics?.adapted_vs_zero?.control_motion_alignment_delta;
+    document.querySelector("#trainingDecision").textContent = evidence.decision.replaceAll("_", " ");
+    document.querySelector("#trainingMotionDelta").textContent = Number.isFinite(motionDelta) ? motionDelta.toFixed(4) : "N/A";
+    document.querySelector("#trainingSemanticGates").textContent = `${semanticPasses} / ${semanticTotal}`;
+  })
+  .catch(() => {
+    document.querySelector("#trainingDecision").textContent = "EVIDENCE PENDING";
   });
 
 updateCount();

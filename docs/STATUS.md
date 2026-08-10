@@ -1,11 +1,22 @@
 # Status
 
-Evidence date: 2026-08-09. Status labels describe acceptance evidence, not code
+Evidence date: 2026-08-11. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
 ## WORKING
 
+- Bounded flower-task VACE training: physical A800 GPU 4 completed 96 planned
+  rank-8 optimization steps across four epochs and wrote four 10,971,312-byte
+  checkpoints. The final checkpoint SHA-256 is
+  `7d5bae3977b0482a4aeb61ed335b706b0bda714efbdf24a55388566ee705deaa`.
+  This is WORKING as reproducible trainer execution only; the real-window visual
+  result remains PARTIAL below.
+- Reproducible long-case packaging: three 20.7/27.5-second real-scene cases and
+  one matched 17-frame training ablation are probed, hashed, posterized, and
+  published through `scripts/build_long_real_scene_showcase.py`. The original
+  real input, geometric Shadow-hand result, rejected H3+EPL long candidate, and
+  rank-8 VACE failure are labelled separately rather than merged into one claim.
 - Phase A remote environment: Python 3.10.12, PyTorch 2.6.0+cu124,
   flash-attn 2.7.4.post1, MuJoCo 3.3.7, CUDA visible, and all dependencies in
   `.venv-gpu` on `a800-1`.
@@ -155,6 +166,19 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- Rank-8 flower-task real-window gate:
+  `outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2`
+  compares zero-shot and task-LoRA candidates on the same real 17-frame input,
+  control, mask, prompt, seed, and 20-step protocol. Outside-edit similarity
+  improves from 0.92105 to 0.92148, but control-motion alignment regresses from
+  0.35681 to 0.34569. Dense review finds retained human head/torso, fragmented
+  robot geometry, no two coherent hands, no causal stem contact, and no
+  persistent flower identity. All four semantic gates fail and
+  `REJECT_FULL_EXPANSION` prevents an unsupported 27.5-second inference.
+- H3+EPL flower candidate v59 is withdrawn after denser full-timeline review.
+  The 27.5-second video is retained only as negative evidence: residual human
+  hands/forearms are visible around frames 135--240 and 405--474, including a
+  large forearm at frame 462. It is not a WORKING robot-replacement result.
 - Robotiq two-finger gripper attempt: the pinned MuJoCo Menagerie 2F-85 asset at
   revision `c1a4eeb85694ae1dffe33ff1797d4e528928a133` was composited into the
   same case-3 apple scene and run through replacement, compiled SAM2, relighting

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.metadata
 import json
 import os
@@ -22,9 +23,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from phiagent.data.adaptation import AdaptationArm  # noqa: E402
 from phiagent.rendering.wan_animate import query_gpus, select_gpu  # noqa: E402
-from phiagent.training.diffsynth_animate import load_frozen_manifest  # noqa: E402
+from phiagent.training.diffsynth_animate import (  # noqa: E402
+    load_frozen_manifest,
+    verify_diffsynth_checkout,
+)
 from phiagent.training.diffsynth_vace import (  # noqa: E402
     build_vace_training_command,
+    verify_vace_checkpoint,
     write_vace_metadata,
 )
 
@@ -33,6 +38,14 @@ def _write_json(path: Path, payload: object) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
     temporary.replace(path)
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def _git_state(root: Path) -> dict[str, object]:
@@ -97,6 +110,9 @@ def main() -> int:
     if not accelerate.is_file():
         raise SystemExit(f"accelerate does not exist: {accelerate}")
 
+    diffsynth_commit = verify_diffsynth_checkout(args.diffsynth_repo)
+    checkpoint_files = verify_vace_checkpoint(args.checkpoint_dir)
+
     gpus, inventory, processes = query_gpus()
     selected = select_gpu(gpus, args.gpu, args.minimum_free_gpu_mib)
     os.environ["CUDA_VISIBLE_DEVICES"] = str(selected.physical_index)
@@ -146,6 +162,11 @@ def main() -> int:
             "accelerate": str(accelerate),
         },
         "effective_settings": settings,
+        "manifest_sha256": _sha256(args.manifest.expanduser().resolve()),
+        "diffsynth_commit": diffsynth_commit,
+        "checkpoint_files": [
+            {"path": str(path), "sha256": _sha256(path)} for path in checkpoint_files
+        ],
         "selected_gpu": asdict(selected),
         "gpu_inventory": [asdict(gpu) for gpu in gpus],
         "gpu_inventory_raw": inventory,

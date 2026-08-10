@@ -1,0 +1,74 @@
+{
+  "cases": {
+    "flower_h3_epl_27s": {
+      "limitation": "Dense full-timeline review found residual human hands and forearms around frames 135-240 and 405-474, including a large forearm at frame 462.",
+      "method": "H3 + EPL localized rendering, protection and temporal gates",
+      "path": "demo/showcase/real-flower-arranging-h3-wide-light-shadow-hand-clean-vertical.mp4",
+      "role": "long real-scene visual robot-transfer negative evidence",
+      "sha256": "73aaa7b2544215025fc2582de3739ba4e5e2b71b7fb562ee3823a4e914c65179",
+      "status": "PARTIAL_USER_REJECTED",
+      "video": {
+        "duration_seconds": 27.5,
+        "fps": 24.0,
+        "frames": 660,
+        "height": 768,
+        "width": 672
+      }
+    },
+    "flower_source_27s": {
+      "limitation": "This is not robot execution or generated output.",
+      "method": "unaltered real-scene video",
+      "path": "demo/showcase/real-flower-arranging.mp4",
+      "role": "real human observation and evaluation source",
+      "sha256": "f12ef50ca6050df10990cc759dd74ffc772eca8d927c9c4d1845e9fa1aafe065",
+      "status": "INPUT_ONLY",
+      "video": {
+        "duration_seconds": 27.5,
+        "fps": 24.0,
+        "frames": 660,
+        "height": 720,
+        "width": 1280
+      }
+    },
+    "flower_vace_real_window": {
+      "limitation": "Seventeen-frame gate failed 0/4 semantic checks; full 27.5-second inference was blocked.",
+      "method": "Wan2.1-VACE-1.3B rank-8 regional LoRA, 96 optimization steps",
+      "path": "demo/showcase/flower-task-vace-real-window-ablation.mp4",
+      "role": "matched zero-shot versus task-LoRA critical-window ablation",
+      "sha256": "843efca3e80016f0883edadc345a3e2521fe6b4d2a8caf770b7300a00f53f4c1",
+      "status": "PARTIAL",
+      "video": {
+        "duration_seconds": 2.125,
+        "fps": 8.0,
+        "frames": 17,
+        "height": 256,
+        "width": 1344
+      }
+    },
+    "shadow_hand_20s": {
+      "limitation": "No manipulated object; not a generative AC-WM result.",
+      "method": "MediaPipe + Dexpilot + background lock",
+      "path": "demo/showcase/five-finger-shadow-arm-background-locked.mp4",
+      "role": "long geometric retargeting result",
+      "sha256": "75a493b177f4f7c50b6c737d4c0251049e15e7e8f2a4439cd63fdedd29eab7f4",
+      "status": "WORKING",
+      "video": {
+        "duration_seconds": 20.7,
+        "fps": 30.0,
+        "frames": 621,
+        "height": 768,
+        "width": 2560
+      }
+    }
+  },
+  "evidence_created_at": "2026-08-10T20:44:32.147583+00:00",
+  "limitations": [
+    "Long duration is reported separately from action-condition quality.",
+    "Only the OSCAR comparison elsewhere on the page is accepted native AC-WM evidence."
+  ],
+  "schema_version": "1.0.0",
+  "training_evaluation": {
+    "path": "demo/showcase/flower-task-vace-real-window-evaluation.json",
+    "sha256": "ea0b85c02844ee218708427fa3b6d5aacc06975005677121e78b872a9141f6e5"
+  }
+}

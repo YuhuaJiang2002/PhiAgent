@@ -1,0 +1,26 @@
+{
+  "record_id": "2026-08-11.flower-task-real-window-rank8-ablation-v2",
+  "recorded_at": "2026-08-10T20:46:00Z",
+  "status": "PARTIAL",
+  "scope": "Matched real critical-window evaluation of the final rank-8 flower-task VACE checkpoint",
+  "summary": "The stronger adapter still fails all four semantic gates and regresses control-motion alignment, so the workflow again rejects full 27.5-second expansion.",
+  "evidence": [
+    "Inference reused the same real input, control, edit mask, reference, prompt, seed 20260811, 20 steps, denoising strength 0.75, and 448x256x17 protocol.",
+    "Outside-edit similarity improves from 0.921049 to 0.921482, a delta of +0.000434.",
+    "Control-motion alignment falls from 0.356812 to 0.345687, a delta of -0.011125.",
+    "Uniform review of frames 0, 4, 8, 12, and 16 finds retained human head/torso, fragmented robot geometry, no two coherent hands, no causal stem contact, and no persistent flower-identity evidence.",
+    "evaluation.json records 0/4 semantic gates and REJECT_FULL_EXPANSION."
+  ],
+  "lessons": [
+    "Increasing LoRA rank and optimization steps on the same small synthetic distribution does not close the real embodiment/contact gap.",
+    "The critical-window gate prevented a longer but scientifically unsupported output."
+  ],
+  "limitations": [
+    "The edit mask uses flower-union evidence rather than persistent stem instances.",
+    "This one 17-frame window cannot establish long-horizon quality."
+  ],
+  "next_actions": ["Use paired real robot/action data and persistent object instances before another adaptation attempt."],
+  "run_dir": "outputs/flower-task-adaptation/20260811T171000Z-real-window-rank8-ablation-v2",
+  "supersedes": ["2026-08-11.flower-task-real-window-ablation-v1"],
+  "tags": ["flower-task", "vace", "rank8", "real-window", "rejected-expansion", "partial"]
+}
