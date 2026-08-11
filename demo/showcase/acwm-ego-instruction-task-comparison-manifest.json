@@ -1,0 +1,98 @@
+{
+  "action_manifest": {
+    "path": "/data0/jiangyuhua/PhiAgent-0/configs/acwm_epic_ego_bottle_instruction_tasks_v4_continuous.json",
+    "sha256": "c1dee071d9b86bfeb6b6ba0464e0535f09a2b4f2903b7c2b4adce9cbd657c41d"
+  },
+  "actions": {
+    "handover-bottle": {
+      "fps": 24.0,
+      "frames": 240,
+      "height": 512,
+      "instruction": "Starting with the blue bottle held in the right robot hand, bring it to the center, transfer it into the left robot hand, separate the hands, and hold the bottle only in the left hand.",
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/robot-factored-refined.mp4",
+      "sha256": "d7e8d3fcca821ddc4d12277fc061efe9fe3afca07d14e629a4cc745b961d820a",
+      "width": 880
+    },
+    "rinse-bottle": {
+      "fps": 24.0,
+      "frames": 240,
+      "height": 480,
+      "instruction": "Starting with the blue bottle held in the right robot hand, move it under the faucet, use the left robot hand to operate the faucet, rotate and sweep the bottle through several rinsing orientations, then move it out of the water while keeping the grasp.",
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/rinse-bottle/rinse-bottle-h3-continuous-10s.mp4",
+      "sha256": "d6d7ae916342c8cb12a4a17e6b7eae3074d00b9c3a35d82a553231504fdb8e98",
+      "width": 832
+    },
+    "unscrew-bottle-cap": {
+      "fps": 24.0,
+      "frames": 240,
+      "height": 480,
+      "instruction": "Starting with the blue bottle held in the right robot hand, stabilize the bottle body, twist the cap counterclockwise with the left gripper, lift the separated cap, inspect it, and finish with the open bottle and detached cap visibly apart.",
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/unscrew-bottle-cap/unscrew-bottle-cap-h3-continuous-10s.mp4",
+      "sha256": "6b1ff1bf2df9d7ec9a96b85859965eacb71e45f0a93feff1309974148035b05c",
+      "width": 832
+    }
+  },
+  "claim_boundary": "Generated camera-frame action visualization; not physical-robot execution.",
+  "command": [
+    "/data0/jiangyuhua/PhiAgent-0/.venv-gpu/bin/python",
+    "scripts/build_acwm_multitask_demo.py",
+    "--source",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/prepared/input/real-source-240.mp4",
+    "--action",
+    "handover-bottle=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/robot-factored-refined.mp4",
+    "--action",
+    "unscrew-bottle-cap=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/unscrew-bottle-cap/unscrew-bottle-cap-h3-continuous-10s.mp4",
+    "--action",
+    "rinse-bottle=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/rinse-bottle/rinse-bottle-h3-continuous-10s.mp4",
+    "--action-manifest",
+    "configs/acwm_epic_ego_bottle_instruction_tasks_v4_continuous.json",
+    "--evaluation",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/evaluation/20260811T124500Z-v5-continuous.json",
+    "--output-dir",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/delivery/20260811T125000Z-v5-continuous",
+    "--ffmpeg",
+    "/usr/bin/ffmpeg"
+  ],
+  "created_at": "2026-08-11T12:27:12.313039+00:00",
+  "evaluation": {
+    "accepted": true,
+    "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/evaluation/20260811T124500Z-v5-continuous.json",
+    "sha256": "9a18233a12b4af1000f152c4eed7665e2d4fa0ffa736e100a95aa918da93a69b"
+  },
+  "git": {
+    "available": false,
+    "error": "CalledProcessError(128, ['git', 'rev-parse', 'HEAD'])"
+  },
+  "hostname": "VM-16-9-ubuntu",
+  "outputs": {
+    "ego-same-scene-three-instruction-tasks-10s.mp4": {
+      "sha256": "4e1dec3abdc2f41e94d2692d4e2ff776f358cce0f81933128e473b59a2e01d1d"
+    },
+    "ego-same-scene-three-instruction-tasks-poster.jpg": {
+      "sha256": "ae3682325de6bc9fd8e179fd3d9c221cc5483e33f5af7c17a85700bd33fb4d53"
+    },
+    "ego-three-instruction-tasks-generated-only-10s.mp4": {
+      "sha256": "bbb623b4c81dc17554292fc0316f706abdf94228b4397621c561269230eba841"
+    },
+    "ego-three-instruction-tasks-generated-only-poster.jpg": {
+      "sha256": "feb1f83fc086e77d12c57cb7407cc4b88e54c3cd4a55a56bc0760694c81211cf"
+    }
+  },
+  "packages": {
+    "numpy": "1.26.4",
+    "opencv-python": "4.10.0.84"
+  },
+  "platform": "Linux-5.4.119-19-0009.59+-x86_64-with-glibc2.35",
+  "python": "3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]",
+  "schema_version": "1.0.0",
+  "seed": 42,
+  "source": {
+    "fps": 24.0,
+    "frames": 240,
+    "height": 480,
+    "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/prepared/input/real-source-240.mp4",
+    "sha256": "208beb9d4c77741d6473a8e77e86a42f29a62ea4b0d6d14cf432d22ece41e170",
+    "width": 832
+  },
+  "status": "WORKING"
+}

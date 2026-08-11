@@ -93,9 +93,24 @@
       <section class="long-cases" id="long-cases">
         <header class="section-head">
           <div><p>02 / LONG REAL-SCENE CASES</p><h2>不只看三秒，<br>完整时间线也要过门。</h2></div>
-          <p>长时案例不把“时间更长”冒充“能力更强”。每个卡片都标明真实输入、生成或几何路线、是否经过训练，以及它实际验证了什么。当前公开案例覆盖 20.7 秒手部姿态迁移和 27.5 秒双手插花场景。</p>
+          <p>长时案例不把“时间更长”冒充“能力更强”。每个卡片都标明真实输入、生成或几何路线、是否经过训练，以及它实际验证了什么。当前公开案例覆盖 10 秒三动作生成对比、20.7 秒手部姿态迁移和 27.5 秒双手插花场景。</p>
         </header>
         <div class="case-grid">
+          <article class="case-card case-wide">
+            <div class="case-media">
+              <video controls playsinline muted preload="metadata" poster="showcase/acwm-ego-instruction-task-comparison-generated-only-poster.jpg?v=15">
+                <source src="showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4?v=15" type="video/mp4">
+              </video>
+              <span class="duration-chip">10.0 S · 3 ACTIONS · 240 FRAMES</span>
+            </div>
+            <div class="case-copy">
+              <span class="status-pass">CASE A / INSTRUCTION TASKS · WORKING</span>
+              <h3>同一公开 Ego 厨房场景：交接 / 拧盖 / 冲洗</h3>
+              <p>输入来自 EPIC-KITCHENS-100 的 P03_28（25.83–35.83 秒，CC BY-NC 4.0）。三条指令共享同一场景和机器人：右手到左手交接、拧下瓶盖并继续分离展示、在水龙头下转动瓶体后移出。每条均为 240 帧 / 24 FPS；中、右两路已由约 5 秒动作＋终态保持升级为完整 10 秒时间轴。24 点/动作的密集无人手、清晰度、任务状态和可复现谱系门槛通过，三对动作平均 MAD 为 36.64–50.92。续窗只采用任务状态有效帧并做最近邻重定时，不使用交叉淡化、生成插帧或模糊。<a href="showcase/acwm-ego-old-vs-new-quality-recovery-10s.mp4?v=12">查看此前的人手残影 / 清晰度恢复证据</a>。</p>
+              <dl class="case-facts"><div><dt>ROUTE</dt><dd>EPIC EGO · WAN HANDOVER · H3 RECURSIVE CONTINUATION</dd></div><div><dt>TRAINING</dt><dd>NO NEW WM FINETUNE CLAIM</dd></div><div><dt>LIMIT</dt><dd>CAMERA-FRAME · NO CONTACT PHYSICS</dd></div></dl>
+            </div>
+          </article>
+
           <article class="case-card case-wide">
             <div class="case-media">
               <video controls playsinline muted preload="metadata" poster="showcase/long-case-shadow-hand-poster.jpg?v=9">
@@ -104,7 +119,7 @@
               <span class="duration-chip">20.7 S · 621 FRAMES</span>
             </div>
             <div class="case-copy">
-              <span class="status-pass">CASE A / LONG GESTURE · WORKING</span>
+              <span class="status-pass">CASE B / LONG GESTURE · WORKING</span>
               <h3>真实手部视频 → 24-DOF Shadow Hand</h3>
               <p>完整 621 帧采用 MediaPipe + Dexpilot 几何重定向，并锁定背景与屏幕尺度。它验证长时五指姿态连续性，不包含物体交互，也不是生成式 AC-WM。</p>
               <dl class="case-facts"><div><dt>SCENE</dt><dd>REAL EGO HAND</dd></div><div><dt>ROUTE</dt><dd>GEOMETRIC RETARGETING</dd></div><div><dt>LIMIT</dt><dd>NO CONTACT OBJECT</dd></div></dl>
@@ -119,7 +134,7 @@
               <span class="duration-chip">27.5 S · 660 FRAMES</span>
             </div>
             <div class="case-copy">
-              <span class="status-neutral">CASE B / REAL OBSERVATION</span>
+              <span class="status-neutral">CASE C / REAL OBSERVATION</span>
               <h3>真实双手插花完整观测</h3>
               <p>未截断的真实相机输入包含双手交叉、花枝遮挡、接触、释放和重新抓取。它是训练与评测源，不代表机器人已经完成任务。</p>
               <dl class="case-facts"><div><dt>SCENE</dt><dd>REAL HUMAN</dd></div><div><dt>TASK</dt><dd>BIMANUAL FLOWER</dd></div><div><dt>STATUS</dt><dd>INPUT ONLY</dd></div></dl>
@@ -134,7 +149,7 @@
               <span class="duration-chip">27.5 S · HUMAN / ROBOT</span>
             </div>
             <div class="case-copy">
-              <span class="status-fail">CASE C / H3+EPL · USER REJECTED</span>
+              <span class="status-fail">CASE D / H3+EPL · USER REJECTED</span>
               <h3>长时迁移为什么需要逐段密审</h3>
               <p>上方为真实输入，下方为 H3+EPL 候选。早期稀疏复核曾误判通过；随后覆盖全部交互阶段的密集复核在约 135–240 和 405–474 帧发现残留真人手臂，包括 462 帧的大面积前臂。该视频仅保留为长时验收反例。</p>
               <dl class="case-facts"><div><dt>DURATION</dt><dd>27.5 S</dd></div><div><dt>FAILURE</dt><dd>HUMAN LIMB RESIDUE</dd></div><div><dt>STATUS</dt><dd>PARTIAL / REJECTED</dd></div></dl>
