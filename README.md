@@ -421,7 +421,7 @@ capability:
 | --- | ---: | --- | --- |
 | OSCAR bowl counterfactuals | 5.4 s each | native camera-skeleton AC-WM | `PARTIAL`: 2/3 actions accepted |
 | Robot-factored EPIC Ego pour / shake / handover | 10.0 s each / 240 frames | public P03_28 kitchen clip, H3 action drivers, joint Wan replacement, five-frame generated history, fail-closed human guard | `WORKING` visual recovery: dense human/blur review passes; foreground p10 sharpness is 1.23--1.62x the rejected version; embodied control remains `PARTIAL` |
-| Instruction-conditioned EPIC Ego handover / unscrew / rinse | 10.0 s each / 240 frames | same public P03_28 scene; accepted Wan handover plus task-state-valid H3 NF4 recursive continuations for two new tasks | `WORKING` visual comparison: exact geometry, dense human/blur/task review, quality non-regression, lineage, and distinctness gates pass; all three videos retain motion across the ten-second timeline |
+| Instruction-conditioned EPIC Ego handover / unscrew / rinse | 10.0 s each / 240 frames | same public P03_28 scene; semantics-first two-window H3 NF4 handover plus task-state-valid H3 NF4 recursive continuations for two new tasks | `WORKING` camera-frame comparison: exact geometry, dense human/blur/task and handover-contact/release review, blue-bottle terminal-holder transfer, quality non-regression, lineage, and distinctness gates pass; all three videos retain motion across the ten-second timeline |
 | Human gesture to Shadow Hand | 20.7 s / 621 frames | MediaPipe + Dexpilot geometric retargeting | `WORKING`; no manipulated object |
 | Real bimanual flower observation | 27.5 s / 660 frames | unchanged real input | input/evaluation source only |
 | Flower scene to robot appearance | 27.5 s / 660 frames | H3 + EPL localized 2D replacement | `PARTIAL` / user-rejected after dense review found residual human limbs |
@@ -449,19 +449,32 @@ and [complete manifest](demo/showcase/acwm-ego-robot-factored-actions-manifest.j
 
 The follow-on same-scene comparison adds explicit instructions for right-to-left
 bottle handover, cap unscrewing and detached-cap inspection, and moving and
-rotating the bottle under the faucet before withdrawing it. The two new H3
-candidates use recursive second windows whose controls begin from the preceding
-task state. State-reset prefixes are excluded, then the accepted continuation
-tails are retimed with nearest decoded frames only. There is no cross-dissolve,
-frame interpolation, blur, alpha repair, or source-person restoration. All
-three outputs are exactly 240 frames at 24 FPS. Dense 24-point timeline review
-per new action and the fixed quality gates pass: foreground p10 sharpness is
-1.00x/2.12x/1.38x the accepted per-action baselines, safe-background/source p10
-is 0.90x/1.12x/1.05x, and pairwise mean full-frame MAD is 36.64--50.92 with
-every frame above 2 MAD. See the
+rotating the bottle under the faucet before withdrawing it. A new semantic
+audit revoked the previously accepted Wan handover: its final blue-bottle
+median x was 0.598 and its first-to-final displacement was -0.107, so the
+bottle remained in the screen-right gripper. Two prompt-repair retries were
+also rejected. The replacement uses the H3 two-window output in which the
+screen-left fingers close before the screen-right fingers open and withdraw.
+Its final-two-second median x is 0.413, first-to-final leftward displacement is
+0.073, and the dense contact/release review passes. A conservative 0.20 luma
+detail-recovery pass is the minimum tested strength that clears the unchanged
+0.75 foreground-quality gate; no cross-dissolve, generated interpolation,
+alpha repair, source-person restoration, or temporal blur is used.
+
+The unscrew and rinse candidates use recursive second windows whose controls
+begin from the preceding task state. State-reset prefixes are excluded, then
+the accepted continuation tails are retimed with nearest decoded frames only.
+All three outputs are exactly 240 frames at 24 FPS. The fixed gates pass:
+foreground p10 sharpness is 0.76x/2.12x/1.38x the accepted per-action quality
+baselines, safe-background/source p10 is 1.12x/1.12x/1.05x, and pairwise mean
+full-frame MAD is 36.64--44.25 with every frame above 2 MAD. These are
+camera-frame visual controls, not force-verified contact or physical-robot
+execution. See the
+[repaired handover](demo/showcase/acwm-ego-handover-bottle-10s.mp4),
 [generated-only instruction-task comparison](demo/showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4),
 [source-plus-results evidence grid](demo/showcase/acwm-ego-instruction-task-comparison-10s.mp4),
 [evaluation](demo/showcase/acwm-ego-instruction-task-comparison-evaluation.json),
+[handover metadata](demo/showcase/acwm-ego-handover-bottle-10s-metadata.json),
 and [manifest](demo/showcase/acwm-ego-instruction-task-comparison-manifest.json).
 
 The first A800 smoke adaptation completed 12/12 rank-4 LoRA steps and produced

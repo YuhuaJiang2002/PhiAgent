@@ -98,16 +98,16 @@
         <div class="case-grid">
           <article class="case-card case-wide">
             <div class="case-media">
-              <video controls playsinline muted preload="metadata" poster="showcase/acwm-ego-instruction-task-comparison-generated-only-poster.jpg?v=15">
-                <source src="showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4?v=15" type="video/mp4">
+              <video controls playsinline muted preload="metadata" poster="showcase/acwm-ego-instruction-task-comparison-generated-only-poster.jpg?v=16">
+                <source src="showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4?v=16" type="video/mp4">
               </video>
               <span class="duration-chip">10.0 S · 3 ACTIONS · 240 FRAMES</span>
             </div>
             <div class="case-copy">
               <span class="status-pass">CASE A / INSTRUCTION TASKS · WORKING</span>
               <h3>同一公开 Ego 厨房场景：交接 / 拧盖 / 冲洗</h3>
-              <p>输入来自 EPIC-KITCHENS-100 的 P03_28（25.83–35.83 秒，CC BY-NC 4.0）。三条指令共享同一场景和机器人：右手到左手交接、拧下瓶盖并继续分离展示、在水龙头下转动瓶体后移出。每条均为 240 帧 / 24 FPS；中、右两路已由约 5 秒动作＋终态保持升级为完整 10 秒时间轴。24 点/动作的密集无人手、清晰度、任务状态和可复现谱系门槛通过，三对动作平均 MAD 为 36.64–50.92。续窗只采用任务状态有效帧并做最近邻重定时，不使用交叉淡化、生成插帧或模糊。<a href="showcase/acwm-ego-old-vs-new-quality-recovery-10s.mp4?v=12">查看此前的人手残影 / 清晰度恢复证据</a>。</p>
-              <dl class="case-facts"><div><dt>ROUTE</dt><dd>EPIC EGO · WAN HANDOVER · H3 RECURSIVE CONTINUATION</dd></div><div><dt>TRAINING</dt><dd>NO NEW WM FINETUNE CLAIM</dd></div><div><dt>LIMIT</dt><dd>CAMERA-FRAME · NO CONTACT PHYSICS</dd></div></dl>
+              <p>输入来自 EPIC-KITCHENS-100 的 P03_28（25.83–35.83 秒，CC BY-NC 4.0）。三条指令共享同一场景和机器人：画面右侧夹爪把蓝瓶真正交给画面左侧夹爪、拧下瓶盖并继续分离展示、在水龙头下转动瓶体后移出。旧 Wan handover 因末段瓶子仍在画面右侧（最终中位 x=0.598，首尾反向位移 −0.107）被撤销；新 H3 路线经双夹爪接触、左侧闭合持瓶、右侧张开撤离的密集帧复核，末两秒瓶子中位 x=0.413，首尾左移 0.073。每条均为 240 帧 / 24 FPS；无人手、清晰度、任务状态、谱系及三动作差异门槛全部通过，三对动作平均 MAD 为 36.64–44.25。续窗不使用交叉淡化、生成插帧或模糊。<a href="showcase/acwm-ego-handover-bottle-10s.mp4?v=16">单独查看修复后的 10 秒 handover</a>；<a href="showcase/acwm-ego-old-vs-new-quality-recovery-10s.mp4?v=12">查看此前的人手残影 / 清晰度恢复证据</a>。</p>
+              <dl class="case-facts"><div><dt>ROUTE</dt><dd>EPIC EGO · H3 SEMANTIC HANDOVER · H3 RECURSIVE CONTINUATION</dd></div><div><dt>TRAINING</dt><dd>NO NEW WM FINETUNE CLAIM</dd></div><div><dt>LIMIT</dt><dd>CAMERA-FRAME · NO FORCE / CONTACT PHYSICS</dd></div></dl>
             </div>
           </article>
 

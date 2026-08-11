@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0.0",
+  "status": "succeeded",
+  "created_at": "2026-08-11T14:00:00+08:00",
+  "experiment_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/handover-detail-recovery/20260811T141500Z-v1",
+  "hostname": "VM-16-9-ubuntu",
+  "git": {
+    "available": false,
+    "head": null,
+    "diagnosis": "the remote artifact workspace is not a Git worktree; repository state is captured by the published manifest and hashes"
+  },
+  "packages": {
+    "ffmpeg": "4.4.2-0ubuntu0.22.04.1",
+    "encoder": "libx264"
+  },
+  "command": [
+    "ffmpeg",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-y",
+    "-i",
+    "outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/inputs/raw-action-drivers/variants/handover-bottle/handover-bottle-raw-driver-10s.mp4",
+    "-vf",
+    "unsharp=5:5:0.20:5:5:0.0",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "slow",
+    "-crf",
+    "15",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/handover-detail-recovery/20260811T141500Z-v1/handover-unsharp-0.20.mp4"
+  ],
+  "method": "minimax_h3_nf4_two_window_semantic_handover_with_detail_recovery",
+  "seed": 20260811,
+  "coordinate_frame": "camera:epic_kitchens_p03_28_pixels",
+  "coordinate_convention": "screen-left and screen-right are camera-image directions, not robot-base coordinates",
+  "instruction": "Starting with the blue bottle held in the screen-right robot hand, bring it to the center, transfer it into the screen-left robot hand, fully release it from the screen-right hand, separate the hands, and hold the bottle only in the screen-left hand.",
+  "final_output_sha256": "a9d9618c1e1a04a4d9df6ea654e324d59f09e0a23d12062e1bc4d64e18c63f62",
+  "human_review": "passed",
+  "blur_review": "passed",
+  "semantic_review": "passed",
+  "semantic_review_evidence": {
+    "blue_bottle_track_valid_fraction": 1.0,
+    "first_window_median_normalized_x": 0.48668853545462953,
+    "final_2s_median_normalized_x": 0.41346868107346313,
+    "final_2s_p90_normalized_x": 0.47133891077940154,
+    "first_to_final_leftward_shift": 0.0732198543811664,
+    "dense_contact_release_review": "screen-left fingers close around and retain the blue bottle; screen-right fingers open and the empty gripper withdraws"
+  },
+  "preflight": {
+    "model": "MiniMax-H3-NF4 via DiffSynth-Studio",
+    "physical_gpu": 2,
+    "cuda_visible_devices": "2",
+    "gpu_name": "NVIDIA A800-SXM4-80GB",
+    "minimum_free_gpu_mib": 60000,
+    "steps_per_window": 20,
+    "window_frames": 124,
+    "width": 832,
+    "height": 480,
+    "fps": 24
+  },
+  "inputs": {
+    "action_driver": {
+      "path": "outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/inputs/raw-action-drivers/variants/handover-bottle/handover-bottle-raw-driver-10s.mp4",
+      "sha256": "f6e0f301988d1a89159552d36d71bbad0f12044c7c70e345ba689afda74ca1c6"
+    },
+    "action_manifest": {
+      "path": "configs/acwm_epic_ego_bottle_instruction_tasks_v5_handover_semantic.json",
+      "sha256": "3d7a545a59b8cecbe6ff40a808d47d85ab01e8284fb17d514bdba2d1c228bb02"
+    },
+    "driver_manifest": {
+      "path": "outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/inputs/raw-action-drivers/manifest.json",
+      "sha256": "e067e97354293e95cf523cbd17fa35ee1102c49a36c9e050fa83be405d8094ad"
+    },
+    "source_windows": [
+      {
+        "path": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2/window-00-h3-v2/variants/handover-bottle/raw-h3-nf4.mp4",
+        "sha256": "a79b60414304b8d554bb0cb3d51bdd312d1d2ddddd8b2db7f022d94fbef4963e",
+        "metadata_sha256": "02df5c09814dea5e1fe5919ff155e9b682f864f419eb20ab4567e180cc1e8fdc"
+      },
+      {
+        "path": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2/window-01-h3-v2-anchor0/variants/handover-bottle/raw-h3-nf4.mp4",
+        "sha256": "9f6f9e0b077a219ba5b09483d1849a85b9c3fafed819d4d3ea8a02b1207c6761",
+        "metadata_sha256": "f990c587eeaf68cb672cc12c7b248d03439bbcccd7fdd4275fc11841a5e7c303"
+      }
+    ]
+  },
+  "seam": {
+    "frame": 123,
+    "subject_mad": 25.136249542236328,
+    "cost": 41.28511619567871,
+    "method": "best-overlap hard cut; no cross-dissolve or blur"
+  },
+  "postprocessing": {
+    "blur": false,
+    "alpha_repair": false,
+    "frame_interpolation": false,
+    "cross_dissolve": false,
+    "source_person_restore": false,
+    "detail_recovery": {
+      "filter": "ffmpeg unsharp",
+      "luma_matrix": "5x5",
+      "luma_amount": 0.2,
+      "chroma_amount": 0.0,
+      "encoder": "libx264",
+      "preset": "slow",
+      "crf": 15,
+      "pixel_format": "yuv420p"
+    }
+  },
+  "detail_recovery_ablation": [
+    {
+      "luma_amount": 0.2,
+      "foreground_p10_ratio_to_accepted_quality_baseline": 0.7627913529635706,
+      "decision": "selected; minimum strength that passes the fixed 0.75 gate"
+    },
+    {
+      "luma_amount": 0.35,
+      "foreground_p10_ratio_to_accepted_quality_baseline": 0.8068939329533391,
+      "decision": "rejected; stronger than needed"
+    },
+    {
+      "luma_amount": 0.5,
+      "foreground_p10_ratio_to_accepted_quality_baseline": 0.8459142877103725,
+      "decision": "rejected; stronger than needed"
+    }
+  ],
+  "rejected_alternatives": [
+    {
+      "method": "robot_factored_wan22_continuous_temporal_refinement",
+      "seed": 42,
+      "reason": "blue bottle remained in the screen-right gripper at the end"
+    },
+    {
+      "method": "robot_factored_wan22_semantic_prompt_repair",
+      "seeds": [43, 44],
+      "reason": "both candidates moved the bottle toward screen-right and failed the terminal-holder gate"
+    }
+  ],
+  "limitations": [
+    "A small hard seam remains near frame 123; it is retained to avoid cross-dissolve blur and does not change the accepted holder transition.",
+    "This demonstrates camera-frame visual instruction control in a recorded Ego scene, not force-verified contact or physical-robot execution."
+  ]
+}
