@@ -1,5 +1,7 @@
 # PhiAgent-0
 
+[**▶ Open the interactive PhiAgent demo**](https://yuhuajiang2002.github.io/PhiAgent/)
+
 PhiAgent-0 is an open research system for translating human manipulation
 demonstrations into embodiment-invariant physical state, robot motion, verified
 simulation, and robot video:
@@ -44,20 +46,62 @@ attempt to train a unified foundation model.
   human-readable typed schema and cannot be substituted for those unreleased
   tokens when claiming an exact PhiZero reproduction.
 
+## Quantitative agentic-workflow snapshot
+
+The strongest current gains are high enough to report, with the failed gates
+left visible. On the matched 660-frame robot-embodiment replacement run, the
+agent-selected safe round raises the mean proxy score from **0.5697 to 0.8640**
+(**+0.2943; +51.7% relative**) while keeping background lock and robot identity
+at approximately 1.0. It does not pass the complete acceptance contract.
+
+| Robot-replacement metric | Single pass | Agent-selected | Absolute gain |
+| --- | ---: | ---: | ---: |
+| Object lock | 0.0282 | **1.0000** | **+0.9718** |
+| Motion preservation | 0.0351 | **0.5873** | **+0.5522** |
+| EPL phase minimum | 0.0235 | **0.5455** | **+0.5219** |
+| Mean proxy score | 0.5697 | **0.8640** | **+0.2943** |
+| Hard gates passed | 4/7 | **5/7** | +1 gate |
+
+AC-WM is stronger under the authoritative human gate: the retained MiniMax-H3
+baseline is 0/3, the original single-pass OSCAR batch is 1/3 after posthoc
+review, and the agentic condition-evolution workflow is **2/3**.
+
+| AC-WM method | Human-accepted action types | Success rate | Gain vs H3 |
+| --- | ---: | ---: | ---: |
+| MiniMax-H3 negative baseline | 0/3 | 0.0% | — |
+| Single-pass OSCAR | 1/3 | 33.3% | +33.3 points |
+| Agentic OSCAR evolution | **2/3** | **66.7%** | **+66.7 points** |
+
+The two accepted native OSCAR cases average 0.9715 action adherence, 0.9118
+embodiment consistency, 0.9506 object interaction, 0.9329 temporal consistency,
+and 0.9182 background consistency (all numeric gates are 0.75). The learned
+non-regression repair router also reduces candidate evaluations from 5 to 2
+on average (**-60%**) with 8/9 held-action oracle selection and 9/9 guarded
+non-regression.
+
+These are one-scene image-space and proxy results, not robot-base control,
+physics, generalization, or real-robot execution. The robot replacement remains
+`PARTIAL` because motion/EPL gates fail; AC-WM remains `PARTIAL` because the
+left action fails and only three selected action types were tested. See the
+[full quantitative report](docs/AGENTIC_WORKFLOW_BENCHMARKS.md) for matched
+protocols, all metrics, and reproducible evidence paths.
+
 ## Demos
 
 Play every video directly on the
 [web demo](https://yuhuajiang2002.github.io/PhiAgent/), or click a preview below
 to open its MP4.
 
-### Supplemental real-scene action-conditioned comparison
+### Featured: real-scene action-conditioned world model
 
-[![Accepted OSCAR AC-WM counterfactuals: carry right versus lift up](demo/showcase/oscar-acwm-accepted-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/oscar-acwm-accepted-comparison.mp4)
+[![Accepted OSCAR AC-WM counterfactuals: carry right versus lift up](demo/showcase/oscar-acwm-accepted-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#studio)
 
-[Play the matched bowl-grasp comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/oscar-acwm-accepted-comparison.mp4).
-The same real Hand2Dex-2 first frame, seed, and OSCAR-2B settings produce two
-distinct 81-frame futures: lift then carry right (left) and lift up (right).
-This is a camera-skeleton-conditioned video result, not physical robot execution.
+[Open the interactive instruction demo](https://yuhuajiang2002.github.io/PhiAgent/#studio)
+or [play the accepted matched comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/oscar-acwm-accepted-comparison.mp4).
+The real Hand2Dex-2 source frame is held fixed while language instructions route
+to matched 81-frame OSCAR-2B action conditions. Native lift and lift-then-carry
+right pass automatic and human gates; left slide remains rejected, so the result
+is `PARTIAL` (2/3 selected action types), not arbitrary-language robot control.
 
 ### Does the current web demo use EPL?
 
@@ -330,6 +374,112 @@ alignment diagnostic passed, but pose-level and PhiZero-reference visual
 acceptance are not yet claimed. The native Wan2.2-Animate pipeline has
 completed its official upstream sample on an A800 and remains an unconstrained
 visual teacher and diagnostic baseline. See docs/STATUS.md.
+
+## Real-scene open AC-WM demo
+
+PhiAgent now includes an agentic action-conditioned world-model branch. It
+compiles a language instruction into a typed action contract, routes that
+contract only to a model that natively supports its representation, generates
+matched candidates, evaluates five independent criteria, and requires explicit
+human review before acceptance.
+
+The current real Hand2Dex-2 demonstration ran pinned OSCAR-2B on an A800 with
+the same real first frame, seed, sampling settings, and 81-frame duration.
+Upward lifting and a revised lift-then-carry-right action are accepted as native
+OSCAR generations. The revised condition borrows the reviewed vertical motion
+of the successful lift and then follows a rightward arc, which produces
+continuous shoulder, elbow, wrist, and finger articulation while moving the
+yellow bowl. Posthoc user review rejects both the original direct-right output
+(late hand fragmentation) and its fixed-topology repair (rigid whole-hand
+translation). Leftward movement and a stronger left-condition retry remain
+rejected. The workflow is honestly `PARTIAL` (2/3 selected action types), not a
+claim that OSCAR can execute arbitrary robot actions.
+
+Serve the portable evidence UI locally:
+
+    python -m http.server 4173 --directory demo
+
+Then open `http://127.0.0.1:4173/`. The page includes the real source, native
+articulated lift-versus-carry comparison, the two rejected direct-slide repair
+attempts, action-condition videos, model router, evaluation values, human-gate
+conclusion, model revisions, and artifact hashes.
+
+OSCAR, Boundless World Model, and Kinema4D adapters are available under
+`phiagent/acwm`. BWM stays gated until native 14-channel robot-base EEF/joint
+data is supplied; Kinema4D stays gated until calibrated pointmap, URDF, and
+camera inputs exist. PhiAgent never relabels a 2D camera trace as either input.
+See [docs/ACWM_WORKFLOW.md](docs/ACWM_WORKFLOW.md) for commands and complete
+evidence.
+
+### Long real-scene cases and bounded A800 adaptation
+
+The public page now separates duration, visual-transfer quality, and native
+action conditioning instead of treating every robot-looking video as the same
+capability:
+
+| Case | Duration | Route | Honest status |
+| --- | ---: | --- | --- |
+| OSCAR bowl counterfactuals | 5.4 s each | native camera-skeleton AC-WM | `PARTIAL`: 2/3 actions accepted |
+| Robot-factored EPIC Ego pour / shake / handover | 10.0 s each / 240 frames | public P03_28 kitchen clip, H3 action drivers, joint Wan replacement, five-frame generated history, fail-closed human guard | `WORKING` visual recovery: dense human/blur review passes; foreground p10 sharpness is 1.23--1.62x the rejected version; embodied control remains `PARTIAL` |
+| Instruction-conditioned EPIC Ego handover / unscrew / rinse | 10.0 s each / 240 frames | same public P03_28 scene; accepted Wan handover plus task-state-valid H3 NF4 recursive continuations for two new tasks | `WORKING` visual comparison: exact geometry, dense human/blur/task review, quality non-regression, lineage, and distinctness gates pass; all three videos retain motion across the ten-second timeline |
+| Human gesture to Shadow Hand | 20.7 s / 621 frames | MediaPipe + Dexpilot geometric retargeting | `WORKING`; no manipulated object |
+| Real bimanual flower observation | 27.5 s / 660 frames | unchanged real input | input/evaluation source only |
+| Flower scene to robot appearance | 27.5 s / 660 frames | H3 + EPL localized 2D replacement | `PARTIAL` / user-rejected after dense review found residual human limbs |
+| Flower VACE task adaptation | 17-frame critical window | Wan2.1-VACE-1.3B regional LoRA | `PARTIAL`; full 27.5 s expansion rejected |
+
+The 10-second comparison uses the same real scene interval, robot identity,
+seed, H3 driver settings, and Wan refinement settings for all three actions. A
+typed long-horizon compiler carries explicit object-holder state; the H3 output
+is treated as an action/geometry driver rather than a final composite. One
+joint Wan replacement uses five generated history frames and a fail-closed
+driver-mask plus lower-frame human guard. Source-person alpha repair and
+temporal blur are disabled. All four packaged videos decode to exactly 240
+frames at 24 FPS.
+The current ten-second AC-WM comparison uses the public EPIC-KITCHENS-100
+`P03_28` interval at 25.83--35.83 seconds under CC BY-NC 4.0, rather than the
+legacy flower scene. The first H3 composite is retained as user-rejected
+negative evidence because it contains human-hand ghosts and visible blur. The
+robot-factored recovery has pairwise mean full-frame MAD 22.42--26.66, passes
+60-frame-per-action dense human and blur review, preserves 0.88--0.93x of source
+background p10 sharpness, and raises foreground p10 sharpness to 1.23--1.62x the
+rejected videos. The previously trained held-action repair router remains
+rejected and is not used. See the [recovered action comparison](demo/showcase/acwm-ego-robot-factored-actions-10s.mp4),
+[old/new quality comparison](demo/showcase/acwm-ego-old-vs-new-quality-recovery-10s.mp4),
+and [complete manifest](demo/showcase/acwm-ego-robot-factored-actions-manifest.json).
+
+The follow-on same-scene comparison adds explicit instructions for right-to-left
+bottle handover, cap unscrewing and detached-cap inspection, and moving and
+rotating the bottle under the faucet before withdrawing it. The two new H3
+candidates use recursive second windows whose controls begin from the preceding
+task state. State-reset prefixes are excluded, then the accepted continuation
+tails are retimed with nearest decoded frames only. There is no cross-dissolve,
+frame interpolation, blur, alpha repair, or source-person restoration. All
+three outputs are exactly 240 frames at 24 FPS. Dense 24-point timeline review
+per new action and the fixed quality gates pass: foreground p10 sharpness is
+1.00x/2.12x/1.38x the accepted per-action baselines, safe-background/source p10
+is 0.90x/1.12x/1.05x, and pairwise mean full-frame MAD is 36.64--50.92 with
+every frame above 2 MAD. See the
+[generated-only instruction-task comparison](demo/showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4),
+[source-plus-results evidence grid](demo/showcase/acwm-ego-instruction-task-comparison-10s.mp4),
+[evaluation](demo/showcase/acwm-ego-instruction-task-comparison-evaluation.json),
+and [manifest](demo/showcase/acwm-ego-instruction-task-comparison-manifest.json).
+
+The first A800 smoke adaptation completed 12/12 rank-4 LoRA steps and produced
+a valid checkpoint. A larger GPU-4 run then completed 96 rank-8 optimization
+steps across four epochs and produced four approximately 10.5 MiB checkpoints.
+Its matched real critical-window comparison still passed none of the four
+semantic gates: complete human removal, two coherent robot hands, causal
+hand--stem contact, and flower identity. Background preservation improved by
+0.00043, but control-motion alignment regressed by 0.01112. The agent therefore
+did not spend compute on a misleading 27.5-second expansion. See
+[the training protocol](docs/FLOWER_TASK_ADAPTATION.md),
+[the packaged long-case manifest](demo/showcase/long-real-scene-cases.json), and
+[the public training comparison](https://yuhuajiang2002.github.io/PhiAgent/#training).
+
+For the next genuinely action-conditioned real-data stage, the workflow points
+to DROID (videos paired with robot actions, proprioception, and language) and
+BridgeData V2 (60,096 real trajectories across 24 environments). Those datasets
+are roadmap inputs only and were not mixed into the published adaptation run.
 
 ## Auxiliary Cosmos 3 pipeline
 

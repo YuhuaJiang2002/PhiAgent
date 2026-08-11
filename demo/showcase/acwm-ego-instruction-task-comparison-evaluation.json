@@ -1,0 +1,547 @@
+{
+  "accepted": true,
+  "action_distinctness": {
+    "handover-bottle__rinse-bottle": {
+      "fraction_frames_above_2_mad": 1.0,
+      "mean_full_frame_mad": 50.921855449676514
+    },
+    "handover-bottle__unscrew-bottle-cap": {
+      "fraction_frames_above_2_mad": 1.0,
+      "mean_full_frame_mad": 50.68705644607544
+    },
+    "rinse-bottle__unscrew-bottle-cap": {
+      "fraction_frames_above_2_mad": 1.0,
+      "mean_full_frame_mad": 36.637331092357634
+    }
+  },
+  "action_manifest": {
+    "path": "/data0/jiangyuhua/PhiAgent-0/configs/acwm_epic_ego_bottle_instruction_tasks_v4_continuous.json",
+    "sha256": "c1dee071d9b86bfeb6b6ba0464e0535f09a2b4f2903b7c2b4adce9cbd657c41d"
+  },
+  "actions": {
+    "handover-bottle": {
+      "candidate": {
+        "metrics": {
+          "background_absolute_laplacian": {
+            "mean": 9.355405582984288,
+            "minimum": 4.621118545532227,
+            "p10": 6.921185874938965
+          },
+          "foreground_absolute_laplacian": {
+            "mean": 14.572980157534282,
+            "minimum": 10.644926071166992,
+            "p10": 12.291267204284669
+          },
+          "full_frame_absolute_laplacian": {
+            "mean": 13.01959805091222,
+            "minimum": 9.509896278381348,
+            "p10": 10.899863147735596
+          },
+          "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+          "skin_tone_fraction_in_generated_support": {
+            "mean": 0.6945942475532092,
+            "minimum": 0.4950058800470404,
+            "p10": 0.5689908689184421
+          },
+          "transition_energy": {
+            "maximum": 24.359765625,
+            "maximum_to_median": 2.622023636257787,
+            "median": 9.290444711538461
+          }
+        },
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/robot-factored-refined.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 512,
+          "sha256": "d7e8d3fcca821ddc4d12277fc061efe9fe3afca07d14e629a4cc745b961d820a",
+          "width": 880
+        }
+      },
+      "candidate_mask": {
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/hybrid-preprocess/src_mask.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 239,
+          "height": 512,
+          "sha256": "7059f16b1f6efdde40ae31832c41b7a09c610e52873fed00fdfdc66004d54dfd",
+          "width": 880
+        }
+      },
+      "comparison": {
+        "candidate_background_to_source_p10_ratio": 0.8971160675182253,
+        "candidate_to_accepted_baseline_foreground_p10_ratio": 1.0,
+        "candidate_to_cabbage_full_mean_ratio_diagnostic_only": 1.4161819855688507,
+        "generation_lineage_passed": true,
+        "geometry_passed": true,
+        "quality_non_regression_passed": true
+      },
+      "generation_metadata": {
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/metadata.json",
+        "sha256": "d61daf5a3ed408ce45d0bd4bfb5fed6a3a94a4d679d4406733373f7d7c5b39f7"
+      },
+      "quality_baseline": {
+        "metrics": {
+          "background_absolute_laplacian": {
+            "mean": 9.355405582984288,
+            "minimum": 4.621118545532227,
+            "p10": 6.921185874938965
+          },
+          "foreground_absolute_laplacian": {
+            "mean": 14.572980157534282,
+            "minimum": 10.644926071166992,
+            "p10": 12.291267204284669
+          },
+          "full_frame_absolute_laplacian": {
+            "mean": 13.01959805091222,
+            "minimum": 9.509896278381348,
+            "p10": 10.899863147735596
+          },
+          "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+          "skin_tone_fraction_in_generated_support": {
+            "mean": 0.6945942475532092,
+            "minimum": 0.4950058800470404,
+            "p10": 0.5689908689184421
+          },
+          "transition_energy": {
+            "maximum": 24.359765625,
+            "maximum_to_median": 2.622023636257787,
+            "median": 9.290444711538461
+          }
+        },
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/robot-factored-refined.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 512,
+          "sha256": "d7e8d3fcca821ddc4d12277fc061efe9fe3afca07d14e629a4cc745b961d820a",
+          "width": 880
+        }
+      },
+      "source_on_candidate_support": {
+        "background_absolute_laplacian": {
+          "mean": 10.616037688652675,
+          "minimum": 5.191983222961426,
+          "p10": 7.714928007125855
+        },
+        "foreground_absolute_laplacian": {
+          "mean": 13.496489067872366,
+          "minimum": 8.157021522521973,
+          "p10": 10.10948486328125
+        },
+        "full_frame_absolute_laplacian": {
+          "mean": 12.743888493378957,
+          "minimum": 7.552534103393555,
+          "p10": 10.401816082000732
+        },
+        "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+        "skin_tone_fraction_in_generated_support": {
+          "mean": 0.7986392216358854,
+          "minimum": 0.6520751664488831,
+          "p10": 0.7135646935157439
+        },
+        "transition_energy": {
+          "maximum": 24.890374599358974,
+          "maximum_to_median": 2.256232420388989,
+          "median": 11.03183092948718
+        }
+      }
+    },
+    "rinse-bottle": {
+      "candidate": {
+        "metrics": {
+          "background_absolute_laplacian": {
+            "mean": 12.458715113004049,
+            "minimum": 9.27450942993164,
+            "p10": 10.282700347900391
+          },
+          "foreground_absolute_laplacian": {
+            "mean": 19.779739383856455,
+            "minimum": 10.865992546081543,
+            "p10": 14.979133987426758
+          },
+          "full_frame_absolute_laplacian": {
+            "mean": 13.7773175517718,
+            "minimum": 12.734204292297363,
+            "p10": 13.224328327178956
+          },
+          "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+          "skin_tone_fraction_in_generated_support": {
+            "mean": 0.24787150957395465,
+            "minimum": 0.0004536176003628941,
+            "p10": 0.04949497721359814
+          },
+          "transition_energy": {
+            "maximum": 16.160737179487178,
+            "maximum_to_median": 2.5277062794424747,
+            "median": 6.393439503205128
+          }
+        },
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/rinse-bottle/rinse-bottle-h3-continuous-10s.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 480,
+          "sha256": "d6d7ae916342c8cb12a4a17e6b7eae3074d00b9c3a35d82a553231504fdb8e98",
+          "width": 832
+        }
+      },
+      "candidate_mask": {
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-terminal-hold/20260811T114000Z-v2/variants/rinse-bottle/rinse-bottle-terminal-hold-support.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 512,
+          "sha256": "bda7012f295539b1e00e4791956f1e9f3e703adf48e22abc35d3a9ad37e7c72b",
+          "width": 880
+        }
+      },
+      "comparison": {
+        "candidate_background_to_source_p10_ratio": 1.0457356357753362,
+        "candidate_to_accepted_baseline_foreground_p10_ratio": 1.3817799257876002,
+        "candidate_to_cabbage_full_mean_ratio_diagnostic_only": 1.4986014813962487,
+        "generation_lineage_passed": true,
+        "geometry_passed": true,
+        "quality_non_regression_passed": true
+      },
+      "generation_metadata": {
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/rinse-bottle/metadata.json",
+        "sha256": "230a1c99785ef0264f990a3d6af17e35a8a86cc767baa229e21deaf445f7cfc8"
+      },
+      "quality_baseline": {
+        "metrics": {
+          "background_absolute_laplacian": {
+            "mean": 12.930349369843801,
+            "minimum": 7.428225517272949,
+            "p10": 10.116274738311768
+          },
+          "foreground_absolute_laplacian": {
+            "mean": 19.732314364115396,
+            "minimum": 8.078702926635742,
+            "p10": 10.84046287536621
+          },
+          "full_frame_absolute_laplacian": {
+            "mean": 13.94043336311976,
+            "minimum": 9.022225379943848,
+            "p10": 11.862660121917724
+          },
+          "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+          "skin_tone_fraction_in_generated_support": {
+            "mean": 0.6077442838962217,
+            "minimum": 0.24245860739396688,
+            "p10": 0.40546872798932926
+          },
+          "transition_energy": {
+            "maximum": 26.64708533653846,
+            "maximum_to_median": 2.6301093191133464,
+            "median": 10.131550480769231
+          }
+        },
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/pour-bottle/20260811T092241Z-f95722fb/robot-factored-refined.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 512,
+          "sha256": "531aada786ae1ecbfd086aeed6113d1df8e1d0efa96d9658d22966cb43235a06",
+          "width": 880
+        }
+      },
+      "source_on_candidate_support": {
+        "background_absolute_laplacian": {
+          "mean": 12.362960582971573,
+          "minimum": 7.377037525177002,
+          "p10": 9.832982635498047
+        },
+        "foreground_absolute_laplacian": {
+          "mean": 15.73507611354192,
+          "minimum": 8.031682968139648,
+          "p10": 10.862305641174316
+        },
+        "full_frame_absolute_laplacian": {
+          "mean": 12.743888493378957,
+          "minimum": 7.552534103393555,
+          "p10": 10.401816082000732
+        },
+        "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+        "skin_tone_fraction_in_generated_support": {
+          "mean": 0.7835882152618685,
+          "minimum": 0.3644817418915854,
+          "p10": 0.6258060849777392
+        },
+        "transition_energy": {
+          "maximum": 24.890374599358974,
+          "maximum_to_median": 2.256232420388989,
+          "median": 11.03183092948718
+        }
+      }
+    },
+    "unscrew-bottle-cap": {
+      "candidate": {
+        "metrics": {
+          "background_absolute_laplacian": {
+            "mean": 12.171675995985668,
+            "minimum": 9.798853874206543,
+            "p10": 10.501441478729248
+          },
+          "foreground_absolute_laplacian": {
+            "mean": 24.364896865685783,
+            "minimum": 12.282195091247559,
+            "p10": 20.682247924804688
+          },
+          "full_frame_absolute_laplacian": {
+            "mean": 14.948779348532359,
+            "minimum": 13.359264373779297,
+            "p10": 13.880710697174072
+          },
+          "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+          "skin_tone_fraction_in_generated_support": {
+            "mean": 0.28933308485571096,
+            "minimum": 0.035046728971962614,
+            "p10": 0.17122485799404713
+          },
+          "transition_energy": {
+            "maximum": 41.063782051282054,
+            "maximum_to_median": 7.560608491514203,
+            "median": 5.431280048076923
+          }
+        },
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/unscrew-bottle-cap/unscrew-bottle-cap-h3-continuous-10s.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 480,
+          "sha256": "6b1ff1bf2df9d7ec9a96b85859965eacb71e45f0a93feff1309974148035b05c",
+          "width": 832
+        }
+      },
+      "candidate_mask": {
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-terminal-hold/20260811T114000Z-v2/variants/unscrew-bottle-cap/unscrew-bottle-cap-terminal-hold-support.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 512,
+          "sha256": "75940d2e666fc2bf628bfddd93ddfa6addd3e9de96bac9c42e5dff21f876973c",
+          "width": 880
+        }
+      },
+      "comparison": {
+        "candidate_background_to_source_p10_ratio": 1.1230583849213447,
+        "candidate_to_accepted_baseline_foreground_p10_ratio": 2.1164605491002226,
+        "candidate_to_cabbage_full_mean_ratio_diagnostic_only": 1.62602500759629,
+        "generation_lineage_passed": true,
+        "geometry_passed": true,
+        "quality_non_regression_passed": true
+      },
+      "generation_metadata": {
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/unscrew-bottle-cap/metadata.json",
+        "sha256": "c2c6a2b4de9d50b157c98ea3da966139158268ce1b5ef8bafa7185ad63a7b0bc"
+      },
+      "quality_baseline": {
+        "metrics": {
+          "background_absolute_laplacian": {
+            "mean": 11.489962855974833,
+            "minimum": 8.171979904174805,
+            "p10": 9.624401092529297
+          },
+          "foreground_absolute_laplacian": {
+            "mean": 18.026641551653544,
+            "minimum": 7.612461090087891,
+            "p10": 9.772092342376709
+          },
+          "full_frame_absolute_laplacian": {
+            "mean": 12.994413244724274,
+            "minimum": 9.376452445983887,
+            "p10": 10.825913619995116
+          },
+          "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+          "skin_tone_fraction_in_generated_support": {
+            "mean": 0.5004650673325711,
+            "minimum": 0.20529573590096287,
+            "p10": 0.3189835213174328
+          },
+          "transition_energy": {
+            "maximum": 36.41873998397436,
+            "maximum_to_median": 3.5356521570019304,
+            "median": 10.300430689102564
+          }
+        },
+        "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/shake-bottle/20260811T092239Z-6434a105/robot-factored-refined.mp4",
+        "video": {
+          "fps": 24.0,
+          "frames": 240,
+          "height": 512,
+          "sha256": "a4b463fa2cdabbd6b8803656984881afa84709f419cbf2265c3fbfcf25fab3e4",
+          "width": 880
+        }
+      },
+      "source_on_candidate_support": {
+        "background_absolute_laplacian": {
+          "mean": 11.984004658460616,
+          "minimum": 7.474803924560547,
+          "p10": 9.350752925872802
+        },
+        "foreground_absolute_laplacian": {
+          "mean": 15.298085123300552,
+          "minimum": 7.811604976654053,
+          "p10": 11.681408882141113
+        },
+        "full_frame_absolute_laplacian": {
+          "mean": 12.743888493378957,
+          "minimum": 7.552534103393555,
+          "p10": 10.401816082000732
+        },
+        "skin_metric_warning": "Color heuristic only; it cannot pass human-residual review.",
+        "skin_tone_fraction_in_generated_support": {
+          "mean": 0.8164203160983481,
+          "minimum": 0.44566712517193946,
+          "p10": 0.7019510367309677
+        },
+        "transition_energy": {
+          "maximum": 24.890374599358974,
+          "maximum_to_median": 2.256232420388989,
+          "median": 11.03183092948718
+        }
+      }
+    }
+  },
+  "cabbage_reference": {
+    "metrics": {
+      "full_frame_absolute_laplacian": {
+        "mean": 9.193449841605293,
+        "minimum": 7.132421970367432,
+        "p10": 8.369849014282227
+      },
+      "transition_energy": {
+        "maximum": 15.737149439102565,
+        "maximum_to_median": 3.3963235246434955,
+        "median": 4.633583733974359
+      }
+    },
+    "path": "/data0/jiangyuhua/PhiAgent-0/outputs/web-egohand-confidence-routed/20260810T021931Z-3c0db82b/outputs/ego-cabbage-confidence-routed-robotized.mp4",
+    "use": "visual-quality diagnostic only; different scene and duration",
+    "video": {
+      "fps": 30.0,
+      "frames": 90,
+      "height": 720,
+      "sha256": "a2e37cc806d4dd4192a840e1c51900de0d7a5d751583cf73a20a36f91b9ba33e",
+      "width": 1280
+    }
+  },
+  "claim_boundary": "WORKING means visual instruction control in this recorded Ego scene, not physical-robot execution.",
+  "command": [
+    "/data0/jiangyuhua/PhiAgent-0/.venv-gpu/bin/python",
+    "scripts/evaluate_acwm_multitask_demo.py",
+    "--source",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/prepared/input/real-source-240.mp4",
+    "--cabbage-reference",
+    "outputs/web-egohand-confidence-routed/20260810T021931Z-3c0db82b/outputs/ego-cabbage-confidence-routed-robotized.mp4",
+    "--quality-baseline",
+    "handover-bottle=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/robot-factored-refined.mp4",
+    "--quality-baseline",
+    "unscrew-bottle-cap=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/shake-bottle/20260811T092239Z-6434a105/robot-factored-refined.mp4",
+    "--quality-baseline",
+    "rinse-bottle=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/pour-bottle/20260811T092241Z-f95722fb/robot-factored-refined.mp4",
+    "--candidate",
+    "handover-bottle=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/robot-factored-refined.mp4",
+    "--candidate",
+    "unscrew-bottle-cap=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/unscrew-bottle-cap/unscrew-bottle-cap-h3-continuous-10s.mp4",
+    "--candidate",
+    "rinse-bottle=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/rinse-bottle/rinse-bottle-h3-continuous-10s.mp4",
+    "--candidate-mask",
+    "handover-bottle=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/hybrid-preprocess/src_mask.mp4",
+    "--candidate-mask",
+    "unscrew-bottle-cap=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-terminal-hold/20260811T114000Z-v2/variants/unscrew-bottle-cap/unscrew-bottle-cap-terminal-hold-support.mp4",
+    "--candidate-mask",
+    "rinse-bottle=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-terminal-hold/20260811T114000Z-v2/variants/rinse-bottle/rinse-bottle-terminal-hold-support.mp4",
+    "--generation-metadata",
+    "handover-bottle=outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/full-v3/handover-bottle/20260811T092243Z-1dba5504/metadata.json",
+    "--generation-metadata",
+    "unscrew-bottle-cap=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/unscrew-bottle-cap/metadata.json",
+    "--generation-metadata",
+    "rinse-bottle=outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/variants/rinse-bottle/metadata.json",
+    "--action-manifest",
+    "configs/acwm_epic_ego_bottle_instruction_tasks_v4_continuous.json",
+    "--control-manifest",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/inputs/imported-handover-control/manifest.json",
+    "--control-manifest",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/continuation-controls/20260811T120500Z-v3/manifest.json",
+    "--driver-manifest",
+    "outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/inputs/raw-action-drivers/manifest.json",
+    "--driver-manifest",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/manifest.json",
+    "--human-review",
+    "passed",
+    "--blur-review",
+    "passed",
+    "--task-review",
+    "passed",
+    "--out",
+    "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/evaluation/20260811T124500Z-v5-continuous.json"
+  ],
+  "control_manifests": [
+    {
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/inputs/imported-handover-control/manifest.json",
+      "sha256": "6ae01c7f3fe932f1c7547884f04287e6b5ae92446babeb1a09c54d28760e1a5b"
+    },
+    {
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/continuation-controls/20260811T120500Z-v3/manifest.json",
+      "sha256": "37fd6a5d994db525ae6d8dd91d90888a0cb755e140943ed3150e922982ca4463"
+    }
+  ],
+  "created_at": "2026-08-11T12:26:45.691030+00:00",
+  "driver_manifests": [
+    {
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-quality-recovery/20260811T083013Z-cabbage-route-v1/inputs/raw-action-drivers/manifest.json",
+      "sha256": "e067e97354293e95cf523cbd17fa35ee1102c49a36c9e050fa83be405d8094ad"
+    },
+    {
+      "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T124000Z-v5-final/manifest.json",
+      "sha256": "2f2df1a474ee16b3cdd9287d269fa196c5d499ad6288650ced6aa377316003ec"
+    }
+  ],
+  "gates": {
+    "action_distinctness": true,
+    "control_trajectory_separation": true,
+    "dense_blur_review": "passed",
+    "dense_human_residual_review": "passed",
+    "dense_task_adherence_review": "passed",
+    "exact_240_frames_24_fps": true,
+    "quality_non_regression": true,
+    "reproducible_generation_lineage": true
+  },
+  "hostname": "VM-16-9-ubuntu",
+  "packages": {
+    "numpy": "1.26.4",
+    "opencv-python": "4.10.0.84"
+  },
+  "platform": "Linux-5.4.119-19-0009.59+-x86_64-with-glibc2.35",
+  "python": "3.10.12 (main, Nov  6 2024, 20:22:13) [GCC 11.4.0]",
+  "schema_version": "1.0.0",
+  "source": {
+    "metrics": {
+      "full_frame_absolute_laplacian": {
+        "mean": 12.743888493378957,
+        "minimum": 7.552534103393555,
+        "p10": 10.401816082000732
+      },
+      "transition_energy": {
+        "maximum": 24.890374599358974,
+        "maximum_to_median": 2.256232420388989,
+        "median": 11.03183092948718
+      }
+    },
+    "path": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/prepared/input/real-source-240.mp4",
+    "video": {
+      "fps": 24.0,
+      "frames": 240,
+      "height": 480,
+      "sha256": "208beb9d4c77741d6473a8e77e86a42f29a62ea4b0d6d14cf432d22ece41e170",
+      "width": 832
+    }
+  },
+  "status": "WORKING",
+  "thresholds": {
+    "background_ratio_min": 0.7,
+    "foreground_ratio_min": 0.75
+  }
+}
