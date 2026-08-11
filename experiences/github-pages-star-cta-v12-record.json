@@ -1,0 +1,28 @@
+{
+  "record_id": "2026-08-11.github-pages-star-cta-v12",
+  "recorded_at": "2026-08-11T13:49:00Z",
+  "scope": "Add a GitHub Star call-to-action to the existing public PhiAgent demo layout",
+  "status": "PARTIAL",
+  "summary": "The existing seven-video public demo page now includes one responsive support card that opens the matching PhiAgent GitHub repository, displays its real Star count, and explicitly guides visitors to click Star. Local browser acceptance passes; production deployment remains to be verified.",
+  "evidence": [
+    "The diff preserves the existing PhiAgent-0 Demos header, all seven video cards, the repository link, and the single-video playback behavior.",
+    "A real browser loaded the local page with no console warnings or errors and displayed the current GitHub Star count as 8.",
+    "The call-to-action resolves to https://github.com/YuhuaJiang2002/PhiAgent and opens it in a new tab.",
+    "After activation, the page explicitly tells the visitor to click Star in the repository page's upper-right corner.",
+    "Desktop and 390x844 mobile visual checks show the complete support card and button without clipping.",
+    "The inline JavaScript passes Node.js syntax validation and git diff --check passes."
+  ],
+  "lessons": [
+    "GitHub Star is the durable, public like signal for a static GitHub Pages project and avoids presenting a local-only click as a completed vote.",
+    "The page should explain the repository-and-Star flow both before and after the visitor activates the link."
+  ],
+  "limitations": [
+    "GitHub's unauthenticated repository API can be rate-limited; the repository link remains available and the count falls back to a GitHub label.",
+    "Production GitHub Pages deployment and live interaction have not yet been verified."
+  ],
+  "next_actions": [
+    "Merge the focused change, wait for the Pages workflow, and verify the live URL, Star count, link target, responsive layout, and console state."
+  ],
+  "supersedes": [],
+  "tags": ["github-pages", "github-star", "frontend", "cta", "partial"]
+}
