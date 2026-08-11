@@ -1,0 +1,28 @@
+{
+  "record_id": "2026-08-11.github-pages-star-cta-live-v13",
+  "recorded_at": "2026-08-11T13:51:42Z",
+  "run_dir": "https://github.com/YuhuaJiang2002/PhiAgent/actions/runs/31498304255",
+  "scope": "Production publication and verification of the PhiAgent GitHub Star call-to-action",
+  "status": "WORKING",
+  "summary": "PR 7 published the focused GitHub Star call-to-action on the existing PhiAgent demo page. GitHub Pages deployed successfully, and production browser acceptance confirms the live count, repository link, post-click Star guidance, responsive layout, and error-free runtime.",
+  "evidence": [
+    "PR https://github.com/YuhuaJiang2002/PhiAgent/pull/7 merged as 384c92b563df41352a788c3ceb632bafdf996e72.",
+    "GitHub Pages workflow run 31498304255 completed successfully for the merge commit.",
+    "The production URL returns HTTP 200 with Last-Modified Tue, 11 Aug 2026 13:50:48 GMT and contains the support card, GitHub repository URL, Star-count fetch, and post-click instruction.",
+    "A real production browser loaded the current GitHub Star count as 8 and resolved the button to https://github.com/YuhuaJiang2002/PhiAgent.",
+    "Activating the production button changes the guidance to tell the visitor to click Star in the repository page's upper-right corner.",
+    "Production desktop and 390x844 mobile visual checks show the complete card and button without clipping.",
+    "Production browser logs contain no warnings or errors."
+  ],
+  "lessons": [
+    "A GitHub Star call-to-action can provide a durable like path on a static site without adding a backend or falsely treating a navigation click as a completed vote.",
+    "Production acceptance should verify deployment provenance, live DOM state, the external destination, dynamic count, responsive rendering, and runtime logs."
+  ],
+  "limitations": [
+    "The visible count depends on GitHub's unauthenticated repository API and can temporarily fall back to a GitHub label if rate-limited.",
+    "Only GitHub can confirm whether an individual visitor completed the Star action after navigation."
+  ],
+  "next_actions": [],
+  "supersedes": ["2026-08-11.github-pages-star-cta-v12"],
+  "tags": ["github-pages", "github-star", "frontend", "production", "working"]
+}
