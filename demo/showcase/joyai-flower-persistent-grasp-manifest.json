@@ -1,0 +1,169 @@
+{
+  "audit_summary": {
+    "adversarial": {
+      "all_attacks_detected": false,
+      "baseline_contact_positive_frames": 34,
+      "color_attack_high_chroma_delta_p05": 0.8118574628441849,
+      "color_attack_palette_delta_p05": 7.579229706303413,
+      "contact_attack_rejected_frames": 34,
+      "gates": {
+        "color_attack_detected": true,
+        "contact_attack_detected": true,
+        "structure_ghost_attack_detected": false,
+        "topology_attack_detected": true
+      },
+      "sampled_frames": 90,
+      "structure_ghost_attack_edge_delta_p05": 0.6296333193778992,
+      "topology_attack_arm_coverage_drop_p05": 0.832849883455814,
+      "topology_attack_sampled_frames": 90
+    },
+    "candidate_audit_fps": 2.3467611093701626,
+    "full_report_sha256": "b067f8acb9881e6949657214b39451b6ea18aaae5a9718dc21c9820ba4a0a712",
+    "full_report_wall_seconds": 281.3214827500051,
+    "gates": {
+      "late_arm_replacement_coverage": true,
+      "late_grid_topology_coverage": true,
+      "late_hand_edge_energy_lower_gate": false,
+      "late_hand_edge_energy_upper_gate": true,
+      "late_hand_replacement_coverage": true,
+      "late_high_chroma_fraction": true,
+      "late_palette_surprisal": true,
+      "late_projected_contact_recall": true,
+      "late_replacement_coverage": true,
+      "late_skin_like_fraction": true,
+      "late_spatial_chroma_tv": true,
+      "persistent_grasp_erasure_attack_detected_all_frames": true,
+      "persistent_persistent_visual_grasp_recall": true,
+      "persistent_source_hold_observable_all_frames": true
+    },
+    "image_space_contract_pass": false
+  },
+  "commands": {
+    "encode": [
+      "/opt/homebrew/bin/ffmpeg",
+      "-y",
+      "-v",
+      "error",
+      "-i",
+      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
+      "-i",
+      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-flower-edit/20260813T153000Z-persistent-grasp-frame-repair-v4/robot-hand-union-27p5s.mp4",
+      "-loop",
+      "1",
+      "-framerate",
+      "24.00000000",
+      "-i",
+      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-flower-edit/20260813T161000Z-real-vs-robot-comparison-v2/comparison-header.png",
+      "-filter_complex",
+      "[0:v]scale=640:360:flags=lanczos,setsar=1[left];[1:v]scale=640:360:flags=lanczos,setsar=1[right];[left][right]hstack=inputs=2[body];[2:v][body]vstack=inputs=2[out]",
+      "-map",
+      "[out]",
+      "-frames:v",
+      "660",
+      "-r",
+      "24.00000000",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "medium",
+      "-crf",
+      "16",
+      "-pix_fmt",
+      "yuv420p",
+      "-movflags",
+      "+faststart",
+      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-flower-edit/20260813T161000Z-real-vs-robot-comparison-v2/real-vs-robot-persistent-grasp-27p5s.mp4"
+    ],
+    "poster": [
+      "/opt/homebrew/bin/ffmpeg",
+      "-y",
+      "-v",
+      "error",
+      "-ss",
+      "23.83333333",
+      "-i",
+      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-flower-edit/20260813T161000Z-real-vs-robot-comparison-v2/real-vs-robot-persistent-grasp-27p5s.mp4",
+      "-frames:v",
+      "1",
+      "-q:v",
+      "2",
+      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-flower-edit/20260813T161000Z-real-vs-robot-comparison-v2/real-vs-robot-persistent-grasp-poster.jpg"
+    ]
+  },
+  "created_at": "2026-08-13T15:50:15.369174+00:00",
+  "honest_status": "PARTIAL: the 2-D occlusion-aware persistent-grasp contract passes, but independent late hand-sharpness and structure-ghost adversarial gates fail; no metric depth or force-closure claim.",
+  "hostname": "snap-jumpbox1.redmond.corp.microsoft.com",
+  "inputs": {
+    "audit": {
+      "path": "outputs/joyai-flower-edit/20260813T154500Z-persistent-grasp-final-audit-v5/audit-report.json",
+      "sha256": "b067f8acb9881e6949657214b39451b6ea18aaae5a9718dc21c9820ba4a0a712"
+    },
+    "robot": {
+      "path": "demo/showcase/joyai-flower-persistent-grasp-27p5s.mp4",
+      "sha256": "5a93bf9a73dd702e188a2e7b61bdc1a8e6ba6b1dcf7a614a8f065a6b7197cf08",
+      "video": {
+        "duration": 27.5,
+        "fps": 24.0,
+        "frames": 660,
+        "height": 720,
+        "width": 1280
+      }
+    },
+    "source": {
+      "path": "outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
+      "sha256": "f12ef50ca6050df10990cc759dd74ffc772eca8d927c9c4d1845e9fa1aafe065",
+      "video": {
+        "duration": 27.5,
+        "fps": 24.0,
+        "frames": 660,
+        "height": 720,
+        "width": 1280
+      }
+    }
+  },
+  "limitations": [
+    "The grasp gate is a camera-frame visual invariant, not 3-D contact evidence.",
+    "Late hand edge energy violates its frozen lower gate in 22 of 180 frames.",
+    "The structure-ghost adversarial detector remains below its frozen sensitivity gate.",
+    "The robot remains a generated visual replacement rather than a verified real-robot execution."
+  ],
+  "outputs": {
+    "poster": {
+      "path": "demo/showcase/joyai-flower-real-vs-robot-persistent-grasp-poster.jpg",
+      "sha256": "abef04fd86d46ae94ed23453f75b3db968bb10bdcfdccb59dd255d96306b2ffa"
+    },
+    "video": {
+      "path": "demo/showcase/joyai-flower-real-vs-robot-persistent-grasp-27p5s.mp4",
+      "sha256": "d9b8d2ad0e2e818a68cc70f55acf5181be0fb92591663ad382d934868a3c370b",
+      "video": {
+        "duration": 27.5,
+        "fps": 24.0,
+        "frames": 660,
+        "height": 408,
+        "width": 1280
+      }
+    }
+  },
+  "persistent_grasp": {
+    "end_frame_exclusive": 644,
+    "frames": 147,
+    "gates": {
+      "grasp_erasure_attack_detected_all_frames": true,
+      "persistent_visual_grasp_recall": true,
+      "source_hold_observable_all_frames": true
+    },
+    "grasp_erasure_attack_positive_frames": 147,
+    "grasp_erasure_attack_rejection_recall": 1.0,
+    "maximum_observed_source_gap_pixels": 21,
+    "maximum_source_occlusion_gap_pixels": 24,
+    "minimum_occlusion_bridge_coverage": 0.8,
+    "source_hold_observable_recall": 1.0,
+    "start_frame_inclusive": 497,
+    "visual_grasp_recall": 1.0
+  },
+  "platform": "macOS-26.6.1-arm64-arm-64bit-Mach-O",
+  "python": "3.14.6 (main, Jun 10 2026, 10:03:53) [Clang 21.0.0 (clang-2100.0.123.102)]",
+  "schema_version": "1.0.0",
+  "status": "PARTIAL"
+}
