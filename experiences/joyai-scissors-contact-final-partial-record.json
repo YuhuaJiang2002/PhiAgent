@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-scissors-contact-final-partial",
+  "recorded_at": "2026-08-13T13:08:00Z",
+  "status": "PARTIAL",
+  "scope": "Final 27.5-second scissors-conditioned JoyAI video with audit-triggered late contact repair",
+  "summary": "The combined candidate preserves the scissors-conditioned interval and raises late projected hand-flower contact from 6/11 to 11/11. It remains PARTIAL because native review cannot prove scissors ring topology, the late hand-edge lower gate fails, and the structure-ghost adversarial attack is not detected.",
+  "evidence": [
+    "The final video is independently probed as 660 frames, 1280x720, 24 fps, and 27.5 seconds; the delivery hash is 0157882b3d2a07270086b2f7567b092c74d39c1fc66550bb2003c29056c07445.",
+    "The raw scissors-conditioned candidate has 6/11 late projected contacts; the exact post-repair audit has 11/11.",
+    "Repair changes 25,548 donor pixels across 14 audit-selected frames in 12.761119581758976 seconds (51.71959997486572 fps), with zero contact-projection pixels and protected flowers excluded by construction.",
+    "Ten of eleven image gates pass. Late hand edge energy violates its lower gate in 22/180 late frames, and three of four adversarial attack families are detected; structure ghosting is not."
+  ],
+  "lessons": [
+    "Solving projected contact does not automatically solve hand sharpness or adversarial observability; those invariants require separate evidence and routing.",
+    "A scissors-conditioned interval before frame 448 and a late-contact repair after frame 480 can be composed without temporal overlap."
+  ],
+  "limitations": [
+    "Two handle rings and finger-through-ring occupancy are not independently visible in all ten native review frames.",
+    "Projected adjacency is not metric depth, contact force, or force closure.",
+    "The candidate is not eligible for overall promotion while the hand-edge and structure-ghost gates fail."
+  ],
+  "next_actions": [
+    "Replace low-edge late hand layers with an independently sharp, temporally aligned robot-hand hypothesis and rerun the unchanged adversarial audit."
+  ],
+  "run_dir": "outputs/joyai-flower-edit/20260813T113000Z-scissors-contact-projected-union-v2",
+  "supersedes": [
+    "2026-08-13.joyai-scissors-full-stream-partial",
+    "2026-08-13.joyai-late-contact-projection-partial"
+  ],
+  "tags": ["joyai", "scissors", "contact", "adversarial-audit", "partial"]
+}

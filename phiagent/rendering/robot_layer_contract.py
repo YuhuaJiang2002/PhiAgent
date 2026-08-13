@@ -402,6 +402,119 @@ def merge_missing_replacement(
     return result, missing, tuple(float(value) for value in offset)
 
 
+def project_missing_contact(
+    np: Any,
+    *,
+    candidate_rgb: Any,
+    source_rgb: Any,
+    hand_support: Any,
+    protected_object: Any,
+    replacement_threshold: float,
+    contact_radius: int,
+    maximum_bridge_steps: int = 6,
+) -> tuple[Any, Any, int, bool]:
+    """Extend an existing generated hand through its source-supported contact fringe.
+
+    The projection is deliberately narrow: it can only grow already replaced
+    pixels through tracked hand support, never writes the protected object, and
+    stops as soon as the fixed projected-contact invariant is satisfied.  It is
+    an image-space continuity repair, not depth or force evidence.
+    """
+
+    candidate = np.asarray(candidate_rgb, dtype=np.uint8)
+    source = np.asarray(source_rgb, dtype=np.uint8)
+    if candidate.shape != source.shape or candidate.ndim != 3 or candidate.shape[2] != 3:
+        raise ValueError("candidate and source RGB frames must be matching HxWx3 frames")
+    if contact_radius < 0 or maximum_bridge_steps < 0:
+        raise ValueError("contact radius and maximum bridge steps must be non-negative")
+    hand = _as_mask(np, hand_support, candidate.shape[:2], "hand support")
+    protected = _as_mask(np, protected_object, candidate.shape[:2], "protected object")
+    result = candidate.copy()
+    added = np.zeros(candidate.shape[:2], dtype=bool)
+    required = projected_contact_required(
+        np, hand, protected, radius=contact_radius
+    )
+
+    def replacement(value: Any) -> Any:
+        return np.logical_and(
+            replacement_mask(np, value, source, threshold=replacement_threshold),
+            np.logical_and(hand, np.logical_not(protected)),
+        )
+
+    current = replacement(result)
+    observed = bool(
+        np.any(
+            np.logical_and(
+                binary_dilate_square(np, current, contact_radius), protected
+            )
+        )
+    )
+    if not required or observed or maximum_bridge_steps == 0:
+        return result, added, 0, observed
+
+    near_object = binary_dilate_square(
+        np, protected, contact_radius + maximum_bridge_steps + 1
+    )
+    current = np.logical_and(current, near_object)
+    corridor = np.logical_and.reduce((hand, np.logical_not(protected), near_object))
+    if not np.any(current):
+        return result, added, 0, False
+
+    steps_used = 0
+    for step in range(1, maximum_bridge_steps + 1):
+        frontier = np.logical_and.reduce(
+            (binary_dilate_square(np, current, 1), corridor, np.logical_not(current))
+        )
+        if not np.any(frontier):
+            break
+        padded_rgb = np.pad(result.astype(np.float32), ((1, 1), (1, 1), (0, 0)))
+        padded_current = np.pad(current, 1)
+        colour_sum = np.zeros_like(result, dtype=np.float32)
+        count = np.zeros(result.shape[:2], dtype=np.float32)
+        for dy in range(3):
+            for dx in range(3):
+                if dy == 1 and dx == 1:
+                    continue
+                neighbour = padded_current[dy : dy + result.shape[0], dx : dx + result.shape[1]]
+                colour_sum += (
+                    padded_rgb[dy : dy + result.shape[0], dx : dx + result.shape[1]]
+                    * neighbour[..., None]
+                )
+                count += neighbour
+        writable = np.logical_and(frontier, count > 0)
+        if not np.any(writable):
+            break
+        colours = np.rint(
+            colour_sum[writable] / count[writable, None]
+        ).clip(0, 255).astype(np.uint8)
+        result[writable] = colours
+        # Averaging may accidentally approach the source colour.  Reuse the
+        # median nearby generated-hand colour in only those invalid pixels.
+        changed = replacement_mask(
+            np, result, source, threshold=replacement_threshold
+        )
+        invalid = np.logical_and(writable, np.logical_not(changed))
+        if np.any(invalid):
+            palette_pixels = result[current]
+            if len(palette_pixels):
+                fallback = np.median(palette_pixels, axis=0).clip(0, 255).astype(np.uint8)
+                result[invalid] = fallback
+        changed = np.logical_and(replacement(result), near_object)
+        added |= np.logical_and(writable, changed)
+        current |= changed
+        steps_used = step
+        observed = bool(
+            np.any(
+                np.logical_and(
+                    binary_dilate_square(np, current, contact_radius), protected
+                )
+            )
+        )
+        if observed:
+            break
+    return result, added, steps_used, observed
+
+
 def robust_limit(
     np: Any,
     values: Any,

@@ -32,7 +32,10 @@ from phiagent.rendering.object_factored_long_video import (  # noqa: E402
     source_skin_like,
     strict_flower_seed,
 )
-from phiagent.rendering.robot_layer_contract import merge_missing_replacement  # noqa: E402
+from phiagent.rendering.robot_layer_contract import (  # noqa: E402
+    merge_missing_replacement,
+    project_missing_contact,
+)
 
 
 def expanded_repair_frames(
@@ -78,6 +81,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--audit-report", type=Path, required=True)
     parser.add_argument("--base-frame-metrics", type=Path, required=True)
     parser.add_argument("--base-name", required=True)
+    parser.add_argument(
+        "--repair-trigger",
+        choices=("hand_coverage", "projected_contact"),
+        default="hand_coverage",
+    )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--ffmpeg", type=Path, default=Path("ffmpeg"))
     parser.add_argument("--expected-frames", type=int, default=660)
@@ -85,6 +93,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--late-start", type=int, default=480)
     parser.add_argument("--replacement-threshold", type=float, default=12.0)
     parser.add_argument("--hand-expansion", type=int, default=1)
+    parser.add_argument("--contact-radius", type=int, default=3)
+    parser.add_argument("--contact-bridge-steps", type=int, default=6)
     parser.add_argument("--temporal-padding", type=int, default=2)
     parser.add_argument("--maximum-failure-gap", type=int, default=3)
     parser.add_argument("--person-dilation", type=int, default=10)
@@ -186,12 +196,21 @@ def main() -> int:
         "hand_replacement_coverage"
     ]
     rows = json.loads(args.base_frame_metrics.read_text())
-    failures = [
-        int(row["frame"])
-        for row in rows
-        if row["frame"] >= args.late_start
-        and row["hand_replacement_coverage"] < hand_limit
-    ]
+    if args.repair_trigger == "hand_coverage":
+        failures = [
+            int(row["frame"])
+            for row in rows
+            if row["frame"] >= args.late_start
+            and row["hand_replacement_coverage"] < hand_limit
+        ]
+    else:
+        failures = [
+            int(row["frame"])
+            for row in rows
+            if row["frame"] >= args.late_start
+            and row["contact_required"]
+            and not row["contact_observed"]
+        ]
     active_frames = expanded_repair_frames(
         failures,
         total_frames=args.expected_frames,
@@ -249,6 +268,9 @@ def main() -> int:
     frame_bytes = target.output_width * target.output_height * 3
     started = time.perf_counter()
     copied_per_frame = []
+    contact_projected_per_frame = []
+    contact_projection_steps = []
+    contact_projection_passed = []
     offsets = []
     for index in range(args.expected_frames):
         frames = {
@@ -302,10 +324,33 @@ def main() -> int:
                 replacement_threshold=args.replacement_threshold,
                 expansion_radius=args.hand_expansion,
             )
+            projected = np.zeros_like(copied)
+            projection_steps = 0
+            projection_passed = False
+            if args.repair_trigger == "projected_contact":
+                result, projected, projection_steps, projection_passed = (
+                    project_missing_contact(
+                        np,
+                        candidate_rgb=result,
+                        source_rgb=frames["source"],
+                        hand_support=hands,
+                        protected_object=flower,
+                        replacement_threshold=args.replacement_threshold,
+                        contact_radius=args.contact_radius,
+                        maximum_bridge_steps=args.contact_bridge_steps,
+                    )
+                )
+        else:
+            projected = np.zeros_like(copied)
+            projection_steps = 0
+            projection_passed = False
         for writer in writers.values():
             assert writer.stdin is not None
             writer.stdin.write(result.tobytes())
         copied_per_frame.append(int(np.count_nonzero(copied)))
+        contact_projected_per_frame.append(int(np.count_nonzero(projected)))
+        contact_projection_steps.append(projection_steps)
+        contact_projection_passed.append(projection_passed)
         offsets.append(offset)
     for writer in writers.values():
         assert writer.stdin is not None
@@ -328,7 +373,7 @@ def main() -> int:
         "schema_version": "1.0.0",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "status": "PARTIAL",
-        "method": "source_aware_missing_robot_hand_layer_union",
+        "method": "source_aware_missing_robot_hand_layer_union_and_contact_projection",
         "scope": "2D hand replacement coverage repair; no 3D contact claim",
         "command": [sys.executable, *sys.argv],
         "coordinate_frames": {
@@ -343,6 +388,7 @@ def main() -> int:
             "hand_replacement_lower_limit": hand_limit,
             "raw_failed_frames": failures,
             "temporally_expanded_repair_frames": list(active_frames),
+            "repair_trigger": args.repair_trigger,
         },
         "inputs": {
             name: {"path": str(path.resolve()), "sha256": _sha256(path)}
@@ -368,6 +414,15 @@ def main() -> int:
             "frames_with_copied_pixels": sum(value > 0 for value in copied_per_frame),
             "total_copied_pixels": sum(copied_per_frame),
             "maximum_copied_pixels_per_frame": max(copied_per_frame),
+            "frames_with_contact_projection": sum(
+                value > 0 for value in contact_projected_per_frame
+            ),
+            "total_contact_projected_pixels": sum(contact_projected_per_frame),
+            "maximum_contact_projected_pixels_per_frame": max(
+                contact_projected_per_frame
+            ),
+            "maximum_contact_projection_steps": max(contact_projection_steps),
+            "contact_projection_passed_frames": sum(contact_projection_passed),
             "mean_color_offset_on_active_frames": [
                 float(np.mean([offset[channel] for index, offset in enumerate(offsets) if index in active]))
                 for channel in range(3)

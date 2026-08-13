@@ -1,9 +1,10 @@
-"""Pinned, dependency-free contract for JoyAI-Video-Edit flower repair.
+"""Pinned, dependency-free contracts for bounded and full-stream JoyAI edits.
 
-The released model is deliberately treated as a proposal generator.  It may
-rewrite pixels inside a measured temporal/spatial support, but it never has
-authority to change source flowers, stems, vase, background, camera motion, or
-the two endpoint frames used to join a repair back into the full video.
+The released model is deliberately treated as a visual proposal generator.
+Bounded repair mode restores flowers, background, and endpoints exactly.  Full
+stream mode instead lets one uninterrupted causal session reproduce source
+object motion; its output must pass an explicit non-freezing/contact audit and
+never acquires physical-evidence authority from appearance alone.
 """
 
 from __future__ import annotations
@@ -12,6 +13,7 @@ import hashlib
 import json
 import os
 import subprocess
+from math import ceil
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Sequence
@@ -103,6 +105,66 @@ DEFAULT_FLOWER_WINDOWS = (
 )
 
 
+@dataclass(frozen=True)
+class HeldToolContract:
+    """Timeline and topology contract for a rigid tool carried through an edit.
+
+    The contract deliberately records a human-review requirement.  A text
+    prompt or a single reference image cannot prove ring occupancy, attachment,
+    or temporal persistence in the generated frames.
+    """
+
+    name: str
+    source_start_frame: int
+    source_end_frame: int
+    holder: str
+    topology: tuple[str, ...]
+    required_review_frames: tuple[int, ...]
+
+    def validate(self, *, total_frames: int = 660) -> None:
+        if not self.name.strip() or not self.holder.strip():
+            raise ValueError("held tool name and holder must be non-empty")
+        if not 0 <= self.source_start_frame <= self.source_end_frame < total_frames:
+            raise ValueError("held tool interval must lie in the source timeline")
+        if not self.topology:
+            raise ValueError("held tool topology invariants must be non-empty")
+        if not self.required_review_frames:
+            raise ValueError("held tool requires native-resolution review frames")
+        if tuple(sorted(set(self.required_review_frames))) != self.required_review_frames:
+            raise ValueError("held tool review frames must be sorted and unique")
+        if any(
+            frame < self.source_start_frame or frame > self.source_end_frame
+            for frame in self.required_review_frames
+        ):
+            raise ValueError("held tool review frame lies outside its source interval")
+
+    def to_manifest(self) -> dict[str, Any]:
+        self.validate()
+        return {
+            **asdict(self),
+            "review_authority": "native_resolution_human_veto",
+            "automatic_promotion": False,
+            "physical_evidence": False,
+        }
+
+
+DEFAULT_SCISSORS_CONTRACT = HeldToolContract(
+    name="black-handled stainless-steel florist scissors",
+    source_start_frame=398,
+    source_end_frame=447,
+    holder="robot_right_hand",
+    topology=(
+        "exactly_one_rigid_scissors",
+        "two_handle_rings",
+        "two_blades_joined_at_one_pivot",
+        "robot_fingers_remain_inside_handle_rings",
+        "pivot_remains_attached_to_robot_hand",
+        "no_floating_disappearance_or_finger_tool_merge",
+    ),
+    required_review_frames=(398, 402, 406, 410, 414, 417, 423, 431, 439, 447),
+)
+
+
 def flower_repair_prompt() -> str:
     """A source-fidelity prompt; deterministic locks remain the real guardrail."""
 
@@ -115,6 +177,48 @@ def flower_repair_prompt() -> str:
         "reach, grasp, insertion, release, stem contact, and flower response "
         "motion. Do not add, remove, recolor, freeze, or move flowers or stems."
     )
+
+
+def flower_full_stream_prompt() -> str:
+    """Prompt a causal full-stream appearance edit without freezing flowers."""
+
+    return (
+        "Replace only the florist's human appearance with the exact silver humanoid "
+        "robot shown in the reference image. Preserve the source video timeline, "
+        "camera, background, table, vase, every flower and every stem. Each flower "
+        "and stem must follow its original frame-by-frame source trajectory: while "
+        "grasped it moves continuously with the contacting robot hand without lag, "
+        "after release it remains supported by the vase or table, and it never "
+        "freezes, floats, hangs unsupported, teleports, or moves before contact. "
+        "Retarget the florist's complete torso, arm, wrist, hand, grasp, insertion, "
+        "and release motion to one coherent robot with two articulated five-finger "
+        "hands. During the source trimming action, preserve the one black-handled "
+        "stainless-steel florist scissors as a distinct rigid tool held by the robot's "
+        "right hand: the fingers remain closed through its handles, the pivot remains "
+        "attached to the hand, and its two blades follow the exact source trajectory "
+        "and opening angle. The held scissors must never disappear, float, become a "
+        "background object, merge into a flower, or turn into fingers. Preserve flower "
+        "identity, count, color, geometry, depth ordering, occlusion, motion blur, and "
+        "physical response. Do not invent flower motion before a causal interaction, "
+        "and do not add or remove flowers, limbs, people, tools, text, cuts, camera "
+        "motion, or scene changes."
+    )
+
+
+def causal_padded_frame_count(frame_count: int, *, chunk_frames: int = 8) -> int:
+    """Return the shortest JoyAI stream length ``1 + n * chunk_frames``."""
+
+    if frame_count < 1:
+        raise ValueError("frame_count must be positive")
+    if chunk_frames < 1:
+        raise ValueError("chunk_frames must be positive")
+    return 1 + ceil(max(0, frame_count - 1) / chunk_frames) * chunk_frames
+
+
+def causal_tail_padding_frames(frame_count: int, *, chunk_frames: int = 8) -> int:
+    """Return how many cloned tail frames are required for a complete chunk."""
+
+    return causal_padded_frame_count(frame_count, chunk_frames=chunk_frames) - frame_count
 
 
 @dataclass(frozen=True)

@@ -8,6 +8,7 @@ from phiagent.rendering.robot_layer_contract import (
     frame_contract_metrics,
     make_state_control,
     merge_missing_replacement,
+    project_missing_contact,
     robust_limit,
 )
 
@@ -184,6 +185,62 @@ def test_missing_replacement_union_never_overwrites_protected_object() -> None:
     assert bool(copied[3, 3]) is False
     assert np.array_equal(merged[3, 3], base[3, 3])
     assert np.all(merged[4, 5] > 0)
+
+
+def test_contact_projection_bridges_only_tracked_hand_and_protects_object() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((12, 16, 3), dtype=np.uint8)
+    candidate = source.copy()
+    hand = np.zeros((12, 16), dtype=bool)
+    hand[4:8, 2:13] = True
+    flower = np.zeros_like(hand)
+    flower[4:8, 13:15] = True
+    candidate[4:8, 2:7] = np.asarray([160, 170, 180], dtype=np.uint8)
+
+    projected, added, steps, passed = project_missing_contact(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hand,
+        protected_object=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+        maximum_bridge_steps=6,
+    )
+
+    assert passed is True
+    assert 1 <= steps <= 6
+    assert int(added.sum()) > 0
+    assert int(added.sum()) <= int(hand.sum())
+    assert np.array_equal(projected[flower], candidate[flower])
+    assert not np.any(added & ~hand)
+    assert not np.any(added & flower)
+
+
+def test_contact_projection_is_noop_without_required_source_contact() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((8, 10, 3), dtype=np.uint8)
+    candidate = source.copy()
+    candidate[2:5, 1:3] = 200
+    hand = np.zeros((8, 10), dtype=bool)
+    hand[2:5, 1:4] = True
+    flower = np.zeros_like(hand)
+    flower[2:5, 8:9] = True
+
+    projected, added, steps, passed = project_missing_contact(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hand,
+        protected_object=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+    )
+
+    assert np.array_equal(projected, candidate)
+    assert not np.any(added)
+    assert steps == 0
+    assert passed is False
 
 
 def test_frame_metric_fractions_remain_bounded_on_large_masks() -> None:

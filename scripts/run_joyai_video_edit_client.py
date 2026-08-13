@@ -23,9 +23,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from phiagent.rendering.joyai_video_edit import (  # noqa: E402
+    DEFAULT_SCISSORS_CONTRACT,
     JOYAI_MODEL_ID,
     JOYAI_MODEL_REVISION,
     JOYAI_REPOSITORY_REVISION,
+    flower_full_stream_prompt,
     flower_repair_prompt,
     sha256_file,
     write_json,
@@ -35,10 +37,22 @@ from phiagent.rendering.joyai_video_edit import (  # noqa: E402
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--server-url", default="ws://127.0.0.1:18080/ws")
-    parser.add_argument("--input-video", type=Path, required=True)
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--input-video", type=Path)
+    inputs.add_argument(
+        "--input-frame-dir",
+        type=Path,
+        help="pre-encoded protocol JPEGs named in lexical frame order",
+    )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--reference-image", type=Path)
-    parser.add_argument("--prompt", default=flower_repair_prompt())
+    parser.add_argument("--prompt")
+    parser.add_argument(
+        "--prompt-mode",
+        choices=("repair_window", "full_flower_stream"),
+        default="repair_window",
+        help="Use a checked-in prompt contract when --prompt is omitted.",
+    )
     parser.add_argument("--width", type=int, default=1248)
     parser.add_argument("--height", type=int, default=720)
     parser.add_argument("--fps", type=int, default=24)
@@ -46,6 +60,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num-inference-steps", type=int, default=2)
     parser.add_argument("--output-quality", type=int, default=95)
+    parser.add_argument(
+        "--profile-timings",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Synchronize CUDA stage timers (disabled by default for production throughput).",
+    )
     parser.add_argument("--timeout-seconds", type=float, default=3600.0)
     parser.add_argument("--ffmpeg", type=Path, default=Path(shutil.which("ffmpeg") or "ffmpeg"))
     return parser
@@ -56,26 +76,104 @@ def decode_input_frames(video: Path, *, width: int, height: int) -> list[bytes]:
 
     try:
         import av
+    except ImportError:  # pragma: no cover - local preparation fallback
+        av = None
+    try:
         from PIL import Image
-    except ImportError as exc:  # pragma: no cover - exercised in the optional runtime
-        raise RuntimeError("JoyAI client requires PyAV and Pillow in its optional environment") from exc
+    except ImportError as exc:  # pragma: no cover - optional runtime only
+        raise RuntimeError("JoyAI client requires Pillow") from exc
     frames: list[bytes] = []
-    with av.open(str(video)) as container:
-        streams = container.streams.video
-        if len(streams) != 1:
-            raise ValueError("JoyAI input must contain exactly one video stream")
-        stream = streams[0]
-        if (stream.codec_context.width, stream.codec_context.height) != (width, height):
+    if av is not None:
+        with av.open(str(video)) as container:
+            streams = container.streams.video
+            if len(streams) != 1:
+                raise ValueError("JoyAI input must contain exactly one video stream")
+            stream = streams[0]
+            if (stream.codec_context.width, stream.codec_context.height) != (width, height):
+                raise ValueError(
+                    f"JoyAI input is {stream.codec_context.width}x{stream.codec_context.height}; "
+                    f"expected {width}x{height}"
+                )
+            arrays = (frame.to_ndarray(format="rgb24") for frame in container.decode(stream))
+            for array in arrays:
+                encoded = io.BytesIO()
+                Image.fromarray(array, mode="RGB").save(
+                    encoded, format="JPEG", quality=95, subsampling=0, optimize=False
+                )
+                frames.append(encoded.getvalue())
+        return frames
+
+    try:
+        import cv2
+    except ImportError as exc:  # pragma: no cover - optional runtime has PyAV
+        raise RuntimeError("JoyAI input decoding requires PyAV or OpenCV") from exc
+    capture = cv2.VideoCapture(str(video))
+    try:
+        observed = (
+            round(capture.get(cv2.CAP_PROP_FRAME_WIDTH)),
+            round(capture.get(cv2.CAP_PROP_FRAME_HEIGHT)),
+        )
+        if observed != (width, height):
             raise ValueError(
-                f"JoyAI input is {stream.codec_context.width}x{stream.codec_context.height}; "
-                f"expected {width}x{height}"
+                f"JoyAI input is {observed[0]}x{observed[1]}; expected {width}x{height}"
             )
-        for frame in container.decode(stream):
-            image = Image.fromarray(frame.to_ndarray(format="rgb24"), mode="RGB")
+        while True:
+            ok, bgr = capture.read()
+            if not ok:
+                break
             encoded = io.BytesIO()
-            image.save(encoded, format="JPEG", quality=95, subsampling=0, optimize=False)
+            rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+            Image.fromarray(rgb, mode="RGB").save(
+                encoded, format="JPEG", quality=95, subsampling=0, optimize=False
+            )
             frames.append(encoded.getvalue())
+    finally:
+        capture.release()
     return frames
+
+
+def load_input_frame_dir(
+    frame_dir: Path, *, width: int, height: int, expected_frames: int
+) -> tuple[list[bytes], dict[str, Any]]:
+    """Load exact JPEG uplink packets without a second lossy transcode."""
+
+    try:
+        from PIL import Image
+    except ImportError as exc:  # pragma: no cover - optional runtime only
+        raise RuntimeError("JoyAI client requires Pillow") from exc
+    paths = sorted(frame_dir.glob("*.jpg"))
+    if len(paths) != expected_frames:
+        raise ValueError(
+            f"input frame directory has {len(paths)} JPEGs; expected {expected_frames}"
+        )
+    frames: list[bytes] = []
+    members = []
+    for index, path in enumerate(paths):
+        payload = path.read_bytes()
+        with Image.open(io.BytesIO(payload)) as image:
+            if image.format != "JPEG":
+                raise ValueError(f"input frame {path} is not JPEG")
+            if image.size != (width, height):
+                raise ValueError(
+                    f"input frame {path} is {image.width}x{image.height}; "
+                    f"expected {width}x{height}"
+                )
+        frames.append(payload)
+        members.append(
+            {
+                "index": index,
+                "name": path.name,
+                "bytes": len(payload),
+                "sha256": sha256_file(path),
+            }
+        )
+    return frames, {
+        "kind": "preencoded_protocol_jpeg_directory",
+        "path": str(frame_dir),
+        "frames": len(frames),
+        "total_bytes": sum(len(frame) for frame in frames),
+        "members": members,
+    }
 
 
 def _reference_data_url(path: Path | None) -> str | None:
@@ -238,7 +336,7 @@ async def run_protocol(args: argparse.Namespace, frames: list[bytes], output: Pa
             "require_face": False,
             "person_count_reedit": False,
             "freeze_kv_on_static": False,
-            "profile_timings": True,
+            "profile_timings": args.profile_timings,
             "uplink_codec": "jpeg",
             "downlink_codec": "jpeg",
         }
@@ -371,20 +469,49 @@ def _package_state(output: Path) -> dict[str, Any]:
 
 def main() -> int:
     args = _parser().parse_args()
-    input_video = args.input_video.expanduser().resolve()
+    if args.prompt is None:
+        args.prompt = (
+            flower_full_stream_prompt()
+            if args.prompt_mode == "full_flower_stream"
+            else flower_repair_prompt()
+        )
+    held_tool_contract = (
+        DEFAULT_SCISSORS_CONTRACT.to_manifest()
+        if args.prompt_mode == "full_flower_stream"
+        else None
+    )
     output = args.output_dir.expanduser().resolve()
-    if not input_video.is_file():
-        raise FileNotFoundError(input_video)
     if output.exists():
         raise FileExistsError(f"JoyAI client experiment already exists: {output}")
     if args.expected_frames < 1 or (args.expected_frames - 1) % 8:
         raise ValueError("expected frames must satisfy frame_count = 1 + 8n")
     if args.fps <= 0 or args.timeout_seconds <= 0:
         raise ValueError("fps and timeout must be positive")
-    output.mkdir(parents=True)
-    frames = decode_input_frames(input_video, width=args.width, height=args.height)
+    if args.input_video is not None:
+        input_video = args.input_video.expanduser().resolve()
+        if not input_video.is_file():
+            raise FileNotFoundError(input_video)
+        frames = decode_input_frames(input_video, width=args.width, height=args.height)
+        input_record = {
+            "kind": "video_decoded_then_jpeg95_444",
+            "path": str(input_video),
+            "sha256": sha256_file(input_video),
+            "frames": len(frames),
+            "uplink_bytes": sum(len(frame) for frame in frames),
+        }
+    else:
+        frame_dir = args.input_frame_dir.expanduser().resolve()
+        if not frame_dir.is_dir():
+            raise FileNotFoundError(frame_dir)
+        frames, input_record = load_input_frame_dir(
+            frame_dir,
+            width=args.width,
+            height=args.height,
+            expected_frames=args.expected_frames,
+        )
     if len(frames) != args.expected_frames:
         raise ValueError(f"decoded {len(frames)} input frames; expected {args.expected_frames}")
+    output.mkdir(parents=True)
 
     status = "PARTIAL"
     error: str | None = None
@@ -409,7 +536,7 @@ def main() -> int:
             "command_shell": shlex.join([sys.executable, *sys.argv]),
             "git": _git_state(),
             "packages": _package_state(output),
-            "input": {"path": str(input_video), "sha256": sha256_file(input_video), "frames": len(frames)},
+            "input": input_record,
             "server_url": args.server_url,
             "model": {
                 "id": JOYAI_MODEL_ID,
@@ -423,9 +550,11 @@ def main() -> int:
                 "expected_frames": args.expected_frames,
                 "seed": args.seed,
                 "num_inference_steps": args.num_inference_steps,
-                "output_quality": args.output_quality,
+            "output_quality": args.output_quality,
+            "profile_timings": args.profile_timings,
                 "prompt": args.prompt,
                 "reference_image": str(args.reference_image.expanduser().resolve()) if args.reference_image else None,
+                "held_tool_contract": held_tool_contract,
             },
             "protocol": protocol,
             "outputs": muxed,

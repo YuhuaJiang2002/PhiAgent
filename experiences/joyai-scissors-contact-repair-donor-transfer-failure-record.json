@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-scissors-contact-repair-donor-transfer-failure",
+  "recorded_at": "2026-08-13T13:02:00Z",
+  "status": "PARTIAL",
+  "scope": "First remote contact-repair attempt for the scissors-conditioned JoyAI video",
+  "summary": "The repair stopped before frame zero because the transferred donor MP4 was truncated to 2.3 MB and lacked its moov atom. The incomplete run directory is retained and a new experiment uses a complete hash-verified remote donor.",
+  "evidence": [
+    "FFmpeg reports 'moov atom not found' on the truncated remote donor.",
+    "The repair raises 'donor decoder ended before frame 0' and does not produce an accepted output.",
+    "The replacement donor is independently probed before the second run; the failed output directory is not reused."
+  ],
+  "lessons": [
+    "Remote video inputs need size, hash, and ffprobe preflight before a multi-stream repair starts."
+  ],
+  "limitations": [
+    "This record contains no quality result because processing did not begin."
+  ],
+  "next_actions": [
+    "Preflight every remote donor with SHA-256 and ffprobe before starting repair."
+  ],
+  "run_dir": "outputs/joyai-flower-edit/20260813T112500Z-scissors-contact-projected-union-v1",
+  "supersedes": [],
+  "tags": ["joyai", "contact", "transfer", "failure", "partial"]
+}

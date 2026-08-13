@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-scissors-full-stream-partial",
+  "recorded_at": "2026-08-13T13:00:00Z",
+  "status": "PARTIAL",
+  "scope": "One-session JoyAI full-stream robot replacement with a hand-held florist-scissors contract",
+  "summary": "A generated scissors-bearing robot reference plus an explicit rigid-tool prompt produces a 665-frame JoyAI proposal and an exact 660-frame final timeline. Native review sees a black/silver tool following the hand through the source trimming interval, but its two handle rings and finger-through-ring state are not independently separable in every required frame, so the tool gate is not promoted.",
+  "evidence": [
+    "The retained successful run generates 665 frames in one session in 105.6918576513417 seconds, or 6.29187540816734 generated frames per second.",
+    "Finalization trims only five cloned causal tail frames, restores the 16-pixel source borders without rescaling, and verifies 660 frames at 1280x720, 24 fps, and 27.5 seconds.",
+    "The conditioning image is recorded as semantic reference only; it is never counted as evidence about the generated video.",
+    "The first generation attempt is retained as PARTIAL because the remote reference path was absent; the second attempt succeeded only after hash-addressed reference transfer."
+  ],
+  "lessons": [
+    "Small manipulated tools need a separate timeline/topology contract and native-resolution human veto; a prompt alone can collapse scissors into a metallic line or a finger texture.",
+    "Remote proposal generation must preflight the reference file before reserving an expensive model session."
+  ],
+  "limitations": [
+    "Native frames do not resolve both handle rings and finger-through-ring occupancy throughout the interval.",
+    "The result is synthetic visual evidence and does not establish metric pose, torque, force, or force closure."
+  ],
+  "next_actions": [
+    "Train or attach an independently tracked rigid-tool layer before enabling automatic tool promotion."
+  ],
+  "run_dir": "outputs/joyai-flower-edit/20260813T110000Z-full660-scissors-contact-final-v1",
+  "supersedes": [],
+  "tags": ["joyai", "scissors", "held-tool", "long-video", "partial"]
+}
