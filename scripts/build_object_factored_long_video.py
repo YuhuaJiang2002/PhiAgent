@@ -34,6 +34,7 @@ from phiagent.rendering.object_factored_long_video import (  # noqa: E402
     resolve_flower_visibility,
     source_skin_like,
     strict_flower_seed,
+    validate_visibility_partition,
 )
 
 
@@ -122,6 +123,11 @@ def _load_packed(np: Any, path: Path, key: str = "packed") -> tuple[Any, dict[st
     width = int(payload["width"])
     bitorder = str(payload["bitorder"])
     packed = payload[key]
+    # The contract is frame-contiguous: every row is the flattened bitstream
+    # for one complete HxW mask.  Reject row-padded or higher-rank encodings
+    # instead of accepting a reshape-compatible but spatially scrambled mask.
+    if packed.ndim != 2 or packed.shape[1] * 8 < height * width:
+        raise ValueError("packed mask must be a frame-contiguous frames-by-bytes array")
     unpacked = np.unpackbits(packed, axis=1, bitorder=bitorder)
     masks = unpacked[:, : height * width].reshape(len(packed), height, width).astype(bool)
     return masks, {
@@ -240,6 +246,17 @@ def _verify_encoded_projection(
             person_core_erosion=person_core_negative_erosion,
         )
         person_core = binary_erode_square(np, person, person_core_negative_erosion)
+        validate_visibility_partition(
+            np,
+            edit_support=support,
+            flower_restore=flower,
+            source_person_core=person_core,
+            source_skin_negative=skin,
+        )
+        support = np.asarray(support, dtype=np.bool_).copy()
+        flower = np.asarray(flower, dtype=np.bool_).copy()
+        support.setflags(write=False)
+        flower.setflags(write=False)
         known = ~support | flower
         exact = np.all(output_rgb == source_rgb, axis=2)
         known_exact += int(np.count_nonzero(exact & known))
@@ -484,6 +501,20 @@ def main() -> int:
                 source_skin_negative=skin,
                 person_core_erosion=args.person_core_negative_erosion,
             )
+            person_core = binary_erode_square(
+                np, person, args.person_core_negative_erosion
+            )
+            validate_visibility_partition(
+                np,
+                edit_support=support,
+                flower_restore=flower,
+                source_person_core=person_core,
+                source_skin_negative=skin,
+            )
+            support = np.asarray(support, dtype=np.bool_).copy()
+            flower = np.asarray(flower, dtype=np.bool_).copy()
+            support.setflags(write=False)
+            flower.setflags(write=False)
             output = compose_object_factored_frame(
                 np,
                 source_rgb=source_rgb,

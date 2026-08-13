@@ -83,7 +83,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--base-name", required=True)
     parser.add_argument(
         "--repair-trigger",
-        choices=("hand_coverage", "projected_contact"),
+        choices=("hand_coverage", "projected_contact", "persistent_grasp"),
         default="hand_coverage",
     )
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -203,13 +203,21 @@ def main() -> int:
             if row["frame"] >= args.late_start
             and row["hand_replacement_coverage"] < hand_limit
         ]
-    else:
+    elif args.repair_trigger == "projected_contact":
         failures = [
             int(row["frame"])
             for row in rows
             if row["frame"] >= args.late_start
             and row["contact_required"]
             and not row["contact_observed"]
+        ]
+    else:
+        failures = [
+            int(row["frame"])
+            for row in rows
+            if row["frame"] >= args.late_start
+            and row.get("source_hold_observable", False)
+            and not row.get("visual_grasp_pass", False)
         ]
     active_frames = expanded_repair_frames(
         failures,

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-persistent-grasp-audit-v1-failed",
+  "recorded_at": "2026-08-13T15:00:00Z",
+  "status": "PARTIAL",
+  "scope": "First full-resolution occlusion-aware persistent-grasp adversarial audit",
+  "summary": "The first audit was stopped without a quality decision because its exact mask distance expanded radii 0 through 24 independently on every frame and repeated the same work for the hand-erasure attack.",
+  "evidence": [
+    "The process remained inside mask_chebyshev_distance after more than six minutes on a 660-frame 1280x720 candidate.",
+    "The interrupted stack trace identifies repeated binary_dilate_square calls as the bottleneck.",
+    "No audit report or acceptance result was emitted from the failed run directory."
+  ],
+  "lessons": [
+    "Exact image-space distance should exploit monotonicity and be evaluated only on the declared hold interval.",
+    "An adversary that analytically erases the complete robot-hand support has zero bridge coverage and does not require a second distance transform."
+  ],
+  "limitations": [
+    "This attempt contains no candidate quality result because it was stopped before completion."
+  ],
+  "next_actions": [
+    "Use binary-search radius evaluation, restrict the new gate to frames 497-643, and rerun in a new directory with unchanged acceptance thresholds."
+  ],
+  "run_dir": "outputs/joyai-flower-edit/20260813T143000Z-persistent-grasp-adversarial-audit-v1",
+  "supersedes": [],
+  "tags": ["joyai", "persistent-grasp", "infra", "failed-audit"]
+}

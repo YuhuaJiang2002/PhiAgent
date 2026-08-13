@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import pytest
+from pathlib import Path
+
+from scripts.build_object_factored_long_video import _load_packed
 
 from phiagent.rendering.object_factored_long_video import (
     SourceResizeCrop,
@@ -10,6 +13,7 @@ from phiagent.rendering.object_factored_long_video import (
     resolve_flower_visibility,
     source_skin_like,
     strict_flower_seed,
+    validate_visibility_partition,
 )
 
 
@@ -134,3 +138,62 @@ def test_flower_visibility_excludes_person_core_but_keeps_boundary() -> None:
     assert bool(visible[3, 3]) is False
     assert bool(visible[1, 1]) is True
     assert bool(visible[0, 0]) is True
+
+
+def test_packed_mask_loader_flattens_each_frame_before_unpacking(tmp_path: Path) -> None:
+    np = pytest.importorskip("numpy")
+    expected = np.zeros((2, 3, 9), dtype=np.uint8)
+    expected[0, 0, 0] = 1
+    expected[0, 2, 8] = 1
+    expected[1, 1, 4] = 1
+    packed = np.packbits(expected.reshape(2, -1), axis=1, bitorder="little")
+    path = tmp_path / "masks.npz"
+    np.savez(
+        path,
+        packed=packed,
+        height=np.asarray(3),
+        width=np.asarray(9),
+        bitorder=np.asarray("little"),
+    )
+
+    decoded, metadata = _load_packed(np, path)
+
+    assert decoded.shape == expected.shape
+    assert np.array_equal(decoded, expected.astype(bool))
+    assert metadata["frames"] == 2
+
+
+def test_packed_mask_loader_rejects_row_padded_three_dimensional_payload(
+    tmp_path: Path,
+) -> None:
+    np = pytest.importorskip("numpy")
+    expected = np.zeros((2, 3, 9), dtype=np.uint8)
+    path = tmp_path / "row-packed-masks.npz"
+    np.savez(
+        path,
+        packed=np.packbits(expected, axis=2, bitorder="little"),
+        height=np.asarray(3),
+        width=np.asarray(9),
+        bitorder=np.asarray("little"),
+    )
+
+    with pytest.raises(ValueError, match="frame-contiguous"):
+        _load_packed(np, path)
+
+
+def test_visibility_partition_rejects_flower_inside_person_core() -> None:
+    np = pytest.importorskip("numpy")
+    support = np.ones((4, 4), dtype=bool)
+    flower = np.zeros((4, 4), dtype=bool)
+    flower[2, 2] = True
+    person_core = np.zeros((4, 4), dtype=bool)
+    person_core[2, 2] = True
+
+    with pytest.raises(ValueError, match="person core"):
+        validate_visibility_partition(
+            np,
+            edit_support=support,
+            flower_restore=flower,
+            source_person_core=person_core,
+            source_skin_negative=np.zeros_like(support),
+        )

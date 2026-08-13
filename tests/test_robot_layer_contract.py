@@ -7,7 +7,9 @@ from phiagent.rendering.robot_layer_contract import (
     canonical_palette_histogram,
     frame_contract_metrics,
     make_state_control,
+    mask_chebyshev_distance,
     merge_missing_replacement,
+    occlusion_aware_grasp_metrics,
     project_missing_contact,
     robust_limit,
 )
@@ -241,6 +243,71 @@ def test_contact_projection_is_noop_without_required_source_contact() -> None:
     assert not np.any(added)
     assert steps == 0
     assert passed is False
+
+
+def test_occlusion_aware_grasp_accepts_replaced_hand_corridor() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((12, 20, 3), dtype=np.uint8)
+    candidate = source.copy()
+    hands = np.zeros((12, 20), dtype=bool)
+    hands[4:8, 7:12] = True
+    flower = np.zeros_like(hands)
+    flower[4:8, 15:17] = True
+    candidate[hands] = np.asarray([150, 160, 170], dtype=np.uint8)
+
+    metrics = occlusion_aware_grasp_metrics(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hands,
+        object_mask=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+        maximum_source_occlusion_gap=4,
+        minimum_bridge_coverage=0.8,
+    )
+
+    assert mask_chebyshev_distance(np, hands, flower, maximum_radius=4) == 4
+    assert metrics["robot_direct_contact"] is False
+    assert metrics["occlusion_bridge_coverage"] == 1.0
+    assert metrics["visual_grasp_pass"] is True
+
+
+def test_occlusion_aware_grasp_rejects_floating_object_after_hand_erasure() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((12, 20, 3), dtype=np.uint8)
+    candidate = source.copy()
+    hands = np.zeros((12, 20), dtype=bool)
+    hands[4:8, 7:12] = True
+    flower = np.zeros_like(hands)
+    flower[4:8, 15:17] = True
+
+    metrics = occlusion_aware_grasp_metrics(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hands,
+        object_mask=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+        maximum_source_occlusion_gap=4,
+        minimum_bridge_coverage=0.8,
+    )
+
+    assert metrics["source_hold_observable"] is True
+    assert metrics["occlusion_bridge_coverage"] == 0.0
+    assert metrics["visual_grasp_pass"] is False
+
+
+def test_mask_distance_finds_exact_bounded_radius_with_binary_search() -> None:
+    np = pytest.importorskip("numpy")
+    first = np.zeros((20, 30), dtype=bool)
+    second = np.zeros_like(first)
+    first[10, 3] = True
+    second[10, 20] = True
+
+    assert mask_chebyshev_distance(np, first, second, maximum_radius=16) is None
+    assert mask_chebyshev_distance(np, first, second, maximum_radius=24) == 17
 
 
 def test_frame_metric_fractions_remain_bounded_on_large_masks() -> None:

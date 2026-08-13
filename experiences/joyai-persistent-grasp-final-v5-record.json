@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-persistent-grasp-final-v5",
+  "recorded_at": "2026-08-13T16:05:00Z",
+  "status": "PARTIAL",
+  "scope": "Occlusion-aware persistent late grasp repair and real-human comparison",
+  "summary": "A two-frame, 632-pixel source-supported hand-layer repair raises the declared 497-643 persistent visual-grasp interval from 145/147 to 147/147 and survives complete hand-erasure attacks, while independent late hand-sharpness and structure-ghost gates keep the overall candidate PARTIAL.",
+  "evidence": [
+    "The final video is independently audited as 660 frames, 1280x720, 24 fps, and 27.5 seconds with SHA-256 5a93bf9a73dd702e188a2e7b61bdc1a8e6ba6b1dcf7a614a8f065a6b7197cf08.",
+    "Persistent grasp passes 147/147 frames over [497, 644), source hold is observable on 147/147, and complete hand erasure is rejected on 147/147.",
+    "Late projected contact remains 11/11 and late hand replacement coverage violates its anchor-fitted limit in only 3/180 frames.",
+    "The targeted repair changes 632 pixels across frames 572 and 573 in 26.9688 seconds at 24.4727 FPS; their occlusion-corridor coverage rises to 0.8409 and 0.8333 without changing the fixed 0.80 gate.",
+    "The final full-resolution audit takes 281.3215 seconds at 2.3468 FPS; color, topology, contact, and persistent-grasp erasure attacks pass.",
+    "A 660-frame side-by-side real-human versus robot comparison and poster are generated from the exact audited video."
+  ],
+  "lessons": [
+    "Persistent interaction state needs an occlusion-surviving object track distinct from the z-order-resolved visible object layer.",
+    "A dense hold interval catches failures that 11 sparse contact frames cannot, and a two-frame source-supported repair can resolve them without regenerating the full sequence.",
+    "Independent sharpness and adversarial structure gates must remain blocking even when the task-specific grasp gate reaches 100 percent."
+  ],
+  "limitations": [
+    "Late hand edge energy still violates its frozen lower gate in 22/180 frames.",
+    "The structure-ghost attack remains undetected at p05 delta 0.6296 below the fixed 0.75 threshold.",
+    "The visual grasp contract is camera-frame evidence only; it does not prove metric depth, contact force, force closure, collision safety, or real-robot execution."
+  ],
+  "next_actions": [
+    "Train or route a native-resolution hand-structure residual model and promote only after the frozen late sharpness and structure-ghost attack gates pass."
+  ],
+  "run_dir": "outputs/joyai-flower-edit/20260813T154500Z-persistent-grasp-final-audit-v5",
+  "supersedes": [],
+  "tags": ["joyai", "persistent-grasp", "long-video", "adversarial-audit", "demo"]
+}

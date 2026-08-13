@@ -515,6 +515,123 @@ def project_missing_contact(
     return result, added, steps_used, observed
 
 
+def mask_chebyshev_distance(
+    np: Any,
+    first_mask: Any,
+    second_mask: Any,
+    *,
+    maximum_radius: int,
+) -> int | None:
+    """Return the bounded image-space gap between two masks.
+
+    The value is measured in the same named camera frame as the masks.  A
+    ``None`` result means the gap is larger than ``maximum_radius``; it does
+    not mean that the objects are unrelated in 3-D.
+    """
+
+    if maximum_radius < 0:
+        raise ValueError("maximum radius must be non-negative")
+    first = np.asarray(first_mask, dtype=np.bool_)
+    second = np.asarray(second_mask, dtype=np.bool_)
+    if first.shape != second.shape or first.ndim != 2:
+        raise ValueError("distance masks must be matching two-dimensional arrays")
+    if not np.any(first) or not np.any(second):
+        return None
+    if np.any(np.logical_and(first, second)):
+        return 0
+    if not np.any(
+        np.logical_and(binary_dilate_square(np, first, maximum_radius), second)
+    ):
+        return None
+    low = 1
+    high = maximum_radius
+    while low < high:
+        middle = (low + high) // 2
+        if np.any(
+            np.logical_and(binary_dilate_square(np, first, middle), second)
+        ):
+            high = middle
+        else:
+            low = middle + 1
+    return low
+
+
+def occlusion_aware_grasp_metrics(
+    np: Any,
+    *,
+    candidate_rgb: Any,
+    source_rgb: Any,
+    hand_support: Any,
+    object_mask: Any,
+    replacement_threshold: float,
+    contact_radius: int,
+    maximum_source_occlusion_gap: int,
+    minimum_bridge_coverage: float,
+) -> dict[str, float | bool | int | None]:
+    """Audit a visually persistent grasp through source-hand occlusion.
+
+    A visible stem can disappear *under* the source hand, so direct mask
+    adjacency is not required on every frame.  When that happens, the source
+    hand/object gap defines a bounded occlusion corridor and the generated
+    robot must replace that corridor.  This is a stronger visual invariant
+    than sparse adjacency, but remains explicitly non-metric and cannot prove
+    depth ordering, contact force, or force closure.
+    """
+
+    if contact_radius < 0 or maximum_source_occlusion_gap < contact_radius:
+        raise ValueError("invalid contact or source-occlusion radius")
+    if not 0.0 <= minimum_bridge_coverage <= 1.0:
+        raise ValueError("minimum bridge coverage must be in [0, 1]")
+    candidate = np.asarray(candidate_rgb, dtype=np.uint8)
+    source = np.asarray(source_rgb, dtype=np.uint8)
+    if candidate.shape != source.shape or candidate.ndim != 3 or candidate.shape[2] != 3:
+        raise ValueError("candidate and source RGB frames must be matching HxWx3 frames")
+    hand = _as_mask(np, hand_support, candidate.shape[:2], "hand support")
+    object_value = _as_mask(np, object_mask, candidate.shape[:2], "object")
+    source_gap = mask_chebyshev_distance(
+        np,
+        hand,
+        object_value,
+        maximum_radius=maximum_source_occlusion_gap,
+    )
+    robot_hand = np.logical_and(
+        replacement_mask(np, candidate, source, threshold=replacement_threshold),
+        hand,
+    )
+    direct_contact = bool(
+        np.any(
+            np.logical_and(
+                binary_dilate_square(np, robot_hand, contact_radius), object_value
+            )
+        )
+    )
+    if source_gap is None:
+        corridor = np.zeros_like(hand)
+    else:
+        corridor = np.logical_and(
+            hand,
+            binary_dilate_square(np, object_value, source_gap + contact_radius),
+        )
+    corridor_pixels = int(np.count_nonzero(corridor))
+    bridge_coverage = (
+        float(np.count_nonzero(np.logical_and(robot_hand, corridor)) / corridor_pixels)
+        if corridor_pixels
+        else 0.0
+    )
+    source_hold_observable = source_gap is not None
+    occlusion_bridge = bool(
+        source_hold_observable and bridge_coverage >= minimum_bridge_coverage
+    )
+    return {
+        "source_hand_object_gap_pixels": source_gap,
+        "source_hold_observable": source_hold_observable,
+        "robot_direct_contact": direct_contact,
+        "occlusion_corridor_pixels": corridor_pixels,
+        "occlusion_bridge_coverage": bridge_coverage,
+        "visual_grasp_pass": bool(direct_contact or occlusion_bridge),
+    }
+
+
 def robust_limit(
     np: Any,
     values: Any,
