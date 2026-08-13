@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-08-13T17:25:00Z",
+  "status": "PARTIAL",
+  "method": "multi_anchor_consensus_plus_recursive_appearance_state_and_bounded_hand_detail_projection",
+  "video": {
+    "duration_seconds": 27.5,
+    "fps": 24.0,
+    "frames": 660,
+    "width": 1280,
+    "height": 720,
+    "robot_only_path": "joyai-flower-jitter-stable-persistent-grasp-27p5s.mp4",
+    "robot_only_sha256": "a63237403e2b010444ad885277dd5b06f75370f9c4dcbde418732b641b3099a8",
+    "comparison_path": "joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4",
+    "comparison_sha256": "4a73ebd50c99696ebac02bff31e2f1075d3b658239fc6ffc03dbe193feceb92f",
+    "poster_path": "joyai-flower-real-vs-robot-jitter-stable-poster.jpg",
+    "poster_sha256": "02090c420b7e2581ebf016092fe97301bd0443434b5968625e25b5d1f4423b6e"
+  },
+  "frozen_visual_audit": {
+    "image_space_contract_pass": true,
+    "late_start_frame": 480,
+    "late_hand_edge_failures": "0/180",
+    "late_projected_contact_recall": "11/11",
+    "persistent_grasp_interval": "frames 497-643",
+    "persistent_visual_grasp_recall": "147/147",
+    "grasp_erasure_attack_rejection": "147/147",
+    "all_adversarial_attacks_detected": true,
+    "attacks": [
+      "color",
+      "topology",
+      "contact_removal",
+      "structure_ghost"
+    ],
+    "audit_seconds": 270.9158849999949,
+    "audit_fps": 2.436811707130146,
+    "audit_report_sha256": "d9a57051f802535a863080c0c1d160fa015ca5ebbac20be012845f684a083bd2"
+  },
+  "temporal_jitter_audit": {
+    "coordinate_frame": "camera:source_downsampled_320x180",
+    "risk_windows_inclusive": [[463, 520], [543, 625], [637, 659]],
+    "evaluated_transitions": 161,
+    "incumbent_layer_warp_mae": {
+      "mean": 7.075632473326618,
+      "p95": 20.724681854248047,
+      "maximum": 29.420278549194336
+    },
+    "challenger_layer_warp_mae": {
+      "mean": 6.494296761773388,
+      "p95": 19.16170310974121,
+      "maximum": 26.685483932495117
+    },
+    "relative_mean_reduction": 0.08216024698070756,
+    "transitions_above_20": {
+      "incumbent": 10,
+      "challenger": 7
+    },
+    "gates": {
+      "mean_lower": true,
+      "p95_lower": true,
+      "complete_risk_transition_coverage": true
+    }
+  },
+  "pipeline_timing": {
+    "joyai_full_stream_generation": {
+      "generated_frames": 665,
+      "seconds": 105.692,
+      "fps": 6.292,
+      "hardware": "2x NVIDIA A800"
+    },
+    "multi_anchor_consensus": {
+      "seconds": 268.14518095899257,
+      "fps": 2.4613532029163476
+    },
+    "recursive_appearance_state": {
+      "seconds": 108.83539175000624,
+      "fps": 6.064203834686543
+    },
+    "bounded_hand_detail_projection": {
+      "seconds": 62.38585699998657,
+      "fps": 10.57932088678596
+    },
+    "quality_postprocessing_total": {
+      "seconds": 439.3664297089854,
+      "effective_fps": 1.5021630133124904
+    }
+  },
+  "honest_scope": {
+    "accepted": "Frozen single-scene camera-frame visual contract.",
+    "not_claimed": [
+      "metric 3-D hand-stem depth",
+      "contact force",
+      "force closure",
+      "real robot execution",
+      "cross-scene generalization"
+    ]
+  }
+}

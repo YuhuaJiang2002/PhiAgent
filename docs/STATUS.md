@@ -6,6 +6,20 @@ locations are recorded per experiment below.
 
 ## WORKING
 
+- JoyAI recursive appearance-state visual contract: the accepted 27.5-second,
+  660-frame candidate at
+  `outputs/joyai-temporal-state/20260813T184000Z-risk165-recursive-hand-v22`
+  applies multi-anchor consensus, a causal recursive state estimator, and a
+  bounded 24-frame hand-detail projection. Against the prior published
+  incumbent, source-motion-aligned robot-layer jitter mean falls 8.216%, p95
+  falls 7.542%, and transitions above a residual of 20 fall from 10 to 7 across
+  all 161 declared risk transitions. The unchanged v5 limits pass every
+  image-space gate: late hand-edge failures are 0/180, late projected contact
+  is 11/11, persistent visual grasp and grasp-erasure rejection are 147/147,
+  and all four adversarial attacks are detected. This is WORKING for the frozen
+  single-scene visual contract only. Overall video status remains PARTIAL: no
+  metric depth, force closure, independent-scene replication, or real robot
+  execution is established.
 - Persistent workflow framework and flower long-video reference graph: the
   standard-library `phiagent.workflows` runtime provides named nodes,
   conditional edges, JSON-hashed thread checkpoints, streamed events,

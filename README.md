@@ -51,29 +51,34 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 27.5-second flower arranging: real human vs. robot
+### 27.5-second flower arranging: jitter-stabilized real/robot comparison
 
-[![Real human reference versus PhiAgent robot persistent-grasp result](demo/showcase/joyai-flower-real-vs-robot-persistent-grasp-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-persistent-grasp-27p5s.mp4)
+[![Real human reference versus jitter-stabilized PhiAgent robot result](demo/showcase/joyai-flower-real-vs-robot-jitter-stable-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4)
 
-[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-persistent-grasp-27p5s.mp4)
-or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-persistent-grasp-27p5s.mp4).
+[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4)
+or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-jitter-stable-persistent-grasp-27p5s.mp4).
 
-The complete 660-frame, 1280x720, 24 FPS result keeps the observed flower/stem
-trajectory separate from robot appearance and evaluates the source-observed
-hold interval on every frame. The occlusion-aware visual-grasp gate improves
-from **145/147 to 147/147** after a bounded two-frame, 632-pixel hand-layer
-repair; complete hand-erasure attacks are rejected on **147/147** frames and
-late projected contact remains **11/11**. The retained JoyAI full-stream base
-generated 665 frames in 105.69 seconds on two A800 GPUs (**6.29 FPS**); the
-final bounded repair processes the 660-frame timeline in 26.97 seconds
-(**24.47 FPS**), while the native-resolution adversarial audit takes 281.32
-seconds (**2.35 FPS**).
+The complete 660-frame, 1280x720, 24 FPS result treats late flicker as a
+persistent robot-appearance state error. Multi-anchor consensus is followed by
+a causal recursive state update and a bounded 24-frame hand-detail projection;
+flower, background, window endpoints, and non-editable pixels remain locked.
+Across 161 frozen risk transitions, source-motion-aligned robot-layer jitter
+falls **8.216%** in the mean (7.0756 to 6.4943), p95 falls from 20.7247 to
+19.1617, and high-jitter transitions above 20 fall from 10 to 7.
 
-Status remains **PARTIAL**: late hand sharpness misses its frozen lower gate in
-22/180 frames and the structure-ghost attack is not detected. These are
-camera-frame visual checks, not metric depth, contact-force, force-closure, or
-real-robot evidence. See the
-[comparison manifest](demo/showcase/joyai-flower-persistent-grasp-manifest.json).
+The unchanged v5 audit limits now pass every image-space gate: late hand-edge
+failures fall from **22/180 to 0/180**, late projected contact is **11/11**, and
+the source-observed persistent hold plus grasp-erasure attack are both
+**147/147**. Color, topology, contact-removal, and structure-ghost attacks are
+all detected. The JoyAI full-stream base generated 665 frames in 105.69 seconds
+on two A800 GPUs (**6.29 FPS**). The three quality post-processing stages take
+268.15, 108.84, and 62.39 seconds (439.37 seconds total; **1.50 effective FPS**);
+the independent native-resolution audit takes 270.92 seconds (**2.44 FPS**).
+
+Status remains **PARTIAL**: this is a frozen single-scene camera-frame visual
+contract, not metric depth, contact force, force closure, cross-scene
+generalization, or real-robot evidence. See the
+[evidence manifest](demo/showcase/joyai-flower-jitter-stable-manifest.json).
 
 ### Supplemental real-scene action-conditioned comparison
 
