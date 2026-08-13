@@ -235,6 +235,113 @@ def _spatial_luma_edge_energy(np: Any, frame_rgb: Any, mask: Any) -> float:
     return float(np.concatenate(values).mean())
 
 
+def _spatial_luma_sobel_energy(np: Any, frame_rgb: Any, mask: Any) -> float:
+    """Return 3x3 Sobel magnitude on the declared generated-hand support."""
+
+    frame = np.asarray(frame_rgb, dtype=np.float32)
+    luma = 0.2126 * frame[..., 0] + 0.7152 * frame[..., 1] + 0.0722 * frame[..., 2]
+    padded = np.pad(luma, 1, mode="edge")
+    top_left = padded[:-2, :-2]
+    top = padded[:-2, 1:-1]
+    top_right = padded[:-2, 2:]
+    left = padded[1:-1, :-2]
+    right = padded[1:-1, 2:]
+    bottom_left = padded[2:, :-2]
+    bottom = padded[2:, 1:-1]
+    bottom_right = padded[2:, 2:]
+    gradient_x = (
+        top_right + 2.0 * right + bottom_right
+        - top_left - 2.0 * left - bottom_left
+    )
+    gradient_y = (
+        bottom_left + 2.0 * bottom + bottom_right
+        - top_left - 2.0 * top - top_right
+    )
+    values = np.sqrt(gradient_x * gradient_x + gradient_y * gradient_y)
+    selected = values[np.asarray(mask, dtype=np.bool_)]
+    return float(selected.mean()) if selected.size else 0.0
+
+
+def project_hand_detail_to_gate(
+    cv2: Any,
+    np: Any,
+    *,
+    frame_rgb: Any,
+    editable_mask: Any,
+    measurement_mask: Any,
+    minimum_edge_energy: float,
+    gaussian_sigma: float = 0.8,
+    maximum_strength: float = 3.0,
+    search_iterations: int = 12,
+) -> tuple[Any, float, float, bool]:
+    """Project high-frequency hand detail onto a frozen image-space gate.
+
+    The current frame remains the only appearance source.  No neighboring
+    geometry is averaged and pixels outside ``editable_mask`` stay byte-exact.
+    The smallest bounded unsharp-residual strength that reaches the declared
+    edge-energy gate is selected by binary search.
+    """
+
+    frame = np.asarray(frame_rgb, dtype=np.uint8)
+    if frame.ndim != 3 or frame.shape[2] != 3:
+        raise ValueError("frame_rgb must have shape HxWx3")
+    editable = _as_mask(np, editable_mask, frame.shape[:2], "editable mask")
+    measurement = _as_mask(
+        np, measurement_mask, frame.shape[:2], "measurement mask"
+    )
+    for name, value in (
+        ("minimum_edge_energy", minimum_edge_energy),
+        ("gaussian_sigma", gaussian_sigma),
+        ("maximum_strength", maximum_strength),
+    ):
+        if not np.isfinite(value) or value <= 0:
+            raise ValueError(f"{name} must be finite and positive")
+    if search_iterations < 1:
+        raise ValueError("search_iterations must be positive")
+
+    baseline = _spatial_luma_edge_energy(np, frame, measurement)
+    if baseline >= minimum_edge_energy or not np.any(editable):
+        return frame.copy(), 0.0, baseline, baseline >= minimum_edge_energy
+
+    values = frame.astype(np.float32)
+    low_frequency = cv2.GaussianBlur(
+        values,
+        (0, 0),
+        sigmaX=gaussian_sigma,
+        sigmaY=gaussian_sigma,
+        borderType=cv2.BORDER_REFLECT101,
+    )
+    detail = values - low_frequency
+
+    def proposal(strength: float) -> tuple[Any, float]:
+        candidate = frame.copy()
+        sharpened = np.clip(
+            np.rint(values + strength * detail), 0, 255
+        ).astype(np.uint8)
+        candidate[editable] = sharpened[editable]
+        energy = _spatial_luma_edge_energy(np, candidate, measurement)
+        return candidate, energy
+
+    upper_candidate, upper_energy = proposal(maximum_strength)
+    if upper_energy < minimum_edge_energy:
+        return upper_candidate, maximum_strength, upper_energy, False
+
+    lower = 0.0
+    upper = float(maximum_strength)
+    selected = upper_candidate
+    selected_energy = upper_energy
+    for _ in range(search_iterations):
+        middle = 0.5 * (lower + upper)
+        candidate, energy = proposal(middle)
+        if energy >= minimum_edge_energy:
+            upper = middle
+            selected = candidate
+            selected_energy = energy
+        else:
+            lower = middle
+    return selected, upper, selected_energy, True
+
+
 def _grid_topology_coverage(
     np: Any,
     replacement: Any,
@@ -313,6 +420,9 @@ def frame_contract_metrics(
     hand_edge_energy = _spatial_luma_edge_energy(
         np, candidate, hand_evaluation
     )
+    hand_structure_sobel_energy = _spatial_luma_sobel_energy(
+        np, candidate, robot_hand
+    )
     denominator = max(1, int(np.count_nonzero(evaluation)))
     return {
         "palette_surprisal": palette_surprisal(
@@ -327,6 +437,7 @@ def frame_contract_metrics(
         # the generic one-sided audit-limit machinery.
         "hand_edge_energy_lower_gate": hand_edge_energy,
         "hand_edge_energy_upper_gate": hand_edge_energy,
+        "hand_structure_sobel_energy": hand_structure_sobel_energy,
         "replacement_coverage": _coverage(np, replaced, evaluation),
         "arm_replacement_coverage": _coverage(
             np, replaced, np.logical_and(arms, evaluation)

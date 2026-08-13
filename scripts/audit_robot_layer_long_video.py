@@ -117,6 +117,18 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--minimum-occlusion-bridge-coverage", type=float, default=0.80)
     parser.add_argument("--required-persistent-grasp-recall", type=float, default=1.0)
     parser.add_argument("--adversarial-stride", type=int, default=12)
+    parser.add_argument(
+        "--frozen-limits-report",
+        type=Path,
+        help=(
+            "Prior immutable audit report whose anchor-fitted metric limits "
+            "must be reused verbatim for every challenger."
+        ),
+    )
+    parser.add_argument(
+        "--frozen-limits-candidate",
+        help="Candidate name inside --frozen-limits-report; defaults to its recommendation.",
+    )
     parser.add_argument("--seed", type=int, default=20260812)
     parser.add_argument("--mask-frame-name", required=True)
     parser.add_argument("--mask-source-width", type=int, required=True)
@@ -347,7 +359,13 @@ def _resolve_frame_masks(
     return support, flower
 
 
-def _summary(np: Any, rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
+def _summary(
+    np: Any,
+    rows: list[dict[str, Any]],
+    args: argparse.Namespace,
+    *,
+    frozen_limits: dict[str, float] | None = None,
+) -> dict[str, Any]:
     anchor = [
         row
         for row in rows
@@ -356,21 +374,32 @@ def _summary(np: Any, rows: list[dict[str, Any]], args: argparse.Namespace) -> d
     late = [row for row in rows if row["frame"] >= args.late_start]
     if not anchor or not late:
         raise ValueError("anchor and late intervals must both contain frames")
-    limits: dict[str, float] = {}
-    for metric, margin in UPPER_METRICS.items():
-        limits[metric] = robust_limit(
-            np,
-            [row[metric] for row in anchor],
-            direction="upper",
-            minimum_margin=margin,
-        )
-    for metric, margin in LOWER_METRICS.items():
-        limits[metric] = robust_limit(
-            np,
-            [row[metric] for row in anchor],
-            direction="lower",
-            minimum_margin=margin,
-        )
+    required_limit_keys = set(UPPER_METRICS) | set(LOWER_METRICS)
+    if frozen_limits is None:
+        limits: dict[str, float] = {}
+        for metric, margin in UPPER_METRICS.items():
+            limits[metric] = robust_limit(
+                np,
+                [row[metric] for row in anchor],
+                direction="upper",
+                minimum_margin=margin,
+            )
+        for metric, margin in LOWER_METRICS.items():
+            limits[metric] = robust_limit(
+                np,
+                [row[metric] for row in anchor],
+                direction="lower",
+                minimum_margin=margin,
+            )
+    else:
+        missing = required_limit_keys - set(frozen_limits)
+        if missing:
+            raise ValueError(f"frozen limits omit metrics: {sorted(missing)}")
+        limits = {
+            metric: float(frozen_limits[metric]) for metric in required_limit_keys
+        }
+        if not all(np.isfinite(value) for value in limits.values()):
+            raise ValueError("frozen limits must be finite")
     sections = {}
     for section_name, selected in {
         "anchor": anchor,
@@ -540,6 +569,7 @@ def _audit_candidate(
     target_frame: SourceResizeCrop,
     packed_masks: tuple[Any, dict[str, Any], Any, dict[str, Any], Any, dict[str, Any], Any, dict[str, Any]],
     palette: Any,
+    frozen_limits: dict[str, float] | None,
 ) -> dict[str, Any]:
     packed_person, person_meta, packed_flower, flower_meta, packed_arms, arm_meta, packed_hands, hand_meta = packed_masks
     source_command = _decoder_command(
@@ -682,7 +712,7 @@ def _audit_candidate(
         returncode = process.wait()
         if returncode:
             raise RuntimeError(f"{label} decoder failed with {returncode}: {stderr[-2000:]}")
-    summary = _summary(np, rows, args)
+    summary = _summary(np, rows, args, frozen_limits=frozen_limits)
     color_palette_delta = np.asarray(
         [
             row["color_attack"]["palette_surprisal"]
@@ -725,6 +755,13 @@ def _audit_candidate(
             for row in attacks
         ]
     )
+    structure_sobel_delta = np.asarray(
+        [
+            row["baseline"]["hand_structure_sobel_energy"]
+            - row["structure_ghost_attack"]["hand_structure_sobel_energy"]
+            for row in attacks
+        ]
+    )
     adversarial = {
         "sampled_frames": len(attacks),
         "color_attack_palette_delta_p05": float(np.quantile(color_palette_delta, 0.05)),
@@ -738,6 +775,9 @@ def _audit_candidate(
         "structure_ghost_attack_edge_delta_p05": float(
             np.quantile(structure_delta, 0.05)
         ),
+        "structure_ghost_attack_sobel_delta_p05": float(
+            np.quantile(structure_sobel_delta, 0.05)
+        ),
         "gates": {
             "color_attack_detected": bool(
                 np.quantile(color_palette_delta, 0.05) >= 0.35
@@ -750,7 +790,7 @@ def _audit_candidate(
                 len(detachable) >= 3 and contact_rejections == len(detachable)
             ),
             "structure_ghost_attack_detected": bool(
-                np.quantile(structure_delta, 0.05) >= 0.75
+                np.quantile(structure_sobel_delta, 0.05) >= 3.0
             ),
         },
     }
@@ -788,6 +828,8 @@ def main() -> int:
     )
     if not persistent_disabled and not persistent_valid:
         raise SystemExit("persistent grasp interval must be disabled or a valid half-open interval")
+    if args.frozen_limits_candidate and not args.frozen_limits_report:
+        raise SystemExit("--frozen-limits-candidate requires --frozen-limits-report")
     output_dir = args.output_dir.expanduser().resolve()
     output_dir.mkdir(parents=True, exist_ok=False)
     candidates = _parse_candidates(args.candidate)
@@ -854,6 +896,39 @@ def main() -> int:
     )
     palette_mask = np.logical_and(reference_person, np.logical_not(reference_flower))
     palette = canonical_palette_histogram(np, reference, palette_mask, bins=8)
+    frozen_limits: dict[str, float] | None = None
+    frozen_limits_source: dict[str, Any] | None = None
+    if args.frozen_limits_report is not None:
+        frozen_path = args.frozen_limits_report.expanduser().resolve()
+        frozen_report = json.loads(frozen_path.read_text())
+        frozen_name = (
+            args.frozen_limits_candidate
+            or frozen_report.get("recommended_candidate")
+        )
+        frozen_candidate = next(
+            (
+                row
+                for row in frozen_report.get("candidates", [])
+                if row.get("name") == frozen_name
+            ),
+            None,
+        )
+        if frozen_candidate is None:
+            raise ValueError(
+                f"frozen report has no candidate {frozen_name!r}"
+            )
+        frozen_limits = {
+            key: float(value)
+            for key, value in frozen_candidate["summary"][
+                "limits_fit_only_on_anchor_frames"
+            ].items()
+        }
+        frozen_limits_source = {
+            "path": str(frozen_path),
+            "sha256": _sha256(frozen_path),
+            "candidate": frozen_name,
+            "limits": frozen_limits,
+        }
     started = time.perf_counter()
     results = []
     for name, path in candidates:
@@ -866,6 +941,7 @@ def main() -> int:
             target_frame=target_frame,
             packed_masks=packed_masks,
             palette=palette,
+            frozen_limits=frozen_limits,
         )
         frame_path = output_dir / f"{name}-frame-metrics.json"
         frame_path.write_text(
@@ -909,8 +985,13 @@ def main() -> int:
                 "rendering and ordinary projected contact retain the resolved-visible mask"
             ),
             "threshold_fit": (
-                f"anchor [{args.anchor_start}, {args.anchor_end_exclusive}) only; "
-                "late frames never fit their own thresholds"
+                (
+                    "reused verbatim from immutable prior audit "
+                    f"candidate {frozen_limits_source['candidate']}"
+                    if frozen_limits_source is not None
+                    else f"anchor [{args.anchor_start}, {args.anchor_end_exclusive}) only"
+                )
+                + "; late frames never fit their own thresholds"
             ),
         },
         "config": {
@@ -931,6 +1012,7 @@ def main() -> int:
                 "frame": args.reference_frame,
             },
             "masks": [person_meta, flower_meta, arm_meta, hand_meta],
+            "frozen_limits_source": frozen_limits_source,
         },
         "candidates": results,
         "ranking": [item["name"] for item in ranking],

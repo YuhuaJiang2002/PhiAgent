@@ -134,6 +134,14 @@ def main() -> int:
     persistent = summary.get("persistent_grasp")
     if not persistent:
         raise ValueError("audit report has no persistent-grasp result")
+    failed_image_gates = sorted(
+        name for name, passed in summary["gates"].items() if not passed
+    )
+    failed_adversarial_gates = sorted(
+        name
+        for name, passed in candidate_audit["adversarial"]["gates"].items()
+        if not passed
+    )
 
     header = output_dir / "comparison-header.png"
     video = output_dir / "real-vs-robot-persistent-grasp-27p5s.mp4"
@@ -172,9 +180,10 @@ def main() -> int:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "status": "PARTIAL",
         "honest_status": (
-            "PARTIAL: the 2-D occlusion-aware persistent-grasp contract passes, "
-            "but independent late hand-sharpness and structure-ghost adversarial "
-            "gates fail; no metric depth or force-closure claim."
+            "PARTIAL: the 2-D occlusion-aware persistent-grasp contract passes; "
+            f"failed image gates={failed_image_gates or 'none'}, failed adversarial "
+            f"gates={failed_adversarial_gates or 'none'}; no metric depth or "
+            "force-closure claim."
         ),
         "inputs": {
             "source": {"path": _display_path(source), "sha256": _sha256(source), "video": source_info},
@@ -200,8 +209,24 @@ def main() -> int:
         "python": sys.version,
         "limitations": [
             "The grasp gate is a camera-frame visual invariant, not 3-D contact evidence.",
-            "Late hand edge energy violates its frozen lower gate in 22 of 180 frames.",
-            "The structure-ghost adversarial detector remains below its frozen sensitivity gate.",
+            *(
+                [
+                    "Late hand edge energy still violates its frozen lower gate in "
+                    f"{summary['sections']['at_or_after_20_seconds']['metrics']['hand_edge_energy_lower_gate']['violation_fraction']:.2%} "
+                    "of late frames."
+                ]
+                if not summary["gates"]["late_hand_edge_energy_lower_gate"]
+                else []
+            ),
+            *(
+                [
+                    "At least one declared adversarial detector still fails: "
+                    + ", ".join(failed_adversarial_gates)
+                    + "."
+                ]
+                if failed_adversarial_gates
+                else []
+            ),
             "The robot remains a generated visual replacement rather than a verified real-robot execution.",
         ],
     }
