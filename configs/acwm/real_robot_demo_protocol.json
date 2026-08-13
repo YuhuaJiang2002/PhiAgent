@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "status": "NOT STARTED",
+  "reason": "No controllable physical robot, operator approval, or synchronized hardware telemetry is available in this workspace.",
+  "minimum_demo_trials": 3,
+  "minimum_sota_promotion_trials": 20,
+  "required_order": [
+    "record calibrated initial state",
+    "freeze the commanded 14D EEF action",
+    "generate and timestamp the AC-WM prediction before execution",
+    "pass operator and emergency-stop preflight",
+    "execute the same action on the physical robot",
+    "record synchronized video, EEF telemetry, collisions, and emergency stops",
+    "obtain a blind task-success review",
+    "validate and hash every artifact"
+  ],
+  "required_files_per_trial": [
+    "action condition JSON",
+    "camera-to-robot calibration JSON",
+    "initial-state video",
+    "model prediction video",
+    "physical execution video",
+    "14D synchronized telemetry CSV",
+    "safety log JSON",
+    "blind outcome JSON"
+  ],
+  "validator": "scripts/validate_real_robot_acwm_demo.py",
+  "prohibited_substitutions": [
+    "a generated photorealistic video is not physical execution",
+    "a simulator rollout is not a real-robot demo",
+    "an uncalibrated hand-held video is not synchronized trial evidence"
+  ]
+}

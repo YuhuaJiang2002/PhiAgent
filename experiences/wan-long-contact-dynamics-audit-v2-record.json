@@ -1,0 +1,41 @@
+{
+  "record_id": "2026-08-12.wan-long-contact-dynamics-audit-v2",
+  "recorded_at": "2026-08-12T09:08:00Z",
+  "status": "PARTIAL",
+  "scope": "Fail-closed full-video articulated-hand, metric-contact, force-closure, and causal flower-motion audit of the 27.5-second hand-union candidate",
+  "summary": "The 660-frame candidate fails causal flower response in 9 of 329 projected contact-driver frames, lacks the metric and articulated evidence required for 3-D contact or force closure, and remains rejected by high-resolution human review.",
+  "evidence": [
+    "The immutable audit decodes 660/660 frames at 624x352 and 24 FPS and processes them in 13.657255958 seconds at 48.325959624 FPS on the local CPU.",
+    "Background-noise-derived motion floors are 0.651925 pixels/frame for the hand and 0.325963 pixels/frame for the flower support; no failed interaction was used to fit its own threshold.",
+    "Nine of 329 projected contact-driver frames have no flower response within two frames: 60, 88--91, 126, 136--137, and 219; the longest run is four frames.",
+    "Missing calibrated metric camera, surface gaps, depth source, occlusion order, contact force, external/support wrench, articulated metric joint sequence, and full per-stem identity are explicit hard failures.",
+    "Response-erasure, missing-depth/force spoof, and broken-parent-tree adversarial attacks are all detected.",
+    "Fifteen focused contact, force-closure, audit, and evolution tests pass and targeted Ruff checks pass."
+  ],
+  "lessons": [
+    "Treating flowers as immutable protected background can preserve appearance while suppressing manipulation dynamics.",
+    "Observed force equilibrium is not force closure; the latter also needs a full-rank 6-D frictional grasp-wrench positive-span certificate.",
+    "Image-space hand/flower adjacency and optical flow are useful rejection proxies but cannot prove metric depth, occlusion order, contact, or force."
+  ],
+  "limitations": [
+    "The visual causal audit uses a union flower mask and optical flow and cannot assign every interaction to a physical stem.",
+    "The only named active-stem track covers 17 sparse samples over source frames 272--320.",
+    "No newly generated or rendered fixed video was produced, and full-resolution finger/contact review remains rejected."
+  ],
+  "next_actions": [
+    "Acquire or reconstruct a reviewed metric camera/scene, robot joint trajectory, per-stem 3-D centerlines, and calibrated or simulator-derived contact/support wrenches before running a new 660-frame candidate."
+  ],
+  "run_dir": "outputs/wan-long-contact-dynamics/20260812T082000Z-first-principles-evolution-v1/audit-current-v2-force-closure",
+  "supersedes": [
+    "2026-08-12.wan-long-hand-union-repair-v1"
+  ],
+  "tags": [
+    "wan",
+    "long-video",
+    "articulated-hand",
+    "flower-dynamics",
+    "force-closure",
+    "adversarial",
+    "partial"
+  ]
+}

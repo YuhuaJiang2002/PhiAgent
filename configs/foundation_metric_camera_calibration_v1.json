@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "model": "robust_affine_inverse_depth",
+  "timeline": "frame:source_video",
+  "camera_frame": "camera:da3_processed_metric",
+  "world_frame": "world:calibrated_reconstruction",
+  "minimum_anchors": 20,
+  "minimum_independent_groups": 2,
+  "maximum_anchor_relative_error_p95": 0.04,
+  "maximum_group_holdout_relative_error_p95": 0.06,
+  "maximum_scale_standard_deviation_fraction": 0.02,
+  "minimum_robust_inlier_fraction": 0.8,
+  "maximum_unscaled_camera_motion_m": 0.01,
+  "maximum_exact_asset_reprojection_rmse_px": 8.0,
+  "allowed_exact_asset_sha256": [
+    "3c2616550a31f33e84d3c80b8e913ac5618c8888019b0c9490dae93493e647f3",
+    "3cbeb46259d4ba63cbdb83085255d1a8f8031c51e0101a6622f6e7e81a64dc11",
+    "43d9cb63d724889b69574a5e0981aee4a2f30d825c85f3098988e3a7a3bb9980"
+  ],
+  "bootstrap_samples": 512,
+  "allowed_anchor_evidence": [
+    "sensor_measurement",
+    "calibrated_geometry",
+    "exact_asset_with_complete_q_and_reprojection"
+  ],
+  "forbidden_shortcuts": [
+    "foundation_model_estimate",
+    "language_or_known_average_object_size",
+    "same_model_context_agreement",
+    "exact_asset_without_complete_q",
+    "2d_silhouette_without_reprojection"
+  ]
+}

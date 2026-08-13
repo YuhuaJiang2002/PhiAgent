@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.minimax-h3-action-anchor-v2-user-rejected",
+  "recorded_at": "2026-08-10T16:44:23+08:00",
+  "status": "PARTIAL",
+  "scope": "human review of the scene-anchor MiniMax-H3 action comparison",
+  "summary": "The scene-anchor v2 comparison is rejected as a featured demo after user review because robot rendering quality is poor and the three commanded motions are not visually distinct enough.",
+  "evidence": [
+    "The user explicitly reported that all three generated robots have poor quality and that their action differences are not obvious.",
+    "The v2 robot-identity proxies were only 0.5975-0.6123 against a 0.72 gate.",
+    "The v2 workflow had no explicit per-frame action trajectory and semantic_action_adherence_human_reviewed remained false."
+  ],
+  "lessons": [
+    "A pairwise pixel-difference gate cannot substitute for human judgment of robot structure or action readability.",
+    "Language-only motion prompts are too underconstrained for a precise action-control demo; explicit pose or trajectory conditioning is required."
+  ],
+  "limitations": [
+    "The rejected v2 videos remain useful only as negative evidence and must not remain the featured results.",
+    "No exact grasp, transfer, insertion, or wrist-rotation event was accepted."
+  ],
+  "next_actions": [
+    "Compile language into visibly separated camera-frame arm trajectories, render action-specific control videos from the high-quality robot anchor, and condition a fresh H3 run on those videos."
+  ],
+  "run_dir": "outputs/minimax-h3-action-control/20260810T051500Z-anchor-action-v2",
+  "supersedes": [
+    "2026-08-10.minimax-h3-action-anchor-v2"
+  ],
+  "tags": [
+    "minimax-h3",
+    "user-review",
+    "rejected-demo",
+    "quality-failure",
+    "action-readability"
+  ]
+}

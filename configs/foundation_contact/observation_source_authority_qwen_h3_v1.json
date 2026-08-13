@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "target_video_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91",
+  "sources": [
+    {
+      "source_id": "original-real-flower-rgb",
+      "kind": "extra_camera_capture",
+      "artifact_path": "outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
+      "source_sha256": "f12ef50ca6050df10990cc759dd74ffc772eca8d927c9c4d1845e9fa1aafe065",
+      "acquisition_group_id": "real-flower-capture-1",
+      "timeline": "absolute_frame_index:full_source_660",
+      "coordinate_frame": "camera:source_rgb_1280x720",
+      "synchronized": true,
+      "physically_captured": true,
+      "metric_calibration_passed": false
+    },
+    {
+      "source_id": "da3-virtual-rgbd",
+      "kind": "model_derived_rgbd",
+      "artifact_path": "outputs/foundation-contact/20260812T132000Z-model-derived-rgbd-virtual-views-v2/model-derived-rgbd-report.json",
+      "source_sha256": "068f316ed146d1d308c7f2387bdc566d0a42852c6e246419cf85bf2df4d34616",
+      "acquisition_group_id": null,
+      "timeline": "frame:target_video",
+      "coordinate_frame": "camera:da3_learned_metric",
+      "synchronized": true,
+      "physically_captured": false,
+      "generated_from_source_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91"
+    },
+    {
+      "source_id": "minimax-h3-temporal-hypothesis",
+      "kind": "generative_novel_view",
+      "artifact_path": "outputs/h3-flow-retake/20260811T064500Z-full-27s-sigma008-v3/final-stitch-v6-where/h3-flow-inversion-full-27s.mp4",
+      "source_sha256": "f6ec95a6c7a6f351d0c02a59788fb70d69276e825bce9161c34bbcb1a5da4892",
+      "acquisition_group_id": null,
+      "timeline": "absolute_frame_index:full_source_660",
+      "coordinate_frame": "camera:h3_generated_pixels_832x480",
+      "synchronized": true,
+      "physically_captured": false,
+      "generated_from_source_sha256": "f12ef50ca6050df10990cc759dd74ffc772eca8d927c9c4d1845e9fa1aafe065"
+    },
+    {
+      "source_id": "qwen3-vl-4b-observations",
+      "kind": "vlm_inference",
+      "artifact_path": "outputs/foundation-contact/20260812T143000Z-qwen3vl4b-observation-v1/observation-report.json",
+      "source_sha256": "f8cc891e627b7b0740a0c3452e02996c5e8a31e43aa7885f8a49f52afb3ef092",
+      "acquisition_group_id": null,
+      "timeline": "frame:target_video",
+      "coordinate_frame": "camera:target_rgb_pixels_624x352",
+      "synchronized": true,
+      "physically_captured": false,
+      "generated_from_source_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91"
+    },
+    {
+      "source_id": "qwen3-vl-8b-observations",
+      "kind": "vlm_inference",
+      "artifact_path": "outputs/foundation-contact/20260812T143000Z-qwen3vl8b-observation-v1/observation-report.json",
+      "source_sha256": "9d86793d7bf1c9c330cd91f178f73175417d9a8e6940b22a3a09f1e434dd60c2",
+      "acquisition_group_id": null,
+      "timeline": "frame:target_video",
+      "coordinate_frame": "camera:target_rgb_pixels_624x352",
+      "synchronized": true,
+      "physically_captured": false,
+      "generated_from_source_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91"
+    }
+  ]
+}

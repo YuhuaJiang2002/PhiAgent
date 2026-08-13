@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-attention-r32-oom-partial",
+  "recorded_at": "2026-08-12T07:36:00Z",
+  "scope": "Third two-iteration DROID LoRA smoke using attention-only rank 32",
+  "status": "PARTIAL",
+  "summary": "Attention-only rank-32 LoRA reduced trainable parameters from 143,917,056 to 84,934,656 and reached the training forward pass, but shared physical GPU 1 still missed a 76 MiB allocation with only 35 MiB free.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T181500Z-lora-attn-r32-cp4-smoke2",
+  "evidence": [
+    "The run injected Q/K/V/output adapters only, totaling 84,934,656 trainable parameters or 0.592 percent of the 14.35B model.",
+    "FSDP4, CP4, the 172-video dataset, optimizer, and training loop all initialized successfully.",
+    "Rank 1 failed on a 76 MiB LoRA linear allocation with 35 MiB free; no checkpoint was written."
+  ],
+  "lessons": [
+    "Removing MLP adapters materially reduced the peak but a safe training configuration needs additional persistent-state headroom on the two shared 37 GiB GPUs.",
+    "Reducing rank from 32 to 16 halves adapter parameters, gradients, and optimizer state while retaining the complete attention target set."
+  ],
+  "limitations": [
+    "No optimizer step completed; this attempt is not quality evidence."
+  ],
+  "next_actions": [
+    "Run attention-only rank-16 smoke training in a new immutable directory."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "attention-only",
+    "rank32",
+    "oom",
+    "partial"
+  ],
+  "supersedes": []
+}

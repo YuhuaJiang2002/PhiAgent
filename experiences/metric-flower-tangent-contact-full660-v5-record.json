@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-tangent-contact-full660-v5-partial",
+  "recorded_at": "2026-08-12T17:13:00Z",
+  "status": "PARTIAL",
+  "scope": "Full exact-contact rollout with tangent-transported wrist orientation",
+  "summary": "Parallel-transporting the grasp with the stem tangent exceeds G1 reachability and regresses closure to 75/300, so the architecture is rejected.",
+  "evidence": [
+    "Maximum wrist position and orientation errors reach 0.1011 m and 0.0974 rad despite the 0.12 rad step cap.",
+    "Only 75/300 force-closure frames pass and some frames have no exact fingertip contact.",
+    "The persistent heartbeat records a terminal PARTIAL result after 137.345 seconds."
+  ],
+  "lessons": [
+    "A geometrically correct object-frame target must still lie inside the robot's coupled position-orientation reachable set."
+  ],
+  "limitations": [
+    "The transported orientation cannot be executed by this arm trajectory."
+  ],
+  "next_actions": [
+    "Return to the 296/300 position route and project only failed frames within a millimetre-scale feasible contact neighborhood."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T171000Z-metric-flower-tangent-contact-full660-v5",
+  "supersedes": [
+    "2026-08-12.metric-flower-pose-contact-full660-v4-partial"
+  ],
+  "tags": [
+    "flower",
+    "tangent-transport",
+    "reachability",
+    "full-video",
+    "partial"
+  ]
+}

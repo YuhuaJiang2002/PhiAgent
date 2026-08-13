@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "pose-rig-v15-source-flower-mask-preflight-20260810",
+  "recorded_at": "2026-08-10T23:30:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Source-flower restoration preflight for the full-length flower pose rig",
+  "summary": "The v28 source-flower masks, GrabCut, and SLIC preflights recovered only fragments of the handheld bouquet and mixed in ribbons, plants, face, or hand pixels, so no video was promoted.",
+  "run_dir": "outputs/robot-person-replacement/pose-rig-runs/20260810T142814Z-flower-preserved-proportion-v15-pending",
+  "evidence": [
+    "assets/frame0-aligned-person-flower-masks.jpg shows scene ribbons/plants and only fragments of the held bouquet.",
+    "assets/grabcut-bouquet-preflight.jpg and assets/slic-bouquet-v2-preflight.jpg show incomplete recall and human/scene contamination.",
+    "No final video was rendered from this rejected segmentation route."
+  ],
+  "lessons": [
+    "Exact source-pixel restoration metrics are meaningless when the semantic mask omits most of the manipulated object.",
+    "A complete-object visual-recall gate must precede long-video integration."
+  ],
+  "limitations": ["This attempt ended at segmentation preflight."],
+  "next_actions": ["Create a complete bouquet-only RGBA asset and bind it to the hand trajectory as an independent semantic layer."],
+  "supersedes": [],
+  "tags": ["flower-video", "pose-rig", "segmentation", "preflight", "partial"]
+}

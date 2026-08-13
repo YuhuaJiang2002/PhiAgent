@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.flower-long-video-workflow-v2",
+  "recorded_at": "2026-08-13T02:47:29Z",
+  "status": "WORKING",
+  "scope": "hardened dependency-free persistent workflow runtime and real-input 27.5-second flower-video visual audit",
+  "summary": "The v3 replay supersedes the first workflow record after runtime hardening: each node retry now receives an immutable attempt directory, nodes operate on detached state, and dynamic transitions fail closed; the same real 660-frame evidence completes seven nodes and eight checkpoints with all twelve scoped visual gates passing, three explicit quality debts, and no physical promotion.",
+  "evidence": [
+    "outputs/workflows/20260813T024729Z-flower-long-video-v3/result.json binds the 27.5-second candidate and records all 12 scoped visual gates, two risk windows, three quality debts, and physical_promotion.eligible=false",
+    "outputs/workflows/20260813T024729Z-flower-long-video-v3/checkpoints/flower-27p5s-v3/checkpoints contains eight hashed checkpoints for the complete seven-node execution",
+    "outputs/workflows/20260813T024729Z-flower-long-video-v3/logs/events.jsonl records the streamed node lifecycle and terminal result",
+    "Ten targeted workflow, flower-contract, and perceptual-promotion tests pass after runtime hardening; targeted Ruff validation also passes",
+    "The broader local suite passed 811 tests with one optional MuJoCo skip before the final isolated runtime hardening, which is covered by the targeted suite"
+  ],
+  "lessons": [
+    "Retries and interrupt resumes need unique attempt directories so their command logs and artifacts never overwrite previous evidence.",
+    "Passing a detached state copy prevents an untrusted node from mutating the runtime state outside its declared update.",
+    "Dynamic goto targets must be validated before checkpointing so misspelled transitions fail at the originating node.",
+    "Flower insertion needs a domain-specific visible-contact gate, while projected image-space contact must remain explicitly non-physical."
+  ],
+  "limitations": [
+    "This run audits an existing candidate; it does not contain a new model generation, training run, or measured generation-throughput improvement.",
+    "The accepted scope is perceptually plausible synthetic display data only; metric camera, exact q/qdot, persistent per-stem 3-D geometry, contact force, force closure, and real-robot execution remain unverified.",
+    "Two route-transition outliers remain at frames 479 and 559, and the legacy late hand-replacement proxy reports a 0.233333 violation fraction.",
+    "Other AC-WM, simulation, retargeting, and renderer CLIs have not all been migrated into built-in graph recipes."
+  ],
+  "next_actions": [
+    "Generate shared-anchor latent-bridge challengers only for frames 463-495 and 543-575, preserving exact source flowers, background, endpoint frames, and response motion.",
+    "Run the same sealed twelve-gate contract on those challengers and promote only a strict non-regression result.",
+    "Migrate the persistent Wan generation and post-decode audit CLIs into explicit SubprocessNode recipes with the same provenance and physical-GPU contract.",
+    "Keep physical-contact promotion blocked until at least two independent physical evidence groups and all four physical gates pass."
+  ],
+  "run_dir": "outputs/workflows/20260813T024729Z-flower-long-video-v3",
+  "supersedes": [
+    "2026-08-13.flower-long-video-workflow-v1"
+  ],
+  "tags": [
+    "workflow",
+    "langgraph-inspired",
+    "flower-arranging",
+    "long-video",
+    "adversarial-audit",
+    "display-ready",
+    "physical-fail-closed"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r3-action-eval-preflight-corrections",
+  "recorded_at": "2026-08-11T00:04:39Z",
+  "scope": "Remote action-evaluation and evidence-transfer preflight for the r3 epoch-0 scale tournament",
+  "status": "PARTIAL",
+  "summary": "The first remote action-evaluation invocations failed before scoring because the evaluator and one imported module were absent, then because the local macOS ffmpeg default was invalid on Linux. The exact tested files were synchronized, /usr/bin/ffmpeg was declared, and all three evaluations completed in new evidence paths. Later wildcard/tuple rsync and drawtext comparison attempts also failed without altering source evidence; explicit paths and a plain hstack comparison succeeded.",
+  "evidence": [
+    "The first three action commands exited before decoding with a missing scripts/evaluate_minimax_h3_flower_validation.py error.",
+    "After the evaluator was synchronized, import preflight exposed a missing phiagent.training.flower_repair_policy module; synchronizing the tested module made --help pass.",
+    "The next three commands failed before scoring because /opt/homebrew/bin/ffmpeg does not exist on a800-1; reruns explicitly bound /usr/bin/ffmpeg and produced evolution.json for all scales.",
+    "A zsh tuple-splitting/wildcard rsync attempt resolved no automatic-metrics paths; six explicit rsync sources then copied the three immutable metric JSON files and logs.",
+    "The local FFmpeg build lacks drawtext, so the labelled comparison command produced no video. A subsequent hstack-only comparison succeeded and is recorded by the final delivery manifest.",
+    "No failed preflight invocation created or changed an automatic-metrics JSON, topology-evidence JSON, assessment JSON, or promoted model artifact."
+  ],
+  "lessons": [
+    "Remote experiment preflight must validate the exact evaluator revision, its local modules, and platform-specific binary paths before launching a batch.",
+    "Evidence transfer should use explicit immutable source paths under zsh instead of relying on tuple word splitting or unquoted remote globs.",
+    "Demo generation must treat optional FFmpeg filters as capabilities and retain the successful unlabelled layout in the manifest when drawtext is unavailable."
+  ],
+  "limitations": [
+    "These failures are infrastructure/preflight evidence and contain no model-quality conclusion.",
+    "The temporary .codex-sync directories on the remote host are not experiment inputs."
+  ],
+  "next_actions": [
+    "Keep platform-specific ffmpeg paths explicit in remote evaluator invocations.",
+    "Use the completed video-bound action scorecards and automatic metrics as the authoritative r3 evidence."
+  ],
+  "supersedes": [],
+  "tags": [
+    "h3",
+    "rsi",
+    "preflight",
+    "remote",
+    "ffmpeg",
+    "evidence-transfer",
+    "partial"
+  ]
+}

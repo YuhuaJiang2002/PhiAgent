@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.minimax-h3-action-video-ref-v1",
+  "recorded_at": "2026-08-10T13:17:34+08:00",
+  "status": "PARTIAL",
+  "scope": "matched language-conditioned MiniMax-H3 robot-action generation from one real-scene video",
+  "summary": "Three 124-frame MiniMax-H3 outputs completed from the same real source video with different insert, handover, and inspect prompts, but the full video reference dominated motion and the action variants remained visually near-identical.",
+  "evidence": [
+    "outputs/minimax-h3-action-control/20260810T045600Z-flower-actions-v1/metadata.json records three completed and decoded NF4 H3 outputs on physical A800 GPU 7",
+    "The five-round comparison manifest measured a post-repair pairwise full-frame MAD floor of 1.0615, below the 2.0 distinctness gate",
+    "One-second raw contact sheets show nearly the same robot pose progression for insert, handover, and inspect despite different prompt timelines",
+    "All three best repairs reached background lock 1.0, object lock 1.0, subject replacement about 0.8997, and robot identity only about 0.6003-0.6009"
+  ],
+  "lessons": [
+    "MiniMax-H3 Ref2VA full-video conditioning can dominate explicit language motion instructions even when the prompt says not to copy source-human motion.",
+    "Pairwise output differences must be visually and semantically inspected; a nonzero pixel MAD is not evidence of action controllability."
+  ],
+  "limitations": [
+    "The attempt does not demonstrate precise language action control because the three commanded actions are not visibly separable.",
+    "Third-party NF4 weights were used rather than official BF16 MiniMax-H3 weights.",
+    "The 5.17-second outputs are image-space generations, not physical robot execution."
+  ],
+  "next_actions": [
+    "Remove source temporal motion from the H3 conditioning path by using a real-video scene anchor image, then restore the aligned real source outside the generated subject region and re-evaluate all actions."
+  ],
+  "run_dir": "outputs/minimax-h3-action-control/20260810T045600Z-flower-actions-v1",
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "real-scene",
+    "action-condition",
+    "matched-comparison",
+    "prompt-control-failure"
+  ]
+}

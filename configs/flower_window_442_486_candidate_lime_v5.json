@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 442,
+  "instances": [
+    {
+      "instance_id": "lime-bud-upper-01",
+      "object_id": 1,
+      "anchor_source_frame": 22,
+      "box_xyxy": [445, 292, 479, 327],
+      "positive_points_xy": [[462, 307], [468, 312], [457, 301]],
+      "negative_points_xy": [[485, 330], [495, 315], [458, 338]],
+      "minimum_area_pixels": 35,
+      "maximum_area_pixels": 1200,
+      "role": "persistent lime bud with one terminal same-identity correction",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [445, 263, 480, 305],
+          "positive_points_xy": [[463, 283], [468, 288], [458, 278]],
+          "negative_points_xy": [[495, 289], [480, 320], [440, 290]]
+        }
+      ]
+    }
+  ],
+  "notes": "V5 retains the trajectory-stable middle anchor from V4 and restores only the terminal same-flower correction. It deliberately omits the local-0 correction that caused the former 8.89-pixel trajectory failure."
+}

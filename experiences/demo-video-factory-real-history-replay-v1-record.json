@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.demo-video-factory-real-history-replay-v1",
+  "recorded_at": "2026-08-11T15:17:45Z",
+  "status": "PARTIAL",
+  "scope": "Real-history migration, guarded lightweight routing replay, and native AC-WM batch adapter for the demo-video factory",
+  "summary": "Migrated 30 immutable real-input Ego repair candidates into six complete factory episodes, trained and held-action-group evaluated the unified ridge router, and correctly rejected promotion at 0% acceptance. Added a provenance-complete native AC-WM worker plus a strict campaign builder that requires two independent licensed sources before a new GPU bootstrap can run.",
+  "run_dir": "outputs/demo-factory-router-real-history/20260811T151204Z-256a5d8e",
+  "evidence": [
+    "outputs/demo-factory-history-import/20260811T151158Z-4f2960eb/manifest.json records 30 candidates, six episodes, three held action groups, five recipes, and dataset SHA-256 47ee3fcc0aa1ff069d9840f486706d3b52227a4aca1888eef707a9edb392bde3.",
+    "outputs/demo-factory-router-real-history/20260811T151204Z-256a5d8e/held-group-evaluation.json reports promoted=false, learned acceptance_rate=0.0, mean_attempts=5.0, mean_cost_units=5.0, and selected_non_regression_rate=1.0.",
+    "The acceptance, attempt, capability, cost, and utility non-regression gates passed; the absolute minimum acceptance-rate gate failed.",
+    "scripts/run_acwm_demo_factory_worker.py preserves the native trace/video under the immutable attempt and binds license, source hash, coordinate frame, generator revision, evaluator revision, physical GPU, and human-review input.",
+    "scripts/build_acwm_demo_factory_campaign.py rejects same-source bootstrap groups and emits a complete raw/identity/object/temporal recipe tournament.",
+    "Nine focused CPU tests and targeted Ruff checks pass after the adapter and campaign-builder additions.",
+    "agentic_skills/evolve-demo-video-factory passes skill-creator quick validation after the fail-closed AC-WM workflow update."
+  ],
+  "lessons": [
+    "Historical generated videos can train failure ranking only if their original metrics, hashes, and pending human decisions are preserved without relabeling.",
+    "Non-regression against a failing baseline is necessary but insufficient; an absolute acceptance floor prevents a router from being promoted when every recipe remains unusable.",
+    "Held action labels from one source interval do not establish held-scene generalization and must not be presented as independent scene groups.",
+    "Batch scale requires explicit source rights, content hashes, coordinate frames, generator/evaluator revisions, and human review before GPU work begins."
+  ],
+  "limitations": [
+    "All 30 migrated candidates come from one EPIC-KITCHENS source interval and every historical human review is pending.",
+    "The real-history router produced no accepted candidates and no distillation preference rows, so no policy or planner was promoted.",
+    "The new AC-WM adapter and campaign builder have CPU protocol tests but have not yet completed a two-scene GPU tournament.",
+    "Cost units in the history replay are candidate counts, not measured GPU seconds or currency."
+  ],
+  "next_actions": [
+    "Prepare at least two independent licensed AC-WM case manifests with source and condition hashes, pinned generator/evaluator revisions, explicit action frames, and human-review files.",
+    "Run the four-recipe GPU bootstrap through scripts/run_demo_factory_batch.py and append both failures and accepted outcomes.",
+    "Train a router only after complete two-scene tournaments exist, then require a fresh held-scene production acceptance and cost result before promotion.",
+    "Export planner-distillation rows only from guarded chosen/rejected pairs and evaluate any small adapter against the same frozen gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "agentic-video",
+    "real-history-replay",
+    "acwm",
+    "lightweight-training",
+    "fail-closed",
+    "held-group-evaluation",
+    "partial"
+  ]
+}

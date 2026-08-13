@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 486,
+  "instances": [
+    {
+      "instance_id": "robot-hand-bouquet-01",
+      "object_id": 101,
+      "anchor_source_frame": 0,
+      "box_xyxy": [462, 254, 538, 386],
+      "positive_points_xy": [[487, 303], [497, 331], [505, 354]],
+      "negative_points_xy": [[474, 264], [548, 300], [586, 375], [460, 388]],
+      "minimum_area_pixels": 180,
+      "maximum_area_pixels": 10000,
+      "role": "upright bouquet-gripping segmented mechanical hand and short wrist",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 28,
+          "box_xyxy": [486, 272, 550, 348],
+          "positive_points_xy": [[511, 298], [521, 317], [532, 332]],
+          "negative_points_xy": [[497, 260], [557, 307], [581, 334], [488, 352]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [486, 260, 548, 348],
+          "positive_points_xy": [[508, 288], [519, 310], [530, 330]],
+          "negative_points_xy": [[497, 250], [556, 303], [581, 331], [487, 352]]
+        }
+      ]
+    }
+  ],
+  "notes": "The local-zero anchor starts after the seed-44 bouquet hand emerges from complete flower occlusion; corrections preserve the rear-hand identity through the two-hand overlap."
+}

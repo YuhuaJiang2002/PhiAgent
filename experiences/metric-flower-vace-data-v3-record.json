@@ -1,0 +1,33 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-data-v3-working",
+  "recorded_at": "2026-08-12T20:35:00Z",
+  "status": "WORKING",
+  "scope": "Target-independent VACE data from coupled-force v7",
+  "summary": "The final data export binds coupled-force v7, excludes target RGB controls, and uses a robot-only neutral identity image whose independence is measured.",
+  "evidence": [
+    "Twelve training and four validation clips have zero source-frame overlap.",
+    "Identity exact-match count over 660 target frames is zero and minimum 16x16 corner MAD is 186.8333.",
+    "Controls contain calibrated depth, depth boundaries, persistent centerline, and contact state only.",
+    "All source and output assets are hash-bound to the accepted v7 bundle."
+  ],
+  "lessons": [
+    "A different file hash is not enough to prove reference independence; target-frame equality and background-region difference must be measured."
+  ],
+  "limitations": [
+    "All examples still share one simulated scene."
+  ],
+  "next_actions": [
+    "Retrain and evaluate with strict inference and split lineage."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T203000Z-metric-physical-vace-data-v3",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-data-v2-working"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "neutral-reference",
+    "target-independent",
+    "working"
+  ]
+}

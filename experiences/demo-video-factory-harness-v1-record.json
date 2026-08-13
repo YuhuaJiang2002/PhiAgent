@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.demo-video-factory-harness-v1",
+  "recorded_at": "2026-08-11T15:02:09Z",
+  "status": "PARTIAL",
+  "scope": "Environment-level lightweight training and guarded batch harness for agentic demo-video data production",
+  "summary": "Implemented and CPU-validated a reusable demo-video factory protocol with immutable command workers, baseline-bound diagnostics, hard quality and human gates, capability non-regression, physical-GPU selection and leasing, complete-recipe exploration, leave-one-group-out ridge routing, promotion gates, accepted-video indexing, and planner-distillation preference export. The environment capability exists, but no real multi-scene GPU tournament or fresh production-cost acceptance run has completed.",
+  "evidence": [
+    "phiagent/training/demo_factory.py",
+    "scripts/run_demo_factory_batch.py",
+    "scripts/train_demo_factory_router.py",
+    "tests/test_demo_factory.py: 4 focused tests passed",
+    "tests/test_train_demo_factory_router.py: 1 focused test passed",
+    "tests/test_run_demo_factory_batch.py: 1 focused test passed",
+    "targeted Ruff checks passed",
+    "agentic_skills/evolve-demo-video-factory: skill-creator quick validation passed",
+    "docs/DEMO_VIDEO_DATA_FLYWHEEL.md"
+  ],
+  "lessons": [
+    "Successful agentic traces become reusable only after generator, evaluator, recipe, cost, artifact, and split semantics share one versioned episode contract.",
+    "Production early stopping creates biased routing data; bootstrap and periodic exploration must measure every recipe in every held group.",
+    "Aggregate utility cannot substitute for per-capability non-regression or explicit human vetoes.",
+    "A small router can be promoted independently of heavy video models while retaining a preference export for later planner distillation."
+  ],
+  "limitations": [
+    "All new acceptance evidence is CPU-only and uses synthetic command-adapter videos rather than real generator outputs.",
+    "No new foundation-model, video LoRA, planner LoRA, SFT, or preference checkpoint was trained.",
+    "No real held-scene campaign has measured acceptance-rate or GPU-cost improvement.",
+    "The reference contract and worker protocol still need domain-specific adapters for the selected real video pipeline."
+  ],
+  "next_actions": [
+    "Wrap the strongest accepted AC-WM or H3/Wan demo path and its evaluator as factory worker recipes.",
+    "Run complete tournaments on at least two independent licensed real-scene groups and append every outcome.",
+    "Train and promote the first real-input router, then evaluate it on a fresh held scene with acceptance and cost gates.",
+    "Only after real router promotion, test a small planner-distillation adapter against the same frozen groups."
+  ],
+  "supersedes": [],
+  "tags": [
+    "agentic-video",
+    "batch-factory",
+    "continual-learning",
+    "lightweight-training",
+    "non-regression",
+    "planner-distillation"
+  ]
+}

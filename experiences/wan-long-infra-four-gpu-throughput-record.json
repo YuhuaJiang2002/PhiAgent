@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-four-gpu-throughput",
+  "recorded_at": "2026-08-12T05:12:55Z",
+  "status": "WORKING",
+  "scope": "Matched 27.5-second Wan-Animate-2 infrastructure throughput benchmark",
+  "summary": "Two persistent Wan-Animate-2 workers on four physical A800 GPUs generated all ten windows of the matched 660-frame source in 509.7154 seconds, 4.1096x faster than the historical per-window-reload baseline.",
+  "evidence": [
+    "The matched baseline generated at 0.315074 useful FPS in 2094.7445 seconds and used 1.163747 A800 GPU-hours; the optimized run generated at 1.294840 useful FPS in 509.7154 seconds and used 0.566349 A800 GPU-hours.",
+    "End-to-end wall time decreased from 2153.1051 to 575.9873 seconds, a 3.7381x speedup, while measured A800 GPU-hours decreased 51.334%.",
+    "All 660 source frames are covered at 24 FPS; both workers loaded the model once and each completed a contiguous five-window temporal chain.",
+    "The benchmark report verifies identical source, identity reference, prompt, upstream/model revisions, checkpoint hashes, resolution, steps, guidance, and seed."
+  ],
+  "lessons": [
+    "Persistent model residency removes nine repeated 14B checkpoint loads, and disjoint temporal-chain parallelism converts extra GPUs into useful wall-time speedup without increasing total GPU-hours."
+  ],
+  "limitations": [
+    "The two independent temporal chains create one cross-batch boundary whose best-seam MAD is 14.2593, versus 3.5716-5.1175 for the rolling-reference overlaps.",
+    "The stitched radius-4 candidate remains review_required; its maximum transition ratio is 5.4317 and motion preservation is only 0.2938.",
+    "This establishes infrastructure throughput, not accepted contact physics, exact manipulation motion, or real-robot execution."
+  ],
+  "next_actions": [
+    "Measure the complete source as one rolling temporal chain to quantify the continuity-first speed/quality tradeoff for videos longer than 20 seconds."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-2pair-rolling-v2",
+  "supersedes": [
+    "2026-08-12.wan-long-infra-rank-env-preflight",
+    "2026-08-12.wan-long-infra-master-port-conflict",
+    "2026-08-12.wan-long-infra-gpu-capacity-preflight"
+  ],
+  "tags": [
+    "wan-animate2",
+    "long-video",
+    "infra",
+    "persistent-model",
+    "throughput",
+    "working"
+  ]
+}

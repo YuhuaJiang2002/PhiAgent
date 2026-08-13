@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.bwm-wipe20-seed42-matched-working",
+  "recorded_at": "2026-08-12T21:35:12Z",
+  "status": "WORKING",
+  "scope": "Real WorldArena wipe20 official/promoted BWM matched generation at seed 42",
+  "summary": "Official BWM and the promoted adapter both completed the frozen 20-independent-episode factual/action-swap suite on physical A800 GPUs 1 and 4.",
+  "evidence": [
+    "Both matched arms returned code 0 and the waiter result status is WORKING.",
+    "Each method produced one completed two-shard campaign and 40 videos, for 80 generated videos total.",
+    "Every arm used the same real WorldArena bundle, measured 14D realized EEF trajectories, seed 42, 57 frames, 20 inference steps, and exact base-model/runtime inputs.",
+    "The total queue plus generation wall time was 5,231.90 seconds."
+  ],
+  "lessons": [
+    "The seven-day waiter recovered correctly when GPUs 1/4 became strictly available.",
+    "Generation completion is separate from scientific action-promotion acceptance."
+  ],
+  "limitations": [
+    "Action-swapped futures have no physically executed reference.",
+    "This attempt uses one inference seed and one task."
+  ],
+  "next_actions": [
+    "Run the frozen 20-trial, 10,000-bootstrap evaluation and additional inference seeds."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2",
+  "supersedes": [
+    "2026-08-12.bwm-wipe20-gpu-wait-v1-timeout"
+  ],
+  "tags": ["acwm", "worldarena2", "real-world", "matched-generation", "working"]
+}

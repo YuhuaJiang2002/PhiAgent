@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-formal150-training-working",
+  "recorded_at": "2026-08-12T08:44:00Z",
+  "scope": "Formal 150-step rank-16 attention LoRA training on the isolated DROID train split",
+  "status": "WORKING",
+  "summary": "A single continuous four-GPU training run completed all 150 optimizer steps over 172 native multiview videos and produced an audited adapter-only checkpoint.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T205000Z-lora-attn-r16-45f-formal150",
+  "evidence": [
+    "The effective framework config records 45 input frames, state_t=12, CP4/FSDP4, rank 16, attention-only Q/K/V/output targets, 150 iterations, and the 172-sample train split.",
+    "All 150 steps completed with finite logged losses and the distributed launcher returned code 0.",
+    "iter_000000150.pt is 85,130,894 bytes with SHA-256 6385d267eb1aab62cdf9ebdca71ad4e340df3bb0ac9a8959f591a25f83b36660.",
+    "The checkpoint contains 576 tensors and 42,467,328 values; every key is net-prefixed and every tensor is a lora_A or lora_B parameter.",
+    "The training dataloader points only to composite-v6-native16-2clips/train; validation and final-holdout continuations were not read by training."
+  ],
+  "lessons": [
+    "The 45-frame CP4 curriculum and bounded allocator configuration remain stable across a complete 150-step stage on shared A800 GPUs."
+  ],
+  "limitations": [
+    "Training completion does not establish video-quality improvement; the checkpoint still requires generation and strict validation evaluation.",
+    "This stage saves only at step 150, so it cannot by itself compare earlier checkpoints."
+  ],
+  "next_actions": [
+    "Generate both isolated validation episodes with pinned T5 embeddings and evaluate continuation frames per view against the public-base reference and strict gates."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "formal-training",
+    "150-steps",
+    "adapter-only",
+    "working"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-formal-dataset-root-partial"
+  ]
+}

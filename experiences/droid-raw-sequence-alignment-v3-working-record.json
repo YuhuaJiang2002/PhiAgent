@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.droid-raw-sequence-alignment-v3-working",
+  "recorded_at": "2026-08-13T01:08:00Z",
+  "status": "WORKING",
+  "scope": "Full-frame raw DROID SVO/HDF5 to SequenceExample/LeRobot alignment for held-out episodes 21 and 77",
+  "summary": "All six real camera streams pass full-frame pixel identity, adjacent-shift discrimination, one-terminal-row, and constant timestamp-offset gates, completing the raw-to-LeRobot lineage chain for episodes 21 and 77.",
+  "evidence": [
+    "The audit ran on strictly free physical A800 GPU 6 and returned accepted=true with alignment SHA-256 f1840fdf70a4729936aba18f46404e3871dcd1d3c9fcf03943dd098664c9a9a5.",
+    "Episode 21 maps 92 SVO/SequenceExample frames to 93 HDF5 rows; episode 77 maps 100 frames to 101 rows, proving one excluded terminal HDF5 row in each case.",
+    "Across six cameras, raw-SVO-to-SequenceExample PSNR p05 spans 27.037-35.264 dB and dHash p95 spans 1-3 bits, passing frozen 25 dB and 8-bit gates.",
+    "Same-index median PSNR beats the best adjacent-frame shift by 1.999-11.224 dB across all cameras.",
+    "SVO-minus-HDF5 timestamp offset medians are 41.416-41.538 ms, with centered residual p95 only 0.459-0.529 ms.",
+    "The terminal HDF5 row follows the last SVO frame by 8.226-42.168 ms.",
+    "Episode-local exterior assignments remain explicit: raw exterior_1 maps to LeRobot exterior_image_2_left and raw exterior_2 maps to exterior_image_1_left for both episodes.",
+    "The accepted SequenceExample-to-LeRobot manifest is hash-bound, so raw_svo_to_sequence_pixels_verified, raw_hdf5_to_sequence_timing_verified, and raw_to_lerobot_chain_verified are all true."
+  ],
+  "lessons": [
+    "The apparent frame mismatch is a single terminal HDF5 control row, not missing SVO video.",
+    "A stable approximately 41.5 ms acquisition offset is measurable and must be preserved rather than silently zeroed.",
+    "Same-index versus adjacent-frame evidence is necessary to rule out an off-by-one match in slowly moving robot video."
+  ],
+  "limitations": [
+    "Episode 60 remains absent from the public raw bucket.",
+    "Official raw DROID training and redistribution rights remain unresolved.",
+    "Lineage/calibration does not establish novel-view generation quality."
+  ],
+  "next_actions": [
+    "Use the verified episodes 21/77 camera chains for geometry-conditioned novel-view validation.",
+    "Do not use raw DROID for claim-eligible training until rights are resolved."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-raw-sequence-alignment/20260812T223000Z-episodes21-77-waiter-v3",
+  "supersedes": [
+    "2026-08-12.droid-raw-sequence-alignment-v3-waiting"
+  ],
+  "tags": ["droid", "real-world", "alignment", "timestamp", "pixels", "working"]
+}

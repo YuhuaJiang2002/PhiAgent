@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-wan-mask-routing-v2",
+  "recorded_at": "2026-08-11T10:54:00Z",
+  "status": "PARTIAL",
+  "scope": "Wan preprocessing diagnosis and fail-closed support recovery for the unscrew-cap and rinse-bottle drivers",
+  "summary": "The unmodified Wan preprocessing attempts failed before generation because SAM2 returned empty driver masks. A first direct diagnostic utility also segfaulted, while a process-local diagnostic hook isolated the empty ranges. Difference-supported replacement bundles removed every empty frame; the broad v1 bundles were rejected and the narrower v2 bundles were admitted only as generation inputs.",
+  "evidence": [
+    "The immutable failed runs are full/unscrew-bottle-cap/20260811T103608Z-4c6944ce and full/rinse-bottle/20260811T103609Z-eebba045; neither produced a candidate video.",
+    "The process-local hook reports 164 empty unscrew frames in ranges 2-59, 61-119, and 121-167, and 118 empty rinse frames in ranges 121-179 and 181-239.",
+    "The threshold-48/dilation-9 v1 support covered about 81-82% of frames on average and was rejected as too broad before generation.",
+    "The threshold-64/dilation-3 v2 support has zero empty frames, 56.99% mean coverage for unscrew, and 63.59% for rinse."
+  ],
+  "lessons": [
+    "A realistic generated robot driver can still violate a segmentation model's subject prior; preprocessing validity must be checked independently of perceived driver quality.",
+    "The fallback must be fail-closed but bounded: preserving every action frame is necessary, while excessive whole-frame support risks avoidable background redraw and blur."
+  ],
+  "limitations": [
+    "The replacement support is camera-frame appearance-driven rather than a semantic robot instance segmentation result.",
+    "This record does not promote either final video; it only admits the v2 bundles to full generation."
+  ],
+  "next_actions": [
+    "Complete full Wan generation, then run dense visual and fixed-threshold quality gates before packaging."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4",
+  "supersedes": [
+    "2026-08-11.acwm-ego-multitask-wan-direct-empty-mask"
+  ],
+  "tags": ["acwm", "wan2.2-animate", "sam2", "mask-diagnosis", "fail-closed", "partial"]
+}

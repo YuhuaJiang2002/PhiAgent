@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04a-confidence-routed-v1",
+  "recorded_at": "2026-08-10T21:44:10Z",
+  "status": "PARTIAL",
+  "scope": "Initial 106-frame confidence-routed phase-04A relighting candidate",
+  "summary": "The routed candidate passes automatic spatial and aggregate temporal gates, but remains intermediate because the two-window proposal join lacks an explicit transition record and dedicated human review.",
+  "evidence": ["All protected exactness gates equal 1.0 before encode.", "Aggregate maximum temporal residual is 1.473558 RGB MAE.", "The manifest does not yet identify the exact maximum transition or provide amplified join review."],
+  "lessons": ["A multi-window relighting result needs transition-local evidence, not only an aggregate maximum."],
+  "limitations": ["No final human semantic acceptance is attached to v1."],
+  "next_actions": ["Record the maximum source-frame transition and review the 321--328 join with amplified deltas."],
+  "run_dir": "outputs/flower-relighting/20260811T053000Z-phase04a-confidence-routed-v1",
+  "supersedes": [],
+  "tags": ["flower", "phase04a", "relighting", "join-audit", "partial"]
+}

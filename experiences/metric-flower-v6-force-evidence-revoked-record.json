@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-v6-force-evidence-revoked",
+  "recorded_at": "2026-08-12T20:00:00Z",
+  "status": "PARTIAL",
+  "scope": "Second red-team audit of simulated flower contact-force evidence",
+  "summary": "The v6 exact contact geometry remains valid, but its force claim is revoked because proximity-derived pad forces were balanced by an externally copied opposite wrench and were not coupled to the rod inverse dynamics.",
+  "evidence": [
+    "v6 selected real Sharpa elastomer vertices within the 3 mm gap, but assigned at least 0.02 N from proximity alone.",
+    "Its external force and moment were constructed as the exact negative of those pad forces, guaranteeing balance independently of the rod-required wrench.",
+    "The corrected v7 solver constrains nonnegative pad friction-cone forces to match the inverse-rod-required force and moment and propagates the coupling residual into the force gate."
+  ],
+  "lessons": [
+    "Exact collision geometry does not make a force physical; contact and object dynamics must share one wrench equation and residual."
+  ],
+  "limitations": [
+    "v6 cannot support a force or force-closure success claim despite its valid geometric contacts."
+  ],
+  "next_actions": [
+    "Require a coupled pad/rod wrench solve and rerun all 660 frames."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T174000Z-metric-flower-contact-projection-full660-v6",
+  "supersedes": [
+    "2026-08-12.metric-flower-contact-projection-full660-v6-working"
+  ],
+  "tags": [
+    "flower",
+    "force-evidence",
+    "evidence-revoked",
+    "red-team",
+    "partial"
+  ]
+}

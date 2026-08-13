@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.mediapipe-optional-install",
+  "recorded_at": "2026-08-10T09:54:18+08:00",
+  "status": "PARTIAL",
+  "scope": "pose-tracking experiment preflight",
+  "summary": "MediaPipe 1.0.0 was installed only in the project virtual environment as an optional experiment dependency; package import works but the pose task model is not yet present.",
+  "evidence": [
+    ".venv reports mediapipe=1.0.0 and opencv-contrib-python=5.0.0.93",
+    "Import smoke test completed and confirmed the Tasks API package"
+  ],
+  "lessons": [
+    "MediaPipe 1.0 exposes the Tasks API rather than the legacy solutions namespace, so pose tracking requires an explicit task model asset."
+  ],
+  "limitations": [
+    "No pose landmark inference has run yet because the pose task model has not been downloaded and hashed.",
+    "The optional install upgraded the virtual environment's OpenCV provider and therefore requires regression testing."
+  ],
+  "next_actions": [
+    "Download the official pose landmarker task model into an ignored experiment directory, record its hash, and rerun the affected lightweight tests."
+  ],
+  "run_dir": null,
+  "supersedes": [],
+  "tags": [
+    "preflight",
+    "pose-tracking",
+    "optional-dependency"
+  ]
+}

@@ -37,6 +37,16 @@ def test_cosmos_config_resolves_pinned_wan_vae_cache(tmp_path: Path) -> None:
     )
 
 
+def test_cosmos_config_accepts_explicit_verified_wan_vae(tmp_path: Path) -> None:
+    override = tmp_path / "Wan2.2_VAE.pth"
+    config = Cosmos3Config(
+        framework_repo=tmp_path / "cosmos-framework",
+        checkpoint_dir=tmp_path / "checkpoint",
+        wan_vae_override=override,
+    )
+    assert config.wan_vae_path == override.resolve()
+
+
 def test_build_spec_binds_verified_control_and_camera(tmp_path: Path) -> None:
     request = _request(tmp_path)
     timestamps = tuple(index / 30 for index in range(5))
@@ -150,6 +160,7 @@ def test_vision_only_model_config_disables_unused_outputs(tmp_path: Path) -> Non
     checkpoint.mkdir()
     (checkpoint / "config.json").write_text(
         '{"model":{"config":{"vision_gen":true,"sound_gen":true,"action_gen":true,'
+        '"tokenizer":{"vae_path":"pretrained/Wan2.2_VAE.pth"},'
         '"vlm_config":{"tokenizer":{"config_variant":"gcp",'
         '"pretrained_model_name":"Qwen/Qwen3-VL-8B-Instruct"}}}}}'
     )
@@ -163,6 +174,9 @@ def test_vision_only_model_config_disables_unused_outputs(tmp_path: Path) -> Non
     assert payload["model"]["config"]["vision_gen"] is True
     assert payload["model"]["config"]["sound_gen"] is False
     assert payload["model"]["config"]["action_gen"] is False
+    assert payload["model"]["config"]["tokenizer"]["vae_path"].endswith(
+        "Wan2.2_VAE.pth"
+    )
     tokenizer = payload["model"]["config"]["vlm_config"]["tokenizer"]
     assert tokenizer["config_variant"] == "hf"
     assert tokenizer["pretrained_model_name"] == str(checkpoint)

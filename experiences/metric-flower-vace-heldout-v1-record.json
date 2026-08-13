@@ -1,0 +1,35 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-heldout-v1-partial",
+  "recorded_at": "2026-08-12T19:50:00Z",
+  "status": "PARTIAL",
+  "scope": "Fail-fast held-out comparison of zero-shot and metric-control VACE adapter",
+  "summary": "The adapter improves static contact and global similarity but regresses contact motion and is rejected; remaining held-out clips are not run.",
+  "evidence": [
+    "On unseen contact clip 001, contact ROI similarity rises from 0.170427 to 0.177509 and global similarity rises from 0.246999 to 0.292221.",
+    "Contact-motion similarity regresses from 0.821650 to 0.819798, a -0.001852 change, so all_proxy_gates_pass=false.",
+    "Adapted and zero-shot videos differ by 7.0669 RGB levels on average, so the result is not a no-op.",
+    "Three-timepoint storyboard review shows both generated videos replace the target pink flower with an incorrect green mass; the LoRA is not promoted."
+  ],
+  "lessons": [
+    "Physically valid controls and trainability do not guarantee that a small appearance model learns the correct flower identity or dynamics.",
+    "A positive static ROI metric cannot override a motion regression or semantic visual veto."
+  ],
+  "limitations": [
+    "Only the first unseen contact window is run under the fail-fast rule.",
+    "The comparison is synthetic and does not establish real Pexels quality."
+  ],
+  "next_actions": [
+    "Do not expand this adapter; require a stronger multi-scene appearance model or paired real/sim supervision before another held-out campaign."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T195000Z-metric-vace-heldout-clip001-eval-v1",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-smoke-train-v5-working"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "heldout",
+    "rejected",
+    "partial"
+  ]
+}

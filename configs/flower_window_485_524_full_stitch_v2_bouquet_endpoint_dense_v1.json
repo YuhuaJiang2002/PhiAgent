@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 40, 1],
+  "global_source_frame_offset": 485,
+  "instances": [
+    {
+      "instance_id": "robot-hand-bouquet-01",
+      "object_id": 101,
+      "anchor_source_frame": 0,
+      "box_xyxy": [462, 252, 530, 375],
+      "positive_points_xy": [[486, 299], [496, 329], [505, 354]],
+      "negative_points_xy": [[455, 300], [536, 310], [500, 244], [500, 382]],
+      "minimum_area_pixels": 180,
+      "maximum_area_pixels": 4200,
+      "role": "consistent bouquet-gripping mechanical hand endpoint without the long forearm",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 33,
+          "box_xyxy": [512, 286, 555, 338],
+          "positive_points_xy": [[533, 311], [526, 311], [540, 311]],
+          "negative_points_xy": [[507, 311], [559, 311], [533, 281], [533, 342]],
+          "minimum_area_pixels": 180,
+          "maximum_area_pixels": 4200
+        },
+        {
+          "anchor_source_frame": 39,
+          "box_xyxy": [510, 283, 554, 337],
+          "positive_points_xy": [[533, 309], [526, 309], [540, 309]],
+          "negative_points_xy": [[505, 308], [558, 308], [532, 278], [532, 341]],
+          "minimum_area_pixels": 180,
+          "maximum_area_pixels": 4200
+        }
+      ]
+    }
+  ],
+  "notes": "Unifies the left long-wrist and right hand-only annotations into one physical endpoint instance across the stitched overlap; prompts come from accepted endpoint masks."
+}

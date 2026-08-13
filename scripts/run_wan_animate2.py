@@ -27,6 +27,7 @@ from phiagent.rendering.wan_animate2 import (  # noqa: E402
     select_wan_animate2_gpus,
     verify_wan_animate2_checkpoint,
     verify_wan_animate2_source,
+    wan_animate2_master_port,
     write_runtime_config,
 )
 
@@ -78,6 +79,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--guidance-scale", type=float)
     parser.add_argument("--distilled", action="store_true")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--method-label",
+        default="wan_animate2_proxy_not_official_phizero",
+    )
     parser.add_argument("--preflight-only", action="store_true")
     return parser
 
@@ -98,6 +103,8 @@ def main() -> int:
     )
     if args.fps <= 0 or steps <= 0 or guidance_scale <= 0:
         raise ValueError("fps, steps, and guidance-scale must be positive")
+    if not args.method_label.strip():
+        raise ValueError("method-label cannot be empty")
     source = args.source_video.expanduser().resolve()
     reference = args.reference_image.expanduser().resolve()
     for label, path in (("source video", source), ("reference image", reference)):
@@ -125,6 +132,10 @@ def main() -> int:
     )
     environment["PYTHONHASHSEED"] = str(args.seed)
     environment["PYTHONPATH"] = str(repo)
+    environment["MASTER_ADDR"] = "127.0.0.1"
+    environment["MASTER_PORT"] = str(wan_animate2_master_port(selected))
+    environment["RANK"] = "0"
+    environment["WORLD_SIZE"] = "1"
 
     probe = subprocess.run(
         [
@@ -156,6 +167,12 @@ def main() -> int:
     experiment = args.experiment_root.expanduser().resolve() / f"{stamp}-{uuid4().hex[:8]}"
     config = experiment / "config" / "wan_animate_2.yaml"
     write_runtime_config(repo, checkpoint, config, distilled=args.distilled)
+    inductor_cache = experiment / "cache" / "torchinductor"
+    triton_cache = experiment / "cache" / "triton"
+    inductor_cache.mkdir(parents=True)
+    triton_cache.mkdir()
+    environment["TORCHINDUCTOR_CACHE_DIR"] = str(inductor_cache)
+    environment["TRITON_CACHE_DIR"] = str(triton_cache)
     upstream_output = experiment / "upstream"
     command = [
         str(python),
@@ -193,7 +210,7 @@ def main() -> int:
             packages[name] = None
     record = {
         "schema_version": "0.1.0",
-        "method": "wan_animate2_proxy_not_official_phizero",
+        "method": args.method_label.strip(),
         "status": "preflight_passed" if args.preflight_only else "running",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "command": command,
@@ -224,6 +241,12 @@ def main() -> int:
         "gpu_inventory_raw": inventory,
         "gpu_processes_raw": processes,
         "cuda_visible_devices": environment["CUDA_VISIBLE_DEVICES"],
+        "master_addr": environment["MASTER_ADDR"],
+        "master_port": environment["MASTER_PORT"],
+        "machine_rank": environment["RANK"],
+        "machine_world_size": environment["WORLD_SIZE"],
+        "torchinductor_cache_dir": environment["TORCHINDUCTOR_CACHE_DIR"],
+        "triton_cache_dir": environment["TRITON_CACHE_DIR"],
         "runtime": runtime,
         "hostname": socket.gethostname(),
         "platform": platform.platform(),

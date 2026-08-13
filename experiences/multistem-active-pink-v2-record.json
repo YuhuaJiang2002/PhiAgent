@@ -1,0 +1,31 @@
+{
+  "record_id": "2026-08-13.multistem-active-pink-v2-partial",
+  "recorded_at": "2026-08-13T02:55:00Z",
+  "status": "PARTIAL",
+  "scope": "Hard iterative rod projection on the real active pink stem proposal",
+  "summary": "Repeated hard projection lowers segment CV to 0.168 but exposes an observation residual 1.615 times the full stem length.",
+  "evidence": [
+    "Maximum segment-length CV is 0.168118 after 120 iterations.",
+    "Observation-residual p95 normalized by material length is 1.61515 against the frozen 0.10 gate.",
+    "No independent metric calibration is present."
+  ],
+  "lessons": [
+    "Constraint satisfaction alone can hide an observation-model failure; observation fit needs its own immutable gate."
+  ],
+  "limitations": [
+    "Both segment CV and observation consistency fail."
+  ],
+  "next_actions": [
+    "Apply an exact root-to-tip material projection to remove numerical chain error and retain the residual veto."
+  ],
+  "run_dir": "outputs/foundation-contact/20260813T025500Z-multistem-active-pink-v2",
+  "supersedes": [
+    "2026-08-13.multistem-active-pink-v1-partial"
+  ],
+  "tags": [
+    "flower",
+    "hard-rod",
+    "observation-residual",
+    "partial"
+  ]
+}

@@ -168,7 +168,7 @@ def main() -> int:
         if not path.is_file() or path.stat().st_size == 0:
             raise ValueError(f"required input does not exist or is empty: {path}")
     metadata = json.loads(metadata_path.read_text())
-    control_manifest = json.loads(control_manifest_path.read_text())
+    json.loads(control_manifest_path.read_text())
     if metadata.get("status") != "completed":
         raise ValueError("H3 experiment is not completed")
     import cv2
@@ -178,9 +178,6 @@ def main() -> int:
     infos = {}
     observations = {}
     variant_records = []
-    expected_by_label = {
-        item["label"]: item for item in control_manifest["variants"]
-    }
     for action in metadata["actions"]:
         label = action["label"]
         path = experiment / "variants" / label / "raw-h3-nf4.mp4"

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.real-world-only-scope-correction",
+  "recorded_at": "2026-08-12T12:45:00Z",
+  "status": "PARTIAL",
+  "scope": "Real-world-only correction for all active SOTA paths",
+  "summary": "The active research scope now excludes RoboTwin and every simulator-derived rollout, state, contact, task-success label, or counterfactual reference. Existing RoboTwin artifacts remain immutable historical engineering evidence but are removed from method, promotion, and paper claims.",
+  "evidence": [
+    "The user explicitly required that all data and evaluation be real-world.",
+    "The Curobo transfer and RoboTwin long-running tasks were stopped without deleting their partial artifacts.",
+    "The seven-day mixed monitor was stopped and replaced by a real-world-only monitor.",
+    "The remaining BWM queue uses recorded WorldArena real-robot videos and measured 14D trajectories; swapped actions remain diagnostic because they lack physical execution references.",
+    "DROID raw video/telemetry/calibration/depth and HRDexDB human/robot recordings remain in scope."
+  ],
+  "lessons": [
+    "Simulator reproducibility cannot substitute for real-world embodiment transfer, action control, camera transfer, or video-to-action evidence.",
+    "Scope constraints must be encoded in monitor configuration so excluded jobs are not automatically resumed."
+  ],
+  "limitations": [
+    "No controllable physical robot or operator-approved intervention campaign is currently available for executed A+/A_swap references.",
+    "The real-world BWM action-swap lane remains diagnostic until both branches are physically executed."
+  ],
+  "next_actions": [
+    "Prioritize real DROID lineage/calibration, HRDexDB object-disjoint methods, WorldArena real-video matched comparisons, and operator-approved physical robot interventions."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor",
+  "supersedes": [
+    "2026-08-12.robotwin-reset-preflight-working",
+    "2026-08-12.robotwin-mplib-expert-blocked",
+    "2026-08-12.robotwin-stable21-reset-inventory-working"
+  ],
+  "tags": ["real-world", "scope", "correction", "robotwin-excluded", "partial"]
+}

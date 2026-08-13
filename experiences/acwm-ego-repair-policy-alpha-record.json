@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-repair-policy-alpha-sweep",
+  "recorded_at": "2026-08-11T07:02:55Z",
+  "status": "PARTIAL",
+  "scope": "Ridge alpha sweep for the EPIC Ego repair router",
+  "summary": "Alpha values 0.001, 0.1, and 1.0 reproduced the same 1/6 selection accuracy and 0.0479 mean regret, showing the failure is objective/data structure rather than ridge regularization.",
+  "evidence": [
+    "Independent experiment manifests 20260811T070254Z-3d2b3750, 20260811T070254Z-5fc1b810, and 20260811T070255Z-0725a05c all retain status rejected.",
+    "Every sweep point has 0.1667 selection accuracy, 0.047879 mean regret, and 1.0 non-regression rate."
+  ],
+  "lessons": ["Hyperparameter search must stop when multiple orders of magnitude produce identical held-action behavior; the objective and feasible candidate set need inspection."],
+  "limitations": ["The sweep does not add scenes, actions, seeds, or independent supervision."],
+  "next_actions": ["Audit candidate feasibility against the strict background gate and keep the learned checkpoint off the delivery route if no candidate satisfies both background and non-regression constraints."],
+  "run_dir": "outputs/epic-ego-bottle-repair-policy",
+  "supersedes": ["2026-08-11.acwm-ego-repair-policy-v1"],
+  "tags": ["acwm", "ego-video", "repair-policy", "alpha-sweep", "rejected"]
+}

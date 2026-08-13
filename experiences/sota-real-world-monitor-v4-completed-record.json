@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v4-completed",
+  "recorded_at": "2026-08-12T21:39:09Z",
+  "status": "WORKING",
+  "scope": "Real-world-only monitor v4 terminal result",
+  "summary": "Monitor v4 observed seed42 BWM completion, launched the frozen postprocessor exactly once, recorded successor return code 0, and exited WORKING.",
+  "evidence": [
+    "The monitor state transitioned from running to success only after the BWM WORKING result appeared.",
+    "successor_started=true and the successor_completed event records return_code=0.",
+    "The final monitor result status is WORKING."
+  ],
+  "lessons": [
+    "Terminal artifact triggering correctly separated generation completion from evaluation execution."
+  ],
+  "limitations": [
+    "The first evaluation contained stale narrative limitations and was corrected separately.",
+    "Seed sensitivity remains unmeasured in the seed42-only result."
+  ],
+  "next_actions": [
+    "Monitor two additional distinct inference seeds and aggregate them before bootstrap."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T212500Z-real-world-only-v4",
+  "supersedes": [
+    "2026-08-12.sota-real-world-monitor-v4-working"
+  ],
+  "tags": ["sota", "real-world", "monitor", "successor", "working"]
+}

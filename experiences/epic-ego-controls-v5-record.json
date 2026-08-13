@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-controls-v5-blue-matte",
+  "recorded_at": "2026-08-11T05:35:51Z",
+  "status": "WORKING",
+  "scope": "Corrected deterministic EPIC Ego blue-bottle controls for pour, shake, and handover",
+  "summary": "HSV-prioritized blue-object alpha removed the counter rectangle while retaining the moving Ego background, one bottle, explicit robot hands, and three distinct state trajectories.",
+  "evidence": [
+    "All three videos decode to 240 frames at 24 FPS and retain the source head-camera motion.",
+    "The minimum pairwise state RMS is 113.5120 pixels; terminal holders are counter for pour, counter for shake, and left_hand for handover.",
+    "Dense contact-sheet review found no dark rectangular matte and no duplicate source bottle."
+  ],
+  "lessons": ["A color-supported object matte is safer than unconstrained foreground segmentation for this saturated blue bottle and dark countertop."],
+  "limitations": [],
+  "next_actions": [],
+  "run_dir": "outputs/epic-ego-bottle-controls/20260811T053551Z-epic-blue-bottle-controls-v5",
+  "supersedes": ["2026-08-11.epic-ego-controls-v4-grabcut-matte"],
+  "tags": ["acwm", "ego-video", "action-control", "object-matte", "working"]
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-real-scene-rendered-execution-comparison-working",
+  "recorded_at": "2026-08-11T11:04:00Z",
+  "status": "WORKING",
+  "scope": "Synchronized real-scene versus rendered robot-execution comparison",
+  "summary": "A ten-second 2x2 comparison now shows the unchanged real kitchen observation beside rendered pour, shake, and handover robot effects.",
+  "evidence": [
+    "The published video decodes all 240 frames at 1664x960, 24 FPS, and ten seconds.",
+    "Its SHA-256 is b6135e06cbebc48f019eb93a68cdbdad829325b74510cff614b410b62fd709dc.",
+    "Five-point visual review covers frames 0, 60, 120, 180, and 239; all four synchronized panels remain present and labeled.",
+    "Each robot panel and the footer explicitly say simulated or no physical robot claim."
+  ],
+  "lessons": [
+    "A synchronized multi-action grid makes source-to-render differences easier to inspect without selectively presenting one favorable action."
+  ],
+  "limitations": [
+    "The robot panels are rendered counterfactuals, not footage of physical robot execution.",
+    "They are not inference from the one-step BWM smoke checkpoint.",
+    "Visual comparison does not establish causal action following, contact physics, safety, or task success."
+  ],
+  "next_actions": [
+    "Use the separate calibrated telemetry-and-video protocol when physical robot access becomes available."
+  ],
+  "run_dir": "outputs/acwm-real-scene-execution-comparison/20260811T110030.237194Z",
+  "supersedes": ["2026-08-11.acwm-real-scene-comparison-local-cv2-failure"],
+  "tags": ["acwm", "real-scene", "robot-render", "comparison-video", "working-visualization"]
+}

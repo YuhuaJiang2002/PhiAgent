@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 442,
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-diagonal-01",
+      "object_id": 101,
+      "anchor_source_frame": 22,
+      "box_xyxy": [458, 300, 522, 355],
+      "positive_points_xy": [[480, 325], [495, 330], [470, 340]],
+      "negative_points_xy": [[525, 360], [457, 310], [545, 335], [480, 375]],
+      "minimum_area_pixels": 140,
+      "maximum_area_pixels": 6500,
+      "role": "same upper diagonal articulated gripper after the shared global-442 anchor",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [463, 298, 528, 354],
+          "positive_points_xy": [[486, 318], [505, 327], [476, 338]],
+          "negative_points_xy": [[528, 360], [462, 315], [548, 335], [485, 372]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [448, 315, 525, 382],
+          "positive_points_xy": [[480, 345], [497, 351], [466, 360]],
+          "negative_points_xy": [[545, 354], [463, 283], [520, 320], [450, 390]]
+        }
+      ]
+    },
+    {
+      "instance_id": "robot-hand-lower-horizontal-02",
+      "object_id": 102,
+      "anchor_source_frame": 22,
+      "box_xyxy": [480, 328, 552, 382],
+      "positive_points_xy": [[505, 352], [530, 348], [493, 366]],
+      "negative_points_xy": [[490, 323], [462, 330], [565, 340], [485, 395]],
+      "minimum_area_pixels": 140,
+      "maximum_area_pixels": 6500,
+      "role": "same lower horizontal articulated gripper after the shared global-442 anchor",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [475, 327, 548, 380],
+          "positive_points_xy": [[503, 352], [525, 348], [490, 363]],
+          "negative_points_xy": [[486, 318], [462, 340], [560, 350], [485, 390]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [510, 325, 600, 392],
+          "positive_points_xy": [[545, 350], [565, 360], [530, 370]],
+          "negative_points_xy": [[490, 350], [463, 345], [605, 340], [520, 405]]
+        }
+      ]
+    }
+  ],
+  "notes": "The terminal prompts explicitly separate the left-held bouquet gripper from the right gripper after release. Both tracks must remain visible and distinct for all 45 frames."
+}

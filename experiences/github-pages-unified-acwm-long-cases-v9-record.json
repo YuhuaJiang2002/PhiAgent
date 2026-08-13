@@ -1,0 +1,27 @@
+{
+  "record_id": "2026-08-11.github-pages-unified-acwm-long-cases-v9",
+  "recorded_at": "2026-08-10T20:56:00Z",
+  "status": "WORKING",
+  "scope": "Production publication of the unified AC-WM, long real-scene, and bounded-training evidence page",
+  "summary": "PR 1 merged the unified evidence page into main and GitHub Pages successfully serves the AC-WM console, three long real-scene cases, the rank-8 critical-window ablation, prior gallery, and honest failure labels.",
+  "evidence": [
+    "PR https://github.com/YuhuaJiang2002/PhiAgent/pull/1 merged as 4c372c91a440c7bc40e45bbad112f1c15bb0b635.",
+    "GitHub Pages workflow run 31431227556 completed successfully, including checkout, prepare, upload, and deploy steps.",
+    "The production HTML contains the Real-Scene Embodied Lab title, long-case section, A800 task-adaptation section, and the user-rejected H3+EPL label.",
+    "Production requests return HTTP 200 for the accepted OSCAR comparison, both 27.5-second flower videos, the rank-8 ablation video, evaluation JSON, and long-case manifest.",
+    "Browser verification reports no console warnings/errors, training decision REJECT FULL EXPANSION, motion delta -0.0111, semantic gates 0/4, and successful instruction routing to the 5.4-second LIFT UP evidence.",
+    "All three long videos report readyState 4 with durations 20.7, 27.5, and 27.5 seconds; the training ablation reports 2.125 seconds."
+  ],
+  "lessons": [
+    "A unified public page should distinguish native AC-WM, geometric retargeting, real observation, generated negative evidence, and failed task adaptation at the card level.",
+    "Production verification must check live media readiness and evidence JSON, not only a successful deployment status."
+  ],
+  "limitations": [
+    "The accepted OSCAR evidence is camera-skeleton image-space generation, not robot-base control or physical execution.",
+    "The H3+EPL 27.5-second candidate is explicitly user-rejected negative evidence, and the rank-8 VACE adapter fails all four real semantic gates."
+  ],
+  "next_actions": ["Use licensed paired real robot/action datasets and persistent object-instance supervision before another task-adaptation run."],
+  "run_dir": "https://github.com/YuhuaJiang2002/PhiAgent/actions/runs/31431227556",
+  "supersedes": [],
+  "tags": ["github-pages", "acwm", "long-video", "vace", "production", "working"]
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.flower-long-video-workflow-v1",
+  "recorded_at": "2026-08-13T02:46:27Z",
+  "status": "WORKING",
+  "scope": "dependency-free persistent workflow runtime and real-input 27.5-second flower-video visual audit",
+  "summary": "A LangGraph-inspired standard-library runtime and flower-specific reference graph execute the existing 660-frame candidate through seven nodes and eight append-only JSON checkpoints; all twelve scoped visual gates pass while two seam outliers and one legacy hand-proxy diagnostic remain explicit quality debt and physical promotion stays false.",
+  "evidence": [
+    "outputs/workflows/20260813T024115Z-flower-long-video-v2/result.json binds the 27.5-second candidate and records all 12 scoped visual gates, two risk windows, three quality debts, and physical_promotion.eligible=false",
+    "outputs/workflows/20260813T024115Z-flower-long-video-v2/checkpoints/flower-27p5s-v2/checkpoints contains eight hashed checkpoints for the complete seven-node execution",
+    "outputs/workflows/20260813T024115Z-flower-long-video-v2/logs/events.jsonl records the streamed node lifecycle and terminal result",
+    "tests/test_workflow_core.py, tests/test_flower_long_video_workflow.py, and tests/test_perceptual_video_harness.py pass 10/10 targeted tests; the full local suite passes 811 tests with one optional MuJoCo skip",
+    "Targeted Ruff validation passes for phiagent/workflows and both new test modules"
+  ],
+  "lessons": [
+    "A durable graph facade can organize existing heavyweight scripts without importing their CUDA or model dependencies into the base package.",
+    "Flower insertion needs a domain-specific visible-contact gate in addition to generic long-video morphology, identity, motion, adversarial, and high-resolution review gates.",
+    "Passing display gates should not erase measured seam risk windows or promote projected image-space contact to metric physical evidence.",
+    "Architecture repair plans can be derived from failed hard gates while explicitly forbidding threshold weakening and aggregate-score bypasses."
+  ],
+  "limitations": [
+    "This run audits an existing candidate; it does not contain a new model generation, training run, or measured generation-throughput improvement.",
+    "The accepted scope is perceptually plausible synthetic display data only; metric camera, exact q/qdot, persistent per-stem 3-D geometry, contact force, force closure, and real-robot execution remain unverified.",
+    "Two one-frame route-transition outliers remain at frames 479 and 559, and the legacy late hand-replacement proxy reports a 0.233333 violation fraction.",
+    "Other AC-WM, simulation, retargeting, and renderer CLIs have not all been migrated into built-in graph recipes."
+  ],
+  "next_actions": [
+    "Generate shared-anchor latent-bridge challengers only for frames 463-495 and 543-575, preserving exact source flowers, background, endpoint frames, and response motion.",
+    "Run the same sealed twelve-gate contract on those challengers and promote only a strict non-regression result.",
+    "Migrate the persistent Wan generation and post-decode audit CLIs into explicit SubprocessNode recipes with the same provenance and physical-GPU contract.",
+    "Keep physical-contact promotion blocked until at least two independent physical evidence groups and all four physical gates pass."
+  ],
+  "run_dir": "outputs/workflows/20260813T024115Z-flower-long-video-v2",
+  "supersedes": [],
+  "tags": [
+    "workflow",
+    "langgraph-inspired",
+    "flower-arranging",
+    "long-video",
+    "adversarial-audit",
+    "display-ready",
+    "physical-fail-closed"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-smoke-fragmentation-partial",
+  "recorded_at": "2026-08-12T07:26:00Z",
+  "scope": "Two-iteration CP4/FSDP4 rank-32 DROID LoRA smoke training",
+  "status": "PARTIAL",
+  "summary": "The first LoRA smoke run instantiated the correct 14B model, injected 143,917,056 trainable adapter parameters, and loaded all 172 training videos, but the first FSDP all-gather ran out of memory on shared physical GPU 0 by 758 MiB before producing a checkpoint.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T175000Z-lora-r32-cp4-smoke2",
+  "evidence": [
+    "The verified DROID base checkpoint and tokenizer loaded successfully on four selected physical GPUs.",
+    "LoRA injection reported 143,917,056 trainable parameters out of 14,409,202,688 total, with FSDP shard size 4 and context parallel size 4.",
+    "The dataset loader found exactly 172 videos, matching the immutable training split contract.",
+    "Rank 0 failed while allocating 758 MiB with 752 MiB physically free; PyTorch reported 1.96 GiB reserved but unallocated, indicating allocator fragmentation at a shared-card memory boundary.",
+    "No model checkpoint was written and result.json records PARTIAL."
+  ],
+  "lessons": [
+    "The model and dataset contracts reach the actual FSDP training step, but the two partially occupied GPUs leave almost no allocator headroom.",
+    "Enable PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True before changing model or data semantics because the reported unused reserved memory exceeds the failed allocation."
+  ],
+  "limitations": [
+    "No optimizer step completed, so this attempt is not training-quality evidence."
+  ],
+  "next_actions": [
+    "Retry in a new directory with expandable CUDA segments; if it still fails, add activation checkpointing or reduce LoRA targets while preserving the native multiview dataset."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "fsdp",
+    "oom",
+    "fragmentation",
+    "partial"
+  ],
+  "supersedes": []
+}

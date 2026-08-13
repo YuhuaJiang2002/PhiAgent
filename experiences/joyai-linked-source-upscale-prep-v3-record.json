@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-linked-source-upscale-prep-v3-working",
+  "recorded_at": "2026-08-13T03:25:30Z",
+  "status": "WORKING",
+  "scope": "Explicit low-resolution JoyAI input preparation for the user-linked historical candidate",
+  "summary": "Two measured 33-frame JoyAI windows were reproducibly extracted after an explicitly recorded fit-height Lanczos resize and center crop; this is preparation only.",
+  "evidence": [
+    "The source probe reports 660 frames, 24 FPS, H.264 yuv420p, and 624x352.",
+    "The manifest records resize to 1276x720 followed by a 14-pixel left center crop to 1248x720, with named forward coordinate equations.",
+    "Both [463,495] and [543,575] outputs decode as exactly 33 FFV1 bgr0 frames at 1248x720 and 24 FPS; all preparation acceptance flags pass."
+  ],
+  "lessons": [
+    "JoyAI's 1+8n causal layout can be aligned exactly to measured seam neighborhoods while keeping low-resolution provenance separate from native evidence."
+  ],
+  "limitations": [
+    "The historical candidate was upscaled and is not native-resolution evidence; no JoyAI proposal or quality improvement is claimed by preparation alone."
+  ],
+  "next_actions": [
+    "Generate both proposals with the pinned official weights, measure A800 throughput, then apply deterministic flower/background/endpoint projection and adversarial review."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/joyai-flower-edit/20260813T032500Z-linked-original-upscale-prepare-v3",
+  "supersedes": [
+    "2026-08-13.joyai-linked-source-native-preflight-v1-partial"
+  ],
+  "tags": ["joyai", "flower-video", "causal-window", "preparation", "working"]
+}

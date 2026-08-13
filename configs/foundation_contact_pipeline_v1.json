@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "evidence_date": "2026-08-13",
+  "timeline": "frame:source_video",
+  "coordinate_frames": {
+    "camera": "camera:da3_processed_metric",
+    "world": "world:calibrated_reconstruction",
+    "robot_base": "robot_base:unitree_g1"
+  },
+  "models": {
+    "metric_camera_primary": {
+      "name": "DA3NESTED-GIANT-LARGE-1.1",
+      "revision": "41736238f5bced4debf3f2a12375d2466874866d",
+      "license": "CC-BY-NC-4.0"
+    },
+    "dynamic_points": {
+      "name": "V-DPM",
+      "revision": "5e2a57cf6007dfb0511a8b396a0805089b9edcc4"
+    },
+    "dynamic_points_critic": {
+      "name": "SpatialTrackerV2-Offline",
+      "revision": "7e12274c52077860cebfe007a6290777db43b63c",
+      "license": "CC-BY-NC-4.0"
+    },
+    "multi_curve_topology_critic": {
+      "name": "MultiDLO",
+      "revision": "e0b7fa35739731a96ac7569952c00414ca2ad968",
+      "license": "MIT",
+      "requires": "calibrated RGB-D"
+    },
+    "human_to_g1_initializer": {
+      "name": "GMR",
+      "revision": "bb1bbe40774794fceb2a7c579a3464a28e68c844",
+      "license": "MIT"
+    },
+    "exact_hand_retarget": {
+      "name": "dex-retargeting",
+      "revision": "3f56141bc8bd2760d5e452e382937269554ebb21",
+      "license": "MIT"
+    },
+    "single_frame_metric_fallback": {
+      "name": "UniDepthV2-ViT-S14",
+      "revision": "8d8cfe4c7ee15297099983607febf0d4f32eb3d6"
+    },
+    "deformable_inverse_physics_reference": {
+      "name": "PhysTwin",
+      "revision": "54106c6357e369955bc21ea77f012fbd5867165c"
+    }
+  },
+  "exact_robot_assets": {
+    "g1_model": "3c2616550a31f33e84d3c80b8e913ac5618c8888019b0c9490dae93493e647f3",
+    "sharpa_left_model": "3cbeb46259d4ba63cbdb83085255d1a8f8031c51e0101a6622f6e7e81a64dc11",
+    "sharpa_right_model": "43d9cb63d724889b69574a5e0981aee4a2f30d825c85f3098988e3a7a3bb9980"
+  },
+  "immutable_gates": {
+    "minimum_metric_depth_coverage": 0.9,
+    "maximum_camera_rotation_orthogonality_error": 0.001,
+    "maximum_robot_reprojection_rmse_px": 8.0,
+    "maximum_joint_velocity_rad_s": 12.0,
+    "minimum_stem_visible_fraction": 0.8,
+    "maximum_stem_segment_length_cv": 0.12,
+    "maximum_stem_observation_residual_fraction_p95": 0.1,
+    "maximum_force_solver_residual_n_p95": 0.08
+  },
+  "force_source_allowlist": [
+    "sensor_measurement",
+    "physics_solver_estimate"
+  ],
+  "promotion_rule": "WORKING requires all four stages and all adversarial attacks to pass; no average score or learned confidence can override a failed gate"
+}

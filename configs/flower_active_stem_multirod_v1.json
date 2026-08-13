@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "source_video_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91",
+  "timeline": "frame:source_video",
+  "instances": [
+    {
+      "instance_id": "active-pink-stem-01",
+      "root_node": 0,
+      "root_mode": "free",
+      "role": "right-hand manipulated flower; preserve material identity through frames 272-320"
+    }
+  ],
+  "limitations": [
+    "The DA3 coordinate frame has learned relative scale and is not independently metric.",
+    "Only one sparse real stem track is currently available; this is a single-stem compatibility run, not full bouquet coverage."
+  ]
+}

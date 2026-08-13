@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-critical-contact-v1-v5",
+  "recorded_at": "2026-08-10T20:46:02Z",
+  "status": "PARTIAL",
+  "scope": "Five retained critical-window contact-composition iterations before the accepted v6 audit",
+  "summary": "v1 through v5 progressively established two-hand visibility, support contact, and smaller human residuals, but every candidate still failed the complete-human-removal proxy and remained unaccepted.",
+  "evidence": ["v1 failed human removal, support contact, and two-hand visibility.", "v2 passed two hands but failed human removal and support contact.", "v3-v5 passed both contact proxies and two hands but retained a source-skin component as large as 398 pixels.", "All five manifests remain immutable under output directories 032000Z through 037000Z."],
+  "lessons": ["Conjunctive gates prevented progressive proxy improvements from being mistaken for acceptance.", "Component-level residual audits are more diagnostic than mean skin similarity."],
+  "limitations": ["The v1-v5 human-residue metric was still a proxy and required semantic review."],
+  "next_actions": ["Remove the localized residual without changing flower or hand geometry, then rerun the same gates."],
+  "run_dir": "outputs/flower-contact-supervision/20260811T037000Z-real-contact-pairs-v5-audit",
+  "supersedes": [],
+  "tags": ["flower", "contact", "human-removal", "iterations", "partial"]
+}

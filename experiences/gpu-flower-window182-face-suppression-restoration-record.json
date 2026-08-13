@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window182-face-suppression-restoration-v1",
+  "recorded_at": "2026-08-11T08:34:00Z",
+  "scope": "Source-face suppression, named-flower restoration, and initial strict gate for real flower-arranging frames 182-270",
+  "status": "PARTIAL",
+  "summary": "Suppressing Wan's source-face control removed the regenerated face, but the raw ablation lost manipulated blossoms. Restoring source-tracked flower instances recovered geometry and all 38 object/contact gates; the window remained held only because temporal consistency was 0.626065 below 0.75.",
+  "run_dir": "outputs/gpu-flower-instance-supervision/20260811T080000Z-window182-270-face-suppressed-v1",
+  "evidence": [
+    "The GPU-3 face-control ablation is human-free in dense review but visibly loses manipulated flower heads, so it was not accepted as a raw candidate.",
+    "Source and candidate SAM2 tracks cover all 89 frames for two unambiguous named flowers and two robot hands; the ambiguous third pink flower is preserved visually but excluded from exact identity claims.",
+    "strict-object-gate-v2 records 38/38 geometry gates passing, including upper-hand-to-cream and lower-hand-to-lime contacts, while the full result is 38/39 because temporal consistency is 0.626065.",
+    "Aligned motion preservation is 0.827981 and target identity is 0.980712; both pass their unchanged thresholds."
+  ],
+  "lessons": [
+    "Removing a human identity control can solve face regeneration while simultaneously weakening the manipulated-object signal; explicit source-instance restoration is required.",
+    "Ambiguous source/candidate instance correspondence must be excluded from exact identity claims instead of being forced into a passing metric."
+  ],
+  "limitations": [
+    "The initial restored video fails the temporal gate and cannot be expanded or stitched.",
+    "The pink instance is not included in exact pairwise identity acceptance for this rapid-rotation window."
+  ],
+  "next_actions": [
+    "Apply only bounded temporal repair inside source-unsupported character pixels while locking the background, named flowers, hands, and contact bands."
+  ],
+  "supersedes": [],
+  "tags": [
+    "gpu",
+    "face-control-suppression",
+    "sam2",
+    "flower-restoration",
+    "contact-supervision",
+    "temporal-hold",
+    "partial"
+  ]
+}

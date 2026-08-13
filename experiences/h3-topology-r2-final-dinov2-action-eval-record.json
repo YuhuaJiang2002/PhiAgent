@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r2-final-dinov2-action-eval",
+  "recorded_at": "2026-08-10T22:48:07Z",
+  "scope": "Final matched evaluation of the completed r2 epoch-1 native H3 identity-topology LoRA",
+  "status": "PARTIAL",
+  "summary": "The final r2 checkpoint retains a narrow native topology improvement and raises several task proxies, but it does not increase fully passing topology frames and materially regresses object lock, frozen appearance identity, and matched pixel motion; the hard RSI contract rejects it.",
+  "run_dir": "outputs/h3-identity-rsi/20260810T223300Z-r2-epoch1-inspect-flower-eval",
+  "evidence": [
+    "The final rank-16 checkpoint is 65,626,168 bytes with SHA-256 5511399cbe84c2bf1017677c894d3c546cb5cac7699616bd82b268faf2ef8bb3.",
+    "The exact candidate video SHA-256 is 831ed2defe40d5410827e46e0ba6c7f9bee4c03afaf40fdc4f882de4a6408b6c; its 124-frame topology evidence SHA-256 is bdb96a5310ec212ca216e6b297dca294f862df47bba3d5708f56a8c2461d6c08.",
+    "Baseline topology failures are left shoulder 100, stable proportions 100, and head-to-torso chain 82. The final candidate retains only the 100 left-shoulder failures, but full-frame topology remains 24/124 for both baseline and candidate.",
+    "The matched task evaluator changes motion 0.4819401811 to 0.5646415103, EPL 0.4495309505 to 0.5020783871, robot-identity proxy 0.7124955947 to 0.7210642124, and temporal 0.9459162812 to 0.9529279377.",
+    "Object lock collapses from 1.0 to 0.0005199057. After adding object lock to the conservative action contract, normalized action adherence is 0.0011565515.",
+    "Frozen DINOv2 worst-frame identity falls from 0.8833816648 to 0.7872591913 and matched pixel-motion adherence is 0.8949289860. Scene and temporal non-regression pass, while identity gain, identity floor, topology, motion, and action gates fail.",
+    "The final evaluator ran on physical A800 GPU 1, records all input hashes, and hashes the pinned local DINOv2 model files at revision ed25f3a31f01632728cabb09d1542f84ab7b0056."
+  ],
+  "lessons": [
+    "A curriculum can remove specific head/torso and proportion failure categories without improving the hard conjunction when a single shoulder-origin defect remains widespread.",
+    "Task motion and identity proxies can improve while object retention collapses; object lock must participate in the action non-regression gate rather than being reported only as a diagnostic.",
+    "The second epoch amplifies appearance and motion regression relative to r2 epoch 0, so the RSI loop correctly retains r2 epoch 0 only as the least-regressing research checkpoint and promotes neither."
+  ],
+  "limitations": [
+    "This is one 124-frame held-out identity, scene, and action using third-party NF4 MiniMax-H3 weights, not the official BF16 base.",
+    "Topology labels are digest-bound 2-D semantic review, not 3-D kinematics, physical contact, or real-robot evidence.",
+    "No candidate passes the release contract, so neither the checkpoint nor its demo is described as a publishable improved model."
+  ],
+  "next_actions": [
+    "Build a v3 training split with camera-matched raised-arm positives, explicit shoulder-origin crops, and neck/head-emergence hard negatives.",
+    "Freeze at least three held-out identities, scenes, actions, and object-lock masks before another training round.",
+    "Repeat the bounded search on an official BF16 H3 base only after license and compute review."
+  ],
+  "supersedes": [
+    "2026-08-11.h3-topology-r1-r2-epoch0-dinov2-tournament"
+  ],
+  "tags": [
+    "h3",
+    "rsi",
+    "topology",
+    "lora",
+    "dinov2",
+    "action-nonregression",
+    "object-lock",
+    "partial-improvement",
+    "rejected"
+  ]
+}

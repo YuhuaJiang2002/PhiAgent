@@ -1,0 +1,13 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index a533284..c0181da 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -197,7 +197,7 @@ if __name__ == "__main__":
+         model_paths=json.dumps(runtime_config["model_paths_list"]),
+         model_id_with_origin_paths=args.model_id_with_origin_paths,
+         tokenizer_path=runtime_config["tokenizer_path"],
+-        enable_text=args.enable_text,
++        enable_text=runtime_config["text_enabled"],
+         trainable_models=args.trainable_models,
+         lora_base_model=args.lora_base_model,
+         lora_target_modules=args.lora_target_modules,

@@ -1,0 +1,27 @@
+{
+  "record_id": "2026-08-12.wan-long-hand-union-repair-v1",
+  "recorded_at": "2026-08-12T08:03:00Z",
+  "status": "PARTIAL",
+  "scope": "Source-aware hand-layer union and four-attack audit on the complete 27.5-second replacement",
+  "summary": "The bounded repair passes all automatic late appearance, coarse-topology, edge-energy, and projected-contact gates, but high-resolution human review still finds intermittent finger morph or motion smear and does not accept exact grasp contact.",
+  "evidence": [
+    "The repair changes 23,243 pixels over 51/660 frames, never copies donor pixels onto the resolved flower layer, and runs at 119.05 FPS in 5.54 seconds.",
+    "Late hand-replacement violation falls from 11.67% to 1.11%; palette and high-chroma violation remain 0%; projected contact remains 12/12.",
+    "The expanded audit passes 11 automatic late gates and detects color shift, arm erasure, hand detachment, and shifted-hand ghost attacks.",
+    "High-resolution sheets final-hands-crop-12.jpg and final-tail-hands-every5.jpg retain intermittent ambiguous finger structure."
+  ],
+  "lessons": [
+    "Passing aggregate edge energy and replacement coverage does not prove one coherent articulated hand.",
+    "Adversarial review must include human inspection of localized high-resolution crops, not only dense full-frame sheets."
+  ],
+  "limitations": [
+    "The donor is another generated hypothesis rather than paired clean robot footage.",
+    "Persistent per-stem identity, depth order, force closure, collision safety, and real execution are unverified."
+  ],
+  "next_actions": [
+    "Evaluate a contact-conditioned adapter on a temporally held-out late window and reject full model-only expansion if hand structure does not improve."
+  ],
+  "run_dir": "outputs/wan-long-robot-contract/20260812T073750Z-first-principles-v1",
+  "supersedes": ["2026-08-12.wan-long-robot-layer-audit-v1"],
+  "tags": ["wan", "long-video", "hand", "contact", "adversarial", "partial"]
+}

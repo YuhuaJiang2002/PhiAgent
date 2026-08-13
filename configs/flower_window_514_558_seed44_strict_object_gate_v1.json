@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "window_local_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 514,
+  "candidate_sha256": "e3ff18aae23621d02d124b914b2209e73121f2476121b45008182410401a1655",
+  "flower_instances": [
+    {
+      "instance_id": "lime-bud-upper-01",
+      "source_track_run": "outputs/gpu-flower-full-strict-expansion/20260811T122000Z-v1/window-0470/source-head-tracks-514-558-v1",
+      "candidate_track_run": "outputs/gpu-flower-full-strict-expansion/20260811T122000Z-v1/window-0470/candidate-head-tracks-seed44-514-558-v1",
+      "maximum_occlusion_gap_frames": 0
+    }
+  ],
+  "robot_hand_track_run": "outputs/gpu-flower-full-strict-expansion/20260811T122000Z-v1/window-0470/seed44-hands-merged-514-558-v1",
+  "robot_hands": ["robot-hand-bouquet-01", "robot-hand-support-02"],
+  "contact_segments": [
+    {
+      "hand_id": "robot-hand-bouquet-01",
+      "flower_instance_id": "lime-bud-upper-01",
+      "local_frame_start": 0,
+      "local_frame_end_exclusive": 45,
+      "role": "rear bouquet hand continuously grips the tracked flower side"
+    }
+  ],
+  "thresholds": {
+    "minimum_candidate_visible_fraction": 1.0,
+    "maximum_flower_centroid_step_pixels": 40.0,
+    "minimum_flower_adjacent_iou_mean": 0.68,
+    "maximum_adjacent_area_ratio": 2.0,
+    "minimum_pairwise_horizontal_order_agreement": 0.98,
+    "maximum_offset_centered_trajectory_p90_pixels": 8.0,
+    "minimum_positive_velocity_cosine_fraction": 0.8,
+    "minimum_median_hs_histogram_cosine": 0.8,
+    "maximum_hand_centroid_step_pixels": 20.0,
+    "minimum_hand_adjacent_iou_mean": 0.88,
+    "minimum_contact_visible_fraction": 1.0,
+    "maximum_contact_distance_p90_pixels": 8.0,
+    "maximum_contact_distance_pixels": 15.0,
+    "minimum_aligned_identity_score": 0.97,
+    "minimum_aligned_motion_score": 0.82,
+    "minimum_aligned_temporal_score": 0.75
+  },
+  "semantic_review": {
+    "reviewer_type": "codex_every_frame_split_window_visual_review",
+    "reviewed_local_frames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44],
+    "complete_human_removal": true,
+    "two_mechanical_hands_visible": true,
+    "named_flower_identity_order_preserved": true,
+    "contact_pairs_visually_plausible": true,
+    "notes": "All 45 seed-44 right-window frames are reviewed; both hand tracks are independent and the named restored flower is continuous."
+  },
+  "notes": "Right seed-44 expansion split overlaps the final left split for global frames 514-524."
+}

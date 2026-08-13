@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-stale-triton-cache",
+  "recorded_at": "2026-08-12T04:15:20Z",
+  "status": "PARTIAL",
+  "scope": "First real persistent Wan-Animate-2 two-window GPU smoke",
+  "summary": "The model loaded on physical A800 GPUs 1 and 4, but the first inference reused an ABI-stale Triton launcher and failed before producing a video.",
+  "evidence": [
+    "Batch events record a successful two-GPU mapping and 118.7508-second model load.",
+    "The inference log records torch._inductor.exc.InductorError with PY_SSIZE_T_CLEAN during cached binary loading.",
+    "No results.mp4 was produced."
+  ],
+  "lessons": [
+    "Torch/Triton compiled artifacts must be keyed by source, Python, torch, CUDA, GPU architecture, and video shape instead of inheriting an unversioned user cache."
+  ],
+  "limitations": [
+    "This attempt contains model-load timing but no generation throughput or visual-quality evidence."
+  ],
+  "next_actions": [
+    "Use an explicit versioned Triton/Inductor cache and rerun in a fresh experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-smoke-persistent-2w-v2",
+  "supersedes": [],
+  "tags": ["wan-animate2", "long-video", "triton", "cache", "failure"]
+}

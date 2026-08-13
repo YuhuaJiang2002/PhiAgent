@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-svo-lineage-v1-runtime-blocked",
+  "recorded_at": "2026-08-12T21:16:58Z",
+  "status": "BLOCKED",
+  "scope": "Held-out DROID episodes 21/77 ZED calibration v1",
+  "summary": "The first calibration waiter selected strictly free physical GPU 5 after waiting, but failed before ZED import because resolving the venv Python symlink selected a base interpreter without NumPy.",
+  "evidence": [
+    "The waiter selected GPU 5 only after the strict less-than-1-GiB/no-process gate passed.",
+    "episode-021 stopped at import numpy with ModuleNotFoundError.",
+    "No SVO was opened and episode 77 was not started."
+  ],
+  "lessons": [
+    "Virtual-environment executable paths must not be dereferenced before launch.",
+    "The DROID runtime spans RLinf NumPy and separately installed ZED 5.1 bindings and must be recorded explicitly."
+  ],
+  "limitations": [
+    "No calibration conclusion was produced."
+  ],
+  "next_actions": [
+    "Preserve the venv launch path and preflight NumPy plus pyzed in one process."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T141500Z-episodes21-77-v1",
+  "supersedes": [],
+  "tags": ["droid", "real-world", "calibration", "runtime", "blocked"]
+}

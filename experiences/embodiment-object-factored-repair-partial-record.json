@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.embodiment-object-factored-repair-partial",
+  "recorded_at": "2026-08-12T05:09:00Z",
+  "status": "PARTIAL",
+  "scope": "Exploratory colored-object factorization on failed Hand2Dex raw outputs",
+  "summary": "Source-object factorization substantially improved case 2 object and motion scores but did not repair temporal consistency; case 3 tracking failed to improve the apple and regressed temporal quality.",
+  "evidence": [
+    "Case 2 object consistency improved from 0.653830 to 0.876721 and motion from 0.785458 to 0.876785; identity remained 0.980508.",
+    "Case 2 temporal consistency improved only from 0.246224 to 0.277606, leaving the complete gate failed.",
+    "Case 3 object consistency remained 0.003866 while temporal consistency fell from 0.311885 to 0.190041.",
+    "The repair is explicitly separated from the raw-model leaderboard and uses source-video pixels."
+  ],
+  "lessons": [
+    "Object factorization can fix a dominant colored-object failure when tracking is reliable.",
+    "A 2-D color tracker does not generalize uniformly across objects and cannot solve temporal robot morphology.",
+    "Object restoration and temporal generation are separate mechanisms and require separate controls."
+  ],
+  "limitations": [
+    "The repair was explored after viewing raw test failures and is not confirmation evidence.",
+    "It is deterministic image-space compositing, not learned transfer or physical interaction.",
+    "Case 1 was not rerun in this exploratory round."
+  ],
+  "next_actions": [
+    "Develop object/contact masks on a separate training/validation object set, then freeze the tracker before confirmation.",
+    "Pair object factorization with a geometry-aware temporal generator rather than post-hoc global smoothing."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/embodiment-sota-smoke/20260812T045210Z-hand2dex-wan-animate2-a8001-v2/repairs",
+  "supersedes": [],
+  "tags": ["embodiment", "object-factorization", "repair", "exploratory", "partial"]
+}

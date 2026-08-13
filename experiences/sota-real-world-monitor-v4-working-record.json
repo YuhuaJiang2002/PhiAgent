@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v4-working",
+  "recorded_at": "2026-08-12T21:25:07Z",
+  "status": "WORKING",
+  "scope": "Seven-day real-world-only monitor v4 for active BWM inference",
+  "summary": "Monitor v4 records the completed DROID v5 calibration and now watches only the active real WorldArena/BWM matched inference and its frozen postprocessor successor.",
+  "evidence": [
+    "The first heartbeat reports bwm-wipe20-seed42-real-world-v2 as running and successor_started=false.",
+    "Official BWM inference began at 2026-08-12T21:18:08Z on physical GPUs 1 and 4.",
+    "Both official shards have created audited configs, GPU leases, logs, and generated videos.",
+    "The config retains explicit RoboTwin, MuJoCo, SAPIEN, synthetic-success, and simulator-contact exclusions."
+  ],
+  "lessons": [
+    "Completed jobs belong in immutable monitor provenance, while only active jobs remain in the live jobs array."
+  ],
+  "limitations": [
+    "Official and promoted BWM arms plus frozen evaluation have not yet completed.",
+    "The counterfactual lane remains diagnostic without physical execution references."
+  ],
+  "next_actions": [
+    "Continue monitoring BWM to terminal result and launch postprocessing only after both arms return WORKING."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T212500Z-real-world-only-v4",
+  "supersedes": [
+    "2026-08-12.sota-real-world-monitor-v3-superseded"
+  ],
+  "tags": ["sota", "real-world", "monitor", "bwm", "working"]
+}

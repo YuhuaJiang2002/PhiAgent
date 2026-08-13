@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.bwm-wipe20-gpu-wait-v1-timeout",
+  "recorded_at": "2026-08-12T20:06:51Z",
+  "status": "BLOCKED",
+  "scope": "Real WorldArena wipe20 matched BWM GPU queue v1",
+  "summary": "The first matched BWM waiter exhausted its 43,200-second GPU wait limit before either official or candidate inference started.",
+  "evidence": [
+    "The immutable queue recorded 361 heartbeats from 2026-08-12T08:04:10Z through 2026-08-12T20:05:23Z.",
+    "Every heartbeat kept GPUs 1 and 4 below the required 61,000 MiB free threshold.",
+    "The final snapshot reported only 22,333/22,334 MiB free on GPUs 1/4 with active other-user processes.",
+    "No runs directory or result.json was produced, so this is a resource-wait failure rather than a model or data failure."
+  ],
+  "lessons": [
+    "A 12-hour queue timeout is too short for the current shared A800 utilization.",
+    "GPU-wait timeout must create an explicit terminal result instead of relying only on process disappearance."
+  ],
+  "limitations": [
+    "No BWM video was generated and no scientific metric changed."
+  ],
+  "next_actions": [
+    "Restart in a new directory with a seven-day wait limit and explicit timeout result handling."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T080410Z-seed42-gpu1-4-v1",
+  "supersedes": [],
+  "tags": ["acwm", "worldarena2", "real-world", "gpu-wait", "blocked"]
+}

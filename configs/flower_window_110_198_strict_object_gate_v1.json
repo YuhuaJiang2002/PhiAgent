@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "window_local_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "candidate_sha256": "2afd1238a976b3b87b10ebbcbccb83ac3d5e3ca630af184738bb8bb2df00f255",
+  "flower_instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "source_track_run": "source-head-tracks-v4",
+      "candidate_track_run": "candidate-head-tracks-v4",
+      "maximum_occlusion_gap_frames": 2
+    },
+    {
+      "instance_id": "gold-flower-middle-03",
+      "source_track_run": "source-head-tracks-v4",
+      "candidate_track_run": "candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    },
+    {
+      "instance_id": "pink-flower-right-04",
+      "source_track_run": "source-head-tracks-v4",
+      "candidate_track_run": "candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    }
+  ],
+  "robot_hand_track_run": "candidate-hand-tracks-v1",
+  "robot_hands": [
+    "robot-hand-upper-left-01",
+    "robot-hand-lower-right-02"
+  ],
+  "contact_segments": [
+    {
+      "hand_id": "robot-hand-upper-left-01",
+      "flower_instance_id": "cream-flower-left-01",
+      "local_frame_start": 0,
+      "local_frame_end_exclusive": 45,
+      "role": "upper hand carries the left cream stem before the transfer"
+    },
+    {
+      "hand_id": "robot-hand-upper-left-01",
+      "flower_instance_id": "gold-flower-middle-03",
+      "local_frame_start": 45,
+      "local_frame_end_exclusive": 89,
+      "role": "upper hand transfers to the middle gold stem"
+    },
+    {
+      "hand_id": "robot-hand-lower-right-02",
+      "flower_instance_id": "gold-flower-middle-03",
+      "local_frame_start": 0,
+      "local_frame_end_exclusive": 61,
+      "role": "lower hand supports the middle gold stem and bouquet base"
+    },
+    {
+      "hand_id": "robot-hand-lower-right-02",
+      "flower_instance_id": "pink-flower-right-04",
+      "local_frame_start": 61,
+      "local_frame_end_exclusive": 89,
+      "role": "lower hand transfers support to the right pink stem"
+    }
+  ],
+  "thresholds": {
+    "minimum_candidate_visible_fraction": 0.97,
+    "maximum_flower_centroid_step_pixels": 20.0,
+    "minimum_flower_adjacent_iou_mean": 0.75,
+    "maximum_nonempty_area_ratio": 3.0,
+    "minimum_pairwise_horizontal_order_agreement": 0.98,
+    "maximum_offset_centered_trajectory_p90_pixels": 24.0,
+    "minimum_positive_velocity_cosine_fraction": 0.5,
+    "minimum_median_hs_histogram_cosine": 0.43,
+    "maximum_hand_centroid_step_pixels": 20.0,
+    "minimum_hand_adjacent_iou_mean": 0.9,
+    "minimum_contact_visible_fraction": 0.95,
+    "maximum_contact_distance_p90_pixels": 8.0,
+    "maximum_contact_distance_pixels": 15.0,
+    "minimum_aligned_identity_score": 0.97,
+    "minimum_aligned_motion_score": 0.82,
+    "minimum_aligned_temporal_score": 0.75
+  },
+  "semantic_review": {
+    "reviewer_type": "codex_dense_storyboard_visual_review",
+    "reviewed_local_frames": [0, 2, 5, 7, 9, 11, 14, 16, 18, 20, 23, 25, 27, 29, 32, 34, 36, 38, 41, 43, 45, 47, 50, 52, 54, 56, 59, 61, 63, 65, 68, 70, 72, 74, 77, 79, 81, 83, 86, 88],
+    "complete_human_removal": true,
+    "two_mechanical_hands_visible": true,
+    "named_flower_identity_order_preserved": true,
+    "contact_pairs_visually_plausible": true,
+    "notes": "Dense 40-frame source/candidate and per-instance storyboard review. This is an AI visual audit, not a claim of external human annotation."
+  },
+  "notes": "The gate deliberately routes each flower ID to its best independently reviewed tracker artifact. The two-frame cream occlusion at local 25--26 is explicit and is not filled with hallucinated masks."
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [272, 448, 1],
+  "instances": [
+    {
+      "instance_id": "active-pink-stem-04",
+      "object_id": 1,
+      "anchor_source_frame": 296,
+      "box_xyxy": [430, 252, 500, 390],
+      "positive_points_xy": [[468, 282], [461, 320], [463, 360]],
+      "negative_points_xy": [[490, 291], [497, 320], [443, 245], [510, 350]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 9000,
+      "role": "phase-04 right-hand manipulated pink flower; persistent identity from grasp through release"
+    }
+  ],
+  "contact_roles": {
+    "left": "bouquet support",
+    "right": "active-pink-stem-04 manipulation"
+  },
+  "notes": "The manually reviewed frame-296 prompts are identical to the accepted 17-frame gate; this run extends them to every source frame in the full 272--447 contact interval."
+}

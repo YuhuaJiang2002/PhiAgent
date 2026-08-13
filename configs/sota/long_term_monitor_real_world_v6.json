@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0.0",
+  "scope": "real-world-only",
+  "allowed_data": [
+    "real robot RGB/video",
+    "real human RGB/video",
+    "measured robot state/action/telemetry",
+    "measured or sensor-derived camera calibration/depth",
+    "human-reviewed real-world outcomes"
+  ],
+  "excluded_data": [
+    "RoboTwin",
+    "MuJoCo",
+    "SAPIEN simulation rollouts",
+    "synthetic task-success labels",
+    "simulator contact or object-state ground truth"
+  ],
+  "completed_real_world_jobs": [
+    {
+      "id": "droid-svo-calibration-episodes21-77-v5",
+      "status": "WORKING",
+      "result_json": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T215000Z-episodes21-77-v5/result.json"
+    },
+    {
+      "id": "bwm-wipe20-three-seed-evaluation",
+      "status": "PARTIAL",
+      "evaluation_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-multiseed-evaluation/20260812T220500Z-seeds42-314159-20260811-v1/evaluation.json",
+      "audit_passed": false
+    }
+  ],
+  "hosts": [
+    "a800-1",
+    "a800-2",
+    "a800-3",
+    "a800-4",
+    "zhaoli",
+    "pro5000"
+  ],
+  "jobs": [
+    {
+      "id": "droid-raw-sequence-alignment-episodes21-77-v3",
+      "type": "remote_process",
+      "host": "a800-1",
+      "pid": 3230368,
+      "success_json": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-raw-sequence-alignment/20260812T223000Z-episodes21-77-waiter-v3/result.json",
+      "success_status": "WORKING"
+    }
+  ]
+}

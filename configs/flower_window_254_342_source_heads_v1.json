@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 254,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 16,
+      "box_xyxy": [462, 238, 504, 297],
+      "positive_points_xy": [[481, 270], [487, 262], [474, 280]],
+      "negative_points_xy": [[507, 204], [542, 235], [520, 270], [450, 270]],
+      "minimum_area_pixels": 70,
+      "maximum_area_pixels": 2600,
+      "role": "cream blossom continued from the accepted 182-270 overlap",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [456, 226, 494, 265],
+          "positive_points_xy": [[474, 245], [482, 252], [468, 238]],
+          "negative_points_xy": [[542, 235], [507, 204], [505, 270], [445, 230]]
+        }
+      ]
+    },
+    {
+      "instance_id": "lime-flower-middle-02",
+      "object_id": 2,
+      "anchor_source_frame": 16,
+      "box_xyxy": [489, 186, 529, 224],
+      "positive_points_xy": [[507, 204], [514, 210], [502, 198]],
+      "negative_points_xy": [[481, 270], [486, 237], [535, 235], [485, 190]],
+      "minimum_area_pixels": 60,
+      "maximum_area_pixels": 2500,
+      "role": "lime-yellow blossom continued from the accepted 182-270 overlap",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [518, 211, 565, 261],
+          "positive_points_xy": [[542, 235], [550, 245], [534, 225]],
+          "negative_points_xy": [[474, 245], [507, 204], [570, 235], [520, 270]]
+        }
+      ]
+    }
+  ],
+  "notes": "Local frames 0 and 16 are global frames 254 and 270 and reuse independently accepted source-instance geometry from the preceding strict window. No unverified end-frame identity correction is injected; forward propagation must preserve each instance through global frame 342."
+}

@@ -112,6 +112,11 @@ def main() -> int:
     parser.add_argument("--frame-num", type=int, default=77)
     parser.add_argument("--grabcut-margin", type=int, default=16)
     parser.add_argument("--grabcut-iterations", type=int, default=3)
+    parser.add_argument(
+        "--color-mode",
+        choices=("chromatic", "cyan"),
+        default="cyan",
+    )
     args = parser.parse_args()
     for path in (args.source, args.candidate):
         if not path.is_file():
@@ -167,7 +172,7 @@ def main() -> int:
     )
     config = ObjectTrackerConfig(
         initial_roi=NormalizedROI(*args.object_roi),
-        initial_color_mode="cyan",
+        initial_color_mode=args.color_mode,
     )
     track = track_colored_object(source, config)
     masks = _grabcut_masks(

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 486,
+  "instances": [
+    {
+      "instance_id": "robot-hand-support-02",
+      "object_id": 102,
+      "anchor_source_frame": 0,
+      "box_xyxy": [550, 330, 650, 420],
+      "positive_points_xy": [[574, 362], [596, 380], [618, 392]],
+      "negative_points_xy": [[520, 345], [654, 365], [590, 425], [548, 318]],
+      "minimum_area_pixels": 180,
+      "maximum_area_pixels": 12000,
+      "role": "lower white-and-silver support mechanical hand and connected wrist",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 28,
+          "box_xyxy": [524, 278, 620, 366],
+          "positive_points_xy": [[547, 310], [564, 326], [587, 344]],
+          "negative_points_xy": [[512, 298], [498, 258], [622, 326], [548, 372]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [520, 270, 610, 360],
+          "positive_points_xy": [[544, 301], [559, 319], [582, 339]],
+          "negative_points_xy": [[513, 288], [499, 252], [614, 320], [544, 368]]
+        }
+      ]
+    }
+  ],
+  "notes": "Support-hand prompts include the connected white wrist and exclude the rear bouquet hand at the overlap corrections."
+}

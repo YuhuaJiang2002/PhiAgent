@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-source-v2-blue-bottle",
+  "recorded_at": "2026-08-11T05:06:06Z",
+  "status": "WORKING",
+  "scope": "EPIC-KITCHENS P03_28 ten-second source selection at 25.83-35.83 seconds",
+  "summary": "The corrected public Ego interval provides one already-held blue bottle at the opening and an exact ten-second camera-motion-preserving source for the action-control comparison.",
+  "evidence": [
+    "The official P03_28 asset matched MD5 801bf911ae9eb4293abec88480f17c4c and its prepared clip decodes to exactly 240 frames at 24 FPS and 1280x720.",
+    "Endpoint review confirms the blue bottle starts in the right hand and remains the selected task object through the interval.",
+    "The manifest records the EPIC-KITCHENS-100 source, CC BY-NC 4.0 license, annotation revision, downloader revision, command, hashes, and output anchors."
+  ],
+  "lessons": [
+    "A one-second source shift can eliminate an object-identity ambiguity while retaining the annotated action episode."
+  ],
+  "limitations": [],
+  "next_actions": [],
+  "run_dir": "outputs/epic-kitchens-ego-source/20260811T050606Z-p03_28-blue-bottle-v2",
+  "supersedes": ["2026-08-11.epic-ego-source-v1-object-transition"],
+  "tags": ["acwm", "epic-kitchens", "ego-video", "source-selection", "working"]
+}

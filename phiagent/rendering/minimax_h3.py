@@ -365,6 +365,45 @@ None.
 """
 
 
+def build_action_conditioned_ego_bottle_ref2va_prompt(
+    duration_seconds: float,
+    action: H3ActionVariant,
+) -> str:
+    """Build an H3 prompt for public egocentric bottle manipulation data."""
+
+    if not math.isfinite(duration_seconds) or duration_seconds <= 0:
+        raise ValueError("duration_seconds must be finite and positive")
+    action.validate()
+    instruction = " ".join(action.instruction.split())
+    timeline = " ".join(action.timeline.split())
+    return f"""subject_definitions:
+<Subject 1> is the pair of photorealistic silver-and-graphite dexterous robot hands and articulated forearms in <Picture 1>, seen from their own head-mounted first-person camera. Preserve the exact metallic panels, joints, five fingers per hand, proportions and scale. No robot head or torso is visible.
+<Subject 2> is the real EPIC-KITCHENS egocentric kitchen in <Picture 2>, including the counter, sink, tap, containers, lighting, shadows, reflections and one persistent bottle.
+<Subject 3> is the commanded counterfactual bottle action: "{instruction}"
+<Video 1> is an intermediate action-control video compiled from <Subject 3>. It specifies the head-mounted camera motion, left and right robot-hand trajectories, bottle trajectory, grasp timing, holder transitions and terminal bottle state. Transfer its motion and state only; ignore its CONTROL ONLY caption and simplified rendering.
+
+summary:
+[egocentric action-conditioned world-model generation] Generate one photorealistic first-person video in the real EPIC-KITCHENS scene from <Picture 2>. Replace both source human hands and forearms with <Subject 1>. Execute <Subject 3> and make the same bottle follow the state in <Video 1>.
+
+retention_analysis:
+<Subject 1> (throughout [Shot 1]): fully_preserved - exactly two coherent first-person robot forearms and two five-finger hands, stable material and geometry, entering only from the lower or side image boundaries.
+<Subject 2> (throughout [Shot 1]): fully_preserved - retain the real kitchen identity, head-mounted viewpoint, counter, sink, tap, containers, lighting and depth ordering. Only the commanded robot hands and causally contacted bottle may change.
+<Subject 3> (throughout [Shot 1]): fully_preserved - action semantics, bottle holder and terminal state override the source wearer's original hand action.
+<Video 1> (motion/state reference only): attribute_transfer - follow its ego-camera motion, two-hand paths, bottle path, contact interval, holder transitions and final state frame by frame while improving robot and bottle appearance from <Picture 1> and <Picture 2>.
+
+detailed_description:
+The target is one photorealistic {duration_seconds:.3f}-second head-mounted first-person shot. Both source human hands and all human skin are absent from frame one. Execute only: "{instruction}"
+Action timeline: {timeline}
+The bottle must remain one persistent object with constant label, plausible scale and correct occlusion. It moves only after a robot hand closes around it, follows that hand while held, transfers only when both hands make contact, and remains supported after release. Keep exactly two robot hands with five fingers each; never show a robot face, head, torso, third-person body, detached hand or extra bottle. Preserve natural ego-camera motion from <Video 1>. Do not average this command with the source action or another variant. Do not add text, logos, cuts, reframing, glow, particles, new tools or new containers.
+
+overall_soundscape:
+No dialogue or invented sound is required; acceptance targets are egocentric scene preservation, robot-hand consistency, persistent bottle state and visible compliance with the commanded action.
+
+non_diegetic_music:
+None.
+"""
+
+
 @dataclass(frozen=True)
 class MiniMaxH3ValidationConfig:
     """Validated inputs for one Ref2VA NF4 experiment."""

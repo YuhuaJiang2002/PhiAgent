@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v77-green-protected-prepromotion",
+  "recorded_at": "2026-08-11T12:42:30+08:00",
+  "scope": "Full-660 prepromotion test of broad lower-person coverage with generated-green hard protection",
+  "status": "PARTIAL",
+  "summary": "v77 removes v76's gray-vegetation regression and passes dense visual review, but its immutable renderer manifest remains PARTIAL because the first chroma gate required a 55% reduction while the intentionally light material achieved a visually sufficient 40.7% reduction.",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T043200Z-wide-person-green-protected-v77-pending",
+  "evidence": [
+    "Both outputs decode 660 frames; clean-plate shadow reduction is 16.9760%, and edit scope, protected-content, outside-safety, full-frame jerk, ROI jerk, and generated-green protection gates pass.",
+    "Mean wide-person active fraction is 0.0840429 and final mean modified fraction is 0.1155060; maximum modified fraction is 0.1477589.",
+    "Wide-region mean chroma falls from 13.2482 to 7.8594, a 40.67% reduction, but the initial 0.45 maximum-ratio gate demanded 55% reduction.",
+    "Full 1-fps, every-12-frame lower-workarea, all four exact risk-window, and 24 high-motion visual sheets show no garment/hand exposure, gray vegetation, erased flower, or modified robot surface.",
+    "High-motion frames 37--40 retain their green vegetation, correcting the v76 review failure."
+  ],
+  "lessons": [
+    "A weak, broad material should be accepted on a calibrated lower-bound chroma reduction rather than forced darker solely to satisfy an arbitrary 55% threshold.",
+    "A 35% minimum chroma reduction retains a measurable garment-color suppression contract while matching the user's preference for a lighter enlarged shadow."
+  ],
+  "limitations": [
+    "This record does not promote v77 because its renderer manifest correctly preserves the failed initial threshold and pending human gate.",
+    "The result remains a generated and post-composited 2-D video."
+  ],
+  "next_actions": [
+    "Reproduce the identical pixels with the calibrated 0.65 maximum chroma ratio and passed human review.",
+    "Require byte-identical robot-video reproduction before publishing the accepted comparison."
+  ],
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "wide-person-coverage",
+    "green-protection",
+    "metric-calibration",
+    "prepromotion",
+    "partial"
+  ]
+}

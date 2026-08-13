@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-stitch-regression-fixture-v1",
+  "recorded_at": "2026-08-11T16:55:00Z",
+  "scope": "Regression verification for strict flower temporal repair, packed-track slicing, and full-window stitching",
+  "status": "WORKING",
+  "summary": "The invalid monotonic-fade test fixture was corrected to satisfy window coverage first; all 21 targeted CPU tests then passed on the remote execution copy.",
+  "run_dir": "tests",
+  "tags": ["cpu-test", "regression", "stitch", "test-fixture", "working"],
+  "evidence": [
+    "The first remote run produced 20 passes and one failure because the increasing-weight fixture also violated left/right frame coverage and therefore correctly raised the earlier coverage error.",
+    "After changing the fixture cut/right starts to a valid global mapping, the same six test files completed with 21 passed in 0.24 seconds.",
+    "The tested paths include fail-closed motion recovery, repair policy routing, immutable packed-track slicing, stitch mapping/weight validation, real instance prompt validation, and packed-track merging."
+  ],
+  "lessons": ["A validation-order test must satisfy all earlier preconditions before asserting a later error contract."],
+  "limitations": ["These are CPU unit tests; GPU SAM2 acceptance is documented separately by real-input gate reports."],
+  "next_actions": ["Keep the stitch preview PARTIAL until its post-stitch hand and aligned gates pass."],
+  "supersedes": []
+}

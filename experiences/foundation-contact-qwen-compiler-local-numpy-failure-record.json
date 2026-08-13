@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-qwen-compiler-local-numpy-failure",
+  "recorded_at": "2026-08-12T13:22:10Z",
+  "scope": "First local compiler attempt with the generated-observation ensemble diagnostic",
+  "status": "PARTIAL",
+  "summary": "The v10 compiler attempt stopped before validation because the macOS system Python 3.14 runtime lacked NumPy; no scientific conclusion was changed.",
+  "run_dir": "outputs/foundation-contact/20260812T150000Z-compiled-qwen-observations-v10",
+  "evidence": [
+    "The retained failure artifact records ModuleNotFoundError: No module named numpy at the compiler adapter import.",
+    "The output directory contains no pipeline-report.json and was not reused.",
+    "A new v11 run with bundled Python 3.12 and NumPy 2.3.5 completed separately."
+  ],
+  "lessons": [
+    "The standard-library authority audit can use system Python, while the numeric compiler must use a declared runtime containing NumPy."
+  ],
+  "limitations": [
+    "This run contains infrastructure failure evidence only and cannot validate any physical stage."
+  ],
+  "next_actions": [
+    "Keep numeric compiler invocations pinned to the bundled or project environment and retain v10 as a preflight regression case."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "compiler", "numpy", "infrastructure", "partial"]
+}

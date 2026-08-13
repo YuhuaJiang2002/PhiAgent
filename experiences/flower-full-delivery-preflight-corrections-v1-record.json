@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-full-delivery-preflight-corrections-v1",
+  "recorded_at": "2026-08-11T03:16:00Z",
+  "status": "PARTIAL",
+  "scope": "Local preflight and diagnostic probes for the full shadow/EPL/temporal flower delivery",
+  "summary": "Three non-destructive probes failed before final delivery: the first ROI diagnostic used a 1280x720 mask on 832x480 frames, the first learned-policy load passed a string instead of Path, and the labelled comparison requested an unavailable FFmpeg drawtext filter.",
+  "evidence": [
+    "The first ROI diagnostic stopped with a boolean mask dimension mismatch and wrote no candidate video.",
+    "The first policy probe raised AttributeError before ranking because FlowerRepairPolicy.load requires Path; the corrected Path call ranked all four recipes.",
+    "The labelled comparison stopped with 'No such filter: drawtext' and emitted no comparison; the unlabelled vstack retry decoded 660/660 frames.",
+    "None of these failures changed the accepted v71 parent, the trained policy checkpoint, the rejected topology-LoRA assessment, or the final candidate."
+  ],
+  "lessons": [
+    "Resize coordinate-frame masks explicitly before temporal diagnostics.",
+    "Respect the checkpoint loader's typed Path contract.",
+    "Treat optional FFmpeg presentation filters as preflight capabilities."
+  ],
+  "limitations": ["These probes contain no positive video-quality result."],
+  "next_actions": ["Use the corrected mask frame, typed checkpoint path, and plain vstack layout in the immutable full-delivery run."],
+  "run_dir": "outputs/flower-full-delivery/20260812T001000Z-shadow-epl-temporal-v1",
+  "supersedes": [],
+  "tags": ["flower", "full-delivery", "preflight", "mask-frame", "ffmpeg", "partial"]
+}

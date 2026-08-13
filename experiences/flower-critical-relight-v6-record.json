@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-critical-relight-v6",
+  "recorded_at": "2026-08-10T21:06:03Z",
+  "status": "WORKING",
+  "scope": "Geometry-gated confidence-routed relighting on the accepted real 17-frame window",
+  "summary": "Temporally bounded robot-interior luminance routing passes all spatial, identity, contact, and flicker gates without accepting the destructive direct LoRA video.",
+  "evidence": ["Flowers, prompted hands, protected interaction, and outside-robot regions are all exact before encode.", "LoRA luminance MAE improves from 38.896109 to 38.129568.", "Maximum temporal residual is 1.204012 RGB MAE, below 1.5.", "Human review and the evaluator accept the scoped candidate."],
+  "lessons": ["A low-frequency, confidence-routed proposal can add lighting cues after geometry passes without changing interaction topology."],
+  "limitations": ["The relight is subtle and window-specific, not a 3-D illumination reconstruction."],
+  "next_actions": ["Apply the same order of operations to a longer independently accepted geometry phase."],
+  "run_dir": "outputs/flower-relighting/20260811T045000Z-confidence-routed-v6-temporal",
+  "supersedes": ["2026-08-11.flower-critical-relight-v1-v5"],
+  "tags": ["flower", "relighting", "confidence-routing", "critical-window", "working"]
+}

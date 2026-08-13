@@ -1,0 +1,26 @@
+{
+  "record_id": "2026-08-11.h3-topology-r1-aborted-nonregression",
+  "recorded_at": "2026-08-10T21:30:43Z",
+  "status": "PARTIAL",
+  "scope": "Aborted high-learning-rate H3 topology r1 capacity round",
+  "summary": "The r1 rank-16 5e-5 route was deliberately stopped after seven steps when the stronger frozen DINOv2 cross-check showed that its r0 predecessor violated the motion non-regression contract and required conservative routing.",
+  "evidence": [
+    "The run completed 7/48 steps of its first planned epoch before receiving SIGTERM.",
+    "No checkpoint was emitted, so no interrupted weights can be selected accidentally.",
+    "The retained manifest records subprocess exit -15 and zero produced checkpoints.",
+    "The routing evidence measured matched motion adherence 0.938565, below the required 0.99 floor, and selected r2-conservative-r16 at learning rate 2e-5."
+  ],
+  "lessons": [
+    "A later, stronger non-regression measurement must override a capacity escalation already in progress.",
+    "Interrupted candidates must remain unselectable and be recorded rather than silently deleted."
+  ],
+  "limitations": [
+    "This controlled stop is not a completed training or quality result."
+  ],
+  "next_actions": [
+    "Run the reviewed conservative rank-16 round in a new immutable directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T055000Z-topology-r1-identity-r16",
+  "supersedes": [],
+  "tags": ["h3", "rsi", "non-regression", "controlled-stop", "rank16", "partial"]
+}

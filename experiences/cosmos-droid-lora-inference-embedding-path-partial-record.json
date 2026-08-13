@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-inference-embedding-path-partial",
+  "recorded_at": "2026-08-12T08:13:00Z",
+  "scope": "Step-2 LoRA deployment preflight with precomputed T5 embeddings",
+  "status": "PARTIAL",
+  "summary": "The first deployment invocation stopped before model loading because the positive embedding was referenced under the embedding run directory rather than its recorded destination in the composite dataset.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-baseline/20260812T203000Z-ep060-smoke-lora-iter2",
+  "evidence": [
+    "The controller returned ValueError: positive prompt embedding is missing or empty before spawning distributed model workers.",
+    "The embedding result manifest identifies the actual ep060 file under the composite dataset and records SHA-256 33668e0c046bb9fa1b6ae1aaf49be55b4ec9766a6fb0a2477f510176f6a67b6e."
+  ],
+  "lessons": [
+    "Deployment commands must consume the embedding path recorded in result.json rather than infer a location from the embedding experiment directory."
+  ],
+  "limitations": [
+    "No model was loaded and no video was generated in this attempt."
+  ],
+  "next_actions": [
+    "Retry in a new experiment directory with the manifest-recorded positive embedding path."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "preflight",
+    "path-error"
+  ]
+}

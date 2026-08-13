@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-object-factored-source-state-v3",
+  "recorded_at": "2026-08-12T14:38:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Complete 27.5-second source-state projection v3 with hand-constrained occlusion",
+  "summary": "Hand-constrained occlusion restored nearly all tracked flower pixels and passed every automatic full-length gate, but dense visual review rejected it because the flower-union track occasionally included source face pixels outside the hand support.",
+  "evidence": [
+    "The full 660-frame run completed in 14.0967 seconds at 46.8195 projection FPS.",
+    "4162978 flower pixels were restored; pre-encode flower MAD and flower temporal residual were both exactly zero.",
+    "high-resolution-review.jpg shows source skin projected onto the robot head in early reviewed frames 0 and 120."
+  ],
+  "lessons": [
+    "Exactness to a contaminated object mask is not semantic correctness; source-human negatives must cover the whole measured person support, not hands alone."
+  ],
+  "limitations": [
+    "This version is visually rejected and must not be delivered."
+  ],
+  "next_actions": [
+    "Subtract skin pixels inside the complete source-person/hand support and repeat full-length automatic and visual acceptance."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-long-object-factored/20260812T143000Z-source-state-projection-v3",
+  "supersedes": [
+    "2026-08-12.wan-long-object-factored-source-state-v2"
+  ],
+  "tags": [
+    "long-video",
+    "object-factored",
+    "flower-preservation",
+    "human-review-rejected"
+  ]
+}

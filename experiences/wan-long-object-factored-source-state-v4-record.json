@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-object-factored-source-state-v4",
+  "recorded_at": "2026-08-12T14:47:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Complete 27.5-second source-state projection v4 with full-person skin negative",
+  "summary": "All automatic full-length gates passed again, but full-resolution review still found source-human leakage because color negatives alone cannot resolve overlapping flower/person semantic masks.",
+  "evidence": [
+    "The 660-frame run completed in 14.4871 seconds at 45.5578 projection FPS.",
+    "Pre-encode accepted flower MAD and temporal residual were exactly zero.",
+    "high-resolution-review.jpg still shows non-robot source pixels on the robot head in early frames."
+  ],
+  "lessons": [
+    "Overlapping semantic masks require a deterministic layer-order rule; color classification cannot be the only conflict resolver."
+  ],
+  "limitations": [
+    "This version is visually rejected and must not be delivered."
+  ],
+  "next_actions": [
+    "Make the generated subject win in the eroded source-person core while preserving flower boundary pixels."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-long-object-factored/20260812T144000Z-source-state-projection-v4",
+  "supersedes": [
+    "2026-08-12.wan-long-object-factored-source-state-v3"
+  ],
+  "tags": [
+    "long-video",
+    "object-factored",
+    "z-order",
+    "human-review-rejected"
+  ]
+}

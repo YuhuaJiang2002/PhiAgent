@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r3-task-bound-fallback-correction",
+  "recorded_at": "2026-08-11T14:38:00Z",
+  "run_dir": "outputs/h3-identity-rsi/20260811T090310Z-task-bound-delivery-block-v2",
+  "scope": "Correction of cross-task fallback action validation and fail-closed H3 identity delivery",
+  "status": "PARTIAL",
+  "summary": "The earlier v19 fallback delivery is withdrawn after matched current-task evaluation exposed severe action and motion regressions. The hardened router requires complete same-task assessments and exact context hashes for both branches, then correctly blocks without emitting a video because neither branch passes.",
+  "supersedes": [
+    "2026-08-11.h3-r3-fail-closed-structure-delivery"
+  ],
+  "evidence": [
+    "The user rejected the earlier delivered SHA-256 d453533bc6e914f7ed09d0587b51580e44ffe7eccee4271ea5209b4801c91dac because its action differs substantially from the original/current inspect-flower trajectory.",
+    "A new decoded-frame-bound review of that exact 832x480x124 video passes visible 2-D topology in 124/124 frames, separating structural stability from action correctness.",
+    "Against the current motion-control SHA-256 23bf06de7cbbe26e9219b1a574dc4182c7a10d8c6cca78a0349ea0009bf363dd, raw motion preservation falls from 0.5700226814 to 0.1651698615 and EPL minimum falls from 0.5167504084 to 0.1439176164.",
+    "The matched automatic assessment reports motion adherence 0.4458967384 and action adherence 0.2785050851, so motion_non_regression and action_non_regression both fail.",
+    "The router now requires all 12 promotion gates and rejects legacy manifests or incomplete gate lists. Candidate and fallback metric bundles must share exact SHA-256 values for source, current action control, robot reference, anchor mask, frozen baseline, baseline action evaluation, identity mask, reference image, and scene image.",
+    "The hardened routing manifest has SHA-256 38e6d8fa206368a6e115523a1e390e37762c8c43eec23b3fe7537f5ee0238a8e, records status=blocked and output=null, and its directory contains no delivered.mp4.",
+    "Twenty-two focused identity/routing tests pass after adding the complete-gate and task-context requirements.",
+    "The local project virtual environment was unavailable because its pyvenv.cfg was a zero-block dataless file; verification was run in the existing remote .venv-h3 environment instead of modifying the user's environment.",
+    "One audit command used lora_rank=0 and was rejected by the reviewed-round validator before creating an experiment; the corrected audit used rank 8 only as schema metadata and made no training claim.",
+    "The first hardened-router invocation found that the candidate assessment had not yet been synchronized to the remote evidence tree and failed before output creation; after copying the immutable assessment, the unique v2 route completed and blocked correctly."
+  ],
+  "lessons": [
+    "A fallback is not safe merely because it passed action checks in its source experiment; its exact encoded frames must be rescored against the current task control.",
+    "Topology and action are independent hard constraints. Passing one must never compensate for a catastrophic regression in the other.",
+    "Delivery contracts must bind task context by content hash and require the full canonical gate set, otherwise stale or partial evidence can be mistaken for current acceptance.",
+    "When no candidate satisfies every non-regression gate, correct behavior is to emit no demo rather than preserve the appearance of progress."
+  ],
+  "limitations": [
+    "The correction makes delivery fail closed; it does not produce a new learned candidate that meets the full contract.",
+    "The v19 topology result remains a visible 2-D observation and does not prove 3-D anatomy, contact physics, or real execution.",
+    "The learned H3 capability remains PARTIAL because the structural candidate and the action-preserving fallback fail different hard gates."
+  ],
+  "next_actions": [
+    "Do not deliver either the r3 candidate or the v19 fallback for the current inspect-flower task.",
+    "Require future candidates and fallbacks to pass the same complete task-bound assessment before video creation.",
+    "Resume model work only with a structural/action control mechanism capable of improving topology without reducing current-control action and motion below the 0.99 non-regression floor."
+  ],
+  "tags": [
+    "h3",
+    "rsi",
+    "user-correction",
+    "action-consistency",
+    "motion-nonregression",
+    "task-bound-hashes",
+    "fail-closed",
+    "blocked",
+    "partial"
+  ]
+}

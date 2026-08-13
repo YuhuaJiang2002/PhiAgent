@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r0-dinov2-crosscheck",
+  "recorded_at": "2026-08-10T21:29:00Z",
+  "scope": "Frozen DINOv2 and full-frame cross-check of the first topology-targeted native MiniMax-H3 Ref2VA LoRA",
+  "status": "PARTIAL",
+  "summary": "The rank-8 topology smoke adapter slightly improved mean DINO identity but did not repair any of the 100 failing topology frames and regressed worst-frame identity and matched motion, so RSI rejected it and selected the conservative rank-16 round.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T054000Z-r0-inspect-flower-eval",
+  "evidence": [
+    "The candidate generated 124/124 frames at 832x480 and 24 FPS with SHA-256 d79e7686e07d0fa79c4191016e5a1c0cfde7b67457b3bb05fd2a163fc09757f4.",
+    "Mean DINOv2 reference identity increased from 0.9075820814 to 0.9100687694, but worst-frame identity decreased from 0.8833816648 to 0.8801198900.",
+    "Matched motion adherence was 0.9385652028, below the 0.99 non-regression floor; scene and temporal gates passed.",
+    "Full-frame semantic review covered 124/124 frames and found 24 passes and 100 hard failures, identical to the backbone baseline passing fraction of 0.1935483871.",
+    "The strict assessment selected r2-conservative-r16 with rank 16, learning rate 2e-5, dataset repeat 12, and two epochs."
+  ],
+  "lessons": [
+    "Optimizing a small clean-topology curriculum can raise mean appearance similarity without improving the actual shoulder and head-to-torso failure mode.",
+    "Worst-frame and full-frame topology evidence are necessary to expose false improvements hidden by averages.",
+    "A capability regression should route RSI to the reviewed lower-learning-rate replay round rather than increasing learning rate or declaring success."
+  ],
+  "limitations": [
+    "The candidate uses third-party NF4 MiniMax-H3 weights and one held-out real-scene action sequence.",
+    "Full-frame topology labels are human semantic judgments bound to the candidate digest, not 3-D anatomy measurements.",
+    "This rejected adapter is not a release checkpoint."
+  ],
+  "next_actions": [
+    "Complete the bounded r2-conservative-r16 training round on a fresh physical A800 GPU selection.",
+    "Repeat the exact held-out generation and promote only on positive topology gain plus all non-regression gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "h3",
+    "rsi",
+    "topology",
+    "full-frame-review",
+    "held-out",
+    "rejected",
+    "partial"
+  ]
+}

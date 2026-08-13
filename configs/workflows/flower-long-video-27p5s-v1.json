@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "workflow": "flower-long-video",
+  "candidate_id": "wan2.2-vfm-routed-v4",
+  "claim_scope": "perceptually plausible synthetic display data",
+  "workspace_root": ".",
+  "video_output": "review_video",
+  "seed": 20260813,
+  "policy": {
+    "min_duration_seconds": 20.0,
+    "background_exact_fraction": 0.99,
+    "flower_exact_fraction": 1.0,
+    "flower_dynamic_frame_fraction": 0.95,
+    "late_projected_contact_recall": 0.95,
+    "route_boundary_outlier_multiplier": 3.0,
+    "repair_context_frames": 16
+  },
+  "evidence": {
+    "manifest": "outputs/wan-perceptual-demo/20260812T150000Z-routed-wan14b-v4-seam-optimized/manifest.json",
+    "adversarial_audit": "outputs/wan-perceptual-demo/20260812T150000Z-routed-wan14b-v4-seam-optimized/adversarial-audit-v2/audit-report.json",
+    "human_review": "outputs/wan-perceptual-demo/20260812T150000Z-routed-wan14b-v4-seam-optimized/human-review.json",
+    "promotion": "outputs/wan-perceptual-demo/20260812T150000Z-routed-wan14b-v4-seam-optimized/promotion-decision.json"
+  }
+}

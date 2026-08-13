@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-runtime-embeddings-working",
+  "recorded_at": "2026-08-12T06:45:00Z",
+  "scope": "Pinned Cosmos-Predict2 14B DROID runtime, model artifacts, and T5 training embeddings",
+  "status": "WORKING",
+  "summary": "The official CUDA 12.6 Cosmos-Predict2 environment, public task-matched 14B DROID checkpoint, T5-11B encoder, and all 172 training prompt embeddings are now verified and ready for real baseline and LoRA experiments.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-multiview/20260812T164500Z-t5-embeddings-v2",
+  "evidence": [
+    "The DROID checkpoint is 28,530,863,997 bytes with SHA-256 156b9e9f62ee2bb8ce57fc5dbef96ca220d9386f5893051be55b613c3bc36399.",
+    "The T5-11B weights are 45,229,452,544 bytes with SHA-256 5fdc64177b14b0f72437fea171a752c626733f67755842528c75b90cacd1c807; config, SentencePiece, and tokenizer hashes are also frozen in experiment evidence.",
+    "The official environment imports torch 2.6.0+cu126, Apex 0.1+cu126.torch260, FlashAttention 2.6.3, Transformer Engine 1.13.0+cu126.torch260, NATTEN 0.21.0, and PEFT 0.15.2.",
+    "A physical-GPU-5 BF16 matrix-multiply preflight passed with CUDA_VISIBLE_DEVICES=5 and finite output.",
+    "Embedding result SHA-256 b1df7b4f0d0aef42735aa922672ddc1f43c2c7fa5a12cdadb78284c87e79519b records 172/172 float16 embeddings, each width 1024, with token lengths 97 through 193 and 39 distinct prompt hashes.",
+    "The corrected package inventory contains 163 distributions and has SHA-256 30d05d594d1381c9d766f51dd3e85c31230fb8f75277c905caa9241fc884ad19."
+  ],
+  "lessons": [
+    "Range-complete downloads must still pass whole-file SHA-256 before model use.",
+    "importlib.metadata provides a complete reproducible inventory in uv environments that intentionally omit pip."
+  ],
+  "limitations": [
+    "Artifact and embedding acceptance establishes reproducibility and trainability prerequisites, not generated-video quality.",
+    "Repeated neutral fallback prompts intentionally share identical embeddings and remain disclosed as non-real text conditions."
+  ],
+  "next_actions": [
+    "Complete the first-frame-only public 14B baseline, evaluate it on legacy development data, then run the dedicated LoRA smoke."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "t5",
+    "runtime",
+    "embeddings",
+    "working"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-route-fallback-partial",
+    "2026-08-12.cosmos-droid-empty-package-inventory-partial"
+  ]
+}

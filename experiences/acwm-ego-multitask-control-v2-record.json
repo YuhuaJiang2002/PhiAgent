@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-control-v2-target-error",
+  "recorded_at": "2026-08-11T10:09:00Z",
+  "status": "PARTIAL",
+  "scope": "First same-scene place, unscrew, and rinse camera-frame control compilation",
+  "summary": "All three ten-second trajectories decoded and separated, but visual target review showed the place endpoint missed the dish rack and the rinse faucet anchor was too far left, so the controls were rejected before model generation.",
+  "evidence": [
+    "The control manifest reports 72.06-pixel minimum pairwise state RMS and exact 240-frame outputs.",
+    "Full-frame contact-sheet review showed the placed bottle at the right wall rather than inside the white rack."
+  ],
+  "lessons": [
+    "Trajectory separation is insufficient for task control; target-object coordinates must be reviewed against the moving Ego camera."
+  ],
+  "limitations": [
+    "No H3 or Wan candidate was generated from these rejected controls."
+  ],
+  "next_actions": [
+    "Recalibrate the rack and faucet targets from full-timeline EPIC frames."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T100446Z-epic-p03_28-v2",
+  "supersedes": [],
+  "tags": ["acwm", "epic-kitchens", "multitask", "control-preflight", "target-error", "partial"]
+}

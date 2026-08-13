@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-wan-pose-capsule-human-residual",
+  "recorded_at": "2026-08-11T11:35:00Z",
+  "status": "PARTIAL",
+  "scope": "Full Wan unscrew and rinse regeneration with smooth pose-capsule support",
+  "summary": "Smooth pose-capsule support eliminated the prior black mask artifacts, but both full candidates regenerated large pink human-hand/skin residuals in the interaction region. They are rejected and not packaged.",
+  "evidence": [
+    "The immutable runs full-v3/unscrew-bottle-cap/20260811T111600Z-3a6539f7 and full-v3/rinse-bottle/20260811T111600Z-473a864e both succeeded at 880x512, 240 frames, and 24 FPS.",
+    "Their hybrid union-mask means are 0.5712 and 0.5514, with smooth camera-frame support and no high-frequency black islands.",
+    "Every-fourth-frame sheets and full-resolution key frames show persistent pink hand-shaped generated regions around both grippers; the zero-human-residual hard gate fails."
+  ],
+  "lessons": [
+    "Correct mask topology can remove conditioning artifacts without preventing the model's human-hand prior from returning on an unseen manipulation.",
+    "Do not repair generated skin by restoring source pixels or blurring; route to a clean robot-native candidate instead."
+  ],
+  "limitations": [
+    "This attempt isolates a visual prior failure but does not identify a specific internal attention layer.",
+    "Neither Wan candidate is used in the final comparison."
+  ],
+  "next_actions": [
+    "Use clean H3 robot-only frames through task completion and hold the accepted terminal state without interpolation."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/full-v3",
+  "supersedes": [
+    "2026-08-11.acwm-ego-multitask-wan-difference-mask-rejected"
+  ],
+  "tags": ["acwm", "wan2.2-animate", "human-residual", "pose-capsule", "rejected", "partial"]
+}

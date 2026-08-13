@@ -8,8 +8,32 @@ from phiagent.rendering.base import (
     VisualTransferRequest,
     VisualTransferResult,
 )
+from phiagent.rendering.scene_replacement import (
+    EntityRole,
+    FrameReplacementRoute,
+    NormalizedBox,
+    ReplacementGranularity,
+    ReplacementOperation,
+    ReplacementSpec,
+    RouteDiagnostic,
+    SceneReplacementPlan,
+    Shot,
+    TrackKeyframe,
+    TrackSegment,
+)
 
 __all__ = [
+    "EntityRole",
+    "FrameReplacementRoute",
+    "NormalizedBox",
+    "ReplacementGranularity",
+    "ReplacementOperation",
+    "ReplacementSpec",
+    "RouteDiagnostic",
+    "SceneReplacementPlan",
+    "Shot",
+    "TrackKeyframe",
+    "TrackSegment",
     "TrajectoryConditionedRenderRequest",
     "TrajectoryConditionedRenderResult",
     "TrajectoryConditionedVideoRenderer",

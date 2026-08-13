@@ -1,0 +1,25 @@
+{
+  "record_id": "2026-08-11.h3-topology-r0-train-v2",
+  "recorded_at": "2026-08-10T21:15:24Z",
+  "status": "WORKING",
+  "scope": "Bounded rank-8 native MiniMax-H3 Ref2VA topology-LoRA smoke training",
+  "summary": "The dedicated H3 environment completed all six planned optimization steps and produced one reproducible rank-8 topology checkpoint.",
+  "evidence": [
+    "Physical A800 GPU 5 was selected with 78,726 MiB free at preflight.",
+    "The fixed run used rank 8, learning rate 5e-5, one dataset repeat, one epoch, 448x256x39 inputs, and seed 20260811.",
+    "Training completed 6/6 steps and produced a 32,825,120-byte epoch-0 checkpoint with SHA-256 2a8ee75e76cda3ef610ffcf71eac7c11d2adab621d9d4f38a7920482dd66cce2."
+  ],
+  "lessons": [
+    "The pinned NF4 H3 training path is operational in .venv-h3 and can hot-load the resulting LoRA into the inference pipeline."
+  ],
+  "limitations": [
+    "Six optimizer steps are a smoke round, not evidence of visual improvement.",
+    "The training log exposes iteration timing but no useful scalar loss."
+  ],
+  "next_actions": [
+    "Run a matched held-out inspect-flower inference and apply full-frame topology plus capability non-regression gates."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T053000Z-topology-r0-smoke-r8-v2",
+  "supersedes": ["2026-08-11.h3-topology-r0-gpu-env-failure"],
+  "tags": ["h3", "rsi", "lora", "rank8", "training", "working"]
+}

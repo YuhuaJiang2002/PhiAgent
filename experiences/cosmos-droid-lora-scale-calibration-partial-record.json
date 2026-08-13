@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-scale-calibration-partial",
+  "recorded_at": "2026-08-12T10:10:00Z",
+  "scope": "Inference-time residual-scale calibration of the low-learning-rate step-75 adapter",
+  "status": "PARTIAL",
+  "summary": "Scaling the LoRA residual to 0.5 preserved most base appearance while retaining useful motion gains on the selection episode, but the complete validation gain was too small and absolute gates still failed.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-validation",
+  "evidence": [
+    "The inference loader scales every lora_B tensor exactly once; local and remote unit tests verify the residual scaling contract.",
+    "On ep012, scale 0.25 had near-zero appearance deltas versus base (full +0.000669, edge -0.000873, ROI -0.001672) and motion-correlation delta +0.024826.",
+    "On ep012, scale 0.5 retained more motion (correlation delta +0.057155 and ratio 1.925678 versus base 2.022254) while appearance deltas stayed bounded at full -0.001210, edge -0.007779, and ROI -0.009956.",
+    "Across ep012 and ep020, scale 0.5 yielded motion-correlation delta +0.010536 and motion-ratio improvement -0.048410, but appearance deltas were full -0.013791, edge -0.011025, and ROI -0.016385.",
+    "The complete strict evaluator returned PARTIAL; final holdout was not used and no demo was promoted."
+  ],
+  "lessons": [
+    "Residual-scale calibration can nearly eliminate appearance regression on one task, but it cannot solve weak cross-task motion generalization in the underlying Predict2 adapter.",
+    "Further hyperparameter-only tuning on Predict2 is unlikely to satisfy strict identity and motion gates; a newer robot-native multiview foundation model is warranted."
+  ],
+  "limitations": [
+    "Scale 0.5 remains below absolute subject-ROI, motion-correlation, and static-anchor gates.",
+    "The scale tournament is validation-only and not evidence for a final demo."
+  ],
+  "next_actions": [
+    "Preflight the official Cosmos-Predict2.5 robot/multiview-agibot route and the newer Cosmos 3 generator; choose the strongest executable robot multiview route before any additional post-training."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "residual-scale",
+    "validation",
+    "partial"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-lr1e4-step75-validation-partial"
+  ]
+}

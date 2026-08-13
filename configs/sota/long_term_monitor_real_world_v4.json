@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "scope": "real-world-only",
+  "allowed_data": [
+    "real robot RGB/video",
+    "real human RGB/video",
+    "measured robot state/action/telemetry",
+    "measured or sensor-derived camera calibration/depth",
+    "human-reviewed real-world outcomes"
+  ],
+  "excluded_data": [
+    "RoboTwin",
+    "MuJoCo",
+    "SAPIEN simulation rollouts",
+    "synthetic task-success labels",
+    "simulator contact or object-state ground truth"
+  ],
+  "completed_real_world_jobs": [
+    {
+      "id": "droid-svo-calibration-episodes21-77-v5",
+      "status": "WORKING",
+      "result_json": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T215000Z-episodes21-77-v5/result.json"
+    }
+  ],
+  "hosts": [
+    "a800-1",
+    "a800-2",
+    "a800-3",
+    "a800-4",
+    "zhaoli",
+    "pro5000"
+  ],
+  "jobs": [
+    {
+      "id": "bwm-wipe20-seed42-real-world-v2",
+      "type": "remote_process",
+      "host": "a800-1",
+      "pid": 2604840,
+      "success_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2/result.json",
+      "success_status": "WORKING",
+      "successor": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "a800-1",
+        "cd /data0/jiangyuhua/PhiAgent-0 && python3 scripts/postprocess_bwm_matched_pair.py --watcher-root outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2 --suite-manifest outputs/acwm-counterfactual-audit/20260812T073914Z-worldarena2-wipe20-lineage-safe-v5/manifest.json --output-dir outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2/evaluation-final-v1 --seed 42"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.skillhone-camera-bridge-adversarial-working",
+  "recorded_at": "2026-08-12T12:16:00Z",
+  "scope": "Provider-aware full behavior regression with a sealed zero-anchor scale attack",
+  "status": "WORKING",
+  "summary": "The configured qwen3:4b supervisor passes 4/4 probe, 3/3 test, and 5/5 adversarial decisions; the native provenance run passes the five attacks at 0.6030 items/s and 16.0059 generated tokens/s without promoting the physical model.",
+  "run_dir": "outputs/foundation-contact/20260812T120800Z-skillhone-camera-bridge-adversarial-v2",
+  "evidence": [
+    "Provider-aware SkillHone scores are probe 4/4, test 3/3, and adversarial 5/5.",
+    "The new zero-independent-scale-anchors case returns pass_gate=false and reason=learned_scale_spoof.",
+    "Native behavior-eval.json records 5/5, 0.603014 items/second, 16.005905 generated tokens/second, and physical_model_promoted=false.",
+    "Private Forgejo evaluation commit 74652dfd99391d5873c070c9dcdf38bf764c5a87 was pushed."
+  ],
+  "lessons": [
+    "A sealed attack that exactly matches the current real blocker prevents learned-scale or language-prior gaming.",
+    "Protocol success and physical evidence remain independent gates."
+  ],
+  "limitations": [
+    "The benchmark has twelve authored exact-decision items and does not establish broad model generalization.",
+    "All four physical gates for the real video remain false."
+  ],
+  "next_actions": [
+    "Add new sealed attacks only when new failure modes are observed; do not optimize on held-out answers.",
+    "Collect independent metric observations before any physical promotion attempt."
+  ],
+  "supersedes": ["2026-08-12.skillhone-camera-bridge-wrong-runner-partial"],
+  "tags": ["skillhone", "foundation-contact", "adversarial", "working"]
+}

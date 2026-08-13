@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-33f-cp4-partial",
+  "recorded_at": "2026-08-12T08:05:00Z",
+  "scope": "Effective 33-frame, state_t=9 rank-16 LoRA smoke",
+  "status": "PARTIAL",
+  "summary": "The effective 33-frame pipeline reached latent preparation with correct state_t=9, then failed closed because CP4 requires the latent temporal dimension to be divisible by four.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T200500Z-lora-attn-r16-33f-state9-cp4-smoke2",
+  "evidence": [
+    "The framework used 33 pixel frames and produced a latent temporal length of 9.",
+    "All ranks raised AssertionError: 9 cannot divide cp_size 4 before model denoising.",
+    "No checkpoint exists."
+  ],
+  "lessons": [
+    "For CP4, legal short windows are pixel lengths 29, 45, 61, 77, and 93, mapping to latent lengths 8, 12, 16, 20, and 24.",
+    "Use 45 frames for the first curriculum phase to retain more action context than 29 while satisfying CP4 exactly."
+  ],
+  "limitations": [
+    "No optimizer step completed."
+  ],
+  "next_actions": [
+    "Enforce CP-compatible frame choices in the CLI and overlay, then run rank-16 at 45 frames/state_t=12."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "context-parallel",
+    "temporal-latent",
+    "partial"
+  ],
+  "supersedes": []
+}

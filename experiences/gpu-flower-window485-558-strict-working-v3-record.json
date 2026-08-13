@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window485-558-strict-working-v3",
+  "recorded_at": "2026-08-11T16:40:00Z",
+  "scope": "Strict overlapping subwindow acceptance for global frames 485-558 after seed-44 regeneration and bounded EPL repair",
+  "status": "WORKING",
+  "summary": "The 485-524 and 514-558 lossless candidates independently pass all 26 unchanged flower, two-hand, contact, aligned, and semantic gates after final GPU re-tracking.",
+  "run_dir": "outputs/gpu-flower-full-strict-expansion/20260811T122000Z-v1/window-0470",
+  "tags": ["gpu", "sam2", "real-flower-instances", "two-hand-contact", "epl", "lossless", "strict-gate", "working"],
+  "evidence": [
+    "The final 485-524 gate is WORKING with identity 0.976583, motion 0.856207, temporal 0.787994, flower velocity agreement 0.923077, and no failed gates.",
+    "Its bouquet/support hand mean adjacent IoUs are 0.938643/0.943138 and bouquet contact is visible in 40/40 frames with zero maximum image-plane distance.",
+    "The final 514-558 gate is WORKING with identity 0.976027, motion 0.823675, temporal 0.922615, flower velocity agreement 0.837209, and no failed gates.",
+    "Its bouquet/support hand mean adjacent IoUs are 0.883987/0.942636; bouquet contact is visible in 45/45 frames with p90 distance 5.0 pixels and maximum 12.0 pixels.",
+    "The left candidate is SHA-256 1b984c6c2e8213ae6f0d837b138b1944f61501f2e7b9576d8c658eabe28d31aa; the right candidate is fdb85b7e3414f065fddc7f1eabdf46a22150931788cdbea1036b510d8fe39991.",
+    "Right-window dense lime-bud corrections raise positive velocity agreement from 0.767442 to 0.837209 using source-mask-derived supervision without editing video pixels.",
+    "Every final flower and hand artifact was generated on a physical A800 with GPU selection, inventory, seed, command, packages, and hashes recorded in its immutable manifest."
+  ],
+  "lessons": [
+    "The smallest passing EPL round should be retained, but selection must occur on the lossless artifact.",
+    "A wider flower context lock plus explicit source-derived identity prompts can stabilize SAM2 without weakening thresholds.",
+    "Two-hand visibility, named flower identity, and contact must be independently re-tracked after every pixel repair."
+  ],
+  "limitations": [
+    "Acceptance is two overlapping dense subwindows, not one 74-frame propagation.",
+    "Contact remains 2D camera-plane mask distance, not 3D force or tactile contact.",
+    "The joined 398-558 delivery remains PARTIAL because its prefix transition does not inherit these gates."
+  ],
+  "next_actions": ["Freeze both WORKING lossless subwindows; redesign the 484-485 transition with a consistent hand-instance definition before promoting the joined delivery."],
+  "supersedes": ["2026-08-11.gpu-flower-window470-split-repair-preflight-v2"]
+}

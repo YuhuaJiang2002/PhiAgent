@@ -1,0 +1,28 @@
+{
+  "record_id": "2026-08-11.github-like-cta-local",
+  "recorded_at": "2026-08-11T13:38:56Z",
+  "run_dir": "demo",
+  "scope": "Local GitHub Star call-to-action for the PhiAgent demo page",
+  "status": "PARTIAL",
+  "summary": "The current feature-branch demo now shows a responsive GitHub Star call-to-action with the repository's real Star count and explicit post-click guidance. Local browser acceptance passed, but production publication was not started because the checked-out page differs from the current main-branch page and the worktree contains unrelated changes.",
+  "evidence": [
+    "The JavaScript source passes Node.js syntax validation.",
+    "A real browser at 1440x900 displayed the call-to-action fully within the first viewport, resolved the repository URL to https://github.com/YuhuaJiang2002/PhiAgent, and loaded the live GitHub Star count as 8.",
+    "Clicking the call-to-action changed the local guidance to 'GitHub 已打开' and explicitly instructed the visitor to click Star on the repository page.",
+    "A real browser at 390x844 displayed the full call-to-action without clipping, and the browser console contained no warnings or errors.",
+    "git diff --check passed for demo/index.html, demo/styles.css, and demo/app.js."
+  ],
+  "lessons": [
+    "A static GitHub Pages site should use GitHub's repository Star as the durable like signal instead of presenting a local-only click as a completed vote.",
+    "The call-to-action should explain both steps before navigation and retain explicit guidance after the repository opens."
+  ],
+  "limitations": [
+    "The production main branch currently serves a different inline-styled demo/index.html than the checked-out feature branch, so this local acceptance does not prove the live URL has changed.",
+    "The unauthenticated GitHub repository API can be rate-limited; the repository link remains usable and falls back to a GitHub label when the count cannot load."
+  ],
+  "next_actions": [
+    "Choose whether to patch only the currently deployed main-branch page or publish the newer feature-branch page, then deploy and verify the production URL."
+  ],
+  "supersedes": [],
+  "tags": ["github-pages", "github-star", "demo", "frontend", "partial"]
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-sequence-lineage-v4-camera-permutation-partial",
+  "recorded_at": "2026-08-12T13:42:00Z",
+  "status": "PARTIAL",
+  "scope": "Structured DROID SequenceExample lineage audit v4",
+  "summary": "Structured raw paths, tasks, frame counts, all wrist streams, and all episode-60 streams matched, but nominal exterior stream names failed for episodes 21 and 77.",
+  "evidence": [
+    "All three wrist streams passed with frame-level PSNR p05 of 34.704-35.900 dB.",
+    "Episode 60 exterior streams passed nominal identity mapping at 33.860-34.063 dB PSNR p05.",
+    "Episodes 21 and 77 nominal exterior mappings scored only 8.630-9.302 dB and failed.",
+    "A complete two-by-two diagnostic showed that swapping exterior_image_1_left and exterior_image_2_left raises those four p05 values to 33.201-36.297 dB."
+  ],
+  "lessons": [
+    "DROID exterior camera numbering is episode-local in this TFDS-to-LeRobot lineage and cannot be assumed globally identical."
+  ],
+  "limitations": [
+    "The v4 audit did not predeclare or record an exterior assignment policy, so its overall pixel gate remained false."
+  ],
+  "next_actions": [
+    "Predeclare the only two one-to-one exterior assignments, select by summed median PSNR, keep the original PSNR/dHash thresholds, and rerun."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-sequence-lineage/20260812T134200Z-episodes21-60-77-v4",
+  "supersedes": [
+    "2026-08-12.droid-sequence-lineage-v3-av1-blocked"
+  ],
+  "tags": ["droid", "real-world", "lineage", "camera-permutation", "partial"]
+}

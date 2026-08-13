@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "status": "PARTIAL",
+  "dataset_id": "HRDexDB/HRDexDB",
+  "dataset_revision": "a46347556efd7ed87e70e7e87293b462d7253d6f",
+  "license": "cc-by-nc-4.0",
+  "method": "wan_animate2_hrdexdb_object_disjoint_raw_baseline",
+  "seed": 42,
+  "reference_bank": {
+    "object": "apple",
+    "split": "train",
+    "embodiment": "inspire_f1",
+    "camera_id": "22641005"
+  },
+  "validation_cases": [
+    {
+      "object": "banana",
+      "human_episode": 3,
+      "robot_scene": 3,
+      "object_roi_xywh_normalized": [
+        0.36,
+        0.68,
+        0.24,
+        0.18
+      ]
+    },
+    {
+      "object": "beige_brush",
+      "human_episode": 0,
+      "robot_scene": 2,
+      "object_roi_xywh_normalized": [
+        0.43,
+        0.68,
+        0.15,
+        0.2
+      ]
+    }
+  ],
+  "sealed_test_objects": [
+    "box_pink",
+    "cactus"
+  ],
+  "thresholds": {
+    "motion_preservation": 0.75,
+    "target_identity": 0.8,
+    "object_consistency": 0.75,
+    "temporal_consistency": 0.75
+  },
+  "inference": {
+    "width": 640,
+    "height": 352,
+    "clip_len": 81,
+    "steps": 10,
+    "guidance_scale": 1.0,
+    "distilled": true
+  },
+  "claim_boundary": "Validation-only tuning. Paired robot videos are evaluator references, not generation inputs; test objects remain sealed."
+}

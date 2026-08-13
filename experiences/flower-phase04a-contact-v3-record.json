@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04a-contact-v3",
+  "recorded_at": "2026-08-10T21:27:06Z",
+  "status": "WORKING",
+  "scope": "Continuous real single-flower geometry on source frames [272,378)",
+  "summary": "All 106 consecutive phase-04A frames pass complete human removal, two robot hands, active/support contact, and persistent pink-carnation identity.",
+  "evidence": ["Dense review covers all 106 source/candidate frame pairs.", "Active contact maximum is 3.0 pixels and support maximum is 12.9845 pixels under the explicit 14-pixel support gate.", "Minimum upper/lower hand areas are 999/851 pixels and exact active-flower preservation is 1.0.", "No unexpected edits occur in the unprotected person region; evaluator decision is ALLOW_PHASE_04A_RELIGHTING."],
+  "lessons": ["Observable action phases can be expanded safely when identity and contact gates are evaluated on every frame."],
+  "limitations": ["The identity claim ends before frame 378 and cannot cross the occlusion/tool transition."],
+  "next_actions": ["Run bounded relighting on these 106 frames and supervise subsequent phases independently."],
+  "run_dir": "outputs/flower-full-expansion/20260811T051000Z-phase04a-contact-v3",
+  "supersedes": ["2026-08-11.flower-phase04a-contact-v1-v2"],
+  "tags": ["flower", "phase04a", "single-instance", "four-gates", "working"]
+}

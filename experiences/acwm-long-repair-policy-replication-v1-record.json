@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-long-repair-policy-replication-v1",
+  "recorded_at": "2026-08-11T03:44:00Z",
+  "status": "PARTIAL",
+  "scope": "Held-action replication of the learned non-regression repair router before 10-second AC-WM window evaluation",
+  "summary": "The existing constrained repair-policy training was independently replayed on the 45 measured same-scene candidates and again passed its held-action contract, so the new checkpoint is eligible to rank bounded repairs for the long-action windows; this does not establish long-video or new-scene success.",
+  "evidence": [
+    "The immutable run outputs/flower-repair-policy/20260811T034347Z-636354ef contains 45 hashed rows from nine campaign/action groups and a final policy checkpoint.",
+    "Leave-one-action-out selection chooses the constrained oracle in 8/9 groups with 0.888889 accuracy and 0.00000593 mean regret.",
+    "Mean utility gain over raw is 0.143303 and the estimated candidate-evaluation reduction is 0.60, from five candidates to two on average.",
+    "Guarded non-regression is 9/9; maximum selected motion/EPL/temporal/identity/subject regressions are 0.004713/0.005250/0.000463/0.000350/0.000004, all within their declared contracts."
+  ],
+  "lessons": [
+    "Replaying the learned route before a long-video campaign verifies the exact checkpoint contract without treating an old acceptance as evidence for new windows.",
+    "The measured guard remains authoritative when a learned ranking is applied outside its short-window training archive."
+  ],
+  "limitations": [
+    "All training rows come from one real source scene, three action labels, and four fixed repair recipes.",
+    "The policy ranks post-processing recipes; it does not fine-tune MiniMax-H3, learn window continuation, or produce robot-base actions.",
+    "No 10-second generated candidate was included in this training or held-action evaluation."
+  ],
+  "next_actions": [
+    "Apply the checkpoint to both windows of all three 10-second actions, preserve per-window non-regression evidence, and require a separate seam and human review before any long-video promotion."
+  ],
+  "run_dir": "outputs/flower-repair-policy/20260811T034347Z-636354ef",
+  "supersedes": [],
+  "tags": [
+    "acwm",
+    "long-action",
+    "flower-repair-policy",
+    "held-action",
+    "replication",
+    "partial"
+  ]
+}

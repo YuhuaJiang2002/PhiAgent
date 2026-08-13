@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-repair-policy-v1",
+  "recorded_at": "2026-08-11T07:02:36Z",
+  "status": "PARTIAL",
+  "scope": "First held-action ridge repair router trained on six EPIC Ego H3 windows",
+  "summary": "The router preserved the declared capability non-regression contract and achieved 0.0479 mean regret, but exact held-action recipe selection was only 1/6, below the 0.5 release gate.",
+  "evidence": [
+    "Thirty domain-matched repair rows cover two windows, three actions, and five bounded recipes.",
+    "Held-action selection accuracy is 0.1667, mean regret is 0.047879, and selected non-regression rate is 1.0.",
+    "The manifest status is rejected and its checkpoint is not used for formal demo routing."
+  ],
+  "lessons": ["Low regret is not a substitute for reliable recipe identity when a post-processing router can select visibly different support widths."],
+  "limitations": ["Only one public kitchen clip, one seed, two windows, and three commands are available."],
+  "next_actions": ["Sweep ridge alpha without changing gates, then audit whether the objective incorrectly rewards background-damaging wide repairs."],
+  "run_dir": "outputs/epic-ego-bottle-repair-policy/20260811T070236Z-ed93fd2f",
+  "supersedes": [],
+  "tags": ["acwm", "ego-video", "repair-policy", "training", "rejected"]
+}

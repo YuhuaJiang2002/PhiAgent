@@ -1,0 +1,34 @@
+{
+  "record_id": "2026-08-12.metric-flower-exact-contact-full660-v2-partial",
+  "recorded_at": "2026-08-12T15:06:00Z",
+  "status": "PARTIAL",
+  "scope": "First full 660-frame rollout with exact Sharpa elastomer contact patches",
+  "summary": "The v2 full rollout passes 296/300 exact force-closure frames and all 298 causal-response frames, but four contact frames fail and block acceptance.",
+  "evidence": [
+    "Frames 401 and 405 retain only two exact fingertip pads and fail closure.",
+    "Frames 455 and 466 retain three pads and rank six but fail the strict positive-origin certificate.",
+    "Maximum exact accepted surface gap remains below 0.003 m and no threshold was relaxed.",
+    "The 660-frame run completes in 346.311 seconds; its physical stage report is not promoted because machine_acceptance_passed=false."
+  ],
+  "lessons": [
+    "Position-only shoulder/elbow IK does not preserve grasp geometry over long motion because passive wrist orientation changes."
+  ],
+  "limitations": [
+    "Four failed frames violate the all-frame contact contract.",
+    "The SSH controller disconnected, although the remote process completed and wrote a terminal report."
+  ],
+  "next_actions": [
+    "Add contact-mode wrist orientation control and rerun in a new full directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T150000Z-metric-flower-exact-contact-full660-v2",
+  "supersedes": [
+    "2026-08-12.metric-flower-exact-contact-smoke-v11-working"
+  ],
+  "tags": [
+    "flower",
+    "exact-contact",
+    "full-video",
+    "force-closure",
+    "partial"
+  ]
+}

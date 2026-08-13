@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-environment-checkpoint-network",
+  "recorded_at": "2026-08-11T09:36:00Z",
+  "status": "PARTIAL",
+  "scope": "Pinned BWM environment and checkpoint preparation on a800-1",
+  "summary": "The isolated official BWM runtime finished installing, but the same preparation attempt stopped when the GPU host could not reach the Hugging Face primary endpoint for the 10 GB BWM checkpoint.",
+  "evidence": [
+    "The isolated BWM environment installed torch 2.8.0+cu128, torchvision 0.23.0, torchaudio 2.8.0, and diffsynth 2.0.11.",
+    "The checkpoint request to the exact revision 738a8d3c008e637b8b1b18d5e98a82f6de9c04aa failed with Errno 101 Network is unreachable before a model artifact was accepted."
+  ],
+  "lessons": [
+    "Dependency readiness and checkpoint readiness are separate gates; preserve the completed environment while retrying the exact immutable object through an accessible endpoint."
+  ],
+  "limitations": [
+    "No BWM checkpoint, GPU training step, generated candidate, benchmark score, SOTA result, or real-robot demo was produced by this attempt."
+  ],
+  "next_actions": [
+    "Resume the same revision through the reachable Hugging Face mirror, record the revision marker, verify the completed file, then run the official-demo smoke train in a new experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/external/boundless-world-model",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "gpu", "environment", "checkpoint", "network", "negative-result"]
+}

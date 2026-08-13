@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 182,
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-left-01",
+      "object_id": 101,
+      "anchor_source_frame": 44,
+      "box_xyxy": [475, 282, 560, 374],
+      "positive_points_xy": [[500, 310], [516, 331], [535, 352]],
+      "negative_points_xy": [[540, 312], [568, 329], [594, 340], [575, 382]],
+      "minimum_area_pixels": 180,
+      "maximum_area_pixels": 9000,
+      "role": "upper image-left mechanical gripper holding the bouquet stems",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [480, 279, 554, 357],
+          "positive_points_xy": [[500, 303], [516, 321], [537, 340]],
+          "negative_points_xy": [[545, 258], [580, 292], [596, 327], [574, 360]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [482, 267, 551, 343],
+          "positive_points_xy": [[500, 286], [517, 306], [535, 325]],
+          "negative_points_xy": [[508, 203], [492, 238], [483, 269], [565, 330]]
+        }
+      ]
+    },
+    {
+      "instance_id": "robot-hand-lower-right-02",
+      "object_id": 102,
+      "anchor_source_frame": 44,
+      "box_xyxy": [531, 330, 630, 415],
+      "positive_points_xy": [[550, 357], [575, 382], [604, 389]],
+      "negative_points_xy": [[540, 312], [568, 329], [594, 340], [512, 326]],
+      "minimum_area_pixels": 180,
+      "maximum_area_pixels": 9500,
+      "role": "lower image-right mechanical gripper supporting and rotating the bouquet",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [530, 314, 611, 389],
+          "positive_points_xy": [[548, 338], [570, 357], [592, 371]],
+          "negative_points_xy": [[545, 258], [580, 292], [596, 327], [514, 320]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [513, 286, 598, 361],
+          "positive_points_xy": [[534, 306], [557, 327], [583, 344]],
+          "negative_points_xy": [[508, 203], [492, 238], [483, 269], [510, 305]]
+        }
+      ]
+    }
+  ],
+  "notes": "Two robot hands are prompted independently on the face-suppressed, named-flower-restored candidate. Start/mid/end corrections cover the bouquet lift and hand overlap near local frame 88."
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "contract": {
+    "domain": "agentic-robot-demo-video",
+    "baseline_recipe_id": "raw-generator",
+    "recipe_order": [
+      "raw-generator",
+      "identity-safe-repair",
+      "object-safe-repair",
+      "temporal-safe-repair"
+    ],
+    "context_fields": [
+      "action_adherence",
+      "embodiment_consistency",
+      "object_interaction",
+      "temporal_consistency",
+      "background_consistency"
+    ],
+    "metric_weights": {
+      "action_adherence": 1.0,
+      "embodiment_consistency": 1.0,
+      "object_interaction": 1.0,
+      "temporal_consistency": 1.0,
+      "background_consistency": 1.0
+    },
+    "hard_thresholds": {
+      "action_adherence": 0.75,
+      "embodiment_consistency": 0.75,
+      "object_interaction": 0.75,
+      "temporal_consistency": 0.75,
+      "background_consistency": 0.75
+    },
+    "non_regression_tolerances": {
+      "action_adherence": 0.01,
+      "embodiment_consistency": 0.01,
+      "object_interaction": 0.01,
+      "temporal_consistency": 0.01,
+      "background_consistency": 0.01
+    },
+    "cost_budget_units": 1.0,
+    "cost_weight": 0.05,
+    "rejection_penalty": 2.0,
+    "human_review_required": true
+  }
+}

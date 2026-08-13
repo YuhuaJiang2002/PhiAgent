@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "scope": "real-world-only",
+  "allowed_data": [
+    "real robot RGB/video",
+    "real human RGB/video",
+    "measured robot state/action/telemetry",
+    "measured or sensor-derived camera calibration/depth",
+    "human-reviewed real-world outcomes"
+  ],
+  "excluded_data": [
+    "RoboTwin",
+    "MuJoCo",
+    "SAPIEN simulation rollouts",
+    "synthetic task-success labels",
+    "simulator contact or object-state ground truth"
+  ],
+  "completed_real_world_jobs": [
+    {
+      "id": "droid-svo-calibration-episodes21-77-v5",
+      "status": "WORKING",
+      "result_json": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T215000Z-episodes21-77-v5/result.json"
+    },
+    {
+      "id": "bwm-wipe20-seed42",
+      "status": "WORKING",
+      "result_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2/result.json",
+      "evaluation_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2/evaluation-final-v2/evaluation.json",
+      "audit_passed": false
+    }
+  ],
+  "hosts": [
+    "a800-1",
+    "a800-2",
+    "a800-3",
+    "a800-4",
+    "zhaoli",
+    "pro5000"
+  ],
+  "jobs": [
+    {
+      "id": "bwm-wipe20-seed314159",
+      "type": "remote_process",
+      "host": "a800-1",
+      "pid": 2995518,
+      "success_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T214500Z-seed314159-gpu1-4-v1/result.json",
+      "success_status": "WORKING"
+    },
+    {
+      "id": "bwm-wipe20-seed20260811",
+      "type": "remote_process",
+      "host": "a800-1",
+      "pid": 2995820,
+      "success_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T214500Z-seed20260811-gpu5-6-v1/result.json",
+      "success_status": "WORKING"
+    }
+  ]
+}

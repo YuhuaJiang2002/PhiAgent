@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-r16-49f-split128-partial",
+  "recorded_at": "2026-08-12T07:54:00Z",
+  "scope": "Rank-16 49-frame LoRA smoke with native allocator split protection",
+  "status": "PARTIAL",
+  "summary": "The PyTorch-documented max_split_size_mb setting changed the fragmentation failure from a 200 MiB FSDP gather to a 76 MiB adapter output, but the shared rank still lacked 13 MiB at peak and no checkpoint completed.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T191500Z-lora-attn-r16-49f-cp4-split128-smoke2",
+  "evidence": [
+    "The remote PyTorch 2.6 runtime accepted backend:native, expandable_segments:True, and max_split_size_mb:128.",
+    "The prior 200 MiB all-gather failure did not recur at the same point; the eventual failure requested 76 MiB with 63 MiB physically free.",
+    "No checkpoint was written and result.json records PARTIAL."
+  ],
+  "lessons": [
+    "Allocator tuning was directionally effective but only 13 MiB separates this workload from completion, making it too brittle for a long formal run on shared GPUs.",
+    "Use a 33-frame first curriculum phase to create durable activation headroom without reducing rank or attention targets."
+  ],
+  "limitations": [
+    "No optimizer step completed; allocator improvement alone is not training evidence."
+  ],
+  "next_actions": [
+    "Run rank-16 attention LoRA with random 33-frame native-16fps windows and the same split-protected allocator."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "allocator",
+    "49-frames",
+    "partial"
+  ],
+  "supersedes": []
+}

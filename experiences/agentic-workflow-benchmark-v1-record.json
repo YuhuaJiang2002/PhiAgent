@@ -1,0 +1,40 @@
+{
+  "evidence": [
+    "outputs/agentic-workflow-benchmark/20260811T041553Z-evidence-v2/benchmark.json hashes all seven source evidence files and records Git, host, Python, and the aggregation command",
+    "The matched 660-frame robot comparison changes mean proxy score from 0.569684 to 0.864004, object lock from 0.028233 to 1.0, motion preservation from 0.035074 to 0.587255, and EPL minimum from 0.023541 to 0.545491",
+    "The AC-WM human-gated acceptance inventory is MiniMax-H3 0/3, posthoc single-pass OSCAR 1/3, and agentic selected-action OSCAR 2/3",
+    "docs/AGENTIC_WORKFLOW_BENCHMARKS.md records the complete matched tables, failed gates, sample counts, and scope boundaries",
+    "README.md exposes only the evidence-backed headline gains and preserves PARTIAL labels"
+  ],
+  "lessons": [
+    "Same-evaluator absolute deltas and authoritative human-gated yield are more defensible than averaging unrelated proxy scores.",
+    "Large aggregate gains can coexist with failed motion, EPL, topology, or human-review gates, so every headline must retain its acceptance status.",
+    "Agentic routing can improve both outcome yield and evaluation efficiency without proving cross-scene or physical generalization."
+  ],
+  "limitations": [
+    "The main robot replacement comparison contains one retained real video, and AC-WM contains three selected action types in one real scene.",
+    "The evolved rightward AC-WM case is lift-then-carry-right rather than the rejected tabletop slide-right, so the 2/3 portfolio yield is not a same-action causal estimate.",
+    "The evidence is image-space, proxy, and deterministic 2-D fallback evidence; it does not establish robot-base control, physics, generalization, or real-robot execution."
+  ],
+  "next_actions": [
+    "Repeat the frozen protocols on multiple held-out scenes, robot identities, and action types with confidence intervals.",
+    "Add calibrated robot-base trajectories and physical execution gates before claiming embodiment-independent control.",
+    "Keep human topology/contact review authoritative until a validated semantic evaluator covers the observed failure modes."
+  ],
+  "record_id": "2026-08-11.agentic-workflow-quantitative-benchmark-v1",
+  "recorded_at": "2026-08-11T04:16:30Z",
+  "run_dir": "outputs/agentic-workflow-benchmark/20260811T041553Z-evidence-v2",
+  "schema_version": "1.0.0",
+  "scope": "retrospective quantitative benchmark of robot embodiment replacement and AC-WM agentic workflow evolution",
+  "status": "PARTIAL",
+  "summary": "Matched evidence shows large proxy gains for robot embodiment replacement and raises AC-WM human-gated selected-action yield from 0/3 for the retained H3 baseline and 1/3 for posthoc single-pass OSCAR to 2/3, while failed gates and one-scene scope prevent an end-to-end success claim.",
+  "supersedes": [],
+  "tags": [
+    "agentic-workflow",
+    "benchmark",
+    "robot-replacement",
+    "acwm",
+    "matched-comparison",
+    "partial"
+  ]
+}

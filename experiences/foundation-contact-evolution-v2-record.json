@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.foundation-contact-evolution-v2",
+  "recorded_at": "2026-08-12T10:05:00Z",
+  "status": "PARTIAL",
+  "scope": "SkillHone-guided architecture-level evolution of the foundation contact pipeline",
+  "summary": "The local evolution compiler keeps the current pipeline unpromoted and derives three dependency-ordered architecture experiments without proposing a numeric threshold or generator hyperparameter sweep.",
+  "evidence": [
+    "The plan emits exact-asset full-q analysis-by-synthesis, persistent dynamic-point rod state, and sensor-or-inverse-dynamics force fusion.",
+    "Force fusion is machine-marked blocked by the currently failed robot-trajectory and stem-centerline stages.",
+    "Five global attacks cover learned-scale spoofing, wrong assets and partial q, stem truncation/identity/occlusion/freeze, false 2-D contact, and missing force uncertainty.",
+    "SkillHone's behavioral harness did not start because ~/.skillhone/settings.json and configured Forgejo credentials are absent; no model-graded score is claimed."
+  ],
+  "lessons": [
+    "Self-evolution must change observability or state representation when a conservation-law gate fails, not weaken the gate.",
+    "Experiment dependencies prevent a visual force proxy from running before metric geometry and full kinematics are accepted."
+  ],
+  "limitations": [
+    "The local deterministic evolution plan is not a completed SkillHone model-graded optimization.",
+    "No newly rendered full-length architecture candidate exists, so nothing is promoted."
+  ],
+  "next_actions": [
+    "Execute the three generated experiments in dependency order and promote only after all real-input and adversarial full-video gates pass."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T181800Z-architecture-evolution-v2",
+  "tags": [
+    "self-evolution",
+    "skillhone",
+    "architecture-not-hyperparameter",
+    "adversarial-audit",
+    "partial"
+  ]
+}

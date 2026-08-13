@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.github-pages-original-plus-single-handover",
+  "recorded_at": "2026-08-11T14:32:00Z",
+  "status": "WORKING",
+  "scope": "Restore the original PhiAgent GitHub Pages layout and add only the repaired handover video",
+  "summary": "The rich AC-WM page publication was reverted at the user's request. The deployed tree now matches the pre-publication page except for one 11-line playback card and one ten-second handover MP4.",
+  "evidence": [
+    "GitHub compare from original commit 93b7828 to deployed main lists exactly demo/index.html with 11 additions and demo/showcase/acwm-ego-handover-bottle-10s.mp4 as the only two changed files.",
+    "The public page retains the original Playable research demos layout and GitHub Star entry and contains exactly two references to the new handover MP4.",
+    "The public MP4 SHA-256 is a9d9618c1e1a04a4d9df6ea654e324d59f09e0a23d12062e1bc4d64e18c63f62 and decodes to 832x480, 240 frames, 24 FPS, and 10.000 seconds.",
+    "GitHub Pages deployment for merge commit 7aafa33b9f3532cd4071e041cf5dc3a1ca18abe2 completed successfully."
+  ],
+  "lessons": [
+    "When the requested publication scope is one video, verify the final tree against the last accepted page commit rather than relying only on the current-branch diff."
+  ],
+  "limitations": [
+    "The added card presents a camera-frame visual handover and does not claim force-verified contact or physical robot execution."
+  ],
+  "next_actions": [],
+  "run_dir": "demo",
+  "supersedes": [
+    "2026-08-11.acwm-ego-handover-screen-left-transfer-working"
+  ],
+  "tags": ["github-pages", "acwm", "handover", "minimal-diff", "working"]
+}

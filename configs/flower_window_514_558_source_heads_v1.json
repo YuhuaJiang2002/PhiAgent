@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0.0", "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1], "global_source_frame_offset": 514,
+  "instances": [
+    {"instance_id": "lime-bud-upper-01", "object_id": 1, "anchor_source_frame": 0, "box_xyxy": [505, 235, 537, 282], "positive_points_xy": [[520, 252], [515, 260], [525, 266]], "negative_points_xy": [[498, 309], [540, 285], [499, 235]], "minimum_area_pixels": 35, "maximum_area_pixels": 1500, "role": "same lime bud at the shared global-514 identity anchor", "correction_prompts": [{"anchor_source_frame": 44, "box_xyxy": [483, 247, 517, 286], "positive_points_xy": [[500, 264], [505, 269], [495, 258]], "negative_points_xy": [[529, 290], [480, 290], [515, 245]]}]},
+    {"instance_id": "pink-flower-upper-02", "object_id": 2, "anchor_source_frame": 0, "box_xyxy": [480, 285, 518, 333], "positive_points_xy": [[498, 309], [502, 314], [493, 304]], "negative_points_xy": [[520, 252], [522, 340], [530, 322]], "minimum_area_pixels": 45, "maximum_area_pixels": 1800, "role": "same salmon-pink flower at the shared global-514 identity anchor", "correction_prompts": [{"anchor_source_frame": 44, "box_xyxy": [509, 270, 548, 313], "positive_points_xy": [[529, 290], [534, 294], [523, 285]], "negative_points_xy": [[500, 264], [553, 310], [515, 325]]}]}
+  ],
+  "notes": "Second overlapping half of 470-558; identities share the exact global-514 prompts with the first half."
+}

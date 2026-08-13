@@ -79,7 +79,12 @@ def _runtime_gpu() -> dict[str, Any]:
 
 
 def _metadata(
-    *, backend: str, item: dict[str, Any], output: Path, runtime: dict[str, Any]
+    *,
+    backend: str,
+    item: dict[str, Any],
+    output: Path,
+    runtime: dict[str, Any],
+    applied_generation_parameters: dict[str, Any],
 ) -> Path:
     path = output.with_suffix(".metadata.json")
     _write_json(
@@ -97,9 +102,24 @@ def _metadata(
             "condition": item["condition"],
             "condition_sha256": _sha256(Path(item["condition"])),
             "prompt": item["prompt"],
+            "auxiliary_inputs": {
+                key: {
+                    "path": value,
+                    "sha256": _sha256(Path(value)),
+                }
+                for key, value in dict(item.get("auxiliary_inputs", {})).items()
+            },
             "seed": item["seed"],
             "num_inference_steps": item["num_inference_steps"],
             "guidance_scale": item["guidance_scale"],
+            "generation_parameters": {
+                "requested": {
+                    "seed": item["seed"],
+                    "num_inference_steps": item["num_inference_steps"],
+                    "guidance_scale": item["guidance_scale"],
+                },
+                "applied": applied_generation_parameters,
+            },
             "output": str(output),
             "output_sha256": _sha256(output),
             "runtime": runtime,
@@ -163,7 +183,21 @@ def _run_oscar(args: argparse.Namespace, requests: list[dict[str, Any]]) -> list
             pixelformat="yuv420p",
             quality=8,
         )
-        metadata = _metadata(backend="oscar", item=item, output=output, runtime=runtime)
+        metadata = _metadata(
+            backend="oscar",
+            item=item,
+            output=output,
+            runtime=runtime,
+            applied_generation_parameters={
+                "seed": int(item["seed"]),
+                "num_inference_steps": int(item["num_inference_steps"]),
+                "guidance_scale": float(item["guidance_scale"]),
+                "num_frames": args.num_frames,
+                "fps": args.fps,
+                "height": args.height,
+                "width": args.width,
+            },
+        )
         results.append(
             {"case_id": str(item["case_id"]), "output": str(output), "metadata": str(metadata)}
         )
@@ -183,6 +217,54 @@ def _bwm_action_type(representation: ActionRepresentation) -> tuple[str, str]:
         raise ValueError("BWM requires robot-base EEF or joint actions") from exc
 
 
+def _bwm_inference_command(
+    args: argparse.Namespace,
+    *,
+    data: Path,
+    metadata_path: Path,
+    raw_outputs: Path,
+    action_type: str,
+    seed: int,
+    num_frames: int,
+    num_inference_steps: int,
+    guidance_scale: float,
+    fps: int,
+    max_samples: int,
+) -> list[str]:
+    return [
+        sys.executable,
+        str(args.repository / "scripts" / "infer.py"),
+        "--config",
+        str(args.config),
+        "--model_paths",
+        str(args.base_model),
+        "--ckpt_path",
+        str(args.checkpoint),
+        "--dataset_base_path",
+        str(data),
+        "--dataset_metadata_path",
+        str(metadata_path),
+        "--action_stat_path",
+        str(args.action_stats),
+        "--action_type",
+        action_type,
+        "--output_path",
+        str(raw_outputs),
+        "--max_samples",
+        str(max_samples),
+        "--seed",
+        str(seed),
+        "--num_frames",
+        str(num_frames),
+        "--num_inference_steps",
+        str(num_inference_steps),
+        "--cfg_scale",
+        str(guidance_scale),
+        "--fps",
+        str(fps),
+    ]
+
+
 def _run_bwm(args: argparse.Namespace, requests: list[dict[str, Any]]) -> list[dict[str, str]]:
     runtime = _runtime_gpu()
     import pyarrow as pa
@@ -196,8 +278,29 @@ def _run_bwm(args: argparse.Namespace, requests: list[dict[str, Any]]) -> list[d
     metadata_path = experiment / "episodes.jsonl"
     metadata_rows: list[dict[str, Any]] = []
     action_type: str | None = None
-    for index, item in enumerate(requests):
-        condition = ACWMActionCondition.from_json(Path(item["condition"]))
+    conditions = [
+        ACWMActionCondition.from_json(Path(item["condition"])) for item in requests
+    ]
+    frame_counts = {len(condition.values) for condition in conditions}
+    if len(frame_counts) != 1:
+        raise ValueError("one BWM batch must use one action frame count")
+    inference_steps = {int(item["num_inference_steps"]) for item in requests}
+    if len(inference_steps) != 1:
+        raise ValueError("one BWM batch must use one inference-step count")
+    guidance_scales = {float(item["guidance_scale"]) for item in requests}
+    if len(guidance_scales) != 1:
+        raise ValueError("one BWM batch must use one guidance scale")
+    action_sample_rates = {condition.fps for condition in conditions}
+    if len(action_sample_rates) != 1:
+        raise ValueError("one BWM batch must use one action FPS")
+    action_sample_hz = next(iter(action_sample_rates))
+    output_fps = round(args.fps)
+    if abs(output_fps - args.fps) > 1e-6:
+        raise ValueError("BWM output FPS must be an integer")
+    num_frames = next(iter(frame_counts))
+    num_inference_steps = next(iter(inference_steps))
+    guidance_scale = next(iter(guidance_scales))
+    for index, (item, condition) in enumerate(zip(requests, conditions)):
         current_type, column = _bwm_action_type(condition.representation)
         if action_type is not None and current_type != action_type:
             raise ValueError("one BWM batch must use one action representation")
@@ -227,30 +330,20 @@ def _run_bwm(args: argparse.Namespace, requests: list[dict[str, Any]]) -> list[d
     )
     if len({int(item["seed"]) for item in requests}) != 1:
         raise ValueError("one BWM batch must use one matched seed")
-    command = [
-        sys.executable,
-        str(args.repository / "scripts" / "infer.py"),
-        "--config",
-        str(args.config),
-        "--model_paths",
-        str(args.base_model),
-        "--ckpt_path",
-        str(args.checkpoint),
-        "--dataset_base_path",
-        str(data),
-        "--dataset_metadata_path",
-        str(metadata_path),
-        "--action_stat_path",
-        str(args.action_stats),
-        "--action_type",
-        str(action_type),
-        "--output_path",
-        str(raw_outputs),
-        "--max_samples",
-        str(len(requests)),
-        "--seed",
-        str(requests[0]["seed"]),
-    ]
+    assert action_type is not None
+    command = _bwm_inference_command(
+        args,
+        data=data,
+        metadata_path=metadata_path,
+        raw_outputs=raw_outputs,
+        action_type=action_type,
+        seed=int(requests[0]["seed"]),
+        num_frames=num_frames,
+        num_inference_steps=num_inference_steps,
+        guidance_scale=guidance_scale,
+        fps=output_fps,
+        max_samples=len(requests),
+    )
     subprocess.run(command, cwd=args.repository, check=True)
     results: list[dict[str, str]] = []
     for index, item in enumerate(requests):
@@ -260,7 +353,21 @@ def _run_bwm(args: argparse.Namespace, requests: list[dict[str, Any]]) -> list[d
         output = Path(item["output"])
         output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(raw, output)
-        metadata = _metadata(backend="bwm", item=item, output=output, runtime=runtime)
+        metadata = _metadata(
+            backend="bwm",
+            item=item,
+            output=output,
+            runtime=runtime,
+            applied_generation_parameters={
+                "seed": int(item["seed"]),
+                "num_frames": num_frames,
+                "num_inference_steps": num_inference_steps,
+                "action_type": action_type,
+                "guidance_scale": guidance_scale,
+                "fps": output_fps,
+                "action_sample_hz": action_sample_hz,
+            },
+        )
         results.append(
             {"case_id": str(item["case_id"]), "output": str(output), "metadata": str(metadata)}
         )
@@ -321,7 +428,103 @@ def _run_kinema4d(
         output = Path(item["output"])
         output.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(raw, output)
-        metadata = _metadata(backend="kinema4d", item=item, output=output, runtime=runtime)
+        metadata = _metadata(
+            backend="kinema4d",
+            item=item,
+            output=output,
+            runtime=runtime,
+            applied_generation_parameters={
+                "condition_video": True,
+                "seed": None,
+                "num_inference_steps": None,
+                "guidance_scale": None,
+            },
+        )
+        results.append(
+            {"case_id": str(item["case_id"]), "output": str(output), "metadata": str(metadata)}
+        )
+    return results
+
+
+def _run_flowwam(
+    args: argparse.Namespace, requests: list[dict[str, Any]]
+) -> list[dict[str, str]]:
+    runtime = _runtime_gpu()
+    repository = args.repository.expanduser().resolve()
+    sys.path.insert(0, str(repository / "inference"))
+    sys.path.insert(0, str(repository))
+
+    import imageio.v3 as iio
+    import numpy as np
+    import torch
+    from PIL import Image
+    from world_model_inference import build_pipeline, rollout_generate
+
+    pipe, flow_stream = build_pipeline(
+        torch.device("cuda:0"),
+        str(args.checkpoint),
+        str(args.base_model),
+    )
+    results: list[dict[str, str]] = []
+    for item in requests:
+        condition = ACWMActionCondition.from_json(Path(item["condition"]))
+        if condition.representation is not ActionRepresentation.ROBOT_FLOW:
+            raise ValueError("FlowWAM requires robot_flow")
+        assert condition.visual_condition is not None
+        flow_arrays = [frame for frame in iio.imiter(condition.visual_condition)]
+        if len(flow_arrays) != len(condition.timestamps_s):
+            raise ValueError(
+                "FlowWAM flow-control video must match the action timestamp count"
+            )
+        flow_frames = [Image.fromarray(frame).convert("RGB") for frame in flow_arrays]
+        reference = Image.open(item["first_frame"]).convert("RGB")
+        reference = reference.resize(flow_frames[0].size, Image.Resampling.BICUBIC)
+        generated = rollout_generate(
+            pipe=pipe,
+            flow_stream=flow_stream,
+            prompt=str(item["prompt"]),
+            initial_frame=reference,
+            all_flow_frames=flow_frames,
+            num_rollouts=1,
+            chunk_size=len(flow_frames),
+            num_inference_steps=int(item["num_inference_steps"]),
+            sigma_shift=5.0,
+            seed=int(item["seed"]),
+            tiled=True,
+        )
+        output = Path(item["output"])
+        output.parent.mkdir(parents=True, exist_ok=True)
+        frames = [
+            frame if isinstance(frame, Image.Image) else Image.fromarray(frame)
+            for frame in generated
+        ]
+        if len(frames) != len(flow_frames):
+            raise RuntimeError(
+                f"FlowWAM returned {len(frames)} frames for {len(flow_frames)} flow frames"
+            )
+        iio.imwrite(
+            output,
+            np.stack([np.asarray(frame.convert("RGB")) for frame in frames]),
+            plugin="FFMPEG",
+            fps=int(args.fps),
+            codec="libx264",
+            pixelformat="yuv420p",
+            quality=8,
+        )
+        metadata = _metadata(
+            backend="flowwam",
+            item=item,
+            output=output,
+            runtime=runtime,
+            applied_generation_parameters={
+                "seed": int(item["seed"]),
+                "num_frames": len(frames),
+                "num_inference_steps": int(item["num_inference_steps"]),
+                "fps": int(args.fps),
+                "flow_frames": len(flow_frames),
+                "stage": "worldarena_stage1_without_seedvr_refiner",
+            },
+        )
         results.append(
             {"case_id": str(item["case_id"]), "output": str(output), "metadata": str(metadata)}
         )
@@ -330,7 +533,7 @@ def _run_kinema4d(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
-    parser.add_argument("backend", choices=("oscar", "bwm", "kinema4d"))
+    parser.add_argument("backend", choices=("oscar", "bwm", "kinema4d", "flowwam"))
     parser.add_argument("--request-manifest", type=Path, required=True)
     parser.add_argument("--result-manifest", type=Path, required=True)
     parser.add_argument("--repository", type=Path, required=True)
@@ -365,10 +568,14 @@ def main() -> int:
         if args.base_model is None or args.action_stats is None or args.config is None:
             raise ValueError("BWM requires --base-model, --action-stats, and --config")
         results = _run_bwm(args, requests)
-    else:
+    elif args.backend == "kinema4d":
         if args.base_model is None:
             raise ValueError("Kinema4D requires --base-model")
         results = _run_kinema4d(args, requests)
+    else:
+        if args.base_model is None:
+            raise ValueError("FlowWAM requires --base-model")
+        results = _run_flowwam(args, requests)
     _write_json(args.result_manifest, results)
     print(json.dumps(results, indent=2, sort_keys=True))
     return 0

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-08-12T12:40:00Z",
+  "status": "PARTIAL",
+  "source_video_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91",
+  "source_frames_reviewed": [0, 108, 216, 324, 432, 540, 648],
+  "rgb_samples": "outputs/foundation-contact/20260812T174200Z-da3-nested-full27p5s-2hz-v3/da3-metric-camera-samples.npz",
+  "contact_sheet": "outputs/foundation-contact/20260812T124000Z-real-rgb-observability-audit-v1/contact-sheet.png",
+  "contact_sheet_sha256": "c2a4cab936ccb55186cbf36a7362bdb78679418403a421bd0bd1019f4e2be367",
+  "manual_observations": {
+    "torso_and_head_visible": true,
+    "arms_partially_visible": true,
+    "hands_occluded_by_flowers": true,
+    "lower_body_outside_frame": true,
+    "late_color_and_local_structure_corruption": true,
+    "generated_robot_matches_exact_g1_sharpa_asset": "unverified"
+  },
+  "degrees_of_freedom": {
+    "exact_asset_joint_coordinates": 73,
+    "camera_from_robot_base": 6,
+    "parameters_per_frame": 79
+  },
+  "foundation_keypoint_bundle": null,
+  "blocked_observation_adapters": [
+    {
+      "name": "MediaPipe Python 3.14 environment",
+      "result": "BLOCKED",
+      "reason": "import did not complete within 60 seconds; interrupted without emitting landmarks"
+    },
+    {
+      "name": "MediaPipe Python 3.12 environment",
+      "result": "BLOCKED",
+      "reason": "import did not complete within 60 seconds; interrupted without emitting landmarks"
+    }
+  ],
+  "conclusion": "The single generated view does not observe cropped leg joints or most finger joints. Asset files and priors cannot turn those dimensions into measured full-q evidence."
+}

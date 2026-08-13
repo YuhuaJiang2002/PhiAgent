@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-qwen-compiler-supervisor-v12-working",
+  "recorded_at": "2026-08-12T13:22:20Z",
+  "scope": "Hash-bound Qwen observation diagnostics integrated into the fail-closed compiler and continual supervisor",
+  "status": "WORKING",
+  "summary": "The v11 compiler binds two Qwen reports without upgrading them to physical evidence, and the v12 supervisor rejects every spoof attack while keeping physical promotion false.",
+  "run_dir": "outputs/foundation-contact/20260812T152000Z-continual-supervisor-qwen-v12",
+  "evidence": [
+    "All seven generated-observation binding checks pass, including source hash, input hashes, foundation-model class, zero physical groups, and physical_gate_eligible=false.",
+    "The compiler reports categorical agreement 0.285714 across 14 common frames and remains 0/4 physical gates with status PARTIAL.",
+    "The v12 supervisor passes 5/5 adversarial attacks, records promoted=false, and retains calibrated-metric-camera-bridge-v1 as the next architecture experiment.",
+    "Thirty related CPU tests pass in 0.36 seconds and targeted Ruff passes."
+  ],
+  "lessons": [
+    "Model proposals can be integrated into a continual loop without weakening physical promotion semantics.",
+    "Cross-model disagreement should increase active-acquisition priority rather than be averaged into a confident pseudo label."
+  ],
+  "limitations": [
+    "WORKING applies to compiler/supervisor behavior only; metric camera, complete robot trajectory, persistent stem rods, and force stages all remain false."
+  ],
+  "next_actions": [
+    "Acquire an actual metric camera group before running the blocked full-q, rod, and force architecture experiments."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "compiler", "supervisor", "adversarial", "working"]
+}

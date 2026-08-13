@@ -1,0 +1,25 @@
+{
+  "schema_version": "2.0.0",
+  "reviewer": "codex-human-visual-review",
+  "review_method": "task-bound full-timeline semantic review of the exact 124-frame encoded fallback using every-fourth-frame contact sheets plus original-resolution spot checks; this review covers visible 2-D robot topology only and does not assert inspect-flower action correspondence",
+  "ranges": [
+    {
+      "start_frame": 0,
+      "end_frame": 123,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": true,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": true,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": true,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": true,
+      "confidence": 0.98,
+      "note": "The exact encoded fallback retains one connected torso/head and two shoulder-rooted articulated arms throughout the 124-frame interval. Flowers partially occlude the hands but do not create a visible extra limb or ambiguous shoulder root. Action correspondence is evaluated separately against the current hashed control video."
+    }
+  ]
+}

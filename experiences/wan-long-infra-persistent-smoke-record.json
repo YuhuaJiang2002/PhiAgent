@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-persistent-two-window-smoke",
+  "recorded_at": "2026-08-12T04:23:13Z",
+  "status": "WORKING",
+  "scope": "Persistent model residency and rolling camera-frame anchor smoke",
+  "summary": "One Wan-Animate-2 process loaded the 14B model once and generated two overlapping 80-frame windows, using the previous result's local frame 64 as the second window's camera-frame identity anchor.",
+  "evidence": [
+    "Physical A800 GPUs 1 and 4 completed both windows; model load was 115.9003 seconds, the cold compiled first window was 147.3037 seconds, and the resident second window was 68.5596 seconds.",
+    "Both results decode to 80 frames at 624x351 and 24 FPS.",
+    "Against the historical fixed-anchor pair, overlap same-time MAD decreased from 8.0367 to 6.0691 and best-seam MAD decreased from 7.5501 to 4.0747."
+  ],
+  "lessons": [
+    "Keeping the model resident removes repeated 14B checkpoint loads, while an explicitly named source-camera continuation frame can reduce overlap disagreement without cross-dissolving identities."
+  ],
+  "limitations": [
+    "This covers two windows rather than a complete 20-second-or-longer output.",
+    "The overlap comparison uses a historical fixed-anchor run from an earlier Python build and is not a perfectly isolated single-variable ablation.",
+    "Image-space continuity does not establish contact physics or real robot execution."
+  ],
+  "next_actions": [
+    "Run all ten windows of the 27.5-second source on two independent GPU pairs and stitch/evaluate the complete output."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-smoke-persistent-2w-v3",
+  "supersedes": [
+    "2026-08-12.wan-long-infra-stale-triton-cache"
+  ],
+  "tags": ["wan-animate2", "long-video", "persistent-model", "rolling-anchor", "working"]
+}

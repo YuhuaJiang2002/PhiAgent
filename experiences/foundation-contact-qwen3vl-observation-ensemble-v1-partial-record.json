@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-qwen3vl-observation-ensemble-v1-partial",
+  "recorded_at": "2026-08-12T13:22:00Z",
+  "scope": "Dual-model Qwen3-VL sparse physical-observation proposals on the complete 27.5-second candidate",
+  "status": "PARTIAL",
+  "summary": "Qwen3-VL-4B and 8B produced hash-bound long-span contact and flower-motion hypotheses, but their low agreement rejects either model as physical truth.",
+  "run_dir": "outputs/foundation-contact/20260812T145000Z-qwen3vl-ensemble-audit-v1",
+  "evidence": [
+    "Both models processed the same 14 uniformly spaced frames from candidate SHA-256 bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91 on separate physical A800 GPUs.",
+    "Qwen3-VL-4B inference took 63.914578 seconds at 0.219042 sampled FPS with 9417.804 MiB peak allocated memory.",
+    "Qwen3-VL-8B inference took 62.401663 seconds at 0.224353 sampled FPS with 17820.477 MiB peak allocated memory.",
+    "Four-field categorical agreement is 0.285714; 4B labels flower motion after 2.125 seconds while 8B labels contact with a static flower at all 14 samples.",
+    "Both reports explicitly mark metric depth, absolute scale, full q/qdot, contact force, and force closure as non-observable."
+  ],
+  "lessons": [
+    "Different sizes of one VLM family can produce mutually incompatible physical narratives from identical sparse pixels.",
+    "VLM output is useful for failure-window mining only when a deterministic authority layer prevents it from becoming a measurement."
+  ],
+  "limitations": [
+    "The 14 full-frame samples are too sparse and low resolution to accept finger integrity or continuous flower motion.",
+    "Neither model adds a physical acquisition group, metric scale, hidden joint state, or force observation."
+  ],
+  "next_actions": [
+    "Use model disagreement to target continuous real RGB-D/extra-camera capture and synchronized q/qdot rather than generating more pseudo sensors."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "qwen3-vl", "long-video", "pseudo-observation", "partial"]
+}

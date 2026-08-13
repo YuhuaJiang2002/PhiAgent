@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-object-factored-ffv1-probe-failure",
+  "recorded_at": "2026-08-12T14:18:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Full 27.5-second object-factored projection v1 post-encode verification",
+  "summary": "All 660 frames were projected and encoded, but the first fresh experiment stopped during FFV1 verification because Matroska omitted nb_frames and the probe expected that field unconditionally.",
+  "evidence": [
+    "Both object-factored-27p5s.mp4 and object-factored-27p5s-lossless.mkv were written before the verifier raised KeyError: nb_frames.",
+    "The failure occurred after encoding and before manifest promotion; no WORKING claim was made."
+  ],
+  "lessons": [
+    "Lossless Matroska verification must request ffprobe count_frames and fall back from nb_frames to nb_read_frames."
+  ],
+  "limitations": [
+    "The failed run has no completed acceptance manifest and is not a deliverable."
+  ],
+  "next_actions": [
+    "Use the corrected count_frames verifier and rerun the complete projection in a new experiment directory."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-long-object-factored/20260812T141500Z-source-state-projection-v1",
+  "supersedes": [],
+  "tags": [
+    "long-video",
+    "object-factored",
+    "ffv1",
+    "verification-failure"
+  ]
+}

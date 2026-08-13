@@ -1,0 +1,26 @@
+{
+  "record_id": "2026-08-12.wan-long-contact-lora-rank8-train-v2",
+  "recorded_at": "2026-08-12T08:04:00Z",
+  "status": "WORKING",
+  "scope": "Bounded rank-8 VACE RGB-alpha-contact adapter training execution",
+  "summary": "Physical A800 GPU 5 completed all 96 planned optimization steps and produced four reproducible checkpoints; this establishes training execution only, not general hand/contact quality.",
+  "evidence": [
+    "GPU preflight selected physical A800 GPU 5 with 72,576 MiB free and recorded CUDA_VISIBLE_DEVICES.",
+    "Effective settings are rank 8, learning rate 2e-5, four epochs, dataset repeat 2, 448x256x17, and seed 20260812.",
+    "Training returned code 0 after approximately 524.18 seconds.",
+    "epoch-3.safetensors is 10,971,312 bytes with SHA-256 2927fb3eefdb6b351b3646ec3bb9842dfd1f07bae60133f222963498350fcc01."
+  ],
+  "lessons": [
+    "A semantically explicit RGB-alpha-contact curriculum is trainable on the pinned VACE path within one A800."
+  ],
+  "limitations": [
+    "Successful optimization does not establish that the adapter improves the held-out late window.",
+    "The teacher and data are same-scene generated supervision with residual hand smear."
+  ],
+  "next_actions": [
+    "Run matched zero-shot and epoch-3 inference on the frame-594 holdout and apply unchanged proxy plus human semantic gates."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-robot-contract/20260812T073750Z-first-principles-v1/training-rank8-v2/20260812T075508Z-3facb2d8",
+  "supersedes": ["2026-08-12.wan-long-contact-training-prelaunch-failures-v1"],
+  "tags": ["vace", "lora", "rank8", "training", "rgb-alpha-contact", "working"]
+}

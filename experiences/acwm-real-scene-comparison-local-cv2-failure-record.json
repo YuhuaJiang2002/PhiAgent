@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-real-scene-comparison-local-cv2-failure",
+  "recorded_at": "2026-08-11T10:58:00Z",
+  "status": "PARTIAL",
+  "scope": "First local render attempt for the real-scene robot-execution comparison",
+  "summary": "The initial OpenCV renderer stopped before decoding because the local system Python had no cv2 module.",
+  "evidence": [
+    "Python raised ModuleNotFoundError for cv2 before any output video was created.",
+    "The immutable attempt directory retains configuration, command, Git state, and a PARTIAL result."
+  ],
+  "lessons": [
+    "A comparison renderer should use the already available FFmpeg and bundled Pillow runtime instead of assuming local OpenCV."
+  ],
+  "limitations": [
+    "No media artifact was produced by this attempt."
+  ],
+  "next_actions": [
+    "Replace frame-by-frame OpenCV composition with FFmpeg filters and Pillow-generated labels."
+  ],
+  "run_dir": "outputs/acwm-real-scene-execution-comparison/20260811T105717.394010Z",
+  "supersedes": [],
+  "tags": ["acwm", "real-scene", "video-render", "dependency-failure", "partial"]
+}

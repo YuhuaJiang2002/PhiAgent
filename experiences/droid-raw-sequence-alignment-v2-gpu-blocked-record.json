@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-raw-sequence-alignment-v2-gpu-blocked",
+  "recorded_at": "2026-08-12T22:16:00Z",
+  "status": "BLOCKED",
+  "scope": "Raw DROID SVO/HDF5 to SequenceExample alignment v2",
+  "summary": "After helper staging, the strict GPU gate rejected GPU 5 because another workload had reduced free memory to 11,116 MiB.",
+  "evidence": [
+    "The audit required 81,000 MiB free and selected no co-scheduled fallback.",
+    "The subsequent inventory showed compute processes on all eight a800-1 GPUs."
+  ],
+  "lessons": [
+    "A previously free GPU can be claimed between experiment planning and launch; strict revalidation must remain fail-closed."
+  ],
+  "limitations": [
+    "No SVO frame was decoded and no alignment conclusion was produced."
+  ],
+  "next_actions": [
+    "Queue the audit until a GPU has less than 1 GiB allocated and no compute process."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-raw-sequence-alignment/20260812T222000Z-episodes21-77-v2",
+  "supersedes": [
+    "2026-08-12.droid-raw-sequence-alignment-v1-import-blocked"
+  ],
+  "tags": ["droid", "real-world", "alignment", "gpu-wait", "blocked"]
+}

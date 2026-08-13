@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-long-action-control-10s-v1",
+  "recorded_at": "2026-08-11T04:36:00Z",
+  "status": "PARTIAL",
+  "scope": "Ten-second matched real-scene MiniMax-H3 action-control comparison for insert-flower, handover-flower, and inspect-flower",
+  "summary": "The stateful two-window pipeline produced three exact 10-second videos whose macro actions pass the pairwise distinctness proxy, but all six strict window evaluations reject identity, exact action/EPL, and flower-lock quality, and the overlap review exposes visible pose resets. The comparison is publishable only as PARTIAL evidence, not accepted long-horizon embodied control.",
+  "evidence": [
+    "The typed long-horizon compiler produces exactly 240 camera-frame controls at 24 FPS and two legal 124-frame H3 windows with an eight-frame overlap; each action carries explicit object-holder transitions and its own frame-116 continuation reference.",
+    "Physical A800 GPU 3 completed six 832x480 H3 NF4 outputs using seed 20260811 and 20 steps; both immutable experiment metadata files record the selected physical GPU, CUDA/PyTorch runtime, commands, hashes, and three completed actions.",
+    "The packaged comparison and all three individual outputs decode to exactly 240 frames / 10.0 seconds. Pairwise full-frame MAD is 9.133966 for insert/handover, 9.600655 for insert/inspect, and 4.901000 for handover/inspect, above the declared 2.0 distinctness proxy.",
+    "All six strict window evaluations are rejected. Robot identity spans 0.673002-0.703279, motion preservation 0.166700-0.571315, EPL minimum 0.166700-0.552389, and flower lock 0.000481-0.000571; none establishes exact action execution or object contact.",
+    "The minimum-cost seam is frame 117 for all actions, with best-seam subject MAD 15.006603 for insert, 5.782332 for handover, and 9.282116 for inspect. Dense frame review confirms a visible pose reset near 4.9 seconds, especially for insert.",
+    "The replicated learned repair router enforces its non-regression contract. It selects bounded background repair when safe and retains the raw second-window insert candidate when every repair exceeds the declared motion/EPL regression tolerance.",
+    "The reusable agentic_skills/acwm-long-action-control skill passes skill-creator validation and the available offline SkillHone static check; repository tests passed 358 with one optional MuJoCo skip before the GPU run."
+  ],
+  "lessons": [
+    "Per-action RGB continuation is sufficient to improve macro-action separation but not sufficient to carry diffusion state, precise robot pose, grasp state, or contact across a long-video boundary.",
+    "Pairwise visual distinctness and exact embodied action acceptance must remain separate gates: the three actions can look different while all six task evaluations still fail.",
+    "A learned repair router should expose an unrepairable world-model candidate rather than sacrifice action fidelity to manufacture a clean background score."
+  ],
+  "limitations": [
+    "MiniMax-H3 uses third-party NF4 weights and two overlapping generation windows rather than one native 10-second diffusion trajectory.",
+    "The scene is a recorded real-world observation; the outputs are generated visualizations without calibrated forces, robot-base actions, persistent object state, or real-robot execution.",
+    "Human review remains pending, and the observed seam, grasp causality, flower identity, release, and contact physics are not accepted.",
+    "Full SkillHone model-graded evaluation was not run because the local SkillHone settings/provider file is absent; only skill validation, offline static checks, unit tests, and the real H3 forward campaign were available."
+  ],
+  "next_actions": [
+    "Train a continuation-state adapter on matched overlap clips with explicit robot pose, object-holder, and flower-instance supervision rather than relying on one RGB reference frame.",
+    "Add a seam acceptance threshold and reject or regenerate any following window whose overlap subject MAD exceeds the calibrated bound before packaging.",
+    "Collect calibrated real-robot demonstrations with synchronized camera, joint/EEF state, contact, and persistent object identity before claiming embodied task control."
+  ],
+  "run_dir": "outputs/minimax-h3-long-action-demo/20260811T043100Z-10s-v1",
+  "supersedes": [],
+  "tags": [
+    "acwm",
+    "long-action",
+    "minimax-h3",
+    "real-scene",
+    "action-control",
+    "continuation",
+    "partial"
+  ]
+}

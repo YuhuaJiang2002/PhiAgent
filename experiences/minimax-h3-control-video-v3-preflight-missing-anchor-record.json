@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.minimax-h3-control-video-v3-preflight-missing-anchor",
+  "recorded_at": "2026-08-10T16:42:00+08:00",
+  "status": "BLOCKED",
+  "scope": "MiniMax-H3 explicit-control-video GPU preflight",
+  "summary": "The first v3 preflight stopped before GPU inference because the reviewed high-quality robot anchor had not yet been synchronized to the A800 host.",
+  "evidence": [
+    "The runner reported that outputs/robot-person-replacement/motion-keyframe-runs/20260809T155631Z-multi-anchor-v2/input/robot-anchors/frame-0276.png did not exist on a800-1."
+  ],
+  "lessons": [
+    "Every derived control and identity input must be synchronized and hash-checked before starting an H3 experiment."
+  ],
+  "limitations": [
+    "No model load or H3 generation occurred in this attempt."
+  ],
+  "next_actions": [
+    "Synchronize the exact hashed robot anchor and rerun preflight in a new directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/minimax-h3-action-control/20260810T055200Z-control-video-v3-preflight",
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "preflight",
+    "blocked",
+    "missing-input"
+  ]
+}

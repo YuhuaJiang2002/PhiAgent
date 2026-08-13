@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "scene": "public EPIC-KITCHENS P03_28 egocentric bottle workspace",
+  "coordinate_frame": "camera:epic_kitchens_p03_28_pixels",
+  "object_name": "bottle",
+  "actions": [
+    {
+      "label": "pour-bottle",
+      "instruction": "Starting with the bottle already held in the right robot hand, lift it, tilt it to pour into the nearby basin, return it upright, place it on the counter, and retract.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "stabilize", "start_s": 0.0, "end_s": 1.0, "description": "preserve the existing right-hand grasp on the blue bottle while the left hand stays clear", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "lift", "start_s": 1.0, "end_s": 2.4, "description": "lift the held bottle toward the basin while keeping it upright", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "pour", "start_s": 2.4, "end_s": 5.8, "description": "tilt the blue bottle about 70 degrees above the basin and hold a causal pouring pose", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "upright", "start_s": 5.8, "end_s": 7.0, "description": "rotate the bottle upright without releasing it", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "place", "start_s": 7.0, "end_s": 9.0, "description": "lower the bottle onto the counter and open the right fingers only after support", "entry_object_holder": "right_hand", "exit_object_holder": "counter"},
+        {"name": "retract", "start_s": 9.0, "end_s": 10.0, "description": "retract both robot hands while the bottle remains stationary on the counter", "entry_object_holder": "counter", "exit_object_holder": "counter"}
+      ]
+    },
+    {
+      "label": "shake-bottle",
+      "instruction": "Starting with the bottle already held in the right robot hand, secure it with both hands, shake it side to side several times, stop upright, place it on the counter, and retract.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "stabilize", "start_s": 0.0, "end_s": 1.0, "description": "preserve the existing right-hand grasp on the blue bottle", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "secure", "start_s": 1.0, "end_s": 2.2, "description": "bring the left hand onto the bottle and establish a two-hand hold", "entry_object_holder": "right_hand", "exit_object_holder": "both_hands"},
+        {"name": "shake", "start_s": 2.2, "end_s": 6.8, "description": "shake the upright bottle through four visible left-right cycles with both hands", "entry_object_holder": "both_hands", "exit_object_holder": "both_hands"},
+        {"name": "settle", "start_s": 6.8, "end_s": 7.7, "description": "stop the bottle upright and pause before lowering", "entry_object_holder": "both_hands", "exit_object_holder": "right_hand"},
+        {"name": "place", "start_s": 7.7, "end_s": 9.1, "description": "place the bottle on the counter and release only after it is supported", "entry_object_holder": "right_hand", "exit_object_holder": "counter"},
+        {"name": "retract", "start_s": 9.1, "end_s": 10.0, "description": "retract both robot hands without moving the bottle", "entry_object_holder": "counter", "exit_object_holder": "counter"}
+      ]
+    },
+    {
+      "label": "handover-bottle",
+      "instruction": "Starting with the bottle already held in the right robot hand, bring it to the center, transfer it into the left robot hand, separate the hands, and hold the bottle only in the left hand.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "present", "start_s": 0.0, "end_s": 3.8, "description": "preserve the existing right-hand grasp and bring the upright blue bottle to the center while the left hand opens", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "dual-contact", "start_s": 3.8, "end_s": 5.3, "description": "close the left fingers around the bottle while the right hand keeps contact", "entry_object_holder": "right_hand", "exit_object_holder": "both_hands"},
+        {"name": "transfer", "start_s": 5.3, "end_s": 6.8, "description": "release the right fingers only after the left-hand grasp is established", "entry_object_holder": "both_hands", "exit_object_holder": "left_hand"},
+        {"name": "separate", "start_s": 6.8, "end_s": 8.5, "description": "move the empty right hand away while the left hand holds the bottle", "entry_object_holder": "left_hand", "exit_object_holder": "left_hand"},
+        {"name": "display", "start_s": 8.5, "end_s": 10.0, "description": "hold the bottle visibly in only the left hand without placing or pouring it", "entry_object_holder": "left_hand", "exit_object_holder": "left_hand"}
+      ]
+    }
+  ]
+}

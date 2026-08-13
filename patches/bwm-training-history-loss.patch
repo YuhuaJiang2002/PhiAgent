@@ -1,0 +1,48 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index 946e122..614d137 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -9,4 +9,33 @@ from wan_video_action.utils import set_global_seed
+ os.environ["TOKENIZERS_PARALLELISM"] = "false"
+ 
+ 
++def flow_match_history_sft_loss(pipe, **inputs):
++    max_boundary = int(inputs.get("max_timestep_boundary", 1) * len(pipe.scheduler.timesteps))
++    min_boundary = int(inputs.get("min_timestep_boundary", 0) * len(pipe.scheduler.timesteps))
++    timestep_id = torch.randint(min_boundary, max_boundary, (1,))
++    timestep = pipe.scheduler.timesteps[timestep_id].to(
++        dtype=pipe.torch_dtype,
++        device=pipe.device,
++    )
++    noise = torch.randn_like(inputs["input_latents"])
++    inputs["latents"] = pipe.scheduler.add_noise(inputs["input_latents"], noise, timestep)
++    training_target = pipe.scheduler.training_target(inputs["input_latents"], noise, timestep)
++
++    history_latents = inputs.get("first_frame_latents")
++    history_t = 0
++    if isinstance(history_latents, torch.Tensor):
++        if history_latents.ndim == 4:
++            history_latents = history_latents.unsqueeze(0)
++        history_t = min(int(history_latents.shape[2]), int(inputs["latents"].shape[2]))
++        inputs["latents"][:, :, :history_t] = history_latents[:, :, :history_t]
++
++    models = {name: getattr(pipe, name) for name in pipe.in_iteration_models}
++    noise_pred = pipe.model_fn(**models, **inputs, timestep=timestep)
++    if history_t:
++        noise_pred = noise_pred[:, :, history_t:]
++        training_target = training_target[:, :, history_t:]
++    loss = torch.nn.functional.mse_loss(noise_pred.float(), training_target.float())
++    return loss * pipe.scheduler.training_weight(timestep)
++
++
+ class WanTrainingModule(DiffusionTrainingModule):
+@@ -75,7 +104,7 @@ class WanTrainingModule(DiffusionTrainingModule):
+             "sft:data_process": lambda pipe, *args: args,
+             "direct_distill:data_process": lambda pipe, *args: args,
+-            "sft": lambda pipe, inputs_shared, inputs_posi, inputs_nega: FlowMatchSFTLoss(pipe, **inputs_shared, **inputs_posi),
+-            "sft:train": lambda pipe, inputs_shared, inputs_posi, inputs_nega: FlowMatchSFTLoss(pipe, **inputs_shared, **inputs_posi),
++            "sft": lambda pipe, inputs_shared, inputs_posi, inputs_nega: flow_match_history_sft_loss(pipe, **inputs_shared, **inputs_posi),
++            "sft:train": lambda pipe, inputs_shared, inputs_posi, inputs_nega: flow_match_history_sft_loss(pipe, **inputs_shared, **inputs_posi),
+             "direct_distill": lambda pipe, inputs_shared, inputs_posi, inputs_nega: DirectDistillLoss(pipe, **inputs_shared, **inputs_posi),
+             "direct_distill:train": lambda pipe, inputs_shared, inputs_posi, inputs_nega: DirectDistillLoss(pipe, **inputs_shared, **inputs_posi),
+         }

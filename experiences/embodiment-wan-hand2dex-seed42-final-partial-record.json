@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.embodiment-wan-hand2dex-seed42-final-partial",
+  "recorded_at": "2026-08-12T05:05:23Z",
+  "status": "PARTIAL",
+  "scope": "Three-case raw Wan-Animate-2 Hand2Dex seed-42 smoke",
+  "summary": "All three pinned raw candidates passed motion and target-identity proxies but failed object and temporal gates, yielding 0/3 complete case passes; the frozen fail-fast rule stops seeds 43 and 44.",
+  "evidence": [
+    "Case 1 scored motion 0.807974, identity 0.992787, object 0.211167, and temporal 0.314752.",
+    "Case 2 scored motion 0.785458, identity 0.974959, object 0.653830, and temporal 0.246224.",
+    "Case 3 scored motion 0.774395, identity 0.987374, object 0.003866, and temporal 0.311885.",
+    "Every case passed the frozen motion 0.75 and identity 0.80 gates; every case failed object 0.75 and temporal 0.75.",
+    "Mean scores were motion 0.789276, identity 0.985040, object 0.289621, and temporal 0.290953.",
+    "The frozen summary decision is stop_raw_wan_animate2_seed_expansion."
+  ],
+  "lessons": [
+    "Direct driving solves much of appearance and gross motion transfer but does not preserve manipulated objects or temporal interaction well enough on these cases.",
+    "Expanding random seeds after 0/3 all-gates passes would spend compute without addressing the failed mechanism.",
+    "The next method change must introduce object/contact factorization or explicit geometry rather than seed search."
+  ],
+  "limitations": [
+    "Three public examples remain too small for any SOTA conclusion.",
+    "Metrics are deterministic visual proxies and do not establish 3-D contact or robot execution.",
+    "Wan-Animate-2 is a general animation baseline, not PhiZero physical-language inference."
+  ],
+  "next_actions": [
+    "Keep the raw results as a strong baseline and test an object-factored or geometry-conditioned method on a larger object-disjoint benchmark.",
+    "Do not run seeds 43/44 for the unchanged raw Wan-Animate-2 method."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/embodiment-sota-smoke/20260812T045210Z-hand2dex-wan-animate2-a8001-v2/summary/20260812T050523Z-seed42-v1",
+  "supersedes": ["2026-08-12.embodiment-wan-case1-seed42-partial"],
+  "tags": ["embodiment", "wan-animate2", "hand2dex", "fail-fast", "partial", "negative-result"]
+}

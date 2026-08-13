@@ -1,0 +1,23 @@
+{
+  "record_id": "2026-08-11.h3-topology-r0-gpu-env-failure",
+  "recorded_at": "2026-08-10T21:11:03Z",
+  "status": "PARTIAL",
+  "scope": "First H3 topology LoRA launch in the generic GPU environment",
+  "summary": "The launch stopped before model construction or optimization because transformers 4.51.3 does not export Qwen3VLConfig required by the pinned H3 source.",
+  "evidence": [
+    "Preflight selected physical A800 GPU 1 with 81,225 MiB free and validated all dataset and checkpoint hashes.",
+    "The trainer raised ImportError while importing the H3 text encoder; zero checkpoints and zero optimizer steps were produced."
+  ],
+  "lessons": [
+    "H3 training must use the already-proven .venv-h3 environment rather than the generic .venv-gpu runtime."
+  ],
+  "limitations": [
+    "This attempt provides environment diagnostics only and no training evidence."
+  ],
+  "next_actions": [
+    "Relaunch in a new immutable directory with .venv-h3 without altering the shared generic environment."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T052500Z-topology-r0-smoke-r8",
+  "supersedes": [],
+  "tags": ["h3", "rsi", "environment", "failed-launch", "partial"]
+}

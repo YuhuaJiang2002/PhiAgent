@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r4b-domain-lora-rejected",
+  "recorded_at": "2026-08-11T03:53:04Z",
+  "scope": "Strict deterministic rank-16 H3 r4b real-background LoRA and two-candidate held-out tournament",
+  "status": "PARTIAL",
+  "summary": "The 36-step native Ref2VA run completed and slightly improved DINOv2 appearance at step 12, but step 12 and step 36/scale 0.5 both reproduce the baseline 24/124 topology result. Motion/action regress, so no checkpoint is promoted and this LoRA route is stopped.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T041000Z-r4b-domain-r16-train",
+  "evidence": [
+    "The completed training manifest SHA-256 is 0e30e27630b2af1d07f0da700a241cdc98479bfd480a41019d55769d362a37af; it records physical GPU 0, 63,710 MiB free at selection, strict determinism settings, seed 20260811, rank 16, learning rate 1e-5, three repeats, and 36 steps.",
+    "Step-12, step-24, and step-36 checkpoints are 65,626,168 bytes with SHA-256 values 8e59e413f5b2d42c2bdac3e036f34774b7b6ff1dced879d3ed06a4114263e91f, fd5bd2cfeade526e0f65fd9edc4fed3e09c98b9efd48ae01d7d63d4b9dc7b884, and 464c66259f86a8260dcbe44d05b658aee8d1ee2d82ea43ac9d38758ea4503ac8.",
+    "The step-12 video SHA-256 is 9013814ffe755e20646234ad82ff59d699a7c4657d166cf5ff555dfb75ced6db; complete digest-bound review passes 24/124 frames and counts 100 left-shoulder, unique-left-root, head/neck-clearance, and proportion failures plus 82 head-to-torso failures.",
+    "DINOv2 mean/worst reference identity change from 0.9075820814/0.8833816648 to 0.9093745762/0.8899635375, while matched motion falls to 0.9786337841 and action adherence to 0.8245772565.",
+    "The independent task scorecard rejects step 12 with object lock 0.0004190283; the full automatic-metrics and assessment SHA-256 values are abb827b64179acd28759654ee4d1711f759663f73bc7309ff4c84028eb4aa88c and 8be4c4b933d96de7992eff61eaff428bd9adb4775c49c2a4cd54af11707cbca0.",
+    "The step-36 scale-0.5 video SHA-256 is d418a5b02568b59b2bfd95cf74f7c79c2edf0b51b8523f8c8c156fb5c9fa04f1; its complete review again passes only 24/124 frames with the same failure histogram."
+  ],
+  "lessons": [
+    "Real-background and identity/scene diversity can move appearance proxies without changing the backbone's shoulder-root topology failure.",
+    "A small DINOv2 gain is insufficient when the identity floor is controlled by full-frame semantic topology and action capabilities regress.",
+    "The initial remote action evaluator defaulted to a local Homebrew ffmpeg path, and one rsync relative-path invocation nested absolute server directories locally; both were corrected without changing measured artifacts and are retained as portability lessons."
+  ],
+  "limitations": [
+    "Only the frozen inspect-flower held-out scene was fully inferred because it failed the first hard topology and capability gates; the three curriculum-held-out composites were not used to rescue a rejected candidate.",
+    "The experiment uses third-party NF4 H3 weights and does not establish behavior of official BF16 weights.",
+    "No checkpoint is releaseable, perfect, physically validated, or presented as an improved H3 demo."
+  ],
+  "next_actions": [
+    "Stop qkv/out-projection LoRA capacity and scale sweeps for this failure.",
+    "Require an explicit pose/topology-conditioned backbone interface or topology-aware structural objective before the next learned round.",
+    "Continue serving only the independently accepted structure-locked fallback when learned promotion fails."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "rank16", "real-background", "topology", "rejected", "partial"]
+}

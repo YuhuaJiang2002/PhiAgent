@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0.0",
+  "name": "h3-identity-domain-sources-v4",
+  "license_reviewed_at": "2026-08-11",
+  "license_url": "https://www.pexels.com/license/",
+  "release_policy": "Research training only until the Pexels terms and the resulting model distribution are reviewed together.",
+  "sources": [
+    {
+      "source_id": "pexels-3805775",
+      "split": "train",
+      "landing_url": "https://www.pexels.com/video/3805775/",
+      "creator": "Pexels contributor; prior local source metadata did not retain the display name",
+      "license_id": "Pexels License",
+      "local_path": "outputs/flower-arrangement-demo/20260809T045932Z-pexels3805775/source/pexels-3805775.mp4"
+    },
+    {
+      "source_id": "pexels-5399641",
+      "split": "train",
+      "landing_url": "https://www.pexels.com/video/florists-arranging-flowers-5399641/",
+      "creator": "Amina Filkins",
+      "license_id": "Pexels License",
+      "direct_url": "https://videos.pexels.com/video-files/5399641/5399641-uhd_2560_1440_25fps.mp4"
+    },
+    {
+      "source_id": "pexels-4253728",
+      "split": "train",
+      "landing_url": "https://www.pexels.com/video/a-person-is-preparing-food-in-a-kitchen-4253728/",
+      "creator": "cottonbro studio",
+      "license_id": "Pexels License",
+      "direct_url": "https://videos.pexels.com/video-files/4253728/4253728-uhd_2732_1440_25fps.mp4"
+    },
+    {
+      "source_id": "pexels-6304745",
+      "split": "validation",
+      "landing_url": "https://www.pexels.com/video/close-up-video-of-a-person-preparing-food-6304745/",
+      "creator": "Kampus Production",
+      "license_id": "Pexels License",
+      "direct_url": "https://videos.pexels.com/video-files/6304745/6304745-uhd_2560_1440_25fps.mp4"
+    },
+    {
+      "source_id": "pexels-8279355",
+      "split": "test",
+      "landing_url": "https://www.pexels.com/video/a-florist-arranging-flowers-8279355/",
+      "creator": "RDNE Stock project",
+      "license_id": "Pexels License",
+      "direct_url": "https://videos.pexels.com/video-files/8279355/8279355-uhd_2560_1440_24fps.mp4"
+    },
+    {
+      "source_id": "pexels-4621365",
+      "split": "test",
+      "landing_url": "https://www.pexels.com/video/a-person-arranging-flowers-4621365/",
+      "creator": "AI25.Studio Studio",
+      "license_id": "Pexels License",
+      "direct_url": "https://videos.pexels.com/video-files/4621365/4621365-hd_1920_1080_25fps.mp4"
+    }
+  ]
+}

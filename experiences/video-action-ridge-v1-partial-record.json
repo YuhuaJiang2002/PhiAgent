@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.video-action-ridge-v1-partial",
+  "recorded_at": "2026-08-12T04:28:30Z",
+  "status": "PARTIAL",
+  "scope": "Task-disjoint WorldArena RGB-to-realized-EEF labeling pilot",
+  "summary": "A coarse optical-flow ridge model ran end to end but was rejected: it improved normalized delta RMSE while regressing every physical translation, rotation, gripper, and integrated-trajectory metric against zero-delta and train-mean controls.",
+  "evidence": [
+    "The frozen split used clean_table/fold_shirt/pour_water for training, pour_over_coffee for validation, and wipe_table for test.",
+    "The selected alpha was 10.0.",
+    "Video ridge translation-delta RMSE was 0.5101 cm versus 0.3977 cm for zero delta; rotation-delta geodesic error was 12.9393 degrees versus 4.4345 degrees.",
+    "Only two physical test episodes were present after grouping four clips by source lineage; promotion_eligible was false."
+  ],
+  "lessons": [
+    "A global flow summary can reduce a scale-normalized proxy while worsening metric robot-base motion; physical metrics must remain primary.",
+    "Compiled clips cannot be counted as independent episodes when two clips share one physical source episode."
+  ],
+  "limitations": [
+    "The pilot has one camera rig, one embodiment, one test task, and two independent test episodes.",
+    "It predicts realized EEF state changes, not low-level commands, contact, or phase."
+  ],
+  "next_actions": [
+    "Try a spatially resolved representation once; stop ridge tuning if physical metrics still regress and pivot to calibrated geometry/semantic tracking."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/video-action-labeling/20260812T042741Z-worldarena2-video-ridge-v2",
+  "supersedes": ["2026-08-12.video-action-log-parent-blocked"],
+  "tags": ["video-to-action", "worldarena2", "ridge", "partial", "negative-result"]
+}

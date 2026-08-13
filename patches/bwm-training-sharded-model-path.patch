@@ -1,0 +1,21 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index b7189eb..45f8d42 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -5,6 +5,7 @@ from diffsynth.core import ModelConfig
+ from wan_video_action.pipelines.wan_video_action import build_wan_video_action_pipeline
+ from diffsynth.diffusion import *
+ from wan_video_action.parsers import merge_yaml_and_args, prepare_runtime_config, add_general_config
++from wan_video_action.utils import resolve_model_path
+ from wan_video_action.utils import set_global_seed
+ os.environ["TOKENIZERS_PARALLELISM"] = "false"
+ 
+@@ -39,6 +40,8 @@ class WanTrainingModule(DiffusionTrainingModule):
+ 
+         # Load models
+         model_configs = self.parse_model_configs(model_paths, model_id_with_origin_paths, fp8_models=fp8_models, offload_models=offload_models, device=device)
++        for model_config in model_configs:
++            model_config.path = resolve_model_path(model_config.path)
+         tokenizer_config = ModelConfig(model_id="Wan-AI/Wan2.1-T2V-1.3B", origin_file_pattern="google/umt5-xxl/") if enable_text and tokenizer_path is None else (ModelConfig(tokenizer_path) if enable_text and tokenizer_path else None)
+         self.pipe = build_wan_video_action_pipeline(
+             torch_dtype=torch.bfloat16,

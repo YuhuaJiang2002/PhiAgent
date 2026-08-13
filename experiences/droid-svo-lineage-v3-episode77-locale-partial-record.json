@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-svo-lineage-v3-episode77-locale-partial",
+  "recorded_at": "2026-08-12T21:21:35Z",
+  "status": "PARTIAL",
+  "scope": "Held-out DROID episodes 21/77 ZED calibration v3",
+  "summary": "Episode 21 completed all three camera calibration/depth gates, while episode 77 stopped on exterior camera 23748752 because the ZED SDK rejected its downloaded calibration under the inherited locale.",
+  "evidence": [
+    "Episode 21 produced a WORKING lineage-mapped calibration.json for three 1280x720, 92-frame cameras.",
+    "Episode-21 sampled depth finite fractions span 0.1420 to 0.6837.",
+    "Episode 77 opened wrist serial 14436910, then ZED reported INVALID CALIBRATION FILE for serial 23748752 and explicitly requested LC_ALL=C."
+  ],
+  "lessons": [
+    "ZED calibration parsing is locale-sensitive and the locale must be frozen in experiment provenance."
+  ],
+  "limitations": [
+    "Episode 77 did not complete in this attempt.",
+    "Raw rights and raw-HDF5 timestamp alignment remain unresolved."
+  ],
+  "next_actions": [
+    "Set LC_ALL=C and rerun only episode 77."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T213500Z-episodes21-77-v3",
+  "supersedes": [
+    "2026-08-12.droid-svo-lineage-v2-schema-partial"
+  ],
+  "tags": ["droid", "real-world", "calibration", "locale", "partial"]
+}

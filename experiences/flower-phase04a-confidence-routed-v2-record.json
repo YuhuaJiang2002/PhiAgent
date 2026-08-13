@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04a-confidence-routed-v2",
+  "recorded_at": "2026-08-10T21:46:02Z",
+  "status": "WORKING",
+  "scope": "Final geometry-gated relighting on the accepted 106-frame phase-04A window",
+  "summary": "Bounded robot-interior luminance routing passes exact-geometry, illumination, temporal, and dense human gates across all 106 frames, including the two-proposal join.",
+  "evidence": ["Flower, prompted-hand, protected-interaction, and outside-robot exact fractions are 1.0 before encode.", "LoRA luminance MAE improves from 25.577968 to 25.138396.", "Maximum temporal residual is 1.473558 RGB MAE at source 324--325, below the 1.5 gate.", "Dense review covers all 106 frames and an amplified source-321--328 join sheet; evaluator decision is ALLOW_NEXT_PHASE_SUPERVISION.", "Lossless candidate SHA-256 is 72b93b7070361760200e6e0c30e3cf52d087f0510631ba3169ec5c1bc3da1c59."],
+  "lessons": ["Relighting can be safely layered only after geometry acceptance and with exact protected-region preservation."],
+  "limitations": ["This is a subtle 2-D luminance adjustment and does not authorize relighting unverified later phases."],
+  "next_actions": ["Supervise the phase-04B/04C action split before any further expansion."],
+  "run_dir": "outputs/flower-relighting/20260811T054000Z-phase04a-confidence-routed-v2",
+  "supersedes": ["2026-08-11.flower-phase04a-confidence-routed-v1"],
+  "tags": ["flower", "phase04a", "relighting", "dense-review", "working"]
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0.0",
+  "reviewer": "codex-human-visual-review",
+  "review_method": "full-timeline semantic review from every-fourth-frame robot crops plus original-resolution checks at frames 0, 12, 24, 42, 60, 84, 108, and 123; decoded-frame SHA binding; explicit shoulder-root ancestry labels",
+  "ranges": [
+    {
+      "start_frame": 0,
+      "end_frame": 23,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": true,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": true,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": true,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": true,
+      "confidence": 0.96,
+      "note": "The opening interval is heavily flower-occluded, but no decisive extra limb or non-shoulder root is visible at original resolution."
+    },
+    {
+      "start_frame": 24,
+      "end_frame": 41,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": false,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": false,
+      "confidence": 0.98,
+      "note": "The raised arm root drifts behind the head; flower occlusion is not counted as a missing arm, but shoulder ancestry and head/neck clearance are not credible."
+    },
+    {
+      "start_frame": 42,
+      "end_frame": 123,
+      "single_robot_subject": true,
+      "single_head_torso_chain": false,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": false,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": false,
+      "confidence": 0.99,
+      "note": "The raised arm remains above/behind the head without a unique shoulder root while the head-to-torso relationship visibly collapses."
+    }
+  ]
+}

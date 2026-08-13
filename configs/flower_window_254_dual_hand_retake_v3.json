@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "retake_starts": [254],
+  "seed": 42,
+  "fps": 24,
+  "window_frames": 89,
+  "output_width": 896,
+  "output_height": 512,
+  "infer_frames": 80,
+  "reference_frames": 1,
+  "maximum_rounds_per_window": 2,
+  "gpu_physical_indices": [4],
+  "minimum_free_gpu_gib": 60,
+  "object_roi_xywh_normalized": [0.44, 0.37, 0.20, 0.27],
+  "prompt": "Two coherent graphite-black and brushed-silver H3 robot arms completely replace the human. Both mechanical hands must be simultaneously and independently visible in every frame: the image-left support gripper has a clearly separated palm and articulated fingers on the lower stems, and the image-right gripper has a clearly separated palm and articulated fingers on the upper stems. Keep a visible background gap or flower-stem boundary between the two hands; do not fuse either hand into the wrist, forearm, bouquet, or the other hand. Closed opaque black robot face panel with no human face, hair, skin, sleeve, torso, silhouette, or human cast shadow. Preserve the exact source flower identities, exact stems, vase, hand-to-stem contacts, action timing, camera, worktable, shelves, wall, lighting, and background. No duplicate limb, detached shadow, smeared flower, invented flower, or invented object.",
+  "accepted_inputs": {
+    "frozen_anchor_start": 110,
+    "frozen_anchor_gate": "56/56 WORKING",
+    "contact_temporal_window_start": 182,
+    "contact_temporal_gate": "39/39 WORKING",
+    "rejected_candidate_start": 254,
+    "rejection": "second mechanical hand is not independently auditable; V2 drifts to the pink ribbon and V4 resolves only the occluded palm-root/wrist region"
+  },
+  "routing": {
+    "suppress_source_face_control": true,
+    "use_relighting_lora": true,
+    "preserve_raw_candidate_even_when_proxy_rejects": true,
+    "require_dense_review_before_stitching": true,
+    "require_two_independent_hand_instance_tracks": true,
+    "require_named_flower_restoration_and_contact_gate": true
+  }
+}

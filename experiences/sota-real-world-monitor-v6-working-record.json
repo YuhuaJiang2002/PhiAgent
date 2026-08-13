@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v6-working",
+  "recorded_at": "2026-08-12T22:21:00Z",
+  "status": "WORKING",
+  "scope": "Seven-day real-world-only DROID raw-alignment monitor v6",
+  "summary": "Monitor v6 tracks the strict DROID raw SVO/HDF5 alignment waiter after the completed three-seed BWM audit rejected action promotion.",
+  "evidence": [
+    "The first heartbeat records droid-raw-sequence-alignment-episodes21-77-v3 as running.",
+    "The monitor configuration records the completed DROID calibration and three-seed BWM rejection.",
+    "All simulator exclusions remain explicit."
+  ],
+  "lessons": [
+    "After a completed negative model result, compute shifts to the next independent real-world blocker rather than repeating an unchanged model run."
+  ],
+  "limitations": [
+    "The watched audit is waiting for a strictly free GPU."
+  ],
+  "next_actions": [
+    "Record and validate the raw-to-LeRobot alignment result when terminal."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T223000Z-real-world-only-v6",
+  "supersedes": [
+    "2026-08-12.sota-real-world-monitor-v5-completed"
+  ],
+  "tags": ["sota", "real-world", "monitor", "droid", "working"]
+}

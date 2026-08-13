@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v73-strict-containment-prepromotion",
+  "recorded_at": "2026-08-11T12:02:00+08:00",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T034000Z-softer-wider-strict-containment-v73-pending",
+  "scope": "Pre-promotion full-timeline validation of the softer, wider H3 arm-shadow cleanup with strict hand containment",
+  "status": "PARTIAL",
+  "summary": "v73 passes all eight automatic non-human-review gates and the complete manual review suite; it keeps v71's residual-hand coverage exactly on all 660 frames while reducing halo opacity and improving ROI continuity. A separate passed run is still required for promotion.",
+  "evidence": [
+    "Coverage comparison against accepted v71 reports 660 frames compared, zero regression frames, zero changed frames, and identical active-area sum 4.5127779447.",
+    "Maximum neutral-halo strength is 0.16 over a 102px support radius, compared with v71's 0.21 over 90px.",
+    "Plate-distance reduction is 0.181388, lower than v71's 0.205341 and consistent with a lighter visible halo.",
+    "Output full-frame mean jerk is 0.721616 versus 0.722189 for v71; ROI mean jerk is 1.627017 versus 1.680490 for v71.",
+    "Every-frame reviews of 110--136, 235--255, 384--405, and 475--492, dense three-frame reviews of 120--250 and 389--490, and a full 1fps timeline show no exposed human hand or forearm and preserve the flowers and robot fingers.",
+    "Both output videos decode all 660 frames, and locality, protected-content, edit-scope, shadow-reduction, and temporal gates pass."
+  ],
+  "lessons": [
+    "Retaining the accepted 4px residual-arm feather keeps semantic hand coverage invariant while the independent neutral halo can be widened and weakened.",
+    "Per-frame coverage equivalence is a stronger containment contract than aggregate coverage alone."
+  ],
+  "limitations": [
+    "The run remains PARTIAL only because it was intentionally executed with human_review=pending; no showcase is promoted from this directory.",
+    "Computer-use opened QuickTime's file chooser but timed out before continuous playback; full decode, temporal metrics, and dense visual sheets provide the available continuity evidence."
+  ],
+  "next_actions": [
+    "Repeat the exact v73 configuration with human_review=passed, require SHA-256 identity, and publish the accepted comparison showcase."
+  ],
+  "supersedes": ["2026-08-11.h3-shadow-v72-softer-wider-review"],
+  "tags": ["minimax-h3", "epl", "shadow-cleanup", "strict-containment", "prepromotion", "partial"]
+}

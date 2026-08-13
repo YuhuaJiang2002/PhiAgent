@@ -1,0 +1,39 @@
+{
+  "record_id": "2026-08-12.metric-flower-sim-full660-v1-working",
+  "recorded_at": "2026-08-12T13:04:00Z",
+  "status": "WORKING",
+  "scope": "Full 660-frame calibrated simulated flower manipulation and physical compiler",
+  "summary": "A 27.5-second exact G1/bilateral-Sharpa rollout now supplies complete metric RGB-D, 73-coordinate robot state, persistent rod state, contact force and covariance, and passes every simulated physical gate.",
+  "evidence": [
+    "All four independent compiler stages report WORKING over 660 frames with 1.0 valid metric-depth coverage.",
+    "Maximum robot joint velocity is 2.310924 rad/s and maximum persistent-stem segment CV is 0.042649 against the 0.12 limit.",
+    "Inverse-dynamics residual p95 is 0.0006188 N against the 0.08 N limit.",
+    "All 300/300 contact frames pass rank-6 force closure and all 298/298 driven frames produce a causal stem response.",
+    "The complete 320x240 video decodes at 24 FPS; uniform and contact-window review show approach, grasp, bend, release, and retract.",
+    "Generation completes in 40.7259 seconds at 16.2059 rendered FPS."
+  ],
+  "lessons": [
+    "Explicit calibrated state removes the pixel model's freedom to change hand topology, stem identity, depth order, or force provenance.",
+    "Direct metric sensor/simulator input needs a distinct compiler path rather than being relabelled as a foundation-model proposal."
+  ],
+  "limitations": [
+    "The simulator camera and forces are not observations of Pexels 5893642.",
+    "This result cannot establish real-scene reconstruction, photorealistic replacement, or real-robot execution."
+  ],
+  "next_actions": [
+    "Train and test a development-only appearance adapter on physically grounded controls while keeping the real replacement PARTIAL.",
+    "Acquire synchronized RGB-D/multiview or another independent metric observation for a real-scene physical claim."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T130307Z-metric-flower-sim-full660-v1",
+  "supersedes": [
+    "2026-08-12.metric-flower-sim-smoke-v4-working"
+  ],
+  "tags": [
+    "flower",
+    "simulation",
+    "metric-rgbd",
+    "contact-force",
+    "full-q",
+    "working"
+  ]
+}

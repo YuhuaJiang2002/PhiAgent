@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r4b-structural-stop-correction",
+  "recorded_at": "2026-08-11T03:57:51Z",
+  "scope": "Correction to the bounded RSI transition after the out-of-table r4b round",
+  "status": "PARTIAL",
+  "summary": "The r4b rejection is unchanged, but the RSI transition is corrected from an invalid suggestion to repeat old r2 settings to REQUIRE_STRUCTURAL_BACKBONE.",
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/h3-identity-topology-rsi/20260811T051500Z-r4b-step12-assessment-v2-structural-stop",
+  "evidence": [
+    "The corrected assessment SHA-256 is c9d490bc66d1abc920f155a1fbf5e4ae63d4f12430d48b40625950b5aa6048bb.",
+    "It preserves the same rejected metrics, failed gates, 24/124 topology result, and complete frame-digest evidence, but records next_round=null and evolution_decision=REQUIRE_STRUCTURAL_BACKBONE.",
+    "The CPU regression suite now contains 19 passing H3 identity-RSI tests, including an out-of-table failed-round transition test; targeted Ruff passes."
+  ],
+  "lessons": [
+    "A finite RSI search policy must distinguish an extension outside the original table from an untried in-table round, or it can cycle to exhausted settings."
+  ],
+  "limitations": [
+    "This corrects orchestration only; it does not improve the rejected model output or create a new structural backbone."
+  ],
+  "next_actions": [
+    "Review a pose/topology-conditioned backbone or an explicit topology-aware objective before any further GPU training."
+  ],
+  "supersedes": ["2026-08-11.h3-r4b-domain-lora-rejected"],
+  "tags": ["h3", "rsi", "correction", "finite-search", "structural-backbone", "partial"]
+}

@@ -1,0 +1,35 @@
+{
+  "record_id": "2026-08-12.foundation-contact-evolution-v3",
+  "recorded_at": "2026-08-12T10:25:00Z",
+  "status": "PARTIAL",
+  "scope": "Corrected architecture-level evolution plan after separating camera proposal stability from physical calibration",
+  "summary": "The corrected evolution plan adds a calibrated metric-camera bridge ahead of full-q, persistent rods, and force fusion; every downstream experiment now carries the appropriate failed-stage dependency and nothing is promoted.",
+  "evidence": [
+    "The failed-stage vector contains metric_camera, robot_trajectory, stem_centerlines, and contact_forces.",
+    "Four architecture_not_hyperparameter experiments are emitted in physical dependency order.",
+    "Robot and rod experiments are blocked by metric camera; force fusion is blocked by camera, robot, and rod stages.",
+    "Five adversarial attack classes and a no-average-override promotion rule remain active."
+  ],
+  "lessons": [
+    "Self-evolution must react to an evidence-semantics correction by changing experiment dependencies, not preserving a stale pass.",
+    "Force reconstruction is causally downstream of independent scale, full kinematics, and accepted deformable geometry."
+  ],
+  "limitations": [
+    "SkillHone's model-graded harness still cannot run without its local settings and Forgejo credentials.",
+    "The plan has not produced or promoted a new 660-frame candidate."
+  ],
+  "next_actions": [
+    "Execute calibrated-metric-camera-bridge-v1 first and rerun the dependent experiments only after its adversarial gates pass."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T183500Z-architecture-evolution-v3",
+  "supersedes": [
+    "2026-08-12.foundation-contact-evolution-v2"
+  ],
+  "tags": [
+    "self-evolution",
+    "evidence-correction",
+    "dependencies",
+    "adversarial-audit",
+    "partial"
+  ]
+}

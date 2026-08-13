@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 45,
+      "box_xyxy": [500, 238, 560, 363],
+      "positive_points_xy": [[520, 263], [543, 291], [553, 327]],
+      "negative_points_xy": [[565, 282], [557, 347], [592, 347], [518, 322]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 5200,
+      "role": "candidate counterpart of cream-flower-left-01"
+    },
+    {
+      "instance_id": "lime-bud-center-02",
+      "object_id": 2,
+      "anchor_source_frame": 45,
+      "box_xyxy": [543, 245, 588, 357],
+      "positive_points_xy": [[558, 269], [565, 299], [571, 328]],
+      "negative_points_xy": [[520, 263], [557, 347], [592, 347], [581, 382]],
+      "minimum_area_pixels": 60,
+      "maximum_area_pixels": 4400,
+      "role": "candidate counterpart of lime-bud-center-02"
+    },
+    {
+      "instance_id": "gold-flower-middle-03",
+      "object_id": 3,
+      "anchor_source_frame": 45,
+      "box_xyxy": [533, 307, 582, 405],
+      "positive_points_xy": [[557, 347], [560, 367], [565, 387]],
+      "negative_points_xy": [[520, 263], [565, 282], [592, 347], [584, 388]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 5000,
+      "role": "candidate counterpart of gold-flower-middle-03"
+    },
+    {
+      "instance_id": "pink-flower-right-04",
+      "object_id": 4,
+      "anchor_source_frame": 45,
+      "box_xyxy": [568, 305, 620, 407],
+      "positive_points_xy": [[592, 347], [585, 370], [579, 390]],
+      "negative_points_xy": [[520, 263], [565, 282], [557, 347], [548, 382]],
+      "minimum_area_pixels": 90,
+      "maximum_area_pixels": 5400,
+      "role": "candidate counterpart of pink-flower-right-04"
+    }
+  ],
+  "notes": "Window-local frames 0--88 map to global source frames 110--198. IDs intentionally match the independently prompted source instances, but all candidate boxes and points are measured on the generated robot video."
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-observation-authority-v2-partial",
+  "recorded_at": "2026-08-12T13:22:30Z",
+  "scope": "Unified physical-lineage audit of original RGB, DA3, MiniMax-H3, and Qwen3-VL observation sources",
+  "status": "PARTIAL",
+  "summary": "The original real 660-frame RGB capture is recovered as one non-metric physical acquisition group; DA3, H3, and both Qwen reports remain model-derived and add zero physical authority.",
+  "run_dir": "outputs/foundation-contact/20260812T154000Z-observation-authority-qwen-h3-v2",
+  "evidence": [
+    "Five artifact hashes bind one original real RGB video and four model-derived artifacts.",
+    "The audit reports independent_physical_group_count=1 for real-flower-capture-1, but metric_camera=false because no metric calibration passed.",
+    "Robot trajectory and contact-force authority are also false; generated observations are machine-rejected from all physical gates.",
+    "The output names the exact missing sources: real AprilTag/RGB-D/extra-camera calibration, synchronized exact-asset q/qdot, and sensing or a downstream validated solver."
+  ],
+  "lessons": [
+    "A pre-existing real source video can independently supervise visible flower/background motion without proving metric geometry or generated robot contact.",
+    "Generative novel views preserve causal lineage and cannot be counted as new cameras even when visually plausible."
+  ],
+  "limitations": [
+    "Only one physical RGB acquisition group exists and it has no external scale, depth, telemetry, tactile, or force-torque channel.",
+    "The current 27.5-second robot replacement remains PARTIAL."
+  ],
+  "next_actions": [
+    "Capture at least one real calibrated RGB-D/AprilTag/extra-camera stream and a second independent calibration group, or synchronized complete q/qdot telemetry, before claiming physical completion."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "provenance", "minimax-h3", "qwen3-vl", "partial"]
+}

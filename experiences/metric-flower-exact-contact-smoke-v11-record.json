@@ -1,0 +1,36 @@
+{
+  "record_id": "2026-08-12.metric-flower-exact-contact-smoke-v11-working",
+  "recorded_at": "2026-08-12T14:55:00Z",
+  "status": "WORKING",
+  "scope": "Bounded evolution from fabricated contacts to exact Sharpa-pad smoke acceptance",
+  "summary": "After five retained failures, the 33-frame v11 smoke passes actual mesh contact, nonnegative force closure, articulated topology, causal response, video, and all bundle-lineage gates.",
+  "evidence": [
+    "v5 found zero exact contacts because the original wrist target was 8-10 cm from the fingertip pads.",
+    "v6 retained three contacts early but lost them under an unrealistically compressed short-rollout trajectory; v7 reached at least three fingertips and rank six but failed the positive wrench cone.",
+    "v8 showed that unconstrained least squares returned one negative-weight solution for redundant contact patches; v9 retained nonnegative weights but exposed floating 0.02 N comparisons and incomplete solver convergence.",
+    "v10 passes 15/15 exact-contact force-closure frames after a probability-simplex nonnegative solver and numerical tolerance fix.",
+    "v11 adds embedded FPS and passes every independent bundle manifest, hash, source, frame, timeline, coordinate, and stem-ID gate."
+  ],
+  "lessons": [
+    "Reduced smoke motion must preserve physical speed rather than compressing a full-amplitude trajectory into 1.375 seconds.",
+    "Force closure for a distributed compliant patch requires a nonnegative convex solver; an unconstrained least-squares solution with negative coefficients cannot prove infeasibility."
+  ],
+  "limitations": [
+    "The accepted artifact covers 33 simulated frames, not the required 660-frame timeline."
+  ],
+  "next_actions": [
+    "Run the exact-pad contact mode over all 660 frames and reject unless every contact frame passes."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T145000Z-metric-flower-exact-contact-smoke-v11",
+  "supersedes": [
+    "2026-08-12.metric-flower-sim-v1-evidence-revoked"
+  ],
+  "tags": [
+    "flower",
+    "exact-contact",
+    "sharpa",
+    "force-closure",
+    "smoke",
+    "working"
+  ]
+}

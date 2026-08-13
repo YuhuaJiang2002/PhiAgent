@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-window1-anchor60-jump",
+  "recorded_at": "2026-08-11T06:54:00Z",
+  "status": "PARTIAL",
+  "scope": "Second H3 Ego window using scene anchor frame 60 and per-action frame-116 continuation",
+  "summary": "The completed pour window had strong robot and bottle quality, but its first frame adopted the later scene-anchor viewpoint and jumped sharply from the preceding window's frame 116, so shake was stopped at step 6/20 and handover was not started.",
+  "evidence": [
+    "Window-00 pour frame 116 shows the dish-rack viewpoint while window-01 pour frame 0 shows the later sink-and-stovetop viewpoint despite representing the same absolute source frame.",
+    "window-01-h3-v1 records pour completed, shake interrupted, handover pending, and final status failed/BLOCKED after the deliberate early stop."
+  ],
+  "lessons": [
+    "For a following overlapping window, a middle-of-window scene anchor can override the recursive continuation at the seam; the scene anchor must be aligned to overlap frame zero."
+  ],
+  "limitations": [
+    "The generated pour is not eligible for stitching and the other actions are incomplete."
+  ],
+  "next_actions": [
+    "Preflight and rerun the second window with scene-anchor-frame 0 while keeping the action-specific continuation images, controls, seed, steps, resolution, and GPU contract unchanged."
+  ],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2/window-01-h3-v1",
+  "supersedes": [],
+  "tags": ["acwm", "ego-video", "minimax-h3", "continuation", "camera-jump", "early-stop"]
+}

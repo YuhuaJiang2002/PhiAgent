@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.acwm-counterfactual-three-seed-final-partial",
+  "recorded_at": "2026-08-12T04:55:20Z",
+  "status": "PARTIAL",
+  "scope": "Lineage-safe three-seed BWM factual/action-counterfactual audit",
+  "summary": "The promoted action adapter retained a robust factual-video SSIM gain but did not improve every action-sensitive metric, so the action-control interpretation and SOTA claim remain rejected.",
+  "evidence": [
+    "Official and promoted checkpoints each completed 4 factual/swapped clip pairs at seeds 42, 314159, and 20260811 with identical 57-frame, 9-history-frame, 20-step budgets.",
+    "Clips were grouped into two physical wipe_table episodes; seeds were averaged before the 10,000-iteration paired bootstrap.",
+    "Future SSIM improved from 0.823330 to 0.829861 with oriented gain 0.006531 and lower bound 0.003742.",
+    "Flow endpoint error slightly regressed from 2.066107 to 2.067347 pixels; its oriented-gain lower bound was -0.001580.",
+    "Wrong-action SSIM-margin and flow-margin lower bounds were -0.001428 and -0.005080, so neither action-sensitivity gain was established.",
+    "The audit was decision-ineligible because only two independent physical episodes were available versus the frozen minimum of 20."
+  ],
+  "lessons": [
+    "The current adapter improves factual reconstruction quality but available evidence does not show that the gain comes from stronger causal use of EEF trajectories.",
+    "Action-counterfactual and lineage gates catch claims that pixel-fidelity promotion alone cannot support.",
+    "BWM eef_abs must be described as realized absolute EEF trajectory conditioning rather than low-level command control."
+  ],
+  "limitations": [
+    "The suite contains one task, one embodiment, one camera rig, and two independent physical episodes.",
+    "No physical counterfactual rollout exists, so swapped-action quality is diagnostic rather than causal ground truth.",
+    "No contact, collision, task-success, or real-robot evidence was collected."
+  ],
+  "next_actions": [
+    "Expand to at least 20 independent resets with executable paired counterfactuals, then train against a preregistered action-causal objective rather than SSIM alone.",
+    "Do not promote the current adapter as improved action control unless every primary causal and non-regression gate passes."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-counterfactual-audit/20260812T042306Z-worldarena2-wipe-table-lineage-safe-v3/evaluations/20260812T045449Z-three-seed-final-v1",
+  "supersedes": ["2026-08-12.acwm-counterfactual-lineage-fix-partial"],
+  "tags": ["acwm", "bwm", "counterfactual", "three-seed", "lineage", "partial"]
+}

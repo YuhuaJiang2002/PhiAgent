@@ -1,0 +1,27 @@
+{
+  "record_id": "2026-08-12.wan-long-robot-layer-audit-v1",
+  "recorded_at": "2026-08-12T07:47:00Z",
+  "status": "PARTIAL",
+  "scope": "Object-track-grounded robot appearance, topology, and projected-contact audit of two 27.5-second candidates",
+  "summary": "The audit rejects v6 late color/identity drift and selects the legacy robot layer, but the selected layer narrowly misses the hand-replacement gate before repair.",
+  "evidence": [
+    "v6 violates its late high-chroma limit on 81.67% of frames and its canonical-palette limit on 100% of frames.",
+    "v6 projected-contact recall after 20 seconds is 11/12, or 91.67%.",
+    "The selected stable layer has zero late high-chroma and palette violations and 12/12 projected contacts, but hand-replacement violations are 11.67% against a 10% limit.",
+    "Color-shift, arm-erasure, and hand-detachment attacks are detected for both candidates over 101 sampled/adversarial frames."
+  ],
+  "lessons": [
+    "A single temporal score hides distinct appearance, topology, and interaction failures.",
+    "Late thresholds must be fit on an accepted anchor interval rather than on the failing tail itself."
+  ],
+  "limitations": [
+    "Replacement coverage is an image-space topology proxy and cannot identify all finger morphs.",
+    "Projected contact is not depth, force, or executable-robot contact."
+  ],
+  "next_actions": [
+    "Repair only the failed hand support while protecting source flowers, then rerun the unchanged blind gates."
+  ],
+  "run_dir": "outputs/wan-long-robot-contract/20260812T073750Z-first-principles-v1/audit-v1",
+  "supersedes": [],
+  "tags": ["wan", "long-video", "robot-layer", "audit", "adversarial", "partial"]
+}

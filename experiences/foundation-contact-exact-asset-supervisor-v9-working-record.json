@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-exact-asset-supervisor-v9-working",
+  "recorded_at": "2026-08-12T12:41:00Z",
+  "scope": "Exact-asset-bound continual supervisor and expanded SkillHone adversarial campaign",
+  "status": "WORKING",
+  "summary": "The supervisor remains fail-closed at 0/4 physical stages while its semantic audit passes 5/5, and the expanded private SkillHone suite passes 4/4 probe, 3/3 held-out test, and 7/7 adversarial items.",
+  "run_dir": "outputs/foundation-contact/20260812T123400Z-skillhone-exact-asset-adversarial-v9",
+  "evidence": [
+    "check_supervision.py validates the latest manifest with attacks_passed=5/5, physical_gates_passed=0/4, promoted=false, and next_experiment=calibrated-metric-camera-bridge-v1.",
+    "Private eval revision 6e18538 adds prior-filled-cropped-joints and asset-presence-identity-spoof and is pushed to loopback Forgejo.",
+    "The provider-aware run passes all 7/7 adversarial items with strict JSON matches, zero errors, and zero missing answers.",
+    "Fresh probe and held-out test reruns pass 4/4 and 3/3 respectively, for 14/14 current items overall.",
+    "Geometry diagnostics remain 10.744486 sampled FPS, 5.282706x warm source real time, and 1.007757x cold source real time."
+  ],
+  "lessons": [
+    "Behavioral self-evolution is valuable when it strengthens rejection of physical shortcuts but remains separate from physical model promotion.",
+    "The dependency-aware supervisor correctly keeps robot, rod, and force experiments blocked behind independent metric calibration despite new robot diagnostics."
+  ],
+  "limitations": [
+    "WORKING applies only to the supervisor and behavioral audit; the video/contact model remains PARTIAL with no promoted physical challenger."
+  ],
+  "next_actions": [
+    "Collect two independent metric observation groups and synchronized robot observability before launching the next physical challenger."
+  ],
+  "supersedes": [
+    "2026-08-12.foundation-contact-supervisor-camera-bridge-v5-working",
+    "2026-08-12.foundation-contact-skillhone-v7-infra-failures"
+  ],
+  "tags": ["foundation-contact", "continual-supervision", "skillhone", "adversarial", "working"]
+}

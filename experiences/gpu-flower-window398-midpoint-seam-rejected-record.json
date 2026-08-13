@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window398-midpoint-seam-rejected",
+  "recorded_at": "2026-08-11T12:00:00Z",
+  "scope": "Whole-frame midpoint reconciliation of the shared global-442 frame",
+  "status": "PARTIAL",
+  "summary": "A full-frame midpoint reduced the seam but changed the accepted pink-flower trajectory and was rejected by the unchanged velocity-direction gate.",
+  "run_dir": "outputs/gpu-flower-window398-joined/20260811T114500Z-v1/strict-object-gate-398-442-final",
+  "tags": ["stitching", "seam", "flower-identity", "negative-result", "partial"],
+  "evidence": [
+    "The midpoint candidate decodes 89 frames and reduces the seam local peak to 1.27 times the full-window transition P90.",
+    "The right 442-486 subwindow remains WORKING after independent retracking.",
+    "The left pink-flower positive velocity cosine fraction drops from 0.833333 to 0.761905, below the unchanged 0.80 threshold; the left gate is PARTIAL."
+  ],
+  "lessons": ["A visually small whole-frame seam blend is still allowed to corrupt a flower trajectory; accepted object pixels must be hard protected."],
+  "limitations": ["The midpoint candidate is not eligible for stitching or full-film expansion."],
+  "next_actions": ["Keep the accepted left window exact and fade only right-window non-object pixels behind a dilated flower/hand protection mask."],
+  "supersedes": []
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-action-adapter-artifact-verified",
+  "recorded_at": "2026-08-11T10:05:00Z",
+  "status": "WORKING",
+  "scope": "Post-training structural verification of the BWM action-adapter smoke checkpoint",
+  "summary": "The saved checkpoint is a readable, finite action-encoder-only safetensors artifact; the training-path result remains WORKING and the campaign remains PARTIAL.",
+  "evidence": [
+    "The checkpoint contains exactly 12 pipe.action_encoder tensors and no DiT tensors.",
+    "Those tensors contain 99637248 parameters with zero non-finite values.",
+    "The file is 199275904 bytes with SHA-256 30d6000a6a29ec401367f9a839aef7359f262fd79265dec4e08bfbac618631ec."
+  ],
+  "lessons": [
+    "A successful process exit should be followed by structural checkpoint inspection before accepting a training smoke result."
+  ],
+  "limitations": [
+    "Structural validity is not evidence of improved prediction quality, baseline superiority, SOTA, or real-robot performance."
+  ],
+  "next_actions": [
+    "Run matched-seed balanced training and frozen comparisons before any model-quality promotion."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-sota-training/20260811T100155.434426Z-action-adapter-seed20260811",
+  "supersedes": ["2026-08-11.acwm-sota-bwm-action-adapter-smoke-working"],
+  "tags": ["acwm", "bwm", "action-adapter", "checkpoint-verification", "working"]
+}

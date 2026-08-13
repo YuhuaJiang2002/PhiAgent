@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-data-v1-revoked",
+  "recorded_at": "2026-08-12T14:25:00Z",
+  "status": "PARTIAL",
+  "scope": "Leakage audit of the first metric flower VACE export",
+  "summary": "The v1 VACE data is revoked for held-out evaluation because its edge control and per-clip reference were computed directly from target frames.",
+  "evidence": [
+    "The v1 exporter applied Canny to target RGB and copied each clip's exact middle target frame as its reference input.",
+    "Frame-disjoint train/validation splits do not prevent oracle leakage when validation controls contain target pixels.",
+    "The corrected exporter uses only calibrated depth, projected stem/contact state, and one separately rendered robot-only identity image."
+  ],
+  "lessons": [
+    "Evaluation input independence is a stronger requirement than source-frame split disjointness."
+  ],
+  "limitations": [
+    "No adapted-versus-zero-shot result from v1 can support a generalization claim."
+  ],
+  "next_actions": [
+    "Re-export all clips from an accepted exact-contact full rollout with target RGB excluded from controls."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T131500Z-metric-physical-vace-data-v1",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-data-v1-working"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "data-leakage",
+    "evidence-revoked",
+    "partial"
+  ]
+}

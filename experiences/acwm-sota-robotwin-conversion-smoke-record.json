@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-robotwin-conversion-smoke",
+  "recorded_at": "2026-08-11T09:22:30Z",
+  "status": "WORKING",
+  "scope": "Frame-explicit RoboTwin-to-BWM action conversion and loader smoke test",
+  "summary": "A real pinned RoboTwin Parquet shard was converted from 16D quaternion EEF states to 14D BWM Euler-XYZ EEF states, split without embodiment/task leakage, compiled with overlapping history, and read by the patched public BWM loader.",
+  "evidence": [
+    "The source Parquet contained 88,256 real dataset frames; the bounded smoke selected 2 episodes and compiled 4 clips.",
+    "The public BWM loader returned action shape [1, 57, 14], and its first normalized action row matched an independently read converted Parquet row.",
+    "Twelve focused tests and targeted Ruff checks passed for revision archives, action conversion, grouped splitting, overlap, training command construction, and promotion gating."
+  ],
+  "lessons": [
+    "RoboTwin's public 16D quaternion representation cannot be fed directly to BWM's 14D loader; the conversion and packed-file offsets must be explicit and tested."
+  ],
+  "limitations": [
+    "This validates the data and loader path only; it does not establish training convergence, benchmark improvement, real-robot transfer, or SOTA."
+  ],
+  "next_actions": [],
+  "run_dir": "/tmp/phiagent-robotwin-fixture.5MPOQv/output",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "robotwin", "data", "frames", "cpu-test", "smoke"]
+}

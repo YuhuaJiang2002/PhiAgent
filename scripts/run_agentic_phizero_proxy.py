@@ -107,6 +107,14 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--use-flux", action="store_true")
     parser.add_argument("--no-relighting-lora", action="store_true")
     parser.add_argument(
+        "--suppress-source-face-control",
+        action="store_true",
+        help=(
+            "replace the cropped source-human face control with a deterministic "
+            "black video in replacement mode; pose and replacement masks are retained"
+        ),
+    )
+    parser.add_argument(
         "--t5-cpu",
         action="store_true",
         help="keep the T5 encoder on CPU to reduce peak GPU memory",
@@ -153,6 +161,7 @@ def main() -> int:
         retarget=args.mode == "animation" and not args.no_retarget,
         use_flux=args.use_flux,
         use_relighting_lora=not args.no_relighting_lora,
+        suppress_source_face_control=args.suppress_source_face_control,
         offload_model=not args.no_offload,
         t5_cpu=args.t5_cpu,
         object_roi=tuple(args.object_roi),

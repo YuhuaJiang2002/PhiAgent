@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v3-superseded",
+  "recorded_at": "2026-08-12T21:24:30Z",
+  "status": "PARTIAL",
+  "scope": "Real-world-only monitor v3 terminal correction",
+  "summary": "Monitor v3 was intentionally stopped after its original DROID waiter terminated and a corrected unified DROID calibration succeeded; BWM remained running.",
+  "evidence": [
+    "v3 correctly observed the restarted BWM process as running.",
+    "Its DROID job referred to the first waiter PID, which terminated BLOCKED before later corrected runs completed.",
+    "The final unified DROID v5 result is WORKING and no longer requires active monitoring."
+  ],
+  "lessons": [
+    "A monitor configuration must be replaced when an immutable job retry receives a new PID/result path."
+  ],
+  "limitations": [
+    "v3 does not represent the final DROID success artifact."
+  ],
+  "next_actions": [
+    "Replace v3 with a v4 monitor focused on the still-active BWM run while recording DROID v5 as completed."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T201000Z-real-world-only-v3",
+  "supersedes": [
+    "2026-08-12.sota-real-world-monitor-v3-working"
+  ],
+  "tags": ["sota", "real-world", "monitor", "superseded", "partial"]
+}

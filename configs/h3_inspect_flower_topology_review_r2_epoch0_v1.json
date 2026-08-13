@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "reviewer": "codex-human-visual-review",
+  "review_method": "full-timeline semantic review from every-second-frame robot crops plus contiguous boundary verification",
+  "ranges": [
+    {
+      "start_frame": 0,
+      "end_frame": 23,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": true,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": true,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "confidence": 0.97,
+      "note": "No decisive topology defect is visible in the opening interval."
+    },
+    {
+      "start_frame": 24,
+      "end_frame": 41,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "confidence": 0.98,
+      "note": "The trained epoch-0 candidate still lengthens the raised arm and drifts its shoulder origin behind the head."
+    },
+    {
+      "start_frame": 42,
+      "end_frame": 123,
+      "single_robot_subject": true,
+      "single_head_torso_chain": false,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "confidence": 0.99,
+      "note": "The raised arm crosses above the head without a credible shoulder chain; the head-to-torso relationship collapses while the lower arm persists separately."
+    }
+  ]
+}

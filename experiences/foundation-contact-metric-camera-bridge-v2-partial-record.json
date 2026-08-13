@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-metric-camera-bridge-v2-partial",
+  "recorded_at": "2026-08-12T12:23:30Z",
+  "scope": "Hash-bound real 27.5-second metric-camera bridge and full-pipeline recompile",
+  "status": "PARTIAL",
+  "summary": "The robust inverse-depth bridge and compiler are implemented and pass synthetic/end-to-end software acceptance, but the real clip still has zero independent anchors, so metric camera, full q, stems, and forces remain 0/4.",
+  "run_dir": "outputs/foundation-contact/20260812T122100Z-compiled-pipeline-camera-bridge-v5",
+  "evidence": [
+    "The frozen contract requires at least 20 anchors, at least two groups, held-group p95 <= 0.06, bootstrap scale uncertainty <= 0.02, and robust inlier fraction >= 0.80.",
+    "Exact-asset anchors additionally require an allowlisted SHA-256, complete q, and reprojection RMSE <= 8 pixels.",
+    "The real v2 calibration returns PARTIAL in 0.007119 seconds and emits no calibrated NPZ.",
+    "The compiler validates both source and DA3 hashes, refuses to bind the failed calibration report, and records all four physical gates false.",
+    "Thirty-seven focused tests pass, including a synthetic calibrated-artifact-to-compiler acceptance test and learned-scale, one-group, partial-q, and wrong-hash attacks."
+  ],
+  "lessons": [
+    "Foundation depth is a proposal; external measurement authority and cross-group residuals are necessary for promotion.",
+    "A passed calibration artifact must bind source video, source proposal, output artifact, uncertainty, and independent groups."
+  ],
+  "limitations": [
+    "No same-environment RGB-D/fiducial capture or complete-q exact-asset observation exists for the generated clip.",
+    "A global affine inverse-depth bridge intentionally rejects spatial or depth-dependent distortions that require a richer sensor-guided model."
+  ],
+  "next_actions": [
+    "Collect at least 20 synchronized metric depths from two independent groups in the same fixed scene, then rerun the frozen bridge.",
+    "Only after metric camera passes, execute full-q analysis-by-synthesis and the persistent dynamic-rod experiment."
+  ],
+  "supersedes": ["2026-08-12.foundation-contact-metric-camera-bridge-v1-partial"],
+  "tags": ["foundation-contact", "metric-camera", "hash-binding", "partial"]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-motion-lag-skill-v1-hard-switch-rejected",
+  "recorded_at": "2026-08-11T03:48:00Z",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T125000Z-skill-motion-lag-v73-pending",
+  "scope": "First real-660 forward test of the repair-shadow-motion-lag skill",
+  "status": "PARTIAL",
+  "summary": "The first motion-aligned temporal-alpha implementation was rejected: it aligned 313 frames and preserved protected/outside-safety pixels, but the hard displacement threshold increased temporal jerk beyond the accepted parent and failed the full-frame jerk gate.",
+  "evidence": [
+    "The candidate decodes 660/660 frames and reports motion_aligned_frames=313 with a maximum camera-frame shift of 29.9947 pixels.",
+    "Protected content and pixels outside the safety mask are exact in every preencode frame.",
+    "ROI jerk mean increased from the v71 parent's 1.6804897 to 1.8630811 (ratio 1.10865), failing the skill's 1.03 non-regression gate.",
+    "Full-frame jerk mean reached 0.7904145 versus raw 0.6975300 and failed the renderer's 1.12 bound.",
+    "The independent assessment is saved as motion-lag-assessment.json and remains PARTIAL with human review unset."
+  ],
+  "lessons": [
+    "Switching an entire translated alpha field on at a fixed motion threshold creates second-order discontinuities near the threshold.",
+    "High-confidence skin/arm cleanup alpha must not be spatially migrated with the low-alpha shadow band.",
+    "Camera-frame arm centroids need temporal denoising before they drive alpha warping."
+  ],
+  "limitations": [
+    "This candidate is not accepted and must not replace v71 or be used as the lightening parent.",
+    "The automatic clean-plate proxy cannot establish perceptual shadow attachment without dense human review."
+  ],
+  "next_actions": [
+    "Use median-filtered centroids, a continuous displacement confidence ramp, and low-alpha-only motion warping.",
+    "Rerun the complete 660-frame non-regression gates in a new immutable directory."
+  ],
+  "supersedes": [],
+  "tags": [
+    "shadow",
+    "motion-lag",
+    "skill-evolution",
+    "hard-threshold",
+    "temporal-regression",
+    "partial"
+  ]
+}

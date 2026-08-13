@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window470-split-repair-preflight-v2",
+  "recorded_at": "2026-08-11T16:35:00Z",
+  "scope": "Seed tournament, split selection, lossless-gate correction, and operational preflights for global frames 470-558",
+  "status": "PARTIAL",
+  "summary": "Seed 44 was retained over seeds 42/43, several semantically or geometrically invalid splits were rejected, and the repair selector was corrected to gate lossless rather than compatibility encoding.",
+  "run_dir": "outputs/gpu-flower-full-strict-expansion/20260811T122000Z-v1/window-0470",
+  "tags": ["gpu", "wan2.2", "sam2", "seed-tournament", "split-window", "lossless-gate", "preflight", "partial"],
+  "evidence": [
+    "Seed 43 scored identity 0.979812, motion 0.796601, temporal 0.353652, and object consistency 0.261428; seed 44 scored 0.981758, 0.786068, 0.413007, and 0.518871 and was retained.",
+    "Global 470-514 was rejected because the bouquet-side endpoint was absent for six initial frames; 478-522 also began before the second endpoint became semantically visible.",
+    "Global 486-530 was rejected after correction-induced identity switching produced hand centroid steps of about 25.8 and 36.5 pixels above the fixed 20-pixel threshold.",
+    "The 519-558 resplit retained 40 frames but failed flower velocity direction, bouquet-hand adjacent IoU, aligned motion, and aligned temporal, so it was not used.",
+    "The first temporal-repair invocations failed before model work because of shell background precedence, incorrect CLI option names, and immutable output-directory reuse; the failed directories and logs were retained.",
+    "A character-mask retime first assumed 30 FPS even though the raw mask was already 24 FPS; the corrected 24-to-24 retime is the retained artifact.",
+    "Compatibility encoding made right round 07 appear to reach motion 0.822558, but independent lossless evaluation was only 0.816600. The selector was changed to gate the lossless candidate directly and record compatibility metrics separately.",
+    "Local pytest collection later stalled during concurrent workspace test activity; the run was interrupted, while the new stitch composition helper passed its deterministic mapping test on the remote execution host."
+  ],
+  "lessons": [
+    "A prompt accepted by the pinned WanAnimate CLI is not an effective variable when backend metadata says it is ignored; latent seed and mask geometry are effective variables.",
+    "Final acceptance must use the exact lossless delivery artifact, not a compatibility encode whose compression changes proxy scores.",
+    "Window boundaries must satisfy semantic two-endpoint visibility and dense-track stability before temporal repair is eligible."
+  ],
+  "limitations": [
+    "This record aggregates rejected preflights; it does not supersede the later WORKING subwindow result.",
+    "Proxy object consistency was used only for candidate routing, not as a substitute for real SAM2 instance/contact gates."
+  ],
+  "next_actions": ["Use only the accepted 485-524 and 514-558 subwindows for further expansion and retain every failed split as negative evidence."],
+  "supersedes": ["2026-08-11.gpu-flower-window470-prompt-retake-noop-v1"]
+}

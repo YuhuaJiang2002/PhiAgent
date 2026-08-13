@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-index-json-training-failure",
+  "recorded_at": "2026-08-11T09:52:00Z",
+  "status": "PARTIAL",
+  "scope": "First pinned BWM action-adapter GPU training attempt",
+  "summary": "The public training path treated Wan2.2's safetensors index JSON as a PyTorch binary and stopped before loading the model.",
+  "evidence": [
+    "The immutable experiment returned code 1 after DiffSynth passed diffusion_pytorch_model.safetensors.index.json to torch.load.",
+    "The error was Unsupported operand 123 while weights_only unpickling the JSON file."
+  ],
+  "lessons": [
+    "BWM inference expands a safetensors index into its shards, but the public training entry point omitted that resolution step."
+  ],
+  "limitations": [
+    "No forward or optimizer step occurred."
+  ],
+  "next_actions": [
+    "Apply and hash a training-only patch that reuses BWM's resolve_model_path helper."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-sota-training/20260811T095119.140793Z-action-adapter-seed20260811",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "gpu-training", "negative-result", "model-loading"]
+}

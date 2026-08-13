@@ -1,0 +1,37 @@
+{
+  "record_id": "2026-08-12.wan-long-contact-dynamics-evolution-v3",
+  "recorded_at": "2026-08-12T09:09:00Z",
+  "status": "PARTIAL",
+  "scope": "SkillHone-guided architecture-level self-evolution for articulated contact and deformable flower dynamics",
+  "summary": "A complete two-architecture, two-probe tournament rejects both the current pixel pipeline and the unrendered metric articulated-rod architecture, while automatically emitting five structural repairs and refusing numeric hyperparameter search or average-score promotion.",
+  "evidence": [
+    "The complete tournament evaluates pixel-source-lock-v6 and metric-articulated-rod-residual-v1 over frames 0--329 and 330--659 with six immutable gates per row.",
+    "The pixel family fails articulated metric hand, metric force closure, persistent instance identity, and high-resolution review in both probes and causal stem motion in the first probe.",
+    "The new family has executable contracts, a rooted damped-rod backbone, a 6-D frictional force-closure certificate, causal auditing, and synthetic adversarial tests, but every unobserved real-video gate remains false and it is not promoted.",
+    "The mutation plan names articulated hand state, metric contact state, rooted deformable object dynamics, persistent object memory, and non-overridable high-resolution review; every mutation is marked architecture_not_hyperparameter.",
+    "SkillHone strict offline static checking passes evolve-demo-video-factory with no errors or warnings.",
+    "The SkillHone remote/model-graded status preflight stops with missing Forgejo url/token because ~/.skillhone/settings.json is absent; no official optim.py result is claimed."
+  ],
+  "lessons": [
+    "A self-evolution loop must keep candidate promotion separate from architecture repair recommendation.",
+    "Code-level synthetic validity cannot be promoted as real-video evidence when the metric reconstruction and rendered candidate do not exist.",
+    "Two chronological halves provide same-video coverage but not independent-scene generalization."
+  ],
+  "limitations": [
+    "The tournament has only one underlying source scene and cannot establish cross-scene, cross-object, or cross-embodiment generalization.",
+    "No remote SkillHone model-graded optimization ran because its required configured Forgejo backend is unavailable.",
+    "No real metric-articulated-rod rendered candidate exists for comparison."
+  ],
+  "next_actions": [
+    "Run the metric state reconstruction and force/rod rollout on at least two independent licensed scenes, render full 660-frame candidates, and promote only if every physical, visual, adversarial, and human-review gate passes."
+  ],
+  "run_dir": "outputs/wan-long-contact-dynamics/20260812T082000Z-first-principles-evolution-v1/evolution-tournament-v3-force-closure",
+  "tags": [
+    "self-evolution",
+    "skillhone",
+    "architecture-tournament",
+    "contact",
+    "deformable-dynamics",
+    "partial"
+  ]
+}

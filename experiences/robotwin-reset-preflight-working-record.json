@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.robotwin-reset-preflight-working",
+  "recorded_at": "2026-08-12T09:24:35Z",
+  "status": "WORKING",
+  "scope": "Pinned RoboTwin 2.0 clean render and deterministic reset preflight",
+  "summary": "Pinned RoboTwin source and 3.96 GB of clean embodiment/object assets now form an experiment-owned runtime; real SAPIEN rendering passes and two independent seed-0 resets are bit-exact while seed 1 changes the scene.",
+  "evidence": [
+    "RoboTwin commit 266f3aadf505a4f7fe9af0faa41a20f5f47cd123 and asset revision c15cc97be71e35244b6605d2d84c187f8565cc4d are pinned.",
+    "The SAPIEN render preflight passed on physical A800 GPU 2 with an explicit Render Well marker.",
+    "Two new seed-0 environments have qpos/endpose/bottle maximum error 0, identical model/qpose tags, and identical head-RGB SHA-256.",
+    "Seed 1 changes the bottle functional point by 0.273676 m, changes model ID, and changes the head-RGB hash."
+  ],
+  "lessons": [
+    "RoboTwin clean reset reproducibility is now measured rather than assumed.",
+    "Point-cloud, HDF5-save, and motion-planner stubs were restricted to setup-only preflight and are explicitly recorded; they are not valid for expert execution."
+  ],
+  "limitations": [
+    "XPolicyLab and background textures are omitted.",
+    "The reset preflight does not execute expert actions or produce paired counterfactual rollouts."
+  ],
+  "next_actions": [
+    "Install the official Curobo v0.7.8 stack and collect successful adjust_bottle expert seeds before building A+/A_swap replay."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/robotwin-reset-preflight/20260812T092344Z-adjust-bottle-seed0-v6",
+  "supersedes": [],
+  "tags": ["robotwin", "sapien", "reset", "determinism", "working"]
+}

@@ -1,6 +1,6 @@
 # Third-party component policy
 
-License review date: 2026-08-08.
+License review date: 2026-08-13.
 
 - Wan2.2 / Wan2.2-Animate: Apache-2.0. Selected for the visual teacher.
 - OSCAR: Apache-2.0 source, kept under ignored `external/` and pinned at
@@ -25,6 +25,15 @@ License review date: 2026-08-08.
   `0c52ee34ee464e9a568e84945e431f62106c4270`. It also requires the external
   Wan2.1-I2V-14B base transformer and prepared robot RGB+pointmap data. Nothing
   is vendored; users must review all source, base-model, and weight terms.
+- FlowWAM: Apache-2.0 dense robot-flow backend pinned at source
+  `f06fa46042e97738c6619c868f1097be6749d48d` and model revision
+  `1e68f76cecfb2caa973abfb24fca92cbc5312a6e`. The released WorldArena Stage-1
+  checkpoint is 10,137,267,208 bytes with SHA-256
+  `e211e32b6b79b293f7dec1a70794a69c3c1bf922483c06aef3c5f6d5c3be96c4`.
+  It also requires pinned Wan2.2-TI2V-5B and Wan2.1 UMT5 assets, plus a
+  robot-only flow producer whose URDF, camera calibration, and provenance are
+  supplied separately. SeedVR refinement remains optional and carries its own
+  bundled notice/terms.
 - Wan-Animate-2: Apache-2.0, pinned at source commit
   `3ad2fef7d61d6200c9c653e0fe47be7616b323f3` and Hugging Face model revision
   `3c1a1ccd035b9997478d288040358891a06bf682` or official ModelScope mirror
@@ -99,6 +108,8 @@ Primary project pages:
 - https://huggingface.co/BLM-Lab/Boundless-World-Model
 - https://github.com/mutianxu/Kinema4D
 - https://huggingface.co/Minoday/Kinema4D
+- https://github.com/YixiangChen515/FlowWAM_WorldArena
+- https://huggingface.co/YixiangChen/FlowWAM
 - https://github.com/Wan-Video/Wan-Animate-2
 - https://github.com/modelscope/DiffSynth-Studio
 - https://phi-zero.github.io/
@@ -116,6 +127,29 @@ Primary project pages:
   revision `c1a4eeb85694ae1dffe33ff1797d4e528928a133` for the robot-model
   sensitivity contrast. Assets remain under ignored `external/`.
   https://github.com/google-deepmind/mujoco_menagerie/tree/main/wonik_allegro
+- V-DPM: MIT code pinned at
+  `5e2a57cf6007dfb0511a8b396a0805089b9edcc4`; public weights are
+  CC-BY-NC-4.0 and inherit VGGT terms. Use only as a relative dynamic-point
+  proposal unless independently calibrated.
+  https://github.com/eldar/vdpm
+- SpatialTrackerV2: code and released weights pinned to repository revision
+  `7e12274c52077860cebfe007a6290777db43b63c`; treat the code as
+  CC-BY-NC-4.0 despite inconsistent third-party metadata. It may consume
+  calibrated RGB-D or emit monocular proposals, but never supplies stem
+  semantics.
+  https://github.com/henry123-boy/SpaTrackerV2
+- MultiDLO: MIT multi-curve topology tracker pinned at
+  `e0b7fa35739731a96ac7569952c00414ca2ad968`. It requires RGB-D and is a
+  topology critic, not a monocular reconstruction fallback.
+  https://github.com/RMDLO/multidlo
+- GMR: MIT human-to-robot motion retargeting scaffold pinned at
+  `bb1bbe40774794fceb2a7c579a3464a28e68c844`; its G1 motion does not include
+  object/contact state.
+  https://github.com/YanjieZe/GMR
+- dex-retargeting: MIT exact robot-hand retargeting pinned at
+  `3f56141bc8bd2760d5e452e382937269554ebb21`; custom Sharpa configuration must
+  remain hash-bound.
+  https://github.com/dexsuite/dex-retargeting
 - Sunday Robotics Memo hero media: official promotional media from
   `https://www.sunday.ai/`. No redistributable media license was found; it is
   used only as an internal research reference and must not be redistributed or

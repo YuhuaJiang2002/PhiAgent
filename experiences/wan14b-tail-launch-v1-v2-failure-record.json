@@ -1,0 +1,25 @@
+{
+  "record_id": "2026-08-12.wan14b-tail-launch-v1-v2-failure",
+  "recorded_at": "2026-08-12T13:53:00Z",
+  "status": "PARTIAL",
+  "scope": "Official Wan2.2-Animate-14B tail-window launcher and image-transport failures before sampling",
+  "summary": "The first launch was NOT STARTED because the remote launcher lacked the face-control flag; the second reached model loading but both seeds failed at upstream libpng decoding of src_ref.png, with no generated candidate promoted.",
+  "evidence": [
+    "The first two seed processes returned code 2 before GPU sampling and wrote only argparse logs.",
+    "After synchronizing the tested launcher, both seed processes failed with libpng bad-parameter errors followed by cv2.imread(src_ref_path) returning None.",
+    "The original reference image independently decoded with both Pillow and OpenCV, isolating the failure to the upstream compressed reference transport path."
+  ],
+  "lessons": [
+    "Remote launcher/version parity must be part of preflight, not inferred from checkpoint availability.",
+    "Image transport is an infrastructure contract; a decoder failure must not be treated as a bad model seed."
+  ],
+  "limitations": [
+    "No candidate video was produced by these two attempts."
+  ],
+  "next_actions": [
+    "Use pixel-preserving uncompressed PPM reference transport and retain the original/transport SHA-256 values."
+  ],
+  "run_dir": "outputs/wan-perceptual-vfm-tail",
+  "supersedes": [],
+  "tags": ["wan2.2", "infra", "launcher-drift", "libpng", "partial"]
+}

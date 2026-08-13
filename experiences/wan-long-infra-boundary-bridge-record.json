@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-boundary-bridge-partial",
+  "recorded_at": "2026-08-12T05:12:55Z",
+  "status": "PARTIAL",
+  "scope": "Source-camera-frame bridge for the independent-chain boundary",
+  "summary": "A real 80-frame continuation bridge was generated from source-camera frame 288 and safely adopted after a post-generation single-window QA bug, but neither tested stitch was acceptable as a complete long-video fix.",
+  "evidence": [
+    "The bridge model loaded once and generated the 80-frame result in 73.3514 seconds; the raw result decodes at 624x351 and 24 FPS with SHA-256 7e42b31da806b914f9f77a163f7a54286f7ec17662f7c96a5b68c33e21c0240b.",
+    "The first launcher marked the completed result failed only because max() was applied to an empty single-window overlap list; the corrected fresh experiment verified and reused the immutable result by hash.",
+    "Radius-2 bridge stitching produced maximum transition ratio 5.9147; hard stitching produced 12.2147. Both remain review_required and do not improve on the non-bridge radius-4 maximum of 5.4317."
+  ],
+  "lessons": [
+    "A local bridge conditioned on an aligned camera frame is insufficient when a later independently anchored chain remains in the output; long-horizon quality needs one dependency-preserving chain or regeneration of the entire downstream chain."
+  ],
+  "limitations": [
+    "The bridge is only 3.33 seconds and does not itself constitute a 20-second-or-longer acceptance run.",
+    "Contact, exact action motion, and physical correctness remain unverified."
+  ],
+  "next_actions": [
+    "Use a single rolling chain for the complete 27.5-second source and compare all nine overlap measurements against the two-chain result."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-a8004-boundary-bridge-0288-adopted-v2",
+  "supersedes": [],
+  "tags": [
+    "wan-animate2",
+    "long-video",
+    "source-camera-frame",
+    "bridge",
+    "partial"
+  ]
+}

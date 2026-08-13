@@ -19,6 +19,13 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--zero-shot", type=Path, required=True)
     parser.add_argument("--adapted", type=Path, required=True)
     parser.add_argument("--trajectory", type=Path, required=True)
+    parser.add_argument("--control", type=Path, required=True)
+    parser.add_argument("--reference", type=Path, required=True)
+    parser.add_argument("--adapter", type=Path, required=True)
+    parser.add_argument("--dataset-validation", type=Path, required=True)
+    parser.add_argument("--frozen-manifest", type=Path, required=True)
+    parser.add_argument("--zero-metadata", type=Path, required=True)
+    parser.add_argument("--adapted-metadata", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--contact-radius", type=int, default=22)
     return parser
@@ -70,6 +77,145 @@ def _motion_similarity(np: Any, target: list[Any], candidate: list[Any], masks: 
     return sum(values) / len(values)
 
 
+def _contact_observation(row: dict[str, Any]) -> tuple[float, float, bool]:
+    if "contact_xy" in row and "contact_active" in row:
+        x, y = row["contact_xy"]
+        return float(x), float(y), bool(row["contact_active"])
+    if "right_hand_xy" in row and "right_contact_required" in row:
+        x, y = row["right_hand_xy"]
+        return float(x), float(y), bool(row["right_contact_required"])
+    raise ValueError("trajectory row lacks a supported contact observation")
+
+
+def _json_object(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text())
+    if not isinstance(payload, dict):
+        raise ValueError(f"JSON input must contain an object: {path}")
+    return payload
+
+
+def _validate_evaluation_lineage(
+    paths: dict[str, Path],
+) -> dict[str, object]:
+    hashes = {name: _sha256(path) for name, path in paths.items()}
+    validation = _json_object(paths["dataset_validation"])
+    if validation.get("passed") is not True:
+        raise ValueError("dataset validation did not pass")
+    matching_records = [
+        row
+        for row in validation.get("clip_records", ())
+        if row.get("split") == "validation"
+        and row.get("target_sha256") == hashes["target"]
+        and row.get("control_sha256") == hashes["control"]
+        and row.get("trajectory_sha256") == hashes["trajectory"]
+        and row.get("reference_sha256") == hashes["reference"]
+    ]
+    if len(matching_records) != 1:
+        raise ValueError(
+            "target, control, trajectory, and reference do not match one held-out record"
+        )
+    manifest = _json_object(paths["frozen_manifest"])
+    manifest_assets = manifest.get("assets", ())
+
+    def manifest_matches(name: str, kind: str, split: str) -> bool:
+        return any(
+            row.get("sha256") == hashes[name]
+            and row.get("kind") == kind
+            and row.get("split") == split
+            for row in manifest_assets
+        )
+
+    manifest_gates = {
+        "target_is_validation_asset": manifest_matches(
+            "target",
+            "target_video",
+            "validation",
+        ),
+        "control_is_validation_asset": manifest_matches(
+            "control",
+            "vace_control_video",
+            "validation",
+        ),
+        "reference_is_training_identity_asset": manifest_matches(
+            "reference",
+            "vace_reference_image",
+            "train",
+        ),
+    }
+    if not all(manifest_gates.values()):
+        raise ValueError("held-out files do not match the frozen dataset manifest")
+
+    zero_metadata = _json_object(paths["zero_metadata"])
+    adapted_metadata = _json_object(paths["adapted_metadata"])
+    metadata_by_arm = {
+        "zero": (zero_metadata, "zero_shot"),
+        "adapted": (adapted_metadata, "adapted"),
+    }
+    for arm, (metadata, output_name) in metadata_by_arm.items():
+        if metadata.get("status") != "completed":
+            raise ValueError(f"{arm} inference metadata is not completed")
+        if metadata.get("output_sha256") != hashes[output_name]:
+            raise ValueError(f"{arm} output hash does not match metadata")
+        if Path(str(metadata.get("output", ""))).resolve() != paths[output_name]:
+            raise ValueError(f"{arm} output path does not match metadata")
+        inputs = metadata.get("inputs", {})
+        if (
+            inputs.get("control_sha256") != hashes["control"]
+            or inputs.get("reference_sha256") != hashes["reference"]
+        ):
+            raise ValueError(f"{arm} conditioning hashes do not match held-out inputs")
+    if zero_metadata["inputs"].get("lora_sha256") is not None:
+        raise ValueError("zero-shot metadata unexpectedly contains a LoRA")
+    if adapted_metadata["inputs"].get("lora_sha256") != hashes["adapter"]:
+        raise ValueError("adapted metadata does not bind the supplied adapter")
+    comparable_config_keys = (
+        "checkpoint_dir",
+        "control_video",
+        "reference_image",
+        "denoising_strength",
+        "prompt",
+        "gpu",
+        "minimum_free_gpu_mib",
+        "seed",
+        "height",
+        "width",
+        "num_frames",
+        "fps",
+        "steps",
+    )
+    zero_config = zero_metadata.get("config", {})
+    adapted_config = adapted_metadata.get("config", {})
+    config_gates = {
+        key: zero_config.get(key) == adapted_config.get(key)
+        for key in comparable_config_keys
+    }
+    checkpoint_gates = (
+        zero_metadata.get("inputs", {}).get("checkpoint_files")
+        == adapted_metadata.get("inputs", {}).get("checkpoint_files")
+    )
+    source_git_matches = (
+        zero_metadata.get("git", {}).get("source_git_head")
+        == adapted_metadata.get("git", {}).get("source_git_head")
+        and zero_metadata.get("git", {}).get("source_git_status_sha256")
+        == adapted_metadata.get("git", {}).get("source_git_status_sha256")
+    )
+    if (
+        not all(config_gates.values())
+        or not checkpoint_gates
+        or not source_git_matches
+    ):
+        raise ValueError("zero-shot and adapted inference configurations are not matched")
+    return {
+        "passed": True,
+        "heldout_record": matching_records[0],
+        "manifest_gates": manifest_gates,
+        "matched_config_gates": config_gates,
+        "checkpoint_files_match": checkpoint_gates,
+        "source_git_matches": source_git_matches,
+        "hashes": hashes,
+    }
+
+
 def main() -> int:
     args = _parser().parse_args()
     paths = {
@@ -77,12 +223,20 @@ def main() -> int:
         "zero_shot": args.zero_shot.expanduser().resolve(),
         "adapted": args.adapted.expanduser().resolve(),
         "trajectory": args.trajectory.expanduser().resolve(),
+        "control": args.control.expanduser().resolve(),
+        "reference": args.reference.expanduser().resolve(),
+        "adapter": args.adapter.expanduser().resolve(),
+        "dataset_validation": args.dataset_validation.expanduser().resolve(),
+        "frozen_manifest": args.frozen_manifest.expanduser().resolve(),
+        "zero_metadata": args.zero_metadata.expanduser().resolve(),
+        "adapted_metadata": args.adapted_metadata.expanduser().resolve(),
     }
     for name, path in paths.items():
         if not path.is_file() or path.stat().st_size == 0:
             raise ValueError(f"{name} does not exist or is empty: {path}")
     if args.contact_radius <= 0:
         raise ValueError("contact radius must be positive")
+    lineage = _validate_evaluation_lineage(paths)
 
     import cv2
     import numpy as np
@@ -102,9 +256,9 @@ def main() -> int:
     contact_masks = []
     contact_frames = []
     for index, row in enumerate(rows):
-        x, y = row["right_hand_xy"]
+        x, y, required = _contact_observation(row)
         contact_masks.append((xx - x) ** 2 + (yy - y) ** 2 <= args.contact_radius**2)
-        if row["right_contact_required"]:
+        if required:
             contact_frames.append(index)
     if not contact_frames:
         raise ValueError("held-out trajectory contains no required contact frames")
@@ -164,10 +318,14 @@ def main() -> int:
             name: {"path": str(path), "sha256": _sha256(path)}
             for name, path in paths.items()
         },
+        "lineage": lineage,
         "frame_count": len(target),
         "contact_frames": contact_frames,
         "contact_radius_pixels": args.contact_radius,
-        "coordinate_frame": "camera:synthetic_pixels",
+        "coordinate_frame": trajectory.get("coordinate_frames", {}).get(
+            "control",
+            "camera:synthetic_pixels",
+        ),
         "metrics": metrics,
         "gates": gates,
         "all_proxy_gates_pass": all(gates.values()),

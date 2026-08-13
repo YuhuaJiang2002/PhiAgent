@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-long-final-verification-entrypoint-v1",
+  "recorded_at": "2026-08-11T04:39:00Z",
+  "status": "PARTIAL",
+  "scope": "Final local verification entrypoint for the ten-second AC-WM delivery",
+  "summary": "The direct .venv/bin/pytest launcher failed during collection because its stale shebang invoked Homebrew Python 3.14 without the project import path. The corrected interpreter-explicit command passed the complete suite, so this is an environment-entrypoint failure with successful code verification, not a product-test failure.",
+  "evidence": [
+    "The first command reported 65 collection errors, all ModuleNotFoundError for phiagent or scripts, before executing any test.",
+    "PYTHONPATH=. .venv/bin/python -m pytest -q completed with 363 passed and one optional MuJoCo skip in 4.69 seconds.",
+    "The interpreter-explicit Ruff check passed for every changed Python module and test; git diff --check also passed.",
+    "Both published JSON files parse, and every new minimax-h3-long poster/video reference in demo/index.html resolves to a nonempty local file."
+  ],
+  "lessons": [
+    "Use the environment's Python module invocation for reproducible tests when a copied or moved virtual environment can leave console-script shebangs stale.",
+    "A collection-environment failure must not be reported as a code regression, but it must still be preserved as an engineering attempt."
+  ],
+  "limitations": [
+    "MuJoCo is not installed in the local CPU environment, so its optional backend test remains skipped.",
+    "The stale pytest console-script entrypoint was diagnosed but not rewritten because environment repair is outside the requested long-action implementation and the interpreter-explicit route is reproducible."
+  ],
+  "next_actions": [
+    "Recreate the local virtual environment if direct console-script entrypoints are required by a future automation runner."
+  ],
+  "run_dir": "outputs/minimax-h3-long-action-demo/20260811T043100Z-10s-v1",
+  "supersedes": [],
+  "tags": [
+    "acwm",
+    "verification",
+    "pytest",
+    "environment",
+    "partial"
+  ]
+}

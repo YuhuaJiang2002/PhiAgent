@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 0,
+      "box_xyxy": [478, 289, 535, 345],
+      "positive_points_xy": [[502, 307], [514, 317], [500, 329]],
+      "negative_points_xy": [[500, 282], [542, 320], [568, 345], [551, 370]],
+      "minimum_area_pixels": 120,
+      "maximum_area_pixels": 3200,
+      "role": "left cream flower matched to the source at the aligned first frame",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 45,
+          "box_xyxy": [500, 235, 543, 279],
+          "positive_points_xy": [[517, 249], [526, 257], [514, 264]],
+          "negative_points_xy": [[544, 291], [564, 282], [557, 347], [592, 347]],
+          "minimum_area_pixels": 90,
+          "maximum_area_pixels": 2600
+        }
+      ]
+    },
+    {
+      "instance_id": "gold-flower-middle-03",
+      "object_id": 3,
+      "anchor_source_frame": 45,
+      "box_xyxy": [534, 320, 581, 372],
+      "positive_points_xy": [[554, 340], [566, 349], [551, 358]],
+      "negative_points_xy": [[526, 257], [564, 282], [592, 347], [565, 382]],
+      "minimum_area_pixels": 110,
+      "maximum_area_pixels": 3000,
+      "role": "middle gold flower matched independently on the generated candidate"
+    },
+    {
+      "instance_id": "pink-flower-right-04",
+      "object_id": 4,
+      "anchor_source_frame": 45,
+      "box_xyxy": [571, 317, 622, 378],
+      "positive_points_xy": [[590, 338], [605, 347], [595, 360]],
+      "negative_points_xy": [[526, 257], [564, 282], [557, 347], [579, 389]],
+      "minimum_area_pixels": 120,
+      "maximum_area_pixels": 3200,
+      "role": "right pink flower matched independently on the generated candidate"
+    }
+  ],
+  "notes": "V3 keeps only three visually separable one-to-one identities. The cream flower is anchored at local frame 0 where source and candidate geometry align; V2 anchored the wrong small upper bud and is retained as a failed run."
+}

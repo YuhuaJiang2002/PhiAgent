@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-remote-ssh-preflight",
+  "recorded_at": "2026-08-11T08:53:57Z",
+  "status": "PARTIAL",
+  "scope": "Pinned BWM source preparation on the a800-1 training host",
+  "summary": "The first pinned BWM preparation attempt stopped before checkout because the remote host has no GitHub SSH credential, while the local machine can resolve the exact pinned revision over SSH.",
+  "evidence": [
+    "a800-1 rejected git@github.com with Permission denied (publickey) before cloning any source objects.",
+    "The local git ls-remote over SSH resolved BWM main and HEAD to the pinned commit 44acfd1b06f35f365f02f7bb2fc5da6beafcd6bc."
+  ],
+  "lessons": [
+    "Prepare the pinned source with the authorized local SSH credential, then transfer a revision-marked archive to the GPU host instead of changing Git transport or copying credentials."
+  ],
+  "limitations": [
+    "No BWM environment, checkpoint, dataset, training job, or benchmark result was produced by this attempt."
+  ],
+  "next_actions": [
+    "Clone the exact BWM revision locally over SSH, transfer the source without credentials, verify its commit on a800-1, and continue preflight in a new immutable run."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/external/boundless-world-model",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "gpu", "ssh", "preflight", "negative-result"]
+}

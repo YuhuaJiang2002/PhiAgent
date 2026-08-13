@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v78-wide-full-person-accepted",
+  "recorded_at": "2026-08-11T12:50:00+08:00",
+  "scope": "Accepted full-660 expansion of source-person coverage in the real-human versus H3 robot flower-arranging comparison",
+  "status": "WORKING",
+  "summary": "v78 deliberately expands the light shadow over the complete lower-person and arm workspace, suppresses garment color and intermittent human residuals, preserves robot/flower/vegetation content, passes all 11 acceptance gates, and publishes a new 27.5-second comparison showcase.",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T044300Z-wide-full-person-covered-v78-accepted",
+  "evidence": [
+    "All 11 renderer gates pass: both videos decode 660 frames; edit scope, clean-plate reduction, chroma suppression, protected content, outside safety, generated-green inheritance, full-frame jerk, ROI jerk, and human review all pass.",
+    "The lower-person semantic layer uses ROI (350,165,780,475), 48-pixel spatial dilation, +/-2-frame temporal union, 18-pixel feather, 0.88 light-graphite strength, 10-pixel robot/flower protection, and 3-pixel generated-green protection.",
+    "Mean wide-person active fraction is 0.0840429, total mean modified fraction is 0.1155060, and maximum modified fraction is 0.1477589; v74's prior total mean modified fraction was 0.0541051.",
+    "Wide-region mean chroma falls 40.67%, from 13.2482 to 7.8594, while the independent clean-plate layer reduces its mean distance by 16.9760%.",
+    "Protected robot/flower pixels, pixels outside the union safety region, and generated-green pixels relative to the inherited plate result are exact on every preencode frame.",
+    "Full-frame mean jerk is 0.773972 versus 0.697530 in raw H3, and ROI mean jerk is 1.758543 versus 1.585339; both stay inside their declared 1.12 and 1.18 bounds.",
+    "Visual review covers the full timeline at 1 FPS, every 12th lower-workarea frame, every frame in 110--136, 235--255, 384--405, and 475--492, and the 24 highest-motion review indices inherited from the motion-lag skill assessment.",
+    "The v77 prepromotion and v78 accepted robot videos are byte-identical with SHA-256 b9201ae32206f48f5aa0a83cd3b8d3b13a8f7e06cb7a4ea190488a494da376ff.",
+    "The accepted comparison and published showcase share SHA-256 fb700bfa15cb9662d7bd436392236b510e1bc6cffffcc0e0df77689e2332de5d; ffprobe reports H.264, 672x768, 24 FPS, 660 decoded frames, and 27.500 seconds.",
+    "Twenty-six focused unit tests pass; Ruff, py_compile, full video decode, and experience-ledger validation pass."
+  ],
+  "lessons": [
+    "Colored garment residuals require an independent semantic source-person layer; enlarging a neutral-chroma halo alone cannot guarantee clothing containment.",
+    "A broad light material should primarily suppress chroma while retaining local luminance, otherwise the fix becomes a dark duplicate silhouette.",
+    "Generated-content protection must include green vegetation because source-person masks can overlap plants that incomplete flower instance masks do not cover.",
+    "Layer-specific metrics must measure the relevant intermediate result before later compositing layers are applied.",
+    "The lighten-shadow skill's alpha/protection discipline remains useful when the user explicitly overrides its unchanged-support default, and motion-lag high-motion frames are useful acceptance probes even when motion warping is not adopted."
+  ],
+  "limitations": [
+    "WORKING is scoped to this pinned 660-frame, camera-frame 2-D H3 composite and its pinned masks; it is not a general segmentation or physical relighting claim.",
+    "The deliberately broad soft shadow can remain visible as a stylized light graphite region, as requested, though it no longer exposes recognizable garment/hand pixels in reviewed frames.",
+    "The result does not demonstrate physical robot execution."
+  ],
+  "next_actions": [],
+  "supersedes": [
+    "2026-08-11.h3-shadow-v74-soft-wide-strict-containment-accepted",
+    "2026-08-11.h3-shadow-v76-wide-person-coverage-partial",
+    "2026-08-11.h3-shadow-v77-green-protected-prepromotion"
+  ],
+  "tags": [
+    "minimax-h3",
+    "epl",
+    "wide-person-coverage",
+    "garment-containment",
+    "green-protection",
+    "full-timeline",
+    "showcase",
+    "accepted",
+    "working"
+  ]
+}

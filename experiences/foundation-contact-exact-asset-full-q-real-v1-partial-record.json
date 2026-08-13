@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-exact-asset-full-q-real-v1-partial",
+  "recorded_at": "2026-08-12T12:39:00Z",
+  "scope": "Exact G1 plus bilateral Sharpa full-q analysis-by-synthesis bridge on the real 27.5-second candidate",
+  "status": "PARTIAL",
+  "summary": "The new exact-asset solver, validator, compiler bridge, and adversarial tests work, but the real single view cannot identify all 73 robot joints and has no foundation-keypoint plus exact-render bundle, so no robot trajectory is emitted.",
+  "run_dir": "outputs/foundation-contact/20260812T122500Z-exact-asset-full-q-real-v1",
+  "evidence": [
+    "The exact asset files match the frozen registry and contribute 29 G1, 22 left-Sharpa, and 22 right-Sharpa scalar joints.",
+    "The real validation finishes in 0.008898959 seconds with status PARTIAL and robot_trajectory=null.",
+    "Manual full-span review finds the lower body outside the frame, most finger joints occluded by flowers, the exact generated embodiment unverified, and late color/local-structure corruption.",
+    "The bounded LM solver uses data-Jacobian rank and condition number rather than priors for observability; wrong hash, infinite q uncertainty, ambiguous asset, missing held-out groups, and partial-q attacks are rejected.",
+    "Ten new exact-asset tests pass, and the 35-test related foundation-contact suite passes with Python warnings treated as errors."
+  ],
+  "lessons": [
+    "A complete numeric q vector is not full-q evidence when cropped or occluded dimensions are supplied only by a prior.",
+    "Asset hashes prove which files a renderer should use; held-out render comparison and alternative-asset separation are still required to prove generated embodiment identity."
+  ],
+  "limitations": [
+    "The current video provides neither synchronized robot telemetry nor a calibrated additional view of the cropped legs and occluded fingers.",
+    "MediaPipe imports in both Python 3.14 and Python 3.12 environments failed to complete within 60 seconds and were interrupted without producing landmarks; no replacement landmarks were fabricated.",
+    "Metric camera, persistent rods, and sensor/solver force stages remain false, so the result does not validate 3-D force closure or the final video."
+  ],
+  "next_actions": [
+    "Acquire synchronized complete robot q/qdot telemetry or a calibrated additional view, run an occlusion-aware pretrained proposal model, and feed its dense observations through the frozen exact-render evidence contract.",
+    "Keep the trajectory gate false until all 660 frames, posterior bounds, held-out groups, and alternative-asset tests pass."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "robot-trajectory", "exact-asset", "observability", "partial"]
+}

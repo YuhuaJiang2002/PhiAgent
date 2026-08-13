@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-lighten-skill-v1-metric-preflight",
+  "recorded_at": "2026-08-11T04:13:00Z",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T133000Z-skill-shadow-lighten-v1-gain120-pending",
+  "scope": "Initial assessment formula for the lighten-robot-shadows skill",
+  "status": "PARTIAL",
+  "summary": "The first lightening assessment remained PARTIAL because it compared normalized plate-MAE reduction over candidate-specific active sets and demanded +0.025; gain changes the active set and its denominator, so that formula was not a valid cross-candidate gate.",
+  "evidence": [
+    "shadow-lightening-assessment-v1-rejected-metric.json records reduction gain 0.0090892 and shadow_lighter=false while decode, edit-scope, jerk, protection, motion-configuration, and outside-safety gates pass.",
+    "The same render reduces absolute post-cleanup plate MAE from 26.4339 to 25.2723 and increases bounded plate alpha from 0.0076077 to 0.0081118.",
+    "No video or parent experiment was overwritten while correcting the assessment contract."
+  ],
+  "lessons": [
+    "Do not compare normalized means over moving active-pixel populations as if their denominators were fixed.",
+    "Use absolute post-cleanup plate distance together with bounded alpha increase and visual review."
+  ],
+  "limitations": [
+    "This record rejects the first metric formula, not necessarily the gain-1.20 pixels.",
+    "Human review was still pending at this point."
+  ],
+  "next_actions": [
+    "Re-assess the unchanged render with a fixed contract requiring lower absolute plate MAE, a 5-25% alpha increase, bounded edit scope, and temporal non-regression."
+  ],
+  "supersedes": [],
+  "tags": [
+    "shadow",
+    "lightening",
+    "skill-evolution",
+    "metric-correction",
+    "partial"
+  ]
+}

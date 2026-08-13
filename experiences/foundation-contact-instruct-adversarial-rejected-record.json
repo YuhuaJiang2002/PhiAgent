@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-instruct-adversarial-rejected",
+  "recorded_at": "2026-08-12T11:39:30Z",
+  "status": "PARTIAL",
+  "scope": "Qwen3 4B non-thinking instruct challenger for the foundation-contact supervisor",
+  "summary": "The instruct challenger passed ordinary probe and test cases but regressed three physical-evidence attack classifications, so the self-supervisor rejected it and restored qwen3:4b as champion.",
+  "evidence": [
+    "outputs/foundation-contact/20260812T211000Z and 20260812T211500Z pass 4/4 probe and 3/3 test.",
+    "outputs/foundation-contact/20260812T212000Z-direct-qwen3-instruct-adversarial-v10 passes only 1/4 adversarial cases at 19.1638 generated tokens/second.",
+    "Partial-q, visual-force, and frozen-stem attacks were collapsed into hard_gate_failed instead of their required audit classes.",
+    "The final ~/.skillhone/settings.json points improver, executor, and synthesis back to ollama/qwen3:4b."
+  ],
+  "lessons": [
+    "A cleaner instruction-following checkpoint can still lose adversarial taxonomy resolution.",
+    "Ordinary benchmark success cannot override an adversarial regression."
+  ],
+  "limitations": [
+    "The challenger was evaluated on eleven small exact-decision cases rather than a broad external suite."
+  ],
+  "next_actions": [
+    "Keep the rejected checkpoint only as negative evidence; reconsider it only after new sealed attack families pass without weakening reason-code verification."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T212000Z-direct-qwen3-instruct-adversarial-v10",
+  "supersedes": [],
+  "tags": ["foundation-contact", "qwen3", "adversarial", "rejected", "partial"]
+}

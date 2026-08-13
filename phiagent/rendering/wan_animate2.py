@@ -77,6 +77,15 @@ def select_wan_animate2_gpus(
     return selected[0], selected[1]
 
 
+def wan_animate2_master_port(gpus: Sequence[GPUInfo]) -> int:
+    """Assign one deterministic rendezvous port per physical-GPU pair."""
+
+    indices = sorted(gpu.physical_index for gpu in gpus)
+    if len(indices) != 2 or len(set(indices)) != 2 or indices[0] < 0 or indices[1] >= 100:
+        raise ValueError("master-port assignment requires two distinct GPU indices in [0, 99]")
+    return 15000 + indices[0] * 100 + indices[1]
+
+
 def verify_wan_animate2_source(repo: Path) -> str:
     resolved = repo.expanduser().resolve()
     required = (

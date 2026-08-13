@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-smoke-expandable-oom-partial",
+  "recorded_at": "2026-08-12T07:30:00Z",
+  "scope": "Second two-iteration CP4/FSDP4 rank-32 DROID LoRA smoke with expandable CUDA segments",
+  "status": "PARTIAL",
+  "summary": "Expandable CUDA segments removed the earlier all-gather fragmentation failure, but the full attention-plus-MLP LoRA profile still exceeded the two shared GPUs during an MLP adapter forward temporary by 304 MiB.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T180000Z-lora-r32-cp4-smoke2-expandable",
+  "evidence": [
+    "The second run progressed beyond the first run's FSDP all-gather failure into the LoRA MLP forward path.",
+    "Ranks on physical GPUs 0 and 1 failed at the PEFT lora_B(lora_A(x)) addition for mlp.layer1 while attempting a 304 MiB allocation.",
+    "With expandable segments enabled, reserved but unallocated memory fell to roughly 335 MiB, confirming this was a true shared-card peak rather than the prior 1.96 GiB fragmentation artifact.",
+    "No optimizer step or checkpoint completed and result.json records PARTIAL."
+  ],
+  "lessons": [
+    "MLP LoRA creates a large temporary at the native 93-frame token grid and is the next peak-memory limiter.",
+    "Attention-only Q/K/V/output LoRA is a clean quality-oriented reduction because it retains cross-view and temporal attention adaptation while removing the large MLP adapter branch."
+  ],
+  "limitations": [
+    "No checkpoint was produced, so the full-target profile has no quality evidence."
+  ],
+  "next_actions": [
+    "Version the overlay as attention-only rank-32 and rerun the two-step smoke in a new directory."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "mlp",
+    "oom",
+    "attention-only",
+    "partial"
+  ],
+  "supersedes": []
+}

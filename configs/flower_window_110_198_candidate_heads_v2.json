@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 45,
+      "box_xyxy": [500, 235, 543, 279],
+      "positive_points_xy": [[517, 249], [526, 257], [514, 264]],
+      "negative_points_xy": [[544, 291], [564, 282], [557, 347], [592, 347]],
+      "minimum_area_pixels": 90,
+      "maximum_area_pixels": 2600,
+      "role": "generated candidate counterpart of cream-flower-left-01 head"
+    },
+    {
+      "instance_id": "lime-bud-center-02",
+      "object_id": 2,
+      "anchor_source_frame": 45,
+      "box_xyxy": [545, 258, 589, 311],
+      "positive_points_xy": [[558, 274], [570, 287], [562, 299]],
+      "negative_points_xy": [[526, 257], [557, 347], [592, 347], [571, 326]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 2800,
+      "role": "generated candidate counterpart of lime-bud-center-02 head"
+    },
+    {
+      "instance_id": "gold-flower-middle-03",
+      "object_id": 3,
+      "anchor_source_frame": 45,
+      "box_xyxy": [534, 320, 581, 372],
+      "positive_points_xy": [[554, 340], [566, 349], [551, 358]],
+      "negative_points_xy": [[526, 257], [564, 282], [592, 347], [565, 382]],
+      "minimum_area_pixels": 110,
+      "maximum_area_pixels": 3000,
+      "role": "generated candidate counterpart of gold-flower-middle-03 head"
+    },
+    {
+      "instance_id": "pink-flower-right-04",
+      "object_id": 4,
+      "anchor_source_frame": 45,
+      "box_xyxy": [571, 317, 622, 378],
+      "positive_points_xy": [[590, 338], [605, 347], [595, 360]],
+      "negative_points_xy": [[526, 257], [564, 282], [557, 347], [579, 389]],
+      "minimum_area_pixels": 120,
+      "maximum_area_pixels": 3200,
+      "role": "generated candidate counterpart of pink-flower-right-04 head"
+    }
+  ],
+  "notes": "Window-local frames 0--88 map to global frames 110--198. Candidate prompts are independently measured on seed-42. V2 tracks heads for identity; it does not claim that a partially occluded thin stem is segmented by SAM2."
+}

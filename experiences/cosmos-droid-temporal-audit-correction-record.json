@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-temporal-audit-correction-partial",
+  "recorded_at": "2026-08-12T06:07:00Z",
+  "scope": "Temporal duplicate acceptance test for Cosmos DROID composites",
+  "status": "PARTIAL",
+  "summary": "The first exact-frame-hash audit falsely accepted the rejected 8-to-16 FPS dataset because H.264 reconstruction perturbed repeated frames; the replacement decoded-pixel near-duplicate audit correctly rejected it with a 50% median duplicate rate.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-multiview/20260812T140000Z-composite-v4-97f",
+  "evidence": [
+    "temporal-duplicate-audit-v1.json reported zero exact duplicates and accepted=true on the known paired-frame dataset.",
+    "Direct decoded-frame inspection showed alternating MAD values near 0.01-0.17 and ordinary-motion values commonly above 1.0 on the same clips.",
+    "temporal-near-duplicate-audit-v2.json uses decoded 0-255 pixel MAD <= 0.25 and reports median 0.5, P90 0.5104167, minimum 0.4895833, maximum 0.5520833, with accepted=false."
+  ],
+  "lessons": [
+    "Lossy video coding invalidates exact decoded-hash equality as a duplicate-frame detector.",
+    "Acceptance tests must be calibrated against a known negative fixture before they gate training data."
+  ],
+  "limitations": [
+    "The MAD threshold detects near-identical decoded frames but does not measure motion semantics or optical-flow accuracy."
+  ],
+  "next_actions": [
+    "Run the same frozen MAD gate on the new native-16-FPS composite and require median <= 0.15 and P90 <= 0.30 before embedding."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "temporal-audit",
+    "false-acceptance",
+    "correction",
+    "partial"
+  ],
+  "supersedes": []
+}

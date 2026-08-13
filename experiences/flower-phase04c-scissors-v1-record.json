@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04c-scissors-v1",
+  "recorded_at": "2026-08-10T21:59:00Z",
+  "status": "PARTIAL",
+  "scope": "Explicit scissors-instance probe on the 50-frame source-aligned trimming phase [398,448)",
+  "summary": "The strongly occluded scissors prompt fails: masks are empty for 30 frames and the nonempty prefix tracks the source hand/forearm rather than the tool, so tool-to-bouquet contact is not auditable.",
+  "evidence": ["The run completed on physical A800 GPU 1 with 81225 MiB free at preflight.", "There are 30/50 empty frames; adjacent IoU mean is 0.339402 and minimum is 0.", "All-frame review shows hand/forearm selection in the 20 nonempty frames.", "human-review.json records REJECT_PHASE_04C_TOOL_SUPERVISION."],
+  "lessons": ["A tiny hand-occluded tool cannot be inferred from a broad box/point prompt without tool-specific evidence."],
+  "limitations": ["Phase 04C has neither a persistent scissors identity nor accepted two-gripper identities."],
+  "next_actions": ["Acquire higher-resolution or multi-anchor tool supervision and keep phase-04C relighting blocked until it passes."],
+  "run_dir": "outputs/flower-full-expansion/20260811T057000Z-phase04c-scissors-v1",
+  "supersedes": [],
+  "tags": ["flower", "phase04c", "scissors", "occlusion", "partial"]
+}

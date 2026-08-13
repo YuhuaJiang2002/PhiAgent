@@ -1,0 +1,43 @@
+{
+  "record_id": "2026-08-12.wan-perceptual-vfm-display-ready-v4",
+  "recorded_at": "2026-08-12T15:12:00Z",
+  "status": "WORKING",
+  "scope": "27.5-second perceptually plausible synthetic flower-arranging robot demo",
+  "summary": "A source-state-locked, reviewed VFM route is DISPLAY_READY for synthetic visual use: official Wan2.2-Animate windows repair the high-risk late interval, deterministic hard routing avoids double anatomy, and the corrected adversarial critic plus high-resolution review pass the scoped display contract.",
+  "evidence": [
+    "The final H.264 artifact decodes 660/660 frames at 1280x720, 24 FPS, and 27.5 seconds; SHA-256 is d9a00c72c13a623d04ca0eeeb625c0179ff3f04ef2dc87a4a6409d0d7320f886.",
+    "The lossless post-decode audit reports flower exactness 1.0, native-background exactness 0.9924290933, editable-support changed fraction 0.7355295522, and flower dynamic transition fraction 0.9800613497.",
+    "The corrected 720p adversarial audit evaluated all 660 frames, sampled or contact-attacked 585 frames, detected color/topology/contact/ghost attacks, and reports 20-second-and-later projected contact recall 1.0.",
+    "High-resolution review covered 24 uniform full frames plus 42 dense hand/seam frames and vetoed an optical-flow bridge because it visibly melted anatomy.",
+    "The compositor completed in 54.6897 seconds at 12.0681 FPS. Official 88-frame tail and bridge backend runs took 511.5277 and 476.9168 seconds; the persistent 660-frame incumbent took 509.7154 seconds."
+  ],
+  "lessons": [
+    "For perceptual synthetic data, observed flower/background state should be immutable while foundation models resample only the uncertain robot layer.",
+    "Cross-dissolves and optical flow between incompatible identities create double or melted anatomy; deterministic hard routing is the safer bounded failure mode.",
+    "Critics need their own invariants: explicit logical ufuncs, bounded fractions, immutable input masks, and attackable-sample filtering prevented NumPy temporary reuse from producing false audit results.",
+    "Generated depth, telemetry, and forces are unnecessary for this display scope and must never be promoted as measurements."
+  ],
+  "limitations": [
+    "The legacy all-in-one RGB-alpha image-space contract remains PARTIAL because late hand-replacement coverage violates its frozen anchor-derived limit on 23.33% of frames.",
+    "Frames 479 and 559 contain bounded one-frame route discontinuities visible under frame stepping.",
+    "The concurrent 566.2173-second scheduling path is derived from measured independent stages, not a separately timed end-to-end run.",
+    "No metric depth, calibrated camera, exact q/qdot, contact force, force closure, collision safety, or real-robot execution is established."
+  ],
+  "next_actions": [
+    "Run the official late-window generators concurrently on disjoint leased GPUs to measure, rather than project, the 566.2173-second critical path.",
+    "Train or retrieve an identity-matched boundary bridge if frame-step continuity must become a hard display gate; do not use the rejected optical-flow bridge."
+  ],
+  "run_dir": "outputs/wan-perceptual-demo/20260812T150000Z-routed-wan14b-v4-seam-optimized",
+  "supersedes": [
+    "2026-08-12.wan-perceptual-topology-lock-v1-v2-partial",
+    "2026-08-12.wan14b-tail-seed43-generated-partial"
+  ],
+  "tags": [
+    "wan2.2",
+    "long-video",
+    "foundation-model",
+    "agentic-harness",
+    "adversarial-audit",
+    "display-ready"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-master-port-conflict",
+  "recorded_at": "2026-08-12T04:31:00Z",
+  "status": "PARTIAL",
+  "scope": "First two-pair persistent Wan-Animate-2 full-length launch",
+  "summary": "The first four-GPU launch was stopped after both upstream workers inherited TCP port 12345 and the second pair failed torch.distributed initialization with EADDRINUSE.",
+  "evidence": [
+    "Batch 01 inference.log records DistNetworkError EADDRINUSE on port 12345.",
+    "The exact process group for this experiment was terminated after resolving every PID; GPUs 1, 4, 5, and 6 returned to 3 MiB used.",
+    "No full-length result was claimed."
+  ],
+  "lessons": [
+    "Every concurrent model worker needs a distinct recorded distributed rendezvous port, and all ports and GPU pairs must pass one transactional launch preflight before any worker starts."
+  ],
+  "limitations": [
+    "Metadata retains status=running because the process group was externally terminated to avoid wasting GPU time; this ledger record is the correcting conclusion."
+  ],
+  "next_actions": [
+    "Assign and availability-check ports 29500 and 29501, then rerun in a new experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-persistent-2pair-rolling-v1",
+  "supersedes": [],
+  "tags": ["wan-animate2", "long-video", "distributed", "port-conflict", "failure"]
+}

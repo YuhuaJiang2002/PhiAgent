@@ -1,0 +1,26 @@
+{
+  "record_id": "2026-08-12.wan-long-contact-training-prelaunch-failures-v1",
+  "recorded_at": "2026-08-12T07:55:00Z",
+  "status": "PARTIAL",
+  "scope": "Remote synchronization and first launch attempts for the RGB-alpha-contact adapter",
+  "summary": "Several prelaunch attempts failed before GPU optimization because the remote parent directory was absent, the local rsync lacked a requested option, one transfer was incomplete, and the first launch could not find the rewritten remote manifest.",
+  "evidence": [
+    "The first dataset rsync returned code 11 because the exact remote curriculum parent directory did not exist.",
+    "A diagnostic retry rejected the unsupported local rsync option --info=stats1.",
+    "The partially transferred tree contained a temporary validation file and no manifest-remote.json.",
+    "The first training command exited with FileNotFoundError before selecting model data or running an optimizer step."
+  ],
+  "lessons": [
+    "Remote data transfer must verify a terminal asset and load the frozen manifest before launching a GPU job.",
+    "Portable rsync invocations should use options supported by the host macOS version."
+  ],
+  "limitations": [
+    "These attempts provide infrastructure diagnostics only and no model evidence."
+  ],
+  "next_actions": [
+    "Repeat rsync with --stats, verify all terminal validation assets, rewrite paths, load the manifest remotely, and launch in a new experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-robot-contract/20260812T073750Z-first-principles-v1",
+  "supersedes": [],
+  "tags": ["vace", "remote", "rsync", "prelaunch", "failure", "partial"]
+}

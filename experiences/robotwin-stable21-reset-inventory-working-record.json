@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.robotwin-stable21-reset-inventory-working",
+  "recorded_at": "2026-08-12T12:34:44Z",
+  "status": "WORKING",
+  "scope": "Twenty-plus deterministic RoboTwin adjust_bottle reset inventory",
+  "summary": "Parallel physical-A800 reset screening produced 21 independently reproducible, scene-changing adjust_bottle seeds, passing the frozen minimum-20 reset gate before expert trajectory collection.",
+  "evidence": [
+    "The accepted stable seeds are 0,2,4,6,8,10,14,16,26,30,32,34,38,40,42,44,46,48,50,54,56.",
+    "Every accepted seed has two new setup runs with qpos/endpose/bottle maximum error 0, exact head-RGB hash, and equal model/qpose tags.",
+    "Every accepted record also includes a different stable seed whose scene changes by bottle pose, model ID, qpose tag, or RGB.",
+    "The summary covers 33 result artifacts; 12 blocked results, including unstable object seeds, remain preserved.",
+    "The frozen gate requires 20 stable seeds and reports 21, so gate_passed=true."
+  ],
+  "lessons": [
+    "RoboTwin's nominal seed range includes unstable object initializations; stability must be measured and invalid seeds retained rather than silently retried.",
+    "Four-way GPU screening can establish reset reproducibility independently of the still-blocked expert planner."
+  ],
+  "limitations": [
+    "The reset workers intentionally stub point-cloud/save modules and motion planners; they do not execute expert actions.",
+    "No A+ or A_swap rollout has yet been collected for these seeds."
+  ],
+  "next_actions": [
+    "Use the 21 frozen seeds for official Curobo expert collection, then retain the first 20 successful A+ seeds for paired replay."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/robotwin-reset-inventory-summary/20260812T123444Z-stable20-v1",
+  "supersedes": [],
+  "tags": ["robotwin", "reset", "twenty-seeds", "determinism", "working"]
+}

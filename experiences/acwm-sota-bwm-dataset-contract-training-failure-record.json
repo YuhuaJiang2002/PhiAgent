@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-dataset-contract-training-failure",
+  "recorded_at": "2026-08-11T09:56:00Z",
+  "status": "PARTIAL",
+  "scope": "Second pinned BWM action-adapter GPU training attempt",
+  "summary": "Model and checkpoint loading succeeded, but the public RoboTwin dataset adapter omitted DiffSynth's load_from_cache runner contract.",
+  "evidence": [
+    "All three pinned Wan DiT shards, the VAE, and BWM step-12000 loaded before the runner raised AttributeError for load_from_cache.",
+    "The immutable experiment returned code 1 without a forward step."
+  ],
+  "lessons": [
+    "A dataset can pass direct loader probes yet still miss framework attributes used only by the training runner."
+  ],
+  "limitations": [
+    "No loss or optimizer step occurred."
+  ],
+  "next_actions": [
+    "Record that JSONL-backed RoboTwin samples are not precomputed training cache."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-sota-training/20260811T095514.540666Z-action-adapter-seed20260811",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "gpu-training", "negative-result", "dataset-contract"]
+}

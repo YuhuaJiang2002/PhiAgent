@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-raw-calibrated-geometry-partial",
+  "recorded_at": "2026-08-12T06:51:10Z",
+  "status": "PARTIAL",
+  "scope": "Raw DROID camera/telemetry calibration and geometric novel-view lower bound",
+  "summary": "One pinned raw DROID episode now has verified telemetry, camera extrinsics, SVO intrinsics/distortion, metric depth samples, and calibrated wrist-to-two-exterior depth-splat baselines; rights and held-out lineage remain blocked.",
+  "evidence": [
+    "Five raw files total 46,338,367 bytes and match every pinned GCS MD5 and local SHA-256.",
+    "All 77 HDF5 datasets contain 338 aligned finite rows, including 6D commanded/measured Cartesian state, 7D joints, gripper, three camera extrinsics, and camera/control timestamps.",
+    "Exterior camera extrinsics are static; wrist translation/euler ranges are 0.4913 m/1.2977 rad and its gripper offset is exactly constant.",
+    "ZED 5.1 reports matching serials, 1280x720 intrinsics/distortion, meter depth, and three sampled depth maps per camera.",
+    "Exterior-1 depth splatting covers 3.78% of pixels with visible PSNR 7.46 dB; exterior-2 covers 3.05% with visible PSNR 9.10 dB."
+  ],
+  "lessons": [
+    "The original Euler implementation used the wrong composition order; matching DROID's scipy Rotation.from_euler('xyz') convention is necessary for any valid projection.",
+    "Even calibrated visible-surface splatting leaves most target pixels occluded and is only a geometry lower bound, not a complete generator."
+  ],
+  "limitations": [
+    "The official raw DROID dataset license is still unverified.",
+    "This episode has no proven mapping to LeRobot DROID-100 episodes 21, 60, or 77.",
+    "The result cannot enter the Strict-W benchmark or public training set."
+  ],
+  "next_actions": [
+    "Obtain an official dataset license and recover held-out raw UUID mappings from the RLDS-100 episode metadata before running claim-eligible GEN3C/ReCamMaster comparisons."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-depth-warp/20260812T064806Z-wrist-to-exterior1-v2",
+  "supersedes": ["2026-08-12.droid-novel-view-readiness-blocked"],
+  "tags": ["droid", "novel-view", "calibration", "depth", "geometry", "partial"]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window398-split-preflight-corrections",
+  "recorded_at": "2026-08-11T11:20:00Z",
+  "scope": "Operational preflight and immutable correction audit for splitting global frames 398-486",
+  "status": "PARTIAL",
+  "summary": "Four non-model preflight attempts failed without changing accepted pixels; each was corrected in a new command and preserved in the audit trail.",
+  "run_dir": "outputs/gpu-flower-window398-split-audit/20260811T105640Z-v1",
+  "tags": ["preflight", "ffmpeg", "rsync", "shell", "negative-result", "partial"],
+  "evidence": [
+    "The first local storyboard command failed because the installed FFmpeg has no drawtext filter; the retry omitted labels and produced the review board.",
+    "The first rsync started before the remote parent existed and partially failed; the parent was created and rsync resumed without overwriting an experiment.",
+    "The first parallel tracking shell backgrounded the preceding cd because of shell operator precedence; the corrected command uses cd; command & and both tracks completed.",
+    "The first temporal-repair launch found a pre-created empty output directory and refused to overwrite it; the exact empty directory was removed with rmdir and the immutable rerun completed."
+  ],
+  "lessons": [
+    "Review-board generation must not assume optional FFmpeg filters.",
+    "Parallel remote commands need an explicit working-directory statement before any background operator.",
+    "Experiment writers that refuse overwrite must own directory creation."
+  ],
+  "limitations": ["This record is operational evidence only and does not accept any video candidate."],
+  "next_actions": ["Use the corrected commands and the two 45-frame overlap windows for the strict gate."],
+  "supersedes": []
+}

@@ -1,0 +1,31 @@
+{
+  "record_id": "2026-08-12.metric-flower-sim-smoke-v2-partial",
+  "recorded_at": "2026-08-12T12:50:00Z",
+  "status": "PARTIAL",
+  "scope": "Second 33-frame metric flower simulation smoke",
+  "summary": "The corrected schedule passed, but exact G1 loading stopped because the copied XML lacked its relative STL asset directory.",
+  "evidence": [
+    "MuJoCo reported the missing inputs/assets/pelvis.STL before any frame rendered.",
+    "The complete frozen G1 and Sharpa asset trees were subsequently located under ignored external checkouts with XML hashes identical to the registry."
+  ],
+  "lessons": [
+    "An exact XML digest does not make an asset executable when its hash-compatible relative mesh tree is absent."
+  ],
+  "limitations": [
+    "No frame or physical gate completed in this attempt."
+  ],
+  "next_actions": [
+    "Use the complete external asset paths without editing the hash-bound XML and rerun in a new directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T125000Z-metric-flower-sim-smoke-v2",
+  "supersedes": [
+    "2026-08-12.metric-flower-sim-smoke-v1-partial"
+  ],
+  "tags": [
+    "flower",
+    "simulation",
+    "assets",
+    "smoke",
+    "partial"
+  ]
+}

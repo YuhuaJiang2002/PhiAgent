@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos3-wrist-lineage-audit-engineering-working",
+  "recorded_at": "2026-08-12T13:14:38Z",
+  "scope": "Fail-closed pixel-lineage audit for true wrist-only DROID to Cosmos3 third-person SFT data",
+  "status": "WORKING",
+  "summary": "The local audit implementation now verifies every derived condition and sampled future against hash-bound, explicitly named DROID camera crops before the wrist-only dataset can be accepted.",
+  "evidence": [
+    "All 60 Cosmos3-focused CPU tests pass in 0.66 seconds, including two new audit gate tests.",
+    "Targeted Ruff, py_compile, and git diff whitespace checks pass.",
+    "The audit verifies source, target, and condition SHA-256 values and checks all 348 planned train/validation records rather than sampling records.",
+    "The frozen gates require at least 0.97 SSIM for wrist condition lineage, derived frame-0 wrist lineage, and sampled named-exterior future lineage, plus a 0.05 wrist-over-exterior condition margin.",
+    "The audit records the canonical DROID composite, resized wrist, resized named-exterior, and 768x432 RGB comparison coordinate frames without mixing them implicitly."
+  ],
+  "lessons": [
+    "Declaring a wrist-only transform in metadata is insufficient; decoded pixels must be checked against the hash-bound source cameras before training promotion.",
+    "A real third-person target is valid supervision and withheld evaluation evidence, but must never be mislabeled or passed as the inference condition."
+  ],
+  "limitations": [
+    "WORKING applies only to the local audit implementation and tests; the remote materialized dataset has not yet been audited because SSH access is blocked by the current sandbox.",
+    "No Cosmos3 wrist-only training, generated video, strict quality acceptance, or public demo is claimed."
+  ],
+  "next_actions": [
+    "When remote access is available, sync the audit, run it in a new immutable directory over the completed 344-train/4-validation dataset, and ledger the measured result.",
+    "Allow the gated DCP conversion and two-A800 backpropagation smoke to proceed only after checkpoint and dataset verification; keep formal 500-step SFT pending eight free GPUs."
+  ],
+  "supersedes": [],
+  "tags": [
+    "cosmos3",
+    "droid",
+    "wrist-only",
+    "pixel-lineage",
+    "engineering",
+    "working"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-repair-policy-v2-fail-closed",
+  "recorded_at": "2026-08-11T07:03:55Z",
+  "status": "PARTIAL",
+  "scope": "Raw-candidate-aware EPIC Ego repair router and feasibility audit",
+  "summary": "Ranking raw H3 as an explicit fallback did not pass held-action gates: accuracy remained 1/6 and mean regret rose to 0.0704. The feasibility audit found no repair in any of six windows that simultaneously passed background-lock 0.95 and the non-regression contract, so learned routing is rejected fail-closed.",
+  "evidence": [
+    "The raw-aware experiment reports 0.1667 selection accuracy, 0.070378 mean regret, and 1.0 selected non-regression rate.",
+    "Across all six tight-support tournaments, zero candidates satisfy both background_lock >= 0.95 and non_regression.passed.",
+    "Formal evaluation therefore uses the deterministic tight-support recipe and records the learned policy as absent rather than loading a rejected checkpoint."
+  ],
+  "lessons": ["A learned router must not be promoted when its feasible action/background set is empty; explicit rejection is a valid optimization result."],
+  "limitations": ["The trained module is not deployable and does not fine-tune MiniMax-H3."],
+  "next_actions": ["Collect more Ego scenes and repair labels, add task-object tracking and seam supervision, and retrain before enabling learned routing."],
+  "run_dir": "outputs/epic-ego-bottle-repair-policy/20260811T070355Z-2c9bad76",
+  "supersedes": ["2026-08-11.acwm-ego-repair-policy-alpha-sweep"],
+  "tags": ["acwm", "ego-video", "repair-policy", "fail-closed", "rejected"]
+}

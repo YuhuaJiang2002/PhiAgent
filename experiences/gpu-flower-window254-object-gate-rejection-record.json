@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window254-object-gate-rejection",
+  "recorded_at": "2026-08-11T10:29:00Z",
+  "scope": "Strict named-flower, two-hand, and contact pre-gate for global frames 254-342",
+  "status": "PARTIAL",
+  "summary": "The human-free window preserves two tracked flower identities, but it is rejected because a second independent mechanical hand is not clearly observable and cannot be tracked without identity ambiguity.",
+  "run_dir": "outputs/gpu-flower-full-instance-supervision/20260811T094200Z-windows254-398-v1",
+  "evidence": [
+    "Two real source flower heads track for 89/89 frames; after source-instance restoration, independent candidate tracks also remain nonempty for 89/89 frames with adjacent-IoU means 0.8047 and 0.7839.",
+    "The first left-hand retry is empty for 79/89 frames and its dense board shows drift to the pink background ribbon; the independently tracked right gripper is nonempty for 89/89 frames with adjacent-IoU mean 0.9306.",
+    "The shifted left-support retry is nonempty for 89/89 frames with adjacent-IoU mean 0.9657 and maximum centroid step 10.07 pixels, but dense review resolves only an occluded palm-root/wrist region rather than a clearly separate articulated second hand; its same-run right hand is empty for 48/89 frames.",
+    "A byte-preserving merge of the numerically stable left and right tracks is retained as PARTIAL evidence only; the semantic two-mechanical-hands-visible gate remains false and no contact gate is promoted."
+  ],
+  "lessons": [
+    "Low centroid motion and high mask IoU can describe a stable wrist patch or background object; semantic instance review remains mandatory.",
+    "Independent single-instance runs may be merged without changing masks, but merging cannot repair a fundamentally unobservable or fused hand."
+  ],
+  "limitations": [
+    "The generic source-to-candidate evaluator for the earlier 70-frame postprocessed candidate does not apply to the restored 89-frame artifact.",
+    "No strict all-gates-passed report exists for this window."
+  ],
+  "next_actions": [
+    "Regenerate frames 254-342 with both palms and articulated fingers spatially separated and simultaneously visible.",
+    "Repeat named-flower restoration, two independent hand tracks, contact pairing, and unchanged strict thresholds before considering this window for expansion."
+  ],
+  "supersedes": [],
+  "tags": [
+    "gpu",
+    "sam2",
+    "flower-identity",
+    "two-hand-gate",
+    "semantic-rejection",
+    "partial"
+  ]
+}

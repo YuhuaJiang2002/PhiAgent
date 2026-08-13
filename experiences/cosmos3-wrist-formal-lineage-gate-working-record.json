@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos3-wrist-formal-lineage-gate-working",
+  "recorded_at": "2026-08-12T13:17:41Z",
+  "scope": "Formal Cosmos3 wrist-only SFT dataset-lineage start gate",
+  "status": "WORKING",
+  "summary": "Formal wrist-only SFT now fails closed unless a WORKING all-record pixel audit binds the exact selected dataset contract; smoke remains explicitly non-quality-bearing.",
+  "evidence": [
+    "The formal controller requires --dataset-lineage-audit for condition-mode=wrist_only.",
+    "The validator requires the audit method, WORKING status, accepted=true, exact dataset-contract SHA-256, exact record count, and accepted=true on every record.",
+    "Training metadata stores the audit path, audit hash, aggregate extrema, record count, and bound dataset-contract hash.",
+    "The recorded training method now distinguishes wrist_only from anchor_multiview rather than using one ambiguous method name.",
+    "All 62 Cosmos3-focused CPU tests pass in 0.71 seconds; targeted Ruff, py_compile, and whitespace checks pass."
+  ],
+  "lessons": [
+    "A strict audit is only useful if the formal training launcher requires and cryptographically binds it.",
+    "A memory/backpropagation smoke can validate infrastructure but must not bypass data-lineage or quality gates for formal training."
+  ],
+  "limitations": [
+    "No remote all-record audit or formal optimization has run because current SSH access is sandbox-blocked and eight sufficiently free GPUs have not been observed.",
+    "This gate does not itself improve generated visual quality; it prevents invalid supervision from being used or mislabeled."
+  ],
+  "next_actions": [
+    "Run the remote all-record audit after data materialization and pass its immutable result to the unchanged formal launcher.",
+    "After formal training, generate all four validation samples, select no checkpoint unless every strict identity/view/motion gate passes, and build a labeled demo only from an accepted result."
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos3-wrist-lineage-audit-engineering-correction"
+  ],
+  "tags": [
+    "cosmos3",
+    "droid",
+    "wrist-only",
+    "sft",
+    "lineage-gate",
+    "working"
+  ]
+}

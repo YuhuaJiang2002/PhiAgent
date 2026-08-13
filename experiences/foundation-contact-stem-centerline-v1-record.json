@@ -1,0 +1,31 @@
+{
+  "record_id": "2026-08-12.foundation-contact-stem-centerline-v1-rejected",
+  "recorded_at": "2026-08-12T10:03:00Z",
+  "status": "PARTIAL",
+  "scope": "Metric lifting and physical validation of the named active flower-stem track",
+  "summary": "One 17-sample SAM2 stem track was lifted through DA3 into a 12-node world-frame centerline, but the result was correctly rejected because temporal segment-length CV reached 1.857 against the immutable 0.12 gate.",
+  "evidence": [
+    "All 17 requested source frames were extracted without errors and nominal node visibility was 100 percent.",
+    "Centerline extraction ran in 0.3082 seconds at 55.1656 stem-frames per second.",
+    "The persistent-ID, confidence, visibility, and metric-geometry gates pass while temporal segment-length rigidity fails with maximum CV 1.857228434776532."
+  ],
+  "lessons": [
+    "A per-frame mask skeleton can cross foreground/background depth discontinuities and cannot preserve a thin stem's material arc length.",
+    "A high visible-pixel fraction is not evidence of a physically consistent 3-D centerline."
+  ],
+  "limitations": [
+    "Only one sparse active-stem mask exists for source frames 272 through 320; the other manipulated stems and long occlusions are unobserved.",
+    "The rejected estimate cannot be used for real contact-force inversion."
+  ],
+  "next_actions": [
+    "Replace independent skeleton lifting with V-DPM or SpaTracker point identities and jointly optimize an occlusion-aware rooted rod while keeping the 0.12 rigidity threshold fixed."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T175000Z-metric-active-stem-centerline-v1",
+  "tags": [
+    "foundation-model",
+    "stem",
+    "3d-centerline",
+    "rejected",
+    "partial"
+  ]
+}

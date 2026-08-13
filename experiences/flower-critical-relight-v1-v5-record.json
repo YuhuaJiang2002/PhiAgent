@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-critical-relight-v1-v5",
+  "recorded_at": "2026-08-10T21:05:34Z",
+  "status": "PARTIAL",
+  "scope": "Rejected direct Wan relighting and four bounded-routing iterations on the accepted critical geometry",
+  "summary": "The direct LoRA video regenerated flowers and scene geometry. Routed v2 leaked into flowers/hands, v3/v4 passed spatial gates but lacked a temporal gate, and lossless v5 exceeded the 1.5 temporal-residual ceiling.",
+  "evidence": ["Direct LoRA proposal was visually rejected for geometry and identity destruction.", "v2 flower exactness was 0.984260 and prompted-hand exactness 0.476351.", "v3/v4 restored exact protected geometry but did not yet establish temporal acceptance.", "v5 maximum relighting residual was 1.581811 RGB MAE, above 1.5."],
+  "lessons": ["Relighting LoRA output is useful only as a bounded luminance proposal, not as a geometry candidate.", "Lossless spatial preservation needs an independent temporal residual gate."],
+  "limitations": ["These failed routes cover only 17 frames."],
+  "next_actions": ["Temporally smooth the routed luminance while preserving exact masks."],
+  "run_dir": "outputs/flower-relighting/20260811T044000Z-confidence-routed-v5-lossless",
+  "supersedes": [],
+  "tags": ["flower", "relighting", "wan-lora", "ablation", "partial"]
+}

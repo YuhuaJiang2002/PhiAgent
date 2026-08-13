@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-formal-dataset-root-partial",
+  "recorded_at": "2026-08-12T08:20:00Z",
+  "scope": "Formal rank-16 attention LoRA launch preflight",
+  "status": "PARTIAL",
+  "summary": "The first formal launch stopped before creating an experiment because --dataset referenced the composite dataset parent instead of its train subdirectory.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T204500Z-lora-attn-r16-45f-formal150",
+  "evidence": [
+    "validate_training_dataset rejected the inferred parent-level dataset-contract.json before GPU selection or model loading.",
+    "The accepted smoke configuration records the intended dataset root as the composite-v6-native16-2clips/train directory with 172 samples."
+  ],
+  "lessons": [
+    "The launcher contract is explicit: --dataset is the split directory, while dataset-contract.json is resolved from its parent."
+  ],
+  "limitations": [
+    "No optimizer step ran and no formal checkpoint was produced."
+  ],
+  "next_actions": [
+    "Relaunch with the validated train split path and a new run identifier."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "preflight",
+    "dataset-path"
+  ]
+}

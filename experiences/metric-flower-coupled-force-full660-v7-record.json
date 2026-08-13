@@ -1,0 +1,35 @@
+{
+  "record_id": "2026-08-12.metric-flower-coupled-force-full660-v7-working",
+  "recorded_at": "2026-08-12T20:20:00Z",
+  "status": "WORKING",
+  "scope": "Accepted full simulated flower bundle with coupled exact-pad and inverse-rod forces",
+  "summary": "v7 restores simulated physical acceptance using one coupled pad-friction/rod-wrench equation, complete lineage, exact contacts, and bounded projection.",
+  "evidence": [
+    "All 300/300 exact contact frames pass force closure and all 298/298 driven frames pass causal response.",
+    "The combined inverse-rod plus coupled contact residual p95 is 0.00065399 N against the fixed 0.08 N gate.",
+    "Four frames 401/405/455/466 use the first [-0.002,0,0] m bounded projection; no other contact frame changes.",
+    "The exact 73-coordinate robot trajectory, 12-node persistent stem, covariance, camera, video, and every cross-stage bundle hash/identity/frame/FPS/frame/instance gate pass.",
+    "The independent compiler at outputs/foundation-contact/20260812T202000Z-compiled-coupled-force-full660-v7 reports WORKING.",
+    "Generation and complete audit take 394.347 seconds."
+  ],
+  "lessons": [
+    "A contact solver must make rendered geometry, frictional forces, inverse object dynamics, and residual validation one coupled system."
+  ],
+  "limitations": [
+    "This remains a simulated scene and cannot calibrate or prove forces in the Pexels video."
+  ],
+  "next_actions": [
+    "Use the accepted bundle only for target-independent development supervision and evaluator tests."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T201000Z-metric-flower-coupled-force-full660-v7",
+  "supersedes": [
+    "2026-08-12.metric-flower-v6-force-evidence-revoked"
+  ],
+  "tags": [
+    "flower",
+    "coupled-force",
+    "exact-contact",
+    "bundle-lineage",
+    "working"
+  ]
+}

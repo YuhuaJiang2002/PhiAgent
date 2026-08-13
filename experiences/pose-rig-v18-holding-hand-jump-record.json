@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "pose-rig-v18-holding-hand-jump-20260810",
+  "recorded_at": "2026-08-10T23:33:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Bouquet bound inside the holding hand",
+  "summary": "v18 kept the bouquet in contact with the holding hand for all 660 frames, but the hand-axis-derived grip trajectory still contained a 34.17-pixel single-frame move.",
+  "run_dir": "outputs/robot-person-replacement/pose-rig-runs/20260810T153000Z-holding-hand-bouquet-v18-pending",
+  "evidence": [
+    "final/manifest.json records zero frames without required hand occlusion, minimum overlap 1985 pixels, and maximum target step 34.1712 pixels.",
+    "The configured 20-pixel bouquet step gate rejected the run before human promotion."
+  ],
+  "lessons": ["A stable hand angle limit does not automatically bound a translated object anchor located far along that hand axis."],
+  "limitations": ["Contact passed but temporal continuity failed."],
+  "next_actions": ["Apply zero-phase smoothing and a symmetric 2D step bound to the bouquet target only."],
+  "supersedes": ["pose-rig-v17-wrist-midpoint-contact-20260810"],
+  "tags": ["flower-video", "pose-rig", "contact", "jump", "partial"]
+}

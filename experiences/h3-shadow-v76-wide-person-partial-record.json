@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v76-wide-person-coverage-partial",
+  "recorded_at": "2026-08-11T12:31:30+08:00",
+  "scope": "First full-660 expansion of lower-person shadow coverage from the accepted v74 H3 flower-arranging composite",
+  "status": "PARTIAL",
+  "summary": "v76 expands coverage enough to contain the source person's lower garment and arm workspace, but dense high-motion review rejects promotion because uncovered semantic vegetation inside the source-person matte is desaturated on frames including 37--40.",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T042500Z-wide-lower-person-coverage-v76-pending",
+  "evidence": [
+    "The main and comparison outputs decode all 660 frames; edit scope, protected-content exactness, outside-safety exactness, full-frame jerk, and ROI jerk gates pass.",
+    "Mean wide-person active fraction is 0.1124964 and maximum is 0.1484500, confirming materially broader coverage than v74.",
+    "The full 1-fps, every-12-frame lower-workarea, four exact risk-window, and 24 high-motion review sheets were generated under review/coverage.",
+    "High-motion frames 37--40 show green vegetation to the robot's right becoming gray where the source-person semantic mask overlaps plant content.",
+    "The reported shadow_reduced failure is additionally confounded: the old clean-plate metric compares the final graphite result instead of the clean-plate layer output."
+  ],
+  "lessons": [
+    "A broad source-person mask needs generated-content protection beyond incomplete flower instance masks; protecting green vegetation prevents semantic-mask overlap from becoming a gray plant ghost.",
+    "Layer-specific acceptance metrics must evaluate the output of their own layer before later materials are composited."
+  ],
+  "limitations": [
+    "v76 is not promoted or published because the plant-color regression is visible in reviewed high-motion frames.",
+    "The run's immutable manifest correctly remains PARTIAL and retains the original metric outcome."
+  ],
+  "next_actions": [
+    "Repeat the same wide coverage with a generated-green hard-protection matte and a corrected layer-specific clean-plate metric.",
+    "Re-run all dense and high-motion visual checks before an accepted reproduction."
+  ],
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "shadow-cleanup",
+    "wide-person-coverage",
+    "vegetation-protection",
+    "partial"
+  ]
+}

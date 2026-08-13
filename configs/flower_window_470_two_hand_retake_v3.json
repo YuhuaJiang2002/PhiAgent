@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "retake_starts": [470],
+  "seed": 42,
+  "fps": 24,
+  "window_frames": 89,
+  "output_width": 896,
+  "output_height": 512,
+  "infer_frames": 80,
+  "reference_frames": 1,
+  "maximum_rounds_per_window": 1,
+  "gpu_physical_indices": [3],
+  "minimum_free_gpu_gib": 60,
+  "object_roi_xywh_normalized": [0.44, 0.37, 0.20, 0.27],
+  "prompt": "Exactly two coherent graphite-black and brushed-silver H3 robot arms and exactly two mechanical hands completely replace every human hand, forearm, sleeve, torso fragment, head, hair, skin region, and human cast shadow. Both robot hands remain fully visible, spatially separated, and independently articulated in every frame: one black-finger bouquet-gripping hand stays continuously attached to the held stems, while the second white-and-silver support hand remains visibly separate with a clear gap and never merges, swaps identity, disappears behind flowers, or becomes a flower. Closed black robot face panel with no human face. Preserve the exact flower identities, stems, contacts, camera, worktable, shelves, wall, lighting, motion timing, and background. No human residue, hidden hand, fused hand, duplicate hand, detached shadow, smeared flower, invented bouquet, or invented object.",
+  "accepted_inputs": {
+    "frozen_anchor_start": 398,
+    "frozen_anchor_gate": "two overlapping 45-frame gates WORKING",
+    "rejected_window_start": 470,
+    "rejected_reason": "upper bouquet hand becomes thin, occluded, and identity-swaps under unchanged 20-pixel/0.88 hand gates"
+  },
+  "routing": {
+    "suppress_source_face_control": true,
+    "use_relighting_lora": true,
+    "preserve_raw_candidate_even_when_proxy_rejects": true,
+    "require_dense_review_before_stitching": true
+  }
+}

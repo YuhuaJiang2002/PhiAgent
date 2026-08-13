@@ -13,6 +13,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from phiagent.acwm.adapters import (  # noqa: E402
     BWMConfig,
     BWMRenderer,
+    FlowWAMConfig,
+    FlowWAMRenderer,
     Kinema4DConfig,
     Kinema4DRenderer,
     OSCARConfig,
@@ -67,7 +69,11 @@ def _parser() -> argparse.ArgumentParser:
             "Repeat to render matched prompt-repair candidates in one model load."
         ),
     )
-    parser.add_argument("--backend", action="append", choices=("oscar", "bwm", "kinema4d"))
+    parser.add_argument(
+        "--backend",
+        action="append",
+        choices=("oscar", "bwm", "kinema4d", "flowwam"),
+    )
     parser.add_argument("--experiment-root", type=Path, default=Path("outputs/acwm-open-models"))
     parser.add_argument("--maximum-rounds", type=int, default=2)
     parser.add_argument("--seed", type=int, default=20260810)
@@ -88,6 +94,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--kinema-checkpoint", type=Path)
     parser.add_argument("--kinema-dataset-root", type=Path)
     parser.add_argument("--kinema-episode-list", type=Path)
+    parser.add_argument("--flowwam-repo", type=Path)
+    parser.add_argument("--flowwam-base-model", type=Path)
+    parser.add_argument("--flowwam-checkpoint", type=Path)
+    parser.add_argument("--flowwam-python", type=Path)
     for name in (
         "action",
         "embodiment",
@@ -208,6 +218,25 @@ def main() -> int:
             ),
             project_root=project_root,
         )
+    if "flowwam" in selected:
+        _required(
+            parser,
+            {
+                "--flowwam-repo": args.flowwam_repo,
+                "--flowwam-base-model": args.flowwam_base_model,
+                "--flowwam-checkpoint": args.flowwam_checkpoint,
+            },
+        )
+        renderers["flowwam"] = FlowWAMRenderer(
+            FlowWAMConfig(
+                repository=args.flowwam_repo,
+                base_model_root=args.flowwam_base_model,
+                checkpoint_path=args.flowwam_checkpoint,
+                python_executable=args.flowwam_python,
+                gpu_index=args.gpu,
+            ),
+            project_root=project_root,
+        )
 
     manifest_path = args.condition_manifest.expanduser().resolve()
     manifest = json.loads(manifest_path.read_text())
@@ -224,6 +253,13 @@ def main() -> int:
             prompt=str(
                 item.get("prompt")
                 or PROMPTS.get(str(item["label"]), str(item["instruction"]))
+            ),
+            auxiliary_inputs=tuple(
+                (
+                    str(key),
+                    _manifest_path(manifest_path, str(value)),
+                )
+                for key, value in dict(item.get("auxiliary_inputs", {})).items()
             ),
         )
         for item in manifest["variants"]

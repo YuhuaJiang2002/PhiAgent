@@ -1,0 +1,28 @@
+{
+  "record_id": "2026-08-12.wan-long-contact-curriculum-v1",
+  "recorded_at": "2026-08-12T07:51:00Z",
+  "status": "PARTIAL",
+  "scope": "Quality-gated VACE RGB-alpha-contact distillation curriculum with an after-20-second holdout",
+  "summary": "A development-only 12-train/4-validation curriculum encodes robot alpha, flower boundary, and projected contact as fixed control channels; temporal leakage is prevented, but the data remains one generated teacher in one scene.",
+  "evidence": [
+    "The immutable manifest SHA-256 is 88fb9b6b487f92f990697a01d2eaa472b64f4605129ba27ed39dca3edc48f9d2.",
+    "All 12 training clips end before absolute frame 480; all four validation clips start at or after frame 480.",
+    "Control semantics are R=robot alpha, G=visible flower boundary, and B=required projected-contact region.",
+    "The contact-rich final validation clip uses absolute source frames 594 through 642 and is absent from training."
+  ],
+  "lessons": [
+    "The training/inference control interface must have stable semantics instead of an undifferentiated edge image.",
+    "Temporal holdout prevents direct tail leakage but is not cross-scene generalization."
+  ],
+  "limitations": [
+    "The teacher is generated and human review later found intermittent hand smear.",
+    "Training clips span only one scene and robot identity, concentrated between frames 235 and 465.",
+    "The contact channel is two-dimensional."
+  ],
+  "next_actions": [
+    "Train a bounded adapter, compare it to zero-shot on the unchanged frame-594 holdout, and do not promote the adapter without relative and absolute gates."
+  ],
+  "run_dir": "outputs/wan-long-robot-contract/20260812T073750Z-first-principles-v1/curriculum-v1",
+  "supersedes": [],
+  "tags": ["vace", "curriculum", "rgb-alpha-contact", "holdout", "partial"]
+}

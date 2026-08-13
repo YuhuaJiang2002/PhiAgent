@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-sim-smoke-v4-working",
+  "recorded_at": "2026-08-12T13:00:00Z",
+  "status": "WORKING",
+  "scope": "Accepted 33-frame metric flower simulation smoke",
+  "summary": "The corrected direct-metric smoke passed all physical, articulated-hand, causal-response, force-closure, video, visual, and independent compiler gates.",
+  "evidence": [
+    "All four physical compiler stages passed and machine_acceptance_passed=true.",
+    "Fifteen contact frames passed rank-6 force closure and 14/14 driven frames produced a stem response.",
+    "The 33-frame 320x240 video decoded at 24 FPS and completed in 4.2363 seconds.",
+    "Midpoint visual review confirmed nonempty exact robot, flower, vase, and hand-flower overlap."
+  ],
+  "lessons": [
+    "A reduced exact-asset rollout catches schedule, asset-view, camera-handedness, and rendering failures before full compute."
+  ],
+  "limitations": [
+    "This is a short simulated acceptance smoke, not real-scene evidence."
+  ],
+  "next_actions": [
+    "Run the frozen configuration for all 660 frames and repeat independent compilation and full-span review."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T130000Z-metric-flower-sim-smoke-v4",
+  "supersedes": [
+    "2026-08-12.metric-flower-sim-smoke-v3-partial"
+  ],
+  "tags": [
+    "flower",
+    "simulation",
+    "smoke",
+    "working"
+  ]
+}

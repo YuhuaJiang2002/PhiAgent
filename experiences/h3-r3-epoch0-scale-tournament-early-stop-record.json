@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r3-epoch0-scale-tournament-early-stop",
+  "recorded_at": "2026-08-11T00:04:39Z",
+  "scope": "Rank-32 close-up-curriculum H3 r3 epoch-0 checkpoint, three-scale held-out tournament, and capability-aware early stop",
+  "status": "PARTIAL",
+  "summary": "The r3 epoch-0 checkpoint completed, but scales 1.0, 0.5, and 0.25 all reproduce the same shoulder/head topology failure and all regress matched motion. The full contract rejects every candidate, so epoch 1 was interrupted after 35/120 steps and emitted no checkpoint.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T080000Z-topology-r3-capacity-r32-closeup-v3",
+  "evidence": [
+    "The ten-clip v3 dataset manifest SHA-256 is 14f4a55133e41dd7d79d90792a4c23545bf61ea2b998a57e40987843d5f340f0.",
+    "Epoch 0 completed 120 optimizer steps and produced a 131,227,832-byte checkpoint with SHA-256 ce324f0950530e3e007e8a918c2bce15bb1d5484759deb136be936801bef7831.",
+    "The scale-1.0, 0.5, and 0.25 videos have SHA-256 values 28bdbdccea93e8acd5e091738a1aadd506af6c8f2098fb7c4c7168ddb6e1bf85, 40b08fdb8a37c76b1a6926451ea3fd98401ec306bfe221dabd6c073991acbc1a, and 694cb32f5295d19d3eae955ed522e28fc856ec7316640969e46d20b76b37052a.",
+    "Every scale has complete 124-frame decoded SHA coverage and twelve-gate labels, but only 24/124 frames pass; 100 fail left shoulder attachment, unique left root, head/neck clearance, and proportions, while 82 also fail the head-to-torso chain.",
+    "Matched motion-profile ratios are 0.9123695233, 0.9086654559, and 0.9688105168 for scales 1.0, 0.5, and 0.25, all below the 0.99 non-regression floor.",
+    "Component-wise action adherence is 0.9981229520, 1.0, and 0.9868221646; scale 0.25 additionally fails action non-regression because object lock regresses.",
+    "Automatic-metrics SHA-256 values are a42d19236579a0b4a82d86f8525e6446c769bc9ea2b3ab642e53bf9323e24bbf, ddee08fdec1e8205dcda766605bf6c11742192fb8d5810bc01ac564e9a8441bc, and 97bbca6993e4309fce994554452fd85b0a22efc0c7739eb7c210ddf7ea9e3f36.",
+    "The three assessment SHA-256 values are a054400969e25e47298b2f190915d600366e0782ec906198e8d8eac6d270f19f, b1ce1fcaf028f07e88803060539cd73854d1dfdbcba5d55d5b060d3be9fd3b2a, and d3cab86e84f317b42ec63c25b235fab06c9b255e71718a482d9f8d3312af97d5.",
+    "The stopped training manifest records status=failed, honest_status=PARTIAL, exit -2/KeyboardInterrupt, one preserved checkpoint, and epoch-1 progress 35/120; its local copy SHA-256 is cf7f6e0c4c9bffedce9cbe4eff290a866372993aa0edb387ea5d9d84369f2120."
+  ],
+  "lessons": [
+    "Adding shoulder close-ups from the same synthetic renderer did not bridge the held-out real-scene topology domain gap.",
+    "A LoRA-scale sweep can separate capability regression from structural benefit: here every scale loses motion and none improves the hard topology conjunction.",
+    "Stopping after the first fully reviewed checkpoint prevents additional optimization in a direction that has already failed both structural and capability gates."
+  ],
+  "limitations": [
+    "The evidence covers one held-out identity, scene, and action using third-party NF4 H3 weights.",
+    "The running r3 process predated strict deterministic-kernel enforcement, so no deterministic-training claim is made.",
+    "The 2-D semantic topology review does not establish hidden 3-D kinematics, physical contact, or real-robot execution.",
+    "No learned candidate is perfect or releaseable, and none is presented as an improved H3 demo."
+  ],
+  "next_actions": [
+    "Require camera/domain-diverse real-background positives and multiple frozen held-out scenes before another learned round.",
+    "Use step-level immutable checkpoints under strict deterministic kernels, and stop at the first topology or capability regression.",
+    "Route rejected learned outputs only through an independently accepted structure-preserving fallback."
+  ],
+  "supersedes": [],
+  "tags": [
+    "h3",
+    "rsi",
+    "rank32",
+    "topology",
+    "motion-nonregression",
+    "action-nonregression",
+    "early-stop",
+    "rejected",
+    "partial"
+  ]
+}

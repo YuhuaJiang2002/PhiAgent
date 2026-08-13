@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "dataset": "DROID raw",
+  "lineage_record_id": "2026-08-12.droid-sequence-lineage-v5-working",
+  "rights_status": "BLOCKED_INTERNAL_TECHNICAL_AUDIT_ONLY",
+  "episodes": [
+    {
+      "episode_index": 21,
+      "task": "Put the orange rubber duck into the pot",
+      "raw_gcs_prefix": "1.0.1/AUTOLab/success/2023-07-14/Fri_Jul_14_16:55:45_2023",
+      "exterior_assignment": "swapped",
+      "sequence_payload_sha256": "3e5eecd53cd913626116bbc61d039761cc2e6fd465e8e1be92d395f2fd21ac9c"
+    },
+    {
+      "episode_index": 60,
+      "task": "Put the green block in the bowl",
+      "raw_gcs_prefix": "1.0.1/AUTOLab/success/2023-07-31/Mon_Jul_31_20:04:00_2023",
+      "exterior_assignment": "identity",
+      "sequence_payload_sha256": "a06eec14bb67a89472908fdc529312f4f63c9a66dee4885419cc51620eca38bf"
+    },
+    {
+      "episode_index": 77,
+      "task": "Close the drawer",
+      "raw_gcs_prefix": "1.0.1/PennPAL/success/2023-04-29/Sat_Apr_29_20:28:46_2023",
+      "exterior_assignment": "swapped",
+      "sequence_payload_sha256": "08f94e5dfe4f7e46250f9493cf7d6fc0a1af929b8db539a9d8f7c5da83c6b8c7"
+    }
+  ]
+}

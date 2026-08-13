@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-missing-input-preflight",
+  "recorded_at": "2026-08-12T04:09:42Z",
+  "status": "PARTIAL",
+  "scope": "Persistent Wan-Animate-2 long-video runner input preflight",
+  "summary": "The first two-window invocation stopped before GPU allocation because the benchmark source had not finished synchronizing to the A800 host.",
+  "evidence": [
+    "Remote metadata records a ValueError for the absent source at 2026-08-12T04:09:41Z.",
+    "The run completed preflight failure in under one millisecond and generated no window."
+  ],
+  "lessons": [
+    "Remote benchmark inputs must be size-verified after transfer and before launching the immutable experiment directory."
+  ],
+  "limitations": [
+    "No model process or GPU inference started, so this attempt contains no performance or quality evidence."
+  ],
+  "next_actions": [
+    "Finish and verify the four benchmark inputs, then use a fresh experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-smoke-persistent-2w-v1",
+  "supersedes": [],
+  "tags": ["wan-animate2", "long-video", "infra", "preflight", "failure"]
+}

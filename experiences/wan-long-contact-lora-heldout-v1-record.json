@@ -1,0 +1,41 @@
+{
+  "record_id": "2026-08-12.wan-long-contact-lora-heldout-v1",
+  "recorded_at": "2026-08-12T08:10:00Z",
+  "status": "PARTIAL",
+  "scope": "Matched zero-shot versus rank-8 VACE contact adapter on a temporally held-out >=20-second window",
+  "summary": "The adapter improves local teacher-contact, topology-edge, and edit-region proxies, but fails edit-region quality, topology, and temporal non-regression gates and is visibly wrong in robot scale/identity and flower appearance; full 27.5-second model-only expansion was stopped.",
+  "evidence": [
+    "The blind window uses source frames 594--642, or 24.75--26.75 seconds, with identical input, RGB-alpha-contact control, reference, prompt, seed 20260812, 20 steps, and denoising strength 0.75.",
+    "Contact teacher similarity improves from 0.35763 to 0.42496, topology-edge similarity from 0.43617 to 0.45806, and edit-region similarity from 0.12745 to 0.15837.",
+    "Temporal teacher similarity regresses from 0.70381 to 0.67921; adapted edit-region similarity is below 0.25 and topology-edge similarity is below 0.50.",
+    "The complete held-out proxy decision is PARTIAL and the review sheet shows wrong robot scale/identity plus invented oversized flowers."
+  ],
+  "lessons": [
+    "A same-scene LoRA can improve a contact proxy while worsening temporal behavior and failing semantic identity.",
+    "Object-track and localized gates prevent high outside-mask similarity from hiding a failed edit region.",
+    "A temporally held-out same-scene window is necessary but insufficient evidence of generalization."
+  ],
+  "limitations": [
+    "Training uses twelve clips from one scene and one generated teacher with residual hand smear.",
+    "The 2-D contact channel cannot supervise depth, force closure, collision safety, or executable robot contact.",
+    "No native addressable KV memory or multi-scene cross-morphology curriculum was available in the pinned Wan/VACE runtime."
+  ],
+  "next_actions": [
+    "Do not run a full model-only rollout from this checkpoint.",
+    "Collect multi-scene, multi-morphology robot RGB-alpha data with depth/contact supervision and train on self-generated 5--30-second histories before the next promotion attempt."
+  ],
+  "run_dir": "outputs/wan-long-robot-contract/20260812T073750Z-first-principles-v1/heldout-adapter-evaluation-v1",
+  "supersedes": [
+    "2026-08-12.wan-long-contact-lora-rank8-train-v2"
+  ],
+  "tags": [
+    "wan",
+    "vace",
+    "lora",
+    "long-video",
+    "contact",
+    "heldout",
+    "adversarial",
+    "partial"
+  ]
+}

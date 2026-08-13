@@ -1,0 +1,32 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index 45f8d42..946e122 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -106,6 +106,11 @@ class WanTrainingModule(DiffusionTrainingModule):
+         return inputs_shared
+ 
+     def get_pipeline_inputs(self, data):
++        video = data["video"]
++        if not isinstance(video, torch.Tensor) or video.ndim != 5:
++            raise ValueError(
++                f"Expected video tensor shaped (V,C,T,H,W), got {type(video).__name__} {getattr(video, 'shape', None)}"
++            )
+         inputs_posi = {
+             "prompt": data.get("prompt"),
+             "prompt_emb": data.get("prompt_emb"),
+@@ -114,10 +119,10 @@ class WanTrainingModule(DiffusionTrainingModule):
+             "prompt_emb": data.get("negative_prompt_emb"),
+         }
+         inputs_shared = {
+-            "input_video": data["video"],
++            "input_video": video,
+             "action": data.get("action"),
+-            "height": data["video"][0].size[1],
+-            "width": data["video"][0].size[0],
+-            "num_frames": len(data["video"]),
++            "height": int(video.shape[-2]),
++            "width": int(video.shape[-1]),
++            "num_frames": int(video.shape[-3]),
+             "num_history_frames": self.num_history_frames,
+             "cfg_scale": 1,
+             "tiled": False,

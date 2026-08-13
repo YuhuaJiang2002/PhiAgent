@@ -1,0 +1,61 @@
+{
+  "schema_version": "2.0.0",
+  "reviewer": "codex-human-visual-review",
+  "review_method": "full-timeline semantic review from every-fourth-frame robot crops plus original-resolution checks at frames 0, 20, 40, 60, 80, 100, and 123; explicit shoulder-root ancestry labels",
+  "ranges": [
+    {
+      "start_frame": 0,
+      "end_frame": 23,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": true,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": true,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": true,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": true,
+      "confidence": 0.96,
+      "note": "The opening is flower-occluded, but the two visible arm chains retain plausible separate shoulder roots."
+    },
+    {
+      "start_frame": 24,
+      "end_frame": 41,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": false,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": false,
+      "confidence": 0.98,
+      "note": "The raised arm root migrates behind the head; neither a unique left shoulder origin nor head-neck clearance is visually credible."
+    },
+    {
+      "start_frame": 42,
+      "end_frame": 123,
+      "single_robot_subject": true,
+      "single_head_torso_chain": false,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "unique_left_shoulder_origin": false,
+      "unique_right_shoulder_origin": true,
+      "arm_roots_clear_of_head_and_neck": false,
+      "confidence": 0.99,
+      "note": "The raised chain stays above and behind the head without a distinct shoulder root; the head-to-torso chain and stable proportions fail through the remainder."
+    }
+  ]
+}

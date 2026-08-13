@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04a-direct-proposals-v1",
+  "recorded_at": "2026-08-10T21:43:00Z",
+  "status": "PARTIAL",
+  "scope": "Official Wan2.2 Animate relighting-LoRA proposals for the accepted 106-frame phase-04A geometry",
+  "summary": "Two 53-frame physical-GPU proposals completed, but both direct videos failed object consistency and are rejected as geometry candidates; only bounded luminance may be routed.",
+  "evidence": ["Window A on physical GPU 1 scores mean 0.731136 and object consistency 0.367959.", "Window B v2 on physical GPU 1 scores mean 0.688325 and object consistency 0.333333.", "The combined 106-frame proposal SHA-256 is 171de78275a4200af622ad9777a37c6e717b80c352be3b9ce57d1717700c0684.", "The initial parallel window-B launch on GPU 4 was terminated after another job occupied that GPU; the successful retry used GPU 1."],
+  "lessons": ["Direct relighting generation remains destructive even after geometry passes.", "GPU state must be revalidated at launch because external jobs can race preflight."],
+  "limitations": ["The two proposal windows use different seeds and introduce a potential join at source 324--325."],
+  "next_actions": ["Route only low-frequency luminance inside the robot-safe mask and explicitly gate the window join."],
+  "run_dir": "outputs/flower-relighting/20260811T052000Z-phase04a-direct-proposals-v1",
+  "supersedes": [],
+  "tags": ["flower", "phase04a", "wan-lora", "direct-rejected", "partial"]
+}

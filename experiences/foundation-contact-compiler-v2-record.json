@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.foundation-contact-compiler-v2",
+  "recorded_at": "2026-08-12T10:04:00Z",
+  "status": "PARTIAL",
+  "scope": "Fail-closed fusion of pretrained camera proposals, exact robot assets, per-stem geometry, and physical force evidence",
+  "summary": "The end-to-end compiler passes the learned metric camera proposal and all exact robot asset hashes, while rejecting missing full-q render reprojection, inconsistent stem rods, and missing sensor or physics-solver forces.",
+  "evidence": [
+    "The compiled stage vector is metric_camera=true, robot_trajectory=false, stem_centerlines=false, contact_forces=false; overall status is PARTIAL.",
+    "G1, left Sharpa, and right Sharpa MJCF hashes exactly match the frozen registry.",
+    "The report includes pinned DA3 Nested, UniDepth, V-DPM, HaMeR, and PhysTwin provenance and compiles in 0.2936 seconds.",
+    "Twenty-two focused foundation, rod, robot-export, long-video audit, and adversarial tests pass."
+  ],
+  "lessons": [
+    "Foundation models are effective proposal mechanisms only when evidence provenance and physical acceptance remain separate.",
+    "Force must remain fail-closed until metric kinematics, deformable state, contacts, supports, and uncertainty are available."
+  ],
+  "limitations": [
+    "The complete-q export path is implemented but has no accepted metric render-reprojection run for this generated video.",
+    "No synchronized tactile, force-torque, or accepted inverse-dynamics force sequence is available."
+  ],
+  "next_actions": [
+    "Run exact-asset full-q analysis-by-synthesis and persistent rod reconstruction, then enable sensor or inverse-dynamics force fusion and render a new 660-frame candidate."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T181000Z-compiled-pipeline-v2",
+  "tags": [
+    "foundation-model",
+    "physical-evidence",
+    "pipeline",
+    "fail-closed",
+    "partial"
+  ]
+}

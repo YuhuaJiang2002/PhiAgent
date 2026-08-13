@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-viewpoint-generalization-demo-v1",
+  "recorded_at": "2026-08-11T13:44:00Z",
+  "scope": "Identity-locked camera-perturbation demos for three real-scene embodied task videos",
+  "status": "PARTIAL",
+  "summary": "Three complete ten-second task videos and a ten-second reel now show the same robot, blue bottle, and real Ego kitchen scene under source, left/right oblique, and continuous orbit-style camera-frame perturbations. Identity lineage passes, while the result remains explicitly bounded to a 2-D projective proxy.",
+  "run_dir": "outputs/acwm-viewpoint-generalization/20260811T133735.526957Z",
+  "evidence": [
+    "Handover, unscrew, rinse, and the sequential reel each decode to 1280x870, 240 frames, 24 FPS, and 10.000 seconds.",
+    "Every derived view is an explicit homography of the same decoded source frame in camera:source_pixels; no per-frame subject generation, cross-task subject compositing, or generated interpolation is used.",
+    "Across 24 sampled frames per task and all three derived views, the worst central-frame round-trip PSNR is 33.5567 dB, maximum MAE is 2.1828, and minimum bounded similarity is 0.99144; all three task identity-lineage gates pass.",
+    "A real local browser loaded all four viewpoint videos at readyState 4 with 1280x870 metadata, 10-second duration, no media errors, and no console warnings or errors.",
+    "The demo page presents the three-task reel, three complete per-task clips, dynamic manifest metrics, the generated identity-anchor board, and an explicit 2-D claim boundary."
+  ],
+  "lessons": [
+    "When subject consistency is the top priority, derive all displayed camera perturbations from the same decoded frame and make that lineage explicit rather than asking a generative model to redraw every view.",
+    "Viewpoint evidence should separate bounded camera-frame robustness from learned novel-view synthesis and calibrated 3-D generalization."
+  ],
+  "limitations": [
+    "The left/right and orbit views are image-plane projective proxies and do not reveal unseen surfaces.",
+    "This run does not establish physical multi-camera capture, calibrated 3-D reconstruction, contact physics, force, collision correctness, or physical robot execution.",
+    "The ImageGen anchor is a poster/reference artifact only and is not used as a frame source for the videos."
+  ],
+  "next_actions": [
+    "Replace the projective proxy with synchronized calibrated multi-camera DROID or equivalent robot data before claiming learned viewpoint generalization.",
+    "Retain the same identity-lineage and browser media-load gates for future true novel-view candidates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "acwm",
+    "viewpoint",
+    "identity-consistency",
+    "real-scene",
+    "demo",
+    "partial"
+  ]
+}

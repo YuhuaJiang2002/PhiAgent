@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.1.0",
+  "evidence_date": "2026-08-12",
+  "embodiment_id": "unitree-g1-29dof-plus-bilateral-sharpa-22dof",
+  "camera_frame": "camera:generated_video_metric",
+  "robot_base_frame": "robot_base:unitree_g1",
+  "timeline": "frame:source_video",
+  "expected_joint_counts": {
+    "g1_model": 29,
+    "sharpa_left_model": 22,
+    "sharpa_right_model": 22,
+    "total": 73
+  },
+  "expected_asset_sha256": {
+    "g1_model": "3c2616550a31f33e84d3c80b8e913ac5618c8888019b0c9490dae93493e647f3",
+    "sharpa_left_model": "3cbeb46259d4ba63cbdb83085255d1a8f8031c51e0101a6622f6e7e81a64dc11",
+    "sharpa_right_model": "43d9cb63d724889b69574a5e0981aee4a2f30d825c85f3098988e3a7a3bb9980"
+  },
+  "require_dense_source_timeline": true,
+  "joint_state_evidence_allowlist": [
+    "sensor_measurement",
+    "calibrated_geometry",
+    "physics_solver_estimate"
+  ],
+  "thresholds": {
+    "minimum_visible_keypoints_per_frame": 12,
+    "minimum_heldout_frames": 24,
+    "minimum_heldout_groups": 2,
+    "maximum_reprojection_rmse_px_p95": 8.0,
+    "minimum_silhouette_iou_p05": 0.65,
+    "maximum_joint_standard_deviation_rad": 0.08,
+    "maximum_base_translation_standard_deviation_m": 0.02,
+    "minimum_alternative_asset_error_margin_px_p05": 4.0,
+    "maximum_joint_velocity_rad_s": 12.0
+  },
+  "proposal_models": [
+    {
+      "name": "RoboPEPP",
+      "source": "CVPR 2025",
+      "role": "occlusion-aware robot keypoint and joint initialization only"
+    },
+    {
+      "name": "RoboPose",
+      "source": "CVPR 2021",
+      "role": "render-and-compare camera-to-robot and articulated pose initialization only"
+    },
+    {
+      "name": "Differentiable Robot Rendering",
+      "source": "arXiv:2410.13851",
+      "role": "exact-asset analysis-by-synthesis optimization adapter"
+    }
+  ],
+  "immutable_rules": [
+    "A foundation model proposes landmarks, masks, or initial q; it cannot promote its own prediction.",
+    "Every one of the 73 scalar joints must be present and data-identifiable on every source frame.",
+    "Priors on cropped legs or occluded fingers stabilize an optimizer but do not reduce posterior uncertainty.",
+    "The selected asset must beat explicit alternative assets on held-out frames.",
+    "Joint-state evidence must be sensor measurement, calibrated geometry, or a named physics-solver estimate.",
+    "Proposal-model and exact-renderer names and revisions are mandatory.",
+    "No trajectory artifact is emitted when any physical or observability gate fails."
+  ]
+}

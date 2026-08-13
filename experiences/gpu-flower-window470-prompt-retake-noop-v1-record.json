@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window470-prompt-retake-noop-v1",
+  "recorded_at": "2026-08-11T13:40:00Z",
+  "scope": "Seed-42 prompt-only two-hand retake for global frames 470-558",
+  "status": "PARTIAL",
+  "summary": "The explicit two-hand prompt retake is a byte-identical regeneration of the rejected seed-42 candidate, so it cannot correct the occluded bouquet hand and is not promoted.",
+  "run_dir": "outputs/gpu-flower-window470-retakes/20260811T130000Z-two-hand-v3",
+  "tags": ["gpu", "wan2.2", "full-film-expansion", "prompt-noop", "candidate-retention", "partial"],
+  "evidence": [
+    "The newly retimed candidate and the prior retimed seed-42 candidate both have SHA-256 42ef9822b3854022dcf6da91394cd254295ca63d64adeaab06067721f2d548eb.",
+    "The new raw candidate has SHA-256 3ab4b39024aae35d22077b2034e7787a0d45570e239eb9183f4c6d18cfac4cae.",
+    "The backend metadata records the new prompt in the command but explicitly states that the pinned native WanAnimate generator ignores its accepted --prompt argument.",
+    "Dense review still shows the bouquet-side hand structurally hidden or flower-fused around local frame 22; no temporal repair was applied."
+  ],
+  "lessons": [
+    "Prompt-only retakes are not an effective optimization axis for this pinned WanAnimate revision.",
+    "Further candidate search must vary an effective input such as the latent seed, target condition, or replacement mask while retaining the same strict gate."
+  ],
+  "limitations": ["This record rejects only the seed-42 prompt-only retake; independent latent-seed candidates are still under evaluation."],
+  "next_actions": ["Generate seeds 43 and 44 in parallel, retain raw outputs, and promote only a candidate with two independently trackable hands."],
+  "supersedes": ["2026-08-11.gpu-flower-window470-two-hand-gate-rejection-v1"]
+}

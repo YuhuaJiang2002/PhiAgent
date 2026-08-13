@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-bottle-10s-demo-v1-verified",
+  "recorded_at": "2026-08-11T07:12:00Z",
+  "status": "PARTIAL",
+  "scope": "Final verification correction for the public-Ego ten-second AC-WM comparison",
+  "summary": "The EPIC Ego pour/shake/handover demo remains PARTIAL after final verification. This record corrects the earlier intermediate test count from 392 to 393 while retaining the measured action separation, strict window rejections, and visible seam limitation.",
+  "evidence": [
+    "The final repository run passed 393 tests with one explicit optional MuJoCo skip in 2.81 seconds; Ruff, git diff --check, ledger validation, skill-creator quick validation, and SkillHone static checks pass.",
+    "The comparison and all three individual videos each decode to 240 frames at 24 FPS and exactly 10.000000 seconds; comparison SHA-256 is 2c65fbeaa670ac66e81bc26f33ae2a69f071d321aded5418d7f2534b31399f32.",
+    "Minimum pairwise full-frame MAD remains 14.657888, all six strict window evaluations remain rejected, and best-seam subject MAD remains 17.536915-22.331053 with human seam review failed.",
+    "The main demo page, README, STATUS, and EXPERIMENTS now route the ten-second AC-WM case to EPIC-KITCHENS P03_28 rather than the legacy flower scene."
+  ],
+  "lessons": [
+    "Final verification must occur after every new regression test is added, and append-only evidence must be corrected with a superseding record rather than edited."
+  ],
+  "limitations": [
+    "The generated videos remain a two-window, image-space PARTIAL visualization with failed source-skin/EPL gates, imperfect pour bottle lock, repair smearing, and a visible seam; they are not real-robot execution."
+  ],
+  "next_actions": [
+    "Train and evaluate a multi-scene metric-state continuation adapter before attempting a WORKING claim."
+  ],
+  "run_dir": "outputs/minimax-h3-long-ego-action-demo/20260811T070900Z-epic-blue-bottle-v1",
+  "supersedes": ["2026-08-11.acwm-ego-bottle-10s-demo-v1"],
+  "tags": ["acwm", "epic-kitchens", "ego-video", "final-verification", "partial"]
+}

@@ -1,0 +1,30 @@
+{
+  "record_id": "2026-08-12.foundation-contact-alternative-model-preflight",
+  "recorded_at": "2026-08-12T10:01:00Z",
+  "status": "PARTIAL",
+  "scope": "Pinned UniDepth and V-DPM fallback runners for metric depth and dynamic point maps",
+  "summary": "GPU-provenance runners and pinned official source checkouts were prepared for UniDepth and V-DPM, but no model inference result is claimed because their required checkpoints were not available in the execution cache.",
+  "evidence": [
+    "UniDepth official source is pinned at revision 8d8cfe4c7ee15297099983607febf0d4f32eb3d6 and scripts/run_unidepth_video.py validates source lineage, GPU selection, and experiment provenance.",
+    "V-DPM official source is pinned at revision 5e2a57cf6007dfb0511a8b396a0805089b9edcc4 and scripts/run_vdpm_video.py implements overlapping-window dynamic point-map persistence.",
+    "Neither runner produced a checkpoint-backed video output, and the compiled pipeline does not treat either as observed evidence."
+  ],
+  "lessons": [
+    "A prepared adapter or source checkout is not a model execution result.",
+    "DA3 can provide the current camera proposal while V-DPM remains the required architecture change for persistent dynamic stem points."
+  ],
+  "limitations": [
+    "UniDepth and V-DPM checkpoint files were absent from the available local and remote caches.",
+    "No throughput, accuracy, or visual quality comparison against DA3 exists for these runners."
+  ],
+  "next_actions": [
+    "Acquire the separately licensed checkpoints through their official distribution paths, freeze their hashes, and run held-frame comparisons before using either output."
+  ],
+  "tags": [
+    "unidepth",
+    "v-dpm",
+    "preflight",
+    "foundation-model",
+    "partial"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-exact-asset-supervisor-v10-working",
+  "recorded_at": "2026-08-12T12:46:00Z",
+  "scope": "Corrected provenance-complete exact-asset supervisor and SkillHone campaign",
+  "status": "WORKING",
+  "summary": "The aggregate campaign binds the current skill, private eval revision, split hashes, settings hash/mode, provider runtime, commands, packages, and results: 14/14 strict behavioral items pass while physical promotion remains false.",
+  "run_dir": "outputs/foundation-contact/20260812T124600Z-skillhone-exact-asset-campaign-v10",
+  "evidence": [
+    "Fresh scores are 4/4 probe, 3/3 held-out test, and 7/7 adversarial with zero errors and zero missing answers.",
+    "Private eval revision 6e18538 is clean and pushed to loopback Forgejo; settings mode is 0600 and contents remain redacted.",
+    "The aggregate campaign records 14/14 strict passes and physical_model_promoted=false.",
+    "The separate old-harness regression is corrected to 0/7 with seven missing answers and retained by hash.",
+    "The physical supervisor remains valid at 0/4 gates and 5/5 semantic attacks, so no video/contact model is promoted."
+  ],
+  "lessons": [
+    "Behavioral promotion and physical promotion require separate artifacts and separate truth conditions.",
+    "Provider runtime files need content hashes when an installed SkillHone copy is not itself a Git checkout."
+  ],
+  "limitations": [
+    "The 14-item suite is a compact contract test, not broad empirical evidence that the generated video has correct 3-D contact."
+  ],
+  "next_actions": [
+    "Keep the behavioral champion fixed while collecting independent camera and full-q observations for the next physical experiment."
+  ],
+  "supersedes": [
+    "2026-08-12.foundation-contact-exact-asset-supervisor-v9-working",
+    "2026-08-12.foundation-contact-skillhone-v7-zero-score-correction"
+  ],
+  "tags": ["foundation-contact", "skillhone", "provenance", "adversarial", "working"]
+}

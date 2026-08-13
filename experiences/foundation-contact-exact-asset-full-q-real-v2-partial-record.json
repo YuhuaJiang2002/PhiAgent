@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-exact-asset-full-q-real-v2-partial",
+  "recorded_at": "2026-08-12T12:52:00Z",
+  "scope": "Authority-bound exact-asset full-q analysis-by-synthesis and v7 continual supervision on the real 27.5-second candidate",
+  "status": "PARTIAL",
+  "summary": "The v2 contract closes prior-filled-q and asset-presence loopholes, but the real single view remains structurally unable to identify all 73 robot joints; the v7 supervisor therefore keeps all four physical gates false and emits no robot trajectory.",
+  "run_dir": "outputs/foundation-contact/20260812T124800Z-exact-asset-full-q-real-v2",
+  "evidence": [
+    "The real v2 preflight verifies the source video and all three frozen asset files, derives the exact 29+22+22 joint schema, and completes in 0.010749666995252483 seconds.",
+    "The evidence gate requires joint states from sensors, calibrated views, or physics and requires named, revision-pinned proposal and exact-render stacks; neither authority class is available in the current bundle.",
+    "No robot-trajectory.npz is emitted; the hash-bound v7 compiler reports 0/4 physical stages.",
+    "The v7 continual supervisor manifest is valid, rejects 5/5 evidence-spoof attacks, selects calibrated-metric-camera-bridge-v1, and does not promote a physical model.",
+    "Two supervisor validation invocations failed safely before the valid check: one used a nonexistent summarized DA3 path, and one used supervision-manifest.json instead of the emitted supervisor-manifest.json. Both produced nonzero exits and no altered scientific result."
+  ],
+  "lessons": [
+    "A finite dense q tensor is not evidence unless each hidden state has an independent physical or calibrated observation authority.",
+    "Pinning an asset on disk proves renderer input provenance, not that a generated robot has that identity; held-out exact-render separation from alternative assets remains necessary.",
+    "Supervisor artifact discovery must use the emitted manifest name rather than a remembered filename."
+  ],
+  "limitations": [
+    "All 12 leg joints are outside the frame and most 44 finger joints are occluded by flowers, leaving 79 per-frame camera/base plus joint parameters underconstrained.",
+    "Independent metric scale, persistent per-stem dynamic rods, and sensor or physics-solver contact forces remain absent.",
+    "No new generated video was produced, so the visible late color, local structure, finger deformation, motion blur, frozen flowers, and force closure remain unaccepted."
+  ],
+  "next_actions": [
+    "Acquire synchronized full q/qdot telemetry or calibrated RGB-D/multiview evidence that observes cropped legs and occluded fingers, then run the frozen proposal and exact-render bundle across all 660 frames.",
+    "After metric camera and robot gates pass, fit persistent dynamic stem rods and fuse force-torque, tactile, or inverse-dynamics solver evidence before any physical promotion."
+  ],
+  "supersedes": [
+    "2026-08-12.foundation-contact-exact-asset-full-q-real-v1-partial"
+  ],
+  "tags": ["foundation-contact", "robot-trajectory", "exact-asset", "authority", "supervision", "partial"]
+}

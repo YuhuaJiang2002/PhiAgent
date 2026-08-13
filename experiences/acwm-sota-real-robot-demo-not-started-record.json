@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-real-robot-demo-not-started",
+  "recorded_at": "2026-08-11T09:34:00Z",
+  "status": "NOT STARTED",
+  "scope": "Physical AC-WM real-robot demonstration",
+  "summary": "A genuine real-robot demo was not started because this workspace exposes no controllable physical robot, hardware serial, calibrated camera, operator approval, or synchronized robot telemetry.",
+  "evidence": [],
+  "lessons": [],
+  "limitations": [
+    "Existing generated videos in real camera scenes and RoboTwin simulation clips are not physical robot executions and cannot satisfy the request."
+  ],
+  "next_actions": [
+    "Obtain robot and operator access, then execute at least three prediction-before-execution demo trials under configs/acwm/real_robot_demo_protocol.json; use at least 20 paired trials for SOTA promotion."
+  ],
+  "run_dir": null,
+  "supersedes": [],
+  "tags": ["acwm", "real-robot", "demo", "safety", "not-started"]
+}

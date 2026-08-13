@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-shoulder-root-review-v2",
+  "recorded_at": "2026-08-10T23:06:00Z",
+  "scope": "Fail-closed shoulder-root detail extension for H3 topology promotion",
+  "status": "PARTIAL",
+  "summary": "New H3 candidates must now label unique left and right shoulder origins and prove that both arm roots remain outside the head/neck region on every decoded, digest-bound frame; legacy evidence remains readable but cannot promote a candidate.",
+  "evidence": [
+    "The earlier generic left/right shoulder-attachment gates already rejected the observed candidate, but did not separately expose duplicate roots or head/neck-origin ambiguity.",
+    "TopologyFrameReview now supports three explicit boolean gates: unique_left_shoulder_origin, unique_right_shoulder_origin, and arm_roots_clear_of_head_and_neck.",
+    "IdentityPromotionContract adds topology_kinematic_detail and rejects incomplete legacy labels even when their nine older topology booleans pass.",
+    "The v2 review-plan schema requires all twelve semantic gates; all labels still require complete decoded-frame SHA-256 coverage.",
+    "Sixteen focused tests pass and Ruff passes after the extension."
+  ],
+  "lessons": [
+    "A broad shoulder-attachment label is insufficient for diagnosing duplicated roots and arms visually emerging from the head or neck.",
+    "Backward-readable evidence and forward promotion eligibility should be separate: historical labels remain auditable without weakening the new gate."
+  ],
+  "limitations": [
+    "The new gates have not yet been applied to an r3 generated video.",
+    "They are semantic 2-D judgments and do not prove a physical 3-D kinematic tree."
+  ],
+  "next_actions": [
+    "Review every r3 candidate with a schema-2 plan containing all twelve gates and per-frame decoded digests."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "topology", "shoulder-root", "head-neck", "review-contract", "partial"]
+}

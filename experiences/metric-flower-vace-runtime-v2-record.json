@@ -1,0 +1,30 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-runtime-v2-working",
+  "recorded_at": "2026-08-12T15:50:00Z",
+  "status": "WORKING",
+  "scope": "Pinned VACE-1.3B training runtime preparation on a800-4",
+  "summary": "The target host now has a hash-verified VACE checkpoint, complete pinned DiffSynth training checkout, tokenizer, and free compatible GPUs; this is runtime readiness only.",
+  "evidence": [
+    "ModelScope revision 6714b95cf37b2a609fe9087387d6313cd311f500 supplies diffusion SHA-256 c46a6f5f7d32c453c3983bbc59761ea41cd02ad584fb55d1a7ee2b76145847a2 and VAE SHA-256 38071ab59bd94681c686fa51d75a1968f64e470262043be31f7a094e442fd981.",
+    "The reused T5 file has exact SHA-256 7cace0da2b446bbbbc57d031ab6cf163a3d59b366da94e5afe36745b746fd81d.",
+    "The first preflight retained failures for an incomplete DiffSynth checkout and missing tokenizer; the corrected path uses DiffSynth commit b1c02ce76aabc989f6bf534756b2da84532249e5 and a 16,837,417-byte tokenizer.",
+    "verify_diffsynth_checkout and verify_vace_checkpoint both pass."
+  ],
+  "lessons": [
+    "Checkpoint preparation must verify the complete training entrypoint and tokenizer, not only large weight files."
+  ],
+  "limitations": [
+    "No optimizer step or held-out adapted video has run in this record."
+  ],
+  "next_actions": [
+    "Train only after an exact-contact, target-independent v2 dataset is available."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/checkpoints/Wan2.1-VACE-1.3B-modelscope-v2",
+  "tags": [
+    "flower",
+    "vace",
+    "checkpoint",
+    "diffsynth",
+    "working"
+  ]
+}

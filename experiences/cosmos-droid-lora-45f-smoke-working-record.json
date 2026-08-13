@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-45f-smoke-working",
+  "recorded_at": "2026-08-12T08:11:00Z",
+  "scope": "Effective CP4-compatible 45-frame rank-16 attention LoRA smoke training",
+  "status": "WORKING",
+  "summary": "The corrected training route completed two real optimizer steps on 172 native multiview videos and saved two verified adapter-only checkpoints.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T201500Z-lora-attn-r16-45f-state12-cp4-smoke2",
+  "evidence": [
+    "The framework-saved effective config records num_frames=45, state_t=12, context parallel size 4, rank 16, and Q/K/V/output targets.",
+    "Iteration losses were finite at 0.2559 and 0.1337; both optimizer steps completed.",
+    "iter_000000001.pt and iter_000000002.pt are each 85,130,894 bytes with SHA-256 03ce1ab08c1fa924a2476dfca4f302d7bf1cdccd476c225757074534cb45a041 and 427f84d9cce771d208a97b0b0cd574651efaacfb6211ec524dc9bfc143180386.",
+    "The final checkpoint contains exactly 576 tensors and 42,467,328 values; every key is a net-prefixed lora_A or lora_B adapter tensor, so the immutable 14B base was not duplicated.",
+    "All prior external runtime overlays were moved into immutable run directories with hashes, leaving exactly one active registered overlay."
+  ],
+  "lessons": [
+    "A 45-frame/state_t=12 curriculum is the longest tested short window that both preserves useful temporal context and exactly satisfies CP4.",
+    "Effective framework configs and adapter-key audits must be acceptance evidence, not merely launcher configuration."
+  ],
+  "limitations": [
+    "Two steps prove the engineering path only; they do not establish video-quality improvement.",
+    "The adapter must still be loaded in the 93-frame inference pipeline and then trained to validation-selected checkpoints."
+  ],
+  "next_actions": [
+    "Run a 93-frame development inference with the step-2 adapter to verify loading, then launch formal training with periodic adapter-only checkpoints and validation-only selection."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "rank16",
+    "45-frames",
+    "adapter-only",
+    "working"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-33f-overlay-import-partial",
+    "2026-08-12.cosmos-droid-lora-33f-state-t-partial",
+    "2026-08-12.cosmos-droid-lora-33f-cp4-partial"
+  ]
+}

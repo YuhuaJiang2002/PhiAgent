@@ -1,0 +1,23 @@
+{
+  "record_id": "2026-08-11.h3-topology-dataset-v2",
+  "recorded_at": "2026-08-10T21:10:20Z",
+  "status": "WORKING",
+  "scope": "Rights-attributed H3 topology-positive Ref2VA dataset compilation",
+  "summary": "Six 39-frame topology-positive training clips were compiled from two articulated robot subjects with separate validation and test sources retained outside optimization.",
+  "evidence": [
+    "The plan contains six train clips, one validation clip, and one subject-disjoint test clip at 448x256, 24 FPS, and 39 frames.",
+    "Every prepared training item has an explicit reference image, silent 32 kHz audio stream, topology-specific prompt, source path, license note, and source URI.",
+    "The completed training dataset manifest SHA-256 is 1118ee94b53e3dac68bf662e5ccf6a4615d1bc905b576f2dac77bcfe351159c6."
+  ],
+  "lessons": [
+    "Crossed-arm and self-occlusion examples must explicitly supervise unique shoulder origins, not merely stable appearance."
+  ],
+  "limitations": [
+    "Training positives are simplified procedural renders and do not establish photorealism or real flower contact.",
+    "Validation and test items are topology-only evidence and remain rejected for overall flower-manipulation quality."
+  ],
+  "next_actions": [],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-datasets/20260811T052000Z-topology-v2-train",
+  "supersedes": [],
+  "tags": ["h3", "dataset", "topology", "ref2va", "working"]
+}

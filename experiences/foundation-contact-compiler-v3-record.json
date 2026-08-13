@@ -1,0 +1,35 @@
+{
+  "record_id": "2026-08-12.foundation-contact-compiler-v3",
+  "recorded_at": "2026-08-12T10:24:00Z",
+  "status": "PARTIAL",
+  "scope": "Corrected fail-closed foundation contact compiler with learned-camera proposal separated from absolute metric calibration",
+  "summary": "The corrected compiler records learned camera proposal_passed=true but keeps physical metric_camera=false because tested context stability is not an independent scale calibration; all four physical stages therefore remain false.",
+  "evidence": [
+    "DA3 geometry has 100 percent positive-depth coverage, valid intrinsics and SE(3), context scale variation p95 0.003107, and proposal_passed=true.",
+    "absolute_metric_scale_calibrated=false, robot_trajectory=false, stem_centerlines=false, and contact_forces=false; overall status remains PARTIAL.",
+    "All three exact robot MJCF hashes still match the frozen registry and no missing stage is imputed.",
+    "Twenty-three focused tests and Ruff pass after the evidence-semantics correction."
+  ],
+  "lessons": [
+    "Temporal-context agreement from one learned model must not be encoded as an uncertainty bound on absolute metric scale.",
+    "A useful learned proposal can pass its own diagnostics while the downstream physical stage remains fail-closed."
+  ],
+  "limitations": [
+    "There is no independent RGB-D, fiducial, multiview, or known-link scale observation.",
+    "Full-q reprojection, accepted rod trajectories, and physical force evidence also remain absent or rejected."
+  ],
+  "next_actions": [
+    "Add an external metric-scale bridge, then rerun full-q, rod, and force stages without relaxing their existing gates."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T183000Z-compiled-pipeline-v3",
+  "supersedes": [
+    "2026-08-12.foundation-contact-compiler-v2"
+  ],
+  "tags": [
+    "foundation-model",
+    "evidence-correction",
+    "metric-camera",
+    "fail-closed",
+    "partial"
+  ]
+}

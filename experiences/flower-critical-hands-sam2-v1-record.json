@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-critical-hands-sam2-v1",
+  "recorded_at": "2026-08-10T20:37:56Z",
+  "status": "WORKING",
+  "scope": "Two independently prompted H3 robot-hand instances on the real 17-frame critical window",
+  "summary": "Both upper and lower mechanical-hand tracks remain nonempty, stable, and semantically correct across the critical window.",
+  "evidence": ["Both hand instances have 0/17 empty frames.", "Minimum adjacent IoUs are 0.859855 and 0.811550.", "Minimum mask areas are 1768 and 847 pixels; storyboard review shows two distinct robot hands."],
+  "lessons": ["Independent hand identities are required before computing causal contact pairs."],
+  "limitations": ["Prompts are manual and acceptance is scoped to 17 frames."],
+  "next_actions": ["Pair the active hand to the persistent stem and the support hand to the bouquet."],
+  "run_dir": "outputs/flower-contact-supervision/20260811T033000Z-robot-hands-sam2-v1",
+  "supersedes": [],
+  "tags": ["flower", "sam2", "robot-hands", "critical-window", "working"]
+}

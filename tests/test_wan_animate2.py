@@ -10,6 +10,7 @@ from phiagent.rendering.wan_animate2 import (
     WAN_ANIMATE2_MODELSCOPE_REVISION,
     select_wan_animate2_gpus,
     verify_wan_animate2_checkpoint,
+    wan_animate2_master_port,
     write_runtime_config,
 )
 
@@ -87,3 +88,19 @@ def test_select_two_free_physical_gpus() -> None:
     assert tuple(gpu.physical_index for gpu in selected) == (0, 1)
     with pytest.raises(ValueError, match="exactly two distinct"):
         select_wan_animate2_gpus(gpus, (0, 0), 60000)
+
+
+def test_wan_animate2_master_port_is_unique_per_gpu_pair() -> None:
+    gpus = (
+        GPUInfo(0, "A800", 81920, 1000, 80920),
+        GPUInfo(1, "A800", 81920, 1000, 80920),
+        GPUInfo(2, "A800", 81920, 1000, 80920),
+        GPUInfo(3, "A800", 81920, 1000, 80920),
+    )
+
+    first = wan_animate2_master_port((gpus[0], gpus[1]))
+    second = wan_animate2_master_port((gpus[2], gpus[3]))
+
+    assert first == 15001
+    assert second == 15203
+    assert first != second

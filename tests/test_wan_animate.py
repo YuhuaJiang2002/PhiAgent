@@ -182,8 +182,60 @@ def test_replacement_commands_preserve_scene_and_enable_relighting(tmp_path: Pat
     environment = renderer._execution_environment(7, 42)
     assert environment["CUDA_VISIBLE_DEVICES"] == "7"
     assert environment["PYTHONHASHSEED"] == "42"
-    assert environment.get("PYTHONPATH") == os.environ.get("PYTHONPATH")
+    pythonpath = environment["PYTHONPATH"].split(os.pathsep)
+    assert pythonpath[0] == str((tmp_path / "sam2").resolve())
+    if existing_pythonpath := os.environ.get("PYTHONPATH"):
+        assert os.pathsep.join(pythonpath[1:]) == existing_pythonpath
+    else:
+        assert pythonpath[1:] == []
     assert environment["LD_LIBRARY_PATH"].split(":")[0] == str(cudnn.resolve())
+
+
+def test_source_face_suppression_is_replacement_only(tmp_path: Path) -> None:
+    config = WanAnimateConfig(
+        wan_repo=tmp_path / "Wan2.2",
+        checkpoint_dir=tmp_path / "checkpoint",
+        suppress_source_face_control=True,
+    )
+    with pytest.raises(ValueError, match="only supported in replacement mode"):
+        config.validate()
+
+
+def test_face_suppression_command_preserves_video_timing_input(tmp_path: Path) -> None:
+    config = WanAnimateConfig(
+        wan_repo=tmp_path / "Wan2.2",
+        checkpoint_dir=tmp_path / "checkpoint",
+        mode="replacement",
+        retarget=False,
+        object_roi=(0.36, 0.72, 0.31, 0.20),
+        suppress_source_face_control=True,
+    )
+    renderer = WanAnimateRenderer(config)
+    command = renderer.build_face_suppression_command(
+        Path("/usr/bin/ffmpeg"),
+        tmp_path / "src_face.source-human.mp4",
+        tmp_path / "src_face.suppressed.mp4",
+    )
+
+    assert command[0] == "/usr/bin/ffmpeg"
+    assert command[command.index("-i") + 1].endswith("src_face.source-human.mp4")
+    assert "drawbox=x=0:y=0:w=iw:h=ih:color=black:t=fill" in command
+    assert command[-1].endswith("src_face.suppressed.mp4")
+
+
+def test_reference_transport_is_lossless_ppm_and_avoids_png_decoder(
+    tmp_path: Path,
+) -> None:
+    command = WanAnimateRenderer.build_reference_transport_command(
+        Path("/usr/bin/ffmpeg"),
+        tmp_path / "robot.png",
+        tmp_path / "robot-reference.ppm",
+    )
+
+    assert command[0] == "/usr/bin/ffmpeg"
+    assert command[command.index("-i") + 1].endswith("robot.png")
+    assert command[command.index("-c:v") + 1] == "ppm"
+    assert command[-1].endswith("robot-reference.ppm")
 
 
 def test_replacement_rejects_animation_retargeting(tmp_path: Path) -> None:

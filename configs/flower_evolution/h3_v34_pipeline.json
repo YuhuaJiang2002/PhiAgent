@@ -1,0 +1,13 @@
+{
+  "action_segmentation": false,
+  "contact_conditioning": false,
+  "depth_layering": true,
+  "explicit_robot_geometry": false,
+  "family": "layered_2d",
+  "flower_frame": "object:flower",
+  "local_generation_only": true,
+  "paired_task_adapter": false,
+  "robot_frame": "robot:base",
+  "robot_native_motion": false,
+  "source_frame": "camera:source_pixels"
+}

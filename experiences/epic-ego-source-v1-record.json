@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-source-v1-object-transition",
+  "recorded_at": "2026-08-11T05:04:34Z",
+  "status": "PARTIAL",
+  "scope": "EPIC-KITCHENS P03_28 ten-second source selection at 24.83-34.83 seconds",
+  "summary": "The clip met the exact duration and decode contract, but visual review found an oil-bottle placement at the opening and a blue-bottle identity transition, so it was rejected as the common initial state for controlled variants.",
+  "evidence": [
+    "The prepared video decodes to 240 frames at 24 FPS and 1280x720.",
+    "Frame review showed the manipulated blue bottle was not yet the sole already-held task object at the opening."
+  ],
+  "lessons": [
+    "Exact duration and annotation overlap are insufficient; action variants also require one unambiguous common object and holder state at frame zero."
+  ],
+  "limitations": [
+    "The source interval cannot support causal right-hand-held bottle variants without an identity discontinuity."
+  ],
+  "next_actions": [
+    "Shift the start to 25.83 seconds and repeat exact-frame plus endpoint review."
+  ],
+  "run_dir": "outputs/epic-kitchens-ego-source/20260811T050434Z-p03_28-bottle-v1",
+  "supersedes": [],
+  "tags": ["acwm", "epic-kitchens", "ego-video", "source-selection", "negative-result"]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.robotwin-mplib-expert-blocked",
+  "recorded_at": "2026-08-12T09:41:00Z",
+  "status": "BLOCKED",
+  "scope": "RoboTwin adjust_bottle expert rollout with explicit MPlib fallback",
+  "summary": "The non-official MPlib arm-planning fallback failed on seeds 0 and 1, so the route is closed after two root-cause-equivalent attempts and official Curobo remains mandatory.",
+  "evidence": [
+    "Seed 0 failed during batch grasp-pose planning because the fallback lacked Curobo plan_batch semantics.",
+    "After explicit routing of single and batch arm plans to MplibPlanner, seed 1 produced two left-arm path segments but then failed IK and did not complete the task.",
+    "No successful trajectory or task-success claim was produced."
+  ],
+  "lessons": [
+    "RoboTwin's Curobo planner is not interchangeable with MPlib by changing the embodiment planner string; batch pose selection and constraint behavior differ.",
+    "Two failed seeds with the same IK root cause are sufficient to stop this fallback rather than spend more compute."
+  ],
+  "limitations": [
+    "The fallback ignored constraint_pose and was intentionally separated from the official recipe.",
+    "Curobo v0.7.8 is not yet installed in the experiment runtime."
+  ],
+  "next_actions": [
+    "Complete the pinned Curobo source/toolchain installation; do not retry the unchanged MPlib fallback."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/robotwin-expert-smoke/20260812T094058Z-adjust-bottle-mplib-seed1-v3",
+  "supersedes": [],
+  "tags": ["robotwin", "mplib", "expert", "blocked", "negative-result"]
+}

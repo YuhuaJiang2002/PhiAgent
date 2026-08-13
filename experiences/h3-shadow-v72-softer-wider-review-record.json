@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v72-softer-wider-review",
+  "recorded_at": "2026-08-11T11:34:00+08:00",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T032000Z-softer-wider-hand-contained-v72-pending",
+  "scope": "Full-length review of the v72 weaker neutral halo and wider hand-containment candidate",
+  "status": "PARTIAL",
+  "summary": "v72 passes all eight automatic non-human-review gates and is visibly lighter and temporally smoother than v71, but is not promoted because the 5px residual-arm feather produces a tiny active-coverage regression on exit frame 249.",
+  "evidence": [
+    "The 660-frame output and comparison fully decode; protected content and pixels outside the safety region remain exact before encode.",
+    "Maximum neutral-halo strength falls from 0.21 to 0.16 while cleanup radius grows from 90px to 102px; plate-distance reduction is 0.181303 versus 0.205341 for v71.",
+    "Output ROI mean jerk is 1.626816, lower than v71's 1.680490, and full-frame mean jerk is 0.721601 versus 0.722189.",
+    "Every-frame reviews of 110--136, 235--255, 384--405, and 475--492 and dense three-frame reviews of 120--250 and 389--490 show no recognizable human hand leak.",
+    "A strict per-frame residual-arm area comparison finds 659 non-regressing frames and one frame-249 regression of 0.0000375601 image fraction; cumulative active area increases from 4.512778 to 4.921660.",
+    "The first contact-sheet command failed because the installed FFmpeg lacks drawtext; unlabeled fixed-order sheets (v71 left, v72 right) were generated successfully without modifying the video."
+  ],
+  "lessons": [
+    "Neutral halo opacity and semantic hand coverage should remain independently tunable.",
+    "Even visually invisible coverage regressions at fade boundaries should block promotion when full containment is an explicit acceptance requirement.",
+    "Keep the accepted 4px residual-arm feather unchanged and widen only the weak neutral cleanup support."
+  ],
+  "limitations": [
+    "Human review remains pending and the candidate is not published as the current showcase.",
+    "QuickTime continuous-playback control timed out after opening the file picker, so temporal review relies on full decode, jerk metrics, and dense contact sheets."
+  ],
+  "next_actions": [
+    "Run v73 with the same 102px/0.16 neutral halo but restore the accepted 4px residual-arm feather, then require zero per-frame coverage regressions."
+  ],
+  "supersedes": ["2026-08-11.h3-shadow-v72-source-preflight-failure"],
+  "tags": ["minimax-h3", "epl", "shadow-cleanup", "hand-containment", "dense-review", "partial"]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-support-v1-broad",
+  "recorded_at": "2026-08-11T07:00:00Z",
+  "status": "PARTIAL",
+  "scope": "First control-derived support mask for EPIC Ego H3 repair tournaments",
+  "summary": "A 16-level difference threshold with large close/dilate kernels treated the source-hand cleanup halo as generated action support, covering about 57% of the frame and creating broad fog-like blending artifacts.",
+  "evidence": [
+    "The window-00 and window-01 pour probes report mean support fractions of 0.5788 and 0.5698.",
+    "Seam-frame review shows diffuse generated/source mixtures far outside the robot arms and bottle."
+  ],
+  "lessons": ["Control-vs-source difference is not itself semantic action support when the control adapter also performs soft human cleanup."],
+  "limitations": ["Probe-v1 repaired outputs are not eligible for the final comparison."],
+  "next_actions": ["Raise the difference threshold and bound the morphology kernels, then rerun all six five-recipe probes."],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2",
+  "supersedes": [],
+  "tags": ["acwm", "ego-video", "repair-support", "mask", "negative-result"]
+}

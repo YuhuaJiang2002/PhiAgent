@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.droid-ego-third-person-label-python-blocked",
+  "recorded_at": "2026-08-11T14:23:30Z",
+  "scope": "Rerender the DROID ego-to-third-person demos with explicit condition and target labels",
+  "status": "PARTIAL",
+  "summary": "The direct Python rerender entry point was interrupted after the shared local Python environment stalled during dependency import. It produced no video and was replaced by a deterministic transparent-overlay route.",
+  "run_dir": "outputs/droid-ego-third-person/20260811T140500Z-labels-v2",
+  "evidence": [
+    "The process remained inside Python import file reads for more than three minutes while several unrelated local pytest processes showed the same shared-environment stall.",
+    "The interrupted entry point produced no final directory or published media before termination.",
+    "The original verified 20260811T135000Z experiment and its published videos remained intact throughout the failed attempt."
+  ],
+  "lessons": [
+    "A purely visual provenance-label change should have a deterministic media-overlay fallback that does not depend on importing OpenCV.",
+    "Failed rerender attempts must be retained even when a later fallback produces the requested artifact."
+  ],
+  "limitations": [
+    "This attempt produced no labeled video and is not delivery evidence."
+  ],
+  "next_actions": [
+    "Render one transparent 1280x720 label overlay and apply it to the already verified videos with ffmpeg."
+  ],
+  "supersedes": [],
+  "tags": [
+    "droid",
+    "ego-to-third-person",
+    "labeling",
+    "python-import",
+    "partial"
+  ]
+}
