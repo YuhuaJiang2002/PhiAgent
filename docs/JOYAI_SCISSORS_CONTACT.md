@@ -30,7 +30,7 @@ flower mask and it carries `physical_evidence = false` semantics.
 ## Reproducible measurements
 
 - Official JoyAI full-stream proposal: 665 generated frames in 105.692 s,
-  **6.292 generated fps** (4.37× real time for a 24 fps video).
+  **6.292 generated fps** (3.81× real time for a 24 fps video).
 - The scissors-conditioned raw candidate reaches 6/11 late projected contacts,
   up from the reported 5/11 baseline but still below the fixed 95% gate.
 - Final deterministic union: 660 frames in 12.761 s, **51.720 repair fps**.  It
