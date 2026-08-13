@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-refreeze-audit-namespace-failure-v7",
+  "recorded_at": "2026-08-13T16:58:00Z",
+  "scope": "First cached frozen-limit re-adjudication attempt",
+  "status": "PARTIAL",
+  "summary": "The cached re-adjudication stopped before writing a report because its reconstructed audit namespace omitted the persistent-grasp occlusion-gap and bridge-coverage fields used in summary serialization.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T165500Z-risk165-frozen-audit-v7",
+  "evidence": [
+    "The exception occurred before the output report write.",
+    "The immutable input audit and per-frame metrics remain unchanged.",
+    "The missing values are present in the original audit config and can be copied without recomputing any image metric."
+  ],
+  "lessons": [
+    "Cached adjudication must reconstruct the complete summary ABI, including descriptive physical-contract fields that are not themselves threshold values."
+  ],
+  "limitations": [
+    "No re-adjudicated report was produced by this attempt."
+  ],
+  "next_actions": [
+    "Populate the two missing fields from the immutable source report and rerun in a new directory."
+  ],
+  "supersedes": [],
+  "tags": [
+    "joyai",
+    "audit-cache",
+    "frozen-limits",
+    "failed-run"
+  ]
+}

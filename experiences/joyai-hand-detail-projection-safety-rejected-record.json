@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-hand-detail-projection-safety-rejected-v5",
+  "recorded_at": "2026-08-13T16:47:00Z",
+  "scope": "Bounded late hand-detail projection on the risk-window consensus candidate",
+  "status": "PARTIAL",
+  "summary": "The hand-detail projection was rejected because the source-hand-supported generated-hand interior becomes empty after preserving the flower/contact boundary on 21 of 22 formerly failed late frames; the fail-closed operator changed no pixels.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T164500Z-risk165-hand-detail-v5",
+  "evidence": [
+    "The complete 660-frame attempt ran in 32.9795 seconds at 20.0124 FPS.",
+    "Only 1 of 22 selected frames already met the frozen edge gate before projection.",
+    "The lossless post-decode candidate changed zero pixels and retained an outside-editable exact fraction of 1.0.",
+    "All-selected-gate and selected-support-changed gates are false."
+  ],
+  "lessons": [
+    "A source-hand semantic mask is an audit support, not automatically a safe robot-hand detail editing domain.",
+    "When flower/contact locks consume the available interior, fail-closed rejection is safer than sharpening background or object pixels to game an edge statistic."
+  ],
+  "limitations": [
+    "This attempt does not improve hand detail and its output must not replace the consensus candidate."
+  ],
+  "next_actions": [
+    "Keep the consensus candidate unchanged and let the full encoded adversarial audit report the remaining hand-detail limitation."
+  ],
+  "supersedes": [],
+  "tags": [
+    "joyai",
+    "hand-detail",
+    "contact-lock",
+    "fail-closed",
+    "rejected"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-recursive-appearance-state-final-v25",
+  "recorded_at": "2026-08-13T17:25:00Z",
+  "scope": "JoyAI 27.5-second flower-arranging robot-layer temporal stabilization and persistent-grasp restoration",
+  "status": "PARTIAL",
+  "summary": "The multi-anchor consensus plus recursive appearance-state challenger is accepted for the frozen camera-frame visual contract: source-motion-aligned robot-layer jitter mean falls 8.216%, late hand-edge failures fall from 22/180 to 0/180, late projected contact is 11/11, and persistent visual grasp plus erasure rejection are 147/147. Overall status remains PARTIAL because the evidence is one 2-D scene without metric depth, force closure, or real execution.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T190000Z-real-vs-recursive-final-v25",
+  "evidence": [
+    "The final 1280x720 MP4 decodes 660/660 frames at 24 FPS for 27.5 seconds and has SHA-256 a63237403e2b010444ad885277dd5b06f75370f9c4dcbde418732b641b3099a8.",
+    "The frozen long-video audit reuses the v5 incumbent limits verbatim and passes every image-space gate plus color, topology, contact-removal, and structure-ghost attacks.",
+    "At or after 20 seconds, projected contact recall is 11/11 and hand-edge lower-gate violations are 0/180; the source-observed hold interval passes 147/147 persistent visual-grasp frames and 147/147 erasure attacks.",
+    "Across 161 declared risk transitions, layer-warp MAE mean improves from 7.075632 to 6.494297, p95 from 20.724682 to 19.161703, and maximum from 29.420279 to 26.685484; transitions above 20 decrease from 10 to 7.",
+    "Consensus, recursive state update, and bounded hand-detail projection take 268.145181, 108.835392, and 62.385857 seconds respectively; each stage preserves its declared non-editable locks exactly."
+  ],
+  "lessons": [
+    "Long-video flicker is better modeled as a persistent appearance-state estimation error than as independent bad frames.",
+    "Anchor consensus removes donor disagreement while a causal recursive update suppresses residual temporal innovation without changing flower, background, contact, or endpoint locks.",
+    "Hand-detail recovery must be a bounded current-frame projection followed by a complete encoded adversarial audit; pre-encode success alone is insufficient."
+  ],
+  "limitations": [
+    "The 8.216% jitter reduction is measured only on 161 transitions in three risk windows of one scene.",
+    "Projected overlap and occlusion bridging do not establish 3-D hand-stem depth, contact force, or force closure.",
+    "The generated robot is a visual replacement, not evidence of real robot execution."
+  ],
+  "next_actions": [
+    "Replicate the frozen risk-window audit on independent flower-arranging scenes before treating the appearance-state method as a general learned capability.",
+    "Keep physical promotion separate until calibrated depth, telemetry, or force evidence is acquired."
+  ],
+  "supersedes": [
+    "2026-08-13.joyai-full720-consensus-cost-rejected-v3",
+    "2026-08-13.joyai-hand-detail-bitwise-mask-abi-failure-v9-v11",
+    "2026-08-13.joyai-recursive-mask-abi-failure-v19",
+    "2026-08-13.joyai-recursive-postdecode-projection-failure-v20"
+  ],
+  "tags": [
+    "joyai",
+    "long-video",
+    "temporal-state",
+    "flicker",
+    "persistent-grasp",
+    "adversarial-audit"
+  ]
+}

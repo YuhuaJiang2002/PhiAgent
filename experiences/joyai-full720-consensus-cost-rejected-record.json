@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-full720-consensus-cost-rejected-v3",
+  "recorded_at": "2026-08-13T16:35:00Z",
+  "scope": "Native-720p full-timeline residual-consensus cost audit",
+  "status": "PARTIAL",
+  "summary": "The corrected full-timeline run was stopped after more than eleven minutes because it recomputed six bidirectional flow observations over all 660 frames, including diagnosed stable regions, and therefore failed the infrastructure-cost objective.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T162500Z-full720-r3-min4-v3",
+  "evidence": [
+    "The process passed mask and boolean-ABI preflight and remained in weighted residual consensus at 11 minutes 29 seconds.",
+    "The measured risk diagnosis localizes the strongest late robot-layer discontinuities to frames 463-520, 543-625, and 637-659.",
+    "Those three windows cover 165 of 660 frames while preserving a full-length output timeline."
+  ],
+  "lessons": [
+    "Correspondence consensus is an offline risk-window operator at native resolution unless flow features are cached; recomputing it on stable frames violates the generation-cost objective."
+  ],
+  "limitations": [
+    "The interrupted run produced no candidate or quality result."
+  ],
+  "next_actions": [
+    "Run the unchanged consensus contract only on diagnosed risk windows and report measured end-to-end throughput."
+  ],
+  "supersedes": [],
+  "tags": [
+    "joyai",
+    "long-video",
+    "flicker",
+    "infra",
+    "cost-rejected"
+  ]
+}

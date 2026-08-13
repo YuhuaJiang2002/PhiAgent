@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-recursive-postdecode-projection-failure-v20",
+  "recorded_at": "2026-08-13T18:28:00Z",
+  "scope": "Second native-720p recursive appearance-state pass after consensus",
+  "status": "PARTIAL",
+  "summary": "The recursive body completed, but independent post-decode lock verification stopped because its second editable-mask call omitted the declared legacy 832x480-to-1280x720 projection argument.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T182500Z-risk165-recursive-v20",
+  "evidence": [
+    "The failure occurred in the post-decode audit after encoding, not in the recursive state update.",
+    "The error explicitly reports a 832x480 packed mask passed to the source_native 1280x720 path.",
+    "The main processing call already carries mask_projection; only the verification call was missing it."
+  ],
+  "lessons": [
+    "Named coordinate transforms must be threaded through generation and independent verification call sites identically."
+  ],
+  "limitations": [
+    "The encoded files are unaccepted because their lock audit did not complete."
+  ],
+  "next_actions": [
+    "Pass the same mask projection into post-decode verification and rerun in a new directory."
+  ],
+  "supersedes": [],
+  "tags": [
+    "joyai",
+    "flicker",
+    "coordinate-frame",
+    "failed-audit"
+  ]
+}

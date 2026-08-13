@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-full720-consensus-boolean-mask-failure-v2",
+  "recorded_at": "2026-08-13T16:21:00Z",
+  "scope": "Second native-720p full-timeline residual-consensus launch",
+  "status": "PARTIAL",
+  "summary": "The launch stopped before encoding because the consensus immutable-support assignment did not make the reliability-mask boolean ABI explicit and produced a shape-mismatched advanced-index assignment.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T162500Z-full720-r3-min4-v2",
+  "evidence": [
+    "The failure occurred at the pre-encode reliable-support restoration assignment.",
+    "No video, manifest, or acceptance result was emitted.",
+    "The correction makes ResidualConsensus.reliable explicitly bool and uses np.logical_not for immutable support."
+  ],
+  "lessons": [
+    "Image-mask ABI types must be explicit at module boundaries; relying on bitwise inversion is unsafe even when small-window tests happen to pass."
+  ],
+  "limitations": [
+    "This attempt produced no quality result."
+  ],
+  "next_actions": [
+    "Add a boolean-ABI regression assertion and rerun the unchanged quality contract in a new directory."
+  ],
+  "supersedes": [],
+  "tags": [
+    "joyai",
+    "long-video",
+    "flicker",
+    "mask-abi",
+    "failed-run"
+  ]
+}
