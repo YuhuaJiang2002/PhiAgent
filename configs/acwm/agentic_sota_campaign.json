@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0.0",
+  "campaign_id": "agentic-grounded-acwm-20260811",
+  "status": "PARTIAL",
+  "objective": "Train and promote an action-conditioned world model only after it significantly beats every declared reproducible baseline on frozen simulation, cross-embodiment, and real-robot trials.",
+  "starting_point": {
+    "model": "BLM-Lab/Boundless-World-Model",
+    "source_commit": "44acfd1b06f35f365f02f7bb2fc5da6beafcd6bc",
+    "checkpoint_revision": "738a8d3c008e637b8b1b18d5e98a82f6de9c04aa",
+    "base_model": "Wan-AI/Wan2.2-TI2V-5B",
+    "base_model_revision": "921dbaf3f1674a56f47e83fb80a34bac8a8f203e"
+  },
+  "training_data": {
+    "dataset": "Traly/Robotwin2.0-lerobot",
+    "revision": "f89cf979382d18f4f281e9c20370dfafbed9d35b",
+    "split_unit": "embodiment/task pair",
+    "action_source": "observation.state_ee",
+    "source_encoding": "two arms x [xyz, quaternion_xyzw, gripper] = 16D",
+    "target_encoding": "two arms x [xyz, Euler_XYZ, gripper] = 14D",
+    "coordinate_frame_policy": "robot_base:robotwin2-<embodiment>",
+    "clip_policy": "57 frames with 9-frame adjacent history overlap"
+  },
+  "agent_loop": [
+    "observe per-trial action, physics, appearance, embodiment, and temporal failures",
+    "select one bounded data or optimization intervention",
+    "run matched-seed validation without touching frozen test trials",
+    "reject any intervention that regresses a mandatory metric",
+    "retain an append-only failure record",
+    "run frozen benchmark and real-robot tests only for a validation winner"
+  ],
+  "paper_to_implementation": [
+    {
+      "paper": "XEWorld",
+      "arxiv": "2608.05799",
+      "adopted": "explicit cross-embodiment split, pixel/action alignment audit, appearance/dynamics decoupling through action-adapter-first training",
+      "not_yet_implemented": "the paper's complete unseen-embodiment architecture and few-shot appearance recovery"
+    },
+    {
+      "paper": "Boundless World Model",
+      "arxiv": "2607.29302",
+      "adopted": "57-frame action-conditioned Wan2.2 baseline, 9-frame history, autoregressive-ready overlapping clips",
+      "not_yet_implemented": "an officially documented end-to-end training recipe; the public README still marks training code TODO"
+    },
+    {
+      "paper": "Mem-World",
+      "arxiv": "2606.18960",
+      "adopted": "long-horizon memory is a mandatory ablation and evaluation axis",
+      "not_yet_implemented": "4D wrist-view surfel memory"
+    },
+    {
+      "paper": "MiraBench",
+      "arxiv": "2605.29360",
+      "adopted": "physics and action following are promotion metrics; visual quality cannot substitute for either",
+      "not_yet_implemented": "full official MiraBench evaluation"
+    },
+    {
+      "paper": "WorldArena 2.0",
+      "arxiv": "2605.17912",
+      "adopted": "frozen multimodal test plus real-platform evidence is required",
+      "not_yet_implemented": "full benchmark generation and server submission"
+    }
+  ],
+  "declared_baselines": [
+    "public BWM step-12000",
+    "Ctrl-World official checkpoint",
+    "OSCAR official checkpoint",
+    "Kinema4D official checkpoint",
+    "candidate ablations: no action, no history, no grouped split, action-adapter only"
+  ],
+  "promotion_gate": {
+    "required_suites": [
+      "worldarena_test",
+      "cross_embodiment_test",
+      "real_robot_test"
+    ],
+    "minimum_real_robot_trials": 20,
+    "statistics": "paired one-sided bootstrap lower confidence bound",
+    "rule": "every required metric must exceed every declared baseline with lower confidence bound > 0"
+  },
+  "current_evidence": {
+    "cpu_tests": "16 targeted tests passed with targeted Ruff checks",
+    "real_parquet_smoke": "WORKING: 2 episodes, 4 clips, BWM loader shape [1,57,14]",
+    "gpu_training": "WORKING smoke only: one 57-frame, 9-history, 14D action-adapter optimization step saved a 199275904-byte checkpoint; full campaign and model-quality evaluation are not started",
+    "worldarena": "NOT STARTED",
+    "real_robot_demo": "NOT STARTED"
+  },
+  "claim_boundary": "No SOTA or real-robot claim is allowed until the promotion gate passes on actual artifacts."
+}

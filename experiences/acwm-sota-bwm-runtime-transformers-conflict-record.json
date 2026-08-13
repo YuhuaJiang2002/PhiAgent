@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-runtime-transformers-conflict",
+  "recorded_at": "2026-08-11T09:38:00Z",
+  "status": "PARTIAL",
+  "scope": "First import of the isolated public BWM runtime",
+  "summary": "The environment installer returned success, but the first DiffSynth import failed because its unbounded Transformers dependency resolved to 5.15 while BWM pins safetensors 0.7.0.",
+  "evidence": [
+    "DiffSynth import raised: safetensors>=0.8.0 is required, but found safetensors==0.7.0.",
+    "The installed packages were Transformers 5.15.0 and BWM-required safetensors 0.7.0."
+  ],
+  "lessons": [
+    "A successful package resolver exit is not a runtime acceptance test; the preparation entry point must pin the compatible transitive stack and import it before reporting readiness."
+  ],
+  "limitations": [
+    "No model load or GPU training step occurred in this failed import attempt."
+  ],
+  "next_actions": [
+    "Pin Transformers 4.51.3, tokenizers 0.21.1, huggingface-hub 0.36.2, and safetensors 0.7.0; rerun the import and full BWM video/action loader probe."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/external/boundless-world-model",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "runtime", "dependencies", "preflight", "negative-result"]
+}

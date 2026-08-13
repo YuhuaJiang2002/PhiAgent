@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.droid-heldout-depth-warp-partial",
+  "recorded_at": "2026-08-13T01:13:10Z",
+  "status": "PARTIAL",
+  "scope": "Lineage-mapped held-out DROID wrist-to-exterior calibrated depth-splat lower bounds",
+  "summary": "Four episode/view lower-bound runs complete with verified raw alignment and camera chains, but sparse visible coverage and mixed PSNR reject depth splatting as a held-out novel-view solution.",
+  "evidence": [
+    "Episode 21 wrist-to-exterior_1 reaches 3.586% mean coverage and 7.500 dB visible PSNR.",
+    "Episode 21 wrist-to-exterior_2 reaches 6.365% mean coverage and 16.439 dB visible PSNR.",
+    "Episode 77 wrist-to-exterior_1 reaches 14.222% mean coverage and 14.547 dB visible PSNR.",
+    "Episode 77 wrist-to-exterior_2 reaches 19.129% mean coverage and 9.145 dB visible PSNR.",
+    "All four runs use strict-free physical GPU 6, hash-bind the accepted raw-to-LeRobot alignment, preserve the swapped episode-local exterior assignment, and save source/target/warp/mask/depth artifacts for three sampled frames.",
+    "Cross-camera nearest-HDF timestamp offsets span -75 to +74 ms at the sampled frames."
+  ],
+  "lessons": [
+    "Calibrated source-visible depth cannot fill target disocclusions and is only a geometric lower bound.",
+    "Correct camera lineage does not imply sufficient novel-view image quality.",
+    "The verified depth warp is useful as conditioning or a visibility mask, not as the final generator."
+  ],
+  "limitations": [
+    "Only three depth samples per episode/view are evaluated.",
+    "Coverage is sparse and no disoccluded content is synthesized.",
+    "Raw DROID rights and episode-60 availability remain unresolved."
+  ],
+  "next_actions": [
+    "Use the warp/mask/depth artifacts as explicit geometry conditioning for a learned real-data novel-view method.",
+    "Do not promote raw depth splatting as a novel-view baseline or SOTA result."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-heldout-depth-warp",
+  "supersedes": [],
+  "tags": ["droid", "real-world", "novel-view", "geometry", "depth-warp", "partial"]
+}

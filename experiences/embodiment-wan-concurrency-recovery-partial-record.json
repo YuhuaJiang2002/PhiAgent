@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.embodiment-wan-concurrency-recovery-partial",
+  "recorded_at": "2026-08-12T04:58:46Z",
+  "status": "PARTIAL",
+  "scope": "Concurrent Wan-Animate-2 Hand2Dex smoke orchestration and recovery",
+  "summary": "The first concurrent pair exposed a fixed distributed rendezvous port; the first fix omitted RANK/WORLD_SIZE; later A800-4 retries correctly failed preflight after another job occupied the GPUs; A800-1 then exposed a stale shared Triton cache. The runner now isolates ports, rank variables, and compiler caches per experiment.",
+  "evidence": [
+    "Case 1 seed 42 completed on A800-4 while the simultaneous case 2 run failed with NCCL remote-process errors on the shared default port 12345.",
+    "Port-isolated retries recorded distinct ports 15001 and 15203 but failed with KeyError RANK because upstream initialization skipped its defaults once MASTER_ADDR was set.",
+    "After RANK=0 and WORLD_SIZE=1 were added, A800-4 retries failed closed before launch because another authorized workload reduced free memory below 61,000 MiB.",
+    "A800-1 retries used distinct ports and complete rank variables but failed in torch Inductor with a PY_SSIZE_T_CLEAN error from the shared Triton cache.",
+    "The current runner records experiment-owned TORCHINDUCTOR_CACHE_DIR and TRITON_CACHE_DIR in addition to CUDA_VISIBLE_DEVICES and rendezvous settings."
+  ],
+  "lessons": [
+    "Concurrent multi-GPU jobs require unique rendezvous ports even when physical GPU sets are disjoint.",
+    "Setting MASTER_ADDR explicitly also requires the upstream machine-rank variables.",
+    "Compiler caches are environment-sensitive experiment inputs and must not be silently shared across Python/Triton runtimes.",
+    "Capacity must be revalidated immediately before each retry because other users may legitimately acquire previously free GPUs."
+  ],
+  "limitations": [
+    "Several failed attempts ended before producing candidate videos.",
+    "The successful runner fixes still require completion on real inputs before being marked WORKING."
+  ],
+  "next_actions": [
+    "Complete case 2 and case 3 with the port/rank/cache-isolated runner, then evaluate raw outputs before expanding to more seeds."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/embodiment-sota-smoke",
+  "supersedes": [],
+  "tags": ["embodiment", "wan-animate2", "nccl", "triton", "gpu-orchestration", "partial"]
+}

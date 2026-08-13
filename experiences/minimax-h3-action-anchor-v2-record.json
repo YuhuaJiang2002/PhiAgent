@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.minimax-h3-action-anchor-v2",
+  "recorded_at": "2026-08-10T13:31:08+08:00",
+  "status": "PARTIAL",
+  "scope": "language-conditioned MiniMax-H3 robot-action generation in an existing real flower scene",
+  "summary": "A real-video scene-anchor route produced three frame-aligned MiniMax-H3 robot videos whose insert, handover, and inspect language conditions remain measurably distinct after five agentic repair rounds, but strict identity and semantic-action acceptance remain unmet.",
+  "evidence": [
+    "outputs/minimax-h3-action-control/20260810T051500Z-anchor-action-v2/metadata.json records three completed 124-frame NF4 H3 inferences on physical A800 GPU 7 with pinned DiffSynth b1c02ce, 20 steps, and seed 20260810",
+    "outputs/minimax-h3-action-control/20260810T051500Z-anchor-action-v2/comparison/action-comparison.json records pairwise post-repair full-frame MADs 3.0356, 6.2584, and 6.5564 with all outputs numerically distinct",
+    "All three selected repairs have background and object locks approximately 1.0, subject replacement approximately 0.8997, and source-face replacement above 0.9997",
+    "The 832x588 four-way comparison contains 124 aligned frames at 24 FPS and has SHA-256 75603a7ab70669b4dbb3a0f7e3e54deb802ea890360afafdf0a30b485a57a365",
+    "The browser demo publishes the real source, all three selected H3 videos, their commands and timelines, the matched comparison, and an explicit PARTIAL evidence panel"
+  ],
+  "lessons": [
+    "Using one scene anchor extracted from the real video removes source-person temporal dominance while retaining a real camera and workspace reference.",
+    "Action-override evaluation must exclude source-motion preservation from candidate selection because divergence from the source person's action is intentional.",
+    "Numerical distinctness and background safety are necessary but do not establish exact semantic compliance with insertion, hand transfer, or wrist rotation."
+  ],
+  "limitations": [
+    "Robot-identity proxies of 0.5975-0.6123 remain below the 0.72 gate, so every strict action candidate is rejected.",
+    "Complete human review of exact insertion, right-to-left transfer, and 45-degree wrist rotation is pending.",
+    "The model uses third-party NF4 MiniMax-H3 weights rather than official BF16 weights.",
+    "This is a 5.17-second image-space world-model demonstration, not contact physics or real-robot execution."
+  ],
+  "next_actions": [
+    "Add action-specific pose/contact evaluation or human labels, then regenerate weak variants with explicit spatial keyframes and accept only commands that pass semantic review.",
+    "Run the same matched comparison with official BF16 weights when their verified checkpoint and sufficient GPU memory are available."
+  ],
+  "run_dir": "outputs/minimax-h3-action-control/20260810T051500Z-anchor-action-v2",
+  "supersedes": [
+    "2026-08-10.language-conditioned-action-video-renderer",
+    "2026-08-10.minimax-h3-action-video-ref-v1",
+    "2026-08-10.minimax-h3-action-preflight-v1"
+  ],
+  "tags": [
+    "minimax-h3",
+    "real-scene",
+    "action-condition",
+    "language-control",
+    "agentic-repair",
+    "matched-comparison",
+    "demo"
+  ]
+}

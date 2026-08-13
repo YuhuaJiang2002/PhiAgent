@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-dataset-iterations-partial",
+  "recorded_at": "2026-08-12T05:50:30Z",
+  "scope": "Cosmos native DROID multiview dataset iterations v1 through v5",
+  "status": "PARTIAL",
+  "summary": "Five immutable dataset attempts exposed Git-metadata, missing-caption, exact-window, short-episode, and temporal-resampling defects before formal training; none of these superseded datasets is accepted for model fitting.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-multiview",
+  "evidence": [
+    "Composite v1 stopped because Git provenance was hard-coded incorrectly; v2 stopped on empty prompts.",
+    "Composite v3 proved the 33-frame layout only, while upstream training requires a 93-frame window and fails when source length is exactly 93.",
+    "Source v3 rejected reserved episode 21 as too short for that attempted contract; v4 correctly produced 93 native-layout composites with 86 train, 2 validation, and 3 final samples.",
+    "Pre-training audit then found that v4 first sampled source at 8 FPS and subsequently repeated frames to 16 FPS, so v4 was rejected despite its valid geometry and split contract.",
+    "The v5 direct-16-FPS rebuild was intentionally stopped after 50 camera clips when the stronger two-window-per-training-episode v6 contract was chosen; its partial directory is preserved."
+  ],
+  "lessons": [
+    "Dataset acceptance must cover temporal sampling as well as dimensions, hashes, captions, and split leakage.",
+    "Matching the model's 16 FPS training distribution at source extraction avoids systematic adjacent-frame pairs introduced by an 8-to-16 FPS second stage."
+  ],
+  "limitations": [
+    "These attempts establish engineering failures and corrections only; no model-quality milestone follows from them.",
+    "The 15 FPS source still requires a single nearest-time sampling step to the model's 16 FPS contract."
+  ],
+  "next_actions": [
+    "Accept only the two-window native-16-FPS v6 source and a newly built composite after all probes and leakage checks pass."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "dataset",
+    "temporal-sampling",
+    "negative-result",
+    "partial"
+  ],
+  "supersedes": []
+}

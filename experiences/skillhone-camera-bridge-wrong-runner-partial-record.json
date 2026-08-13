@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.skillhone-camera-bridge-wrong-runner-partial",
+  "recorded_at": "2026-08-12T12:08:00Z",
+  "scope": "Camera-bridge adversarial regression through the unpatched bundled SkillHone runner",
+  "status": "PARTIAL",
+  "summary": "The bundled Claude-Agent runner sent Qwen through an incompatible Write-tool ABI; all five items produced no answer artifact and correctly scored 0/5.",
+  "run_dir": "outputs/foundation-contact/20260812T120400Z-skillhone-camera-bridge-adversarial-v1",
+  "evidence": [
+    "adversarial-score.json records 0/5, five errors, and five no-answer results.",
+    "Trajectories contain model thinking/tool-shaped text but no answer.txt."
+  ],
+  "lessons": [
+    "The installed provider-aware SkillHone runtime and the bundled upstream copy are distinct execution paths and must be selected explicitly."
+  ],
+  "limitations": [
+    "This run measures protocol incompatibility, not promotion-decision quality."
+  ],
+  "next_actions": [
+    "Run the same sealed split through ~/.skillhone/skills/skillhone with native Ollama JSON routing."
+  ],
+  "supersedes": [],
+  "tags": ["skillhone", "ollama", "provider-routing", "partial"]
+}

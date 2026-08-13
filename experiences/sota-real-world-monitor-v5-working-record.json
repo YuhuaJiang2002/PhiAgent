@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v5-working",
+  "recorded_at": "2026-08-12T21:45:59Z",
+  "status": "WORKING",
+  "scope": "Parallel real-world BWM seed314159/seed20260811 monitor",
+  "summary": "Four strictly free A800 GPUs now run two non-duplicate matched BWM seeds in parallel, with v5 monitoring both immutable jobs.",
+  "evidence": [
+    "Seed 314159 selected GPUs 1/4 and entered official-bwm inference.",
+    "Seed 20260811 selected GPUs 5/6 and entered official-bwm inference.",
+    "The first v5 heartbeat records both jobs as running.",
+    "Completed seed42 and DROID v5 artifacts are retained in monitor provenance."
+  ],
+  "lessons": [
+    "Independent seed replication can saturate four compatible free GPUs without duplicating a running job."
+  ],
+  "limitations": [
+    "Both additional seeds remain in progress.",
+    "The eventual three-seed result is still diagnostic without physical counterfactual execution."
+  ],
+  "next_actions": [
+    "Aggregate all three seeds before the 20-physical-episode bootstrap when both jobs finish."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T214500Z-real-world-only-v5",
+  "supersedes": [
+    "2026-08-12.sota-real-world-monitor-v4-completed"
+  ],
+  "tags": ["sota", "real-world", "monitor", "multiseed", "working"]
+}

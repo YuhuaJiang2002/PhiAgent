@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-repair-policy-held-action-v1",
+  "recorded_at": "2026-08-10T20:46:00Z",
+  "status": "PARTIAL",
+  "scope": "Learned same-scene flower-repair recipe routing with held-action replay",
+  "summary": "A ridge utility ranker trained on measured flower-replacement candidates selected the oracle repair in all nine held-action groups and reproduced the best safety repair with two rather than five candidate evaluations, but the repaired inspect-flower video still fails identity and control-motion gates.",
+  "evidence": [
+    "The immutable training run outputs/flower-repair-policy/20260810T204236Z-8885faf5 contains 45 hashed candidate rows from nine action/campaign groups.",
+    "Leave-one-action-out selection accuracy is 9/9, mean oracle regret is 0, utility RMSE is 0.011606, mean gain over the generic first repair is 0.141195, and candidate evaluation count falls from five to two.",
+    "The inspect-flower replay uses checkpoint 03eb5bb60c49c85b33982128c4a505e9008a36a06bb8bac63e808e7197ded1f2 trained only on insert-flower and handover-flower.",
+    "The replay raises mean proxy utility from 0.535717 to 0.784225 and background/object locks from 0.000614/0.000451 to approximately 1.0/1.0.",
+    "The 124-frame demo has SHA-256 94c6e5221324762db9df98e5b893f113d7324d7acdb5aa541e601fb076cb9065 and its poster plus six-frame storyboard were visually inspected."
+  ],
+  "lessons": [
+    "Measured candidate archives can train a small reversible routing policy even when they are far too small for video-model fine-tuning.",
+    "Holding out complete action labels is a useful first leakage control, while same-scene generalization still needs a separate group split.",
+    "Aggregate utility improvement can coexist with worse motion adherence, so the strict per-gate task decision must remain authoritative."
+  ],
+  "limitations": [
+    "All 45 candidates share one source scene, three actions, and five fixed repair recipes.",
+    "The policy target is a deterministic proxy utility rather than human preference, contact physics, or real-robot success.",
+    "The selected inspect-flower repair has robot identity 0.712496, motion alignment 0.481940, and EPL minimum 0.449531, so strict task acceptance remains rejected.",
+    "The learned component selects post-processing recipes and does not fine-tune MiniMax-H3 or learn robot-base control."
+  ],
+  "next_actions": [
+    "Collect multiple source scenes and embodiments with persistent stem-instance supervision and human semantic review, then evaluate with scene-grouped held-out folds and uncertainty-triggered fallback to the full five-round audit."
+  ],
+  "run_dir": "outputs/flower-repair-policy/20260810T204236Z-8885faf5",
+  "supersedes": [],
+  "tags": [
+    "flower-repair-policy",
+    "learned-routing",
+    "held-action",
+    "video-demo",
+    "partial"
+  ]
+}

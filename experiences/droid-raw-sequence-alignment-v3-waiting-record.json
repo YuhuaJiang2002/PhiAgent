@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-raw-sequence-alignment-v3-waiting",
+  "recorded_at": "2026-08-12T22:19:21Z",
+  "status": "PARTIAL",
+  "scope": "Queued raw DROID SVO/HDF5 to SequenceExample/LeRobot alignment v3",
+  "summary": "A provenance-complete seven-day waiter now holds the full-frame episodes 21/77 pixel/timestamp audit until one a800-1 GPU is strictly free.",
+  "evidence": [
+    "The queue monitors all eight physical GPUs and requires less than 1 GiB allocated plus no compute process.",
+    "Its first heartbeat found no eligible GPU and selected none.",
+    "The frozen audit will compare every raw SVO frame to the lineage-mapped SequenceExample, require same-index pixels to beat adjacent shifts, and verify one terminal HDF5 row with constant timestamp offset.",
+    "The accepted SequenceExample-to-LeRobot manifest is hash-bound as 2fe1d982743612958a187cd508ed0651adb67ae47ebfdfac21576beff30b2ac4."
+  ],
+  "lessons": [
+    "A ready geometry audit should wait rather than relax GPU isolation or share an occupied device."
+  ],
+  "limitations": [
+    "The alignment audit has not run because all compatible a800-1 GPUs are occupied.",
+    "Episode 60 remains unavailable in the public raw bucket."
+  ],
+  "next_actions": [
+    "Automatically launch on the first strictly free GPU and append the terminal result."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-raw-sequence-alignment/20260812T223000Z-episodes21-77-waiter-v3",
+  "supersedes": [
+    "2026-08-12.droid-raw-sequence-alignment-v2-gpu-blocked"
+  ],
+  "tags": ["droid", "real-world", "alignment", "gpu-wait", "partial"]
+}

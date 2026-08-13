@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-place-rack-task-rejected",
+  "recorded_at": "2026-08-11T10:59:00Z",
+  "status": "PARTIAL",
+  "scope": "Full-length robot-factored place-bottle-in-rack candidate",
+  "summary": "The 240-frame Wan candidate is sharp and shows no visible human residual in a 60-frame review, but it fails the declared task: the bottle is carried back over the sink and remains grasped instead of being supported and released in the dish rack. It is rejected from the instruction-conditioned comparison.",
+  "evidence": [
+    "The immutable run full/place-bottle-rack/20260811T103608Z-7c450363 succeeded at 880x512, 240 frames, and 24 FPS with post blur, alpha repair, temporal filtering, and source-object overwrite all disabled.",
+    "Dense every-fourth-frame review plus frames 0, 60, 119, 120, 180, and 239 finds coherent robot appearance and no visible hand, skin, or sleeve residual.",
+    "Frame 239 still shows the right gripper holding the bottle above the central basin while the dish rack is at the far right; the required support-before-release terminal state is absent."
+  ],
+  "lessons": [
+    "Visual cleanliness does not compensate for a failed terminal holder state.",
+    "Camera-pan-aware trajectory separation is necessary but not sufficient for generated task adherence."
+  ],
+  "limitations": [
+    "The task verdict is camera-frame visual review; no physical contact sensor is available.",
+    "This candidate is retained only as negative evidence and is not packaged as a successful instruction."
+  ],
+  "next_actions": [
+    "Use the previously accepted same-scene handover task with the new unscrew and rinse tasks for the delivered three-instruction comparison."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/full/place-bottle-rack/20260811T103608Z-7c450363",
+  "supersedes": [],
+  "tags": ["acwm", "epic-kitchens", "task-adherence", "terminal-state", "rejected", "partial"]
+}

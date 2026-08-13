@@ -24,12 +24,14 @@ class ActionRepresentation(str, Enum):
     JOINT_ABSOLUTE = "joint_absolute"
     JOINT_DELTA = "joint_delta"
     ROBOT_POINTMAP = "robot_pointmap"
+    ROBOT_FLOW = "robot_flow"
 
     @property
     def requires_camera_frame(self) -> bool:
         return self in {
             ActionRepresentation.KINEMATIC_SKELETON_2D,
             ActionRepresentation.ROBOT_POINTMAP,
+            ActionRepresentation.ROBOT_FLOW,
         }
 
     @property
@@ -97,13 +99,18 @@ class ACWMActionCondition:
                 raise ValueError("every action row must match the declared channel count")
             if any(not math.isfinite(value) for value in row):
                 raise ValueError("action values must be finite")
-        if self.representation is ActionRepresentation.KINEMATIC_SKELETON_2D:
+        if self.representation in {
+            ActionRepresentation.KINEMATIC_SKELETON_2D,
+            ActionRepresentation.ROBOT_FLOW,
+        }:
             if self.visual_condition is None:
-                raise ValueError("2-D skeleton actions require a skeleton video")
+                raise ValueError(
+                    f"{self.representation.value} actions require a visual condition video"
+                )
             object.__setattr__(
                 self,
                 "visual_condition",
-                _require_file(self.visual_condition, "skeleton video"),
+                _require_file(self.visual_condition, "visual action condition"),
             )
         elif self.visual_condition is not None:
             object.__setattr__(

@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-flow-inversion-stitch-v1-v5-partial",
+  "recorded_at": "2026-08-11T14:31:30+08:00",
+  "scope": "Full-660 H3 flow-inversion stitch corrections before accepted delivery",
+  "status": "PARTIAL",
+  "summary": "Seven model windows completed, but stitch attempts v1--v5 were retained as partial evidence while seam 612 and exact background restoration were corrected.",
+  "run_dir": "outputs/h3-flow-retake/20260811T064500Z-full-27s-sigma008-v3",
+  "evidence": [
+    "v1 improved full-video jerk but seam 612 reached a 1.2850867 jerk ratio, above the 1.25 seam bound.",
+    "v2 anchored seam 612 to a 1.0438260 ratio but the outside-safety gate remained false.",
+    "v3 failed closed with a recorded shape-mismatch traceback rather than publishing an incomplete result.",
+    "v4 retained the false outside-safety gate, and v5 exposed 26,536,581 changed pixels outside the declared mask due to faulty indexed restoration semantics.",
+    "All failed and partial manifests remain in immutable run directories."
+  ],
+  "lessons": [
+    "A smooth overlap is insufficient when one seam exceeds its local gate; a bounded base anchor can repair the isolated transition.",
+    "Exact restoration must use a shape-preserving per-pixel selection such as np.where; flattened boolean assignment can either fail or measure the wrong region."
+  ],
+  "limitations": [
+    "These stitch attempts are not approved showcase outputs and human review remains false in their manifests."
+  ],
+  "next_actions": [
+    "Use shape-preserving exact background and flower restoration, rerun every gate, then inspect contact and seam frames before promotion."
+  ],
+  "supersedes": [],
+  "tags": ["minimax-h3", "flow-inversion", "stitching", "seam", "exact-composite", "partial"]
+}

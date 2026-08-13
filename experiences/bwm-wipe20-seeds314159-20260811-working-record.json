@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.bwm-wipe20-seeds314159-20260811-working",
+  "recorded_at": "2026-08-12T22:01:14Z",
+  "status": "WORKING",
+  "scope": "Additional real WorldArena wipe20 matched generations for seeds 314159 and 20260811",
+  "summary": "Both additional seeds completed official and promoted-adapter factual/action-swap generations, providing six matched model-seed arms across three inference seeds.",
+  "evidence": [
+    "Seed 314159 completed both arms on physical GPUs 1/4 in 1,000.09 seconds.",
+    "Seed 20260811 completed both arms on physical GPUs 5/6 in 1,000.71 seconds.",
+    "All four additional arms returned code 0 and status WORKING.",
+    "Each model-seed arm contains 40 videos for the same 20 independent real WorldArena episodes."
+  ],
+  "lessons": [
+    "Four strictly free A800 GPUs support two non-duplicate seed replications in parallel."
+  ],
+  "limitations": [
+    "Generation completion alone does not establish action correctness.",
+    "The action-swapped branch still lacks physical execution references."
+  ],
+  "next_actions": [
+    "Aggregate all three seeds before the physical-episode bootstrap."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched",
+  "supersedes": [],
+  "tags": ["acwm", "worldarena2", "real-world", "multiseed", "working"]
+}

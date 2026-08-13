@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-left-01",
+      "object_id": 101,
+      "anchor_source_frame": 45,
+      "box_xyxy": [478, 260, 550, 354],
+      "positive_points_xy": [[502, 291], [520, 312], [531, 331]],
+      "negative_points_xy": [[520, 263], [557, 347], [470, 278], [552, 374]],
+      "minimum_area_pixels": 160,
+      "maximum_area_pixels": 7600,
+      "role": "upper image-left mechanical hand grasping the upper stems"
+    },
+    {
+      "instance_id": "robot-hand-lower-right-02",
+      "object_id": 102,
+      "anchor_source_frame": 45,
+      "box_xyxy": [535, 356, 626, 434],
+      "positive_points_xy": [[548, 383], [573, 409], [603, 407]],
+      "negative_points_xy": [[557, 347], [592, 347], [528, 430], [621, 447]],
+      "minimum_area_pixels": 160,
+      "maximum_area_pixels": 8200,
+      "role": "lower image-right mechanical hand supporting the held bouquet"
+    }
+  ],
+  "notes": "Both mechanical hands are prompted independently on the selected seed-42 candidate. Their masks are paired against named candidate flower instances, never against a bouquet-union proxy."
+}

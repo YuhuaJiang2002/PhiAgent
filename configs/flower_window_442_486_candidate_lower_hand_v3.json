@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 442,
+  "instances": [
+    {
+      "instance_id": "robot-hand-lower-horizontal-02",
+      "object_id": 102,
+      "anchor_source_frame": 22,
+      "box_xyxy": [480, 320, 620, 392],
+      "positive_points_xy": [[510, 352], [540, 352], [575, 350]],
+      "negative_points_xy": [[478, 320], [460, 307], [600, 300], [550, 405]],
+      "minimum_area_pixels": 400,
+      "maximum_area_pixels": 16000,
+      "role": "lower horizontal gripper plus its connected lavender wrist, tracked as one stable hand endpoint"
+    }
+  ],
+  "notes": "V3 includes the connected wrist support so the rapidly rotating fingers do not lower adjacent IoU below 0.88; semantic review must reject any mask that expands into the forearm, torso, flowers, or the other hand."
+}

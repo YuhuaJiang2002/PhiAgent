@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-identity-r0-ablation-rejected",
+  "recorded_at": "2026-08-10T21:22:46Z",
+  "scope": "Matched held-out MiniMax-H3 NF4 baseline versus native Ref2VA identity-LoRA smoke ablation",
+  "status": "PARTIAL",
+  "summary": "The first six-step rank-8 identity LoRA was reproducibly trained and evaluated, but it was rejected because the conservative identity floor fell by 0.0302 and motion adherence fell by 0.0996.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-ablation/20260810T210940Z-a85c060f",
+  "evidence": [
+    "Training completed 6/6 optimizer steps and produced a 32,825,120-byte checkpoint with SHA-256 a7a92f68339e271562742a7b93054e489801d569dffb1cb663f22453358a2731.",
+    "Matched held-out generation kept the same MiniMax-H3 NF4 backbone, reference, scene anchor, seed, dimensions, frame count, and inference steps; only the LoRA differed.",
+    "DINOv2 identity floor changed from 0.8808738291 to 0.8507119119, an identity gain of -0.0301619172.",
+    "Motion adherence changed from 1.0 to 0.9004063777; scene preservation and temporal consistency passed their non-regression gates.",
+    "No full-frame semantic topology review was available, so the strict topology gate failed closed."
+  ],
+  "lessons": [
+    "A short identity-only smoke curriculum can weaken both worst-frame identity and action adherence even when mean visual quality looks plausible.",
+    "Similarity proxies cannot substitute for full-frame head, torso, shoulder, arm-chain, and limb-count review.",
+    "RSI promotion must remain bounded and gate every candidate against the unchanged backbone."
+  ],
+  "limitations": [
+    "This result uses third-party NF4 MiniMax-H3 weights rather than the official BF16 checkpoint.",
+    "The ablation contains one held-out 39-frame synthetic/control demo and does not establish general model quality.",
+    "The rejected candidate is not suitable for release."
+  ],
+  "next_actions": [
+    "Evaluate the topology-targeted dataset round on the 124-frame held-out inspect-flower sequence.",
+    "Promote only if full-frame semantic topology and motion, scene, and temporal non-regression gates pass."
+  ],
+  "supersedes": [],
+  "tags": [
+    "h3",
+    "rsi",
+    "identity",
+    "lora",
+    "ablation",
+    "rejected",
+    "partial"
+  ]
+}

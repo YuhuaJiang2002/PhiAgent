@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-instruction-demo-working",
+  "recorded_at": "2026-08-11T11:43:00Z",
+  "status": "WORKING",
+  "scope": "Same-scene handover, unscrew-cap, and faucet/rinsing-pose AC-WM comparison",
+  "summary": "The final 2x2 comparison combines the accepted Wan handover with clean H3 robot-only unscrew and rinse-pose candidates. The two H3 actions retain frames 0-122 and hold the accepted terminal state through frame 239, eliminating the invalid window reset without interpolation, blur, or source-person restoration. All fixed visual and reproducibility gates pass.",
+  "evidence": [
+    "All three action videos and the packaged comparison decode to exactly 240 frames at 24 FPS; the comparison SHA-256 is 32f739a369e7325073dc2d68b7d1c952b56bba1451cea47741efeb1549d2cadf.",
+    "Dense every-fourth-frame review plus full-resolution task and terminal frames passes zero-human-residual, blur, and task-adherence gates.",
+    "Foreground p10 sharpness ratios against accepted baselines are 1.0000 handover, 2.1184 unscrew, and 1.5964 rinse-pose; background/source p10 ratios are 0.8971, 1.1277, and 1.0504.",
+    "Pairwise mean full-frame MAD is 34.6155-53.8871 and every frame in every action pair exceeds 2 MAD.",
+    "Evaluation instruction-tasks-h3-terminal-hold-v1.json records WORKING with exact geometry, quality non-regression, distinctness, control separation, reproducible lineage, and all three dense reviews passed.",
+    "The updated agentic skill passes skill-creator validation and SkillHone static checking with no errors or warnings."
+  ],
+  "lessons": [
+    "A terminal-state hold is safer and more honest than cross-dissolving a state-reset seam when the requested task is already complete.",
+    "Separate visual quality, task terminal state, and continued-motion claims; a ten-second file need not imply ten seconds of nonstationary motion."
+  ],
+  "limitations": [
+    "Frames 123-239 of the two new H3 actions intentionally repeat the accepted terminal frame; no continued motion is claimed.",
+    "This is a camera-frame generated visualization, not calibrated contact, force, collision, robot-base control, or physical execution.",
+    "The route uses third-party MiniMax-H3 NF4 weights and an accepted Wan handover; it is not a new world-model fine-tuning result."
+  ],
+  "next_actions": [
+    "Collect task-matched robot-only long-horizon data before claiming continuously moving ten-second unscrew or rinse execution."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/delivery/20260811T114200Z-instruction-tasks-v1",
+  "supersedes": [
+    "2026-08-11.acwm-ego-multitask-h3-drivers-v1",
+    "2026-08-11.acwm-ego-multitask-wan-pose-capsule-human-residual"
+  ],
+  "tags": ["acwm", "epic-kitchens", "multitask", "instruction-control", "terminal-hold", "working"]
+}

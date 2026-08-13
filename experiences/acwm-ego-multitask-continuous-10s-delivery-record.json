@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-continuous-10s-delivery",
+  "recorded_at": "2026-08-11T12:50:00Z",
+  "status": "WORKING",
+  "scope": "Same-scene generated-only AC-WM handover, unscrew, and rinse comparison with ten-second motion",
+  "summary": "The middle and right videos now replace their 4.875-second terminal holds with state-valid H3 recursive continuation tails. All three outputs are exactly ten seconds and the packaged generated-only comparison passes the fixed visual, lineage, and action-distinctness gates.",
+  "evidence": [
+    "The unscrew and rinse outputs each decode to 832x480, 240 frames, 24 FPS, and 10.000 seconds with SHA-256 6b1ff1bf2df9d7ec9a96b85859965eacb71e45f0a93feff1309974148035b05c and d6d7ae916342c8cb12a4a17e6b7eae3074d00b9c3a35d82a553231504fdb8e98.",
+    "The generated-only three-column video is 1248x298, 240 frames, 24 FPS, and 10.000 seconds with SHA-256 bbb623b4c81dc17554292fc0316f706abdf94228b4397621c561269230eba841.",
+    "Dense 24-point timeline review for each new action passes human-residual, blur, and task-state checks; no cross-dissolve, generated frame interpolation, blur, alpha repair, or source-person restoration is used.",
+    "Foreground p10 sharpness ratios are 1.0000/2.1165/1.3818 and background/source p10 ratios are 0.8971/1.1231/1.0457 for handover/unscrew/rinse.",
+    "Pairwise mean full-frame MAD is 36.6373-50.9219, every pair exceeds 2 MAD in every frame, and the complete evaluation status is WORKING."
+  ],
+  "lessons": [
+    "A recursive window still needs task-state routing: crop the reset prefix only after dense review, then retime by nearest decoded frames to avoid ghosting and blur.",
+    "Keep the generated-only comparison primary while retaining the source-plus-results grid as provenance evidence."
+  ],
+  "limitations": [
+    "This validates camera-frame action visualization, not contact force, calibrated robot state, collision correctness, or physical execution.",
+    "Nearest-frame retiming repeats bounded frames and is not learned motion interpolation."
+  ],
+  "next_actions": [
+    "Publish the updated README AC-WM section and demo page with the v5 continuous artifacts."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/delivery/20260811T125000Z-v5-continuous",
+  "supersedes": [
+    "2026-08-11.acwm-ego-multitask-generated-only-delivery"
+  ],
+  "tags": ["acwm", "multitask", "recursive-continuation", "generated-only", "delivery", "working"]
+}

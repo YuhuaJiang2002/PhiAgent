@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-sequence-lineage-v2-integrity-blocked",
+  "recorded_at": "2026-08-12T13:24:00Z",
+  "status": "BLOCKED",
+  "scope": "Structured DROID SequenceExample lineage audit v2",
+  "summary": "Explicit Git provenance passed, but the audit stopped before decoding because the relayed episode-21 payload was truncated and failed its pinned SHA-256.",
+  "evidence": [
+    "The source payload was 7,080,652 bytes with SHA-256 3e5eecd53cd913626116bbc61d039761cc2e6fd465e8e1be92d395f2fd21ac9c.",
+    "The interrupted remote-to-remote transfer left only 5,483,520 bytes with a different SHA-256.",
+    "Episodes 60 and 77 matched their source and manifest hashes."
+  ],
+  "lessons": [
+    "Cross-host staging must verify each payload hash before creating an experiment run."
+  ],
+  "limitations": [
+    "The attempt produced no DROID lineage conclusion."
+  ],
+  "next_actions": [
+    "Relay episode 21 through the controlled local session path, verify its hash, and rerun in a new directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-sequence-lineage/20260812T132400Z-episodes21-60-77-v2",
+  "supersedes": [
+    "2026-08-12.droid-sequence-lineage-v1-provenance-blocked"
+  ],
+  "tags": ["droid", "real-world", "lineage", "integrity", "blocked"]
+}

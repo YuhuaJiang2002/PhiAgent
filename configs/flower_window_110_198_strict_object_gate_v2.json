@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0.0",
+  "inherits": "flower_window_110_198_strict_object_gate_v1.json",
+  "threshold_overrides": {
+    "maximum_adjacent_area_ratio": 2.0
+  },
+  "notes": "V2 supersedes the V1 all-window max/min area-ratio gate. V1 failed only because gradual perspective/occlusion scale accumulated across the window. V2 gates the maximum ratio between adjacent visible frames, which directly detects mask jumps while preserving the explicit two-frame cream occlusion."
+}

@@ -1,0 +1,37 @@
+{
+  "record_id": "2026-08-12.metric-flower-sim-v1-evidence-revoked",
+  "recorded_at": "2026-08-12T14:20:00Z",
+  "status": "PARTIAL",
+  "scope": "Red-team re-audit of the first full metric flower simulation claim",
+  "summary": "The v1 300/300 force-closure claim is revoked because its six symmetric contacts were constructed rather than measured from the exact Sharpa pads, and its four stage artifacts lacked a common producer-bundle gate.",
+  "evidence": [
+    "Measured active-frame Sharpa fingertip-anchor distances to the stem were 0.0815-0.1070 m, with zero frames containing two tips within 3 mm.",
+    "The original six-pad helper emitted six synthetic fingertip IDs even though the exact hand contract has five fingertips.",
+    "The corrected compiler rerun at outputs/foundation-contact/20260812T141600Z-recompile-superseded-full660-v1-lineage-v11 returns PARTIAL because the old artifacts lack bundle IDs, embedded source hashes, FPS lineage, and a hash-bound bundle manifest.",
+    "The new exact-contact path uses transformed Sharpa elastomer mesh vertices and no longer calls the six-pad fixture."
+  ],
+  "lessons": [
+    "A force-closure evaluator must consume actual embodiment contact geometry; a mathematically passing fixture is not evidence that the rendered hand touched the object.",
+    "Individually valid stages cannot be combined unless source, frame indices, FPS, timeline, coordinate frame, instance IDs, producer ID, and hashes all agree."
+  ],
+  "limitations": [
+    "The v1 video remains a visual simulation artifact but is not accepted physical grasp evidence.",
+    "The associated v1 VACE data requires re-export after a corrected full rollout."
+  ],
+  "next_actions": [
+    "Complete an exact-pad full rollout and independent bundle compile before restoring any simulated force-closure claim."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T141600Z-recompile-superseded-full660-v1-lineage-v11",
+  "supersedes": [
+    "2026-08-12.metric-flower-sim-smoke-v4-working",
+    "2026-08-12.metric-flower-sim-full660-v1-working"
+  ],
+  "tags": [
+    "flower",
+    "simulation",
+    "evidence-revoked",
+    "force-closure",
+    "lineage",
+    "partial"
+  ]
+}

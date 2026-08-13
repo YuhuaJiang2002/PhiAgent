@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-model-rgbd-virtual-v1-partial",
+  "recorded_at": "2026-08-12T12:58:00Z",
+  "scope": "First interleaved model RGB-D and constructed virtual-camera rendering attempt",
+  "status": "PARTIAL",
+  "summary": "The first 110-frame/55-view artifact completed and passed nominal metrics, but NumPy matmul emitted divide-by-zero, overflow, and invalid RuntimeWarnings, so the run was not accepted as the final numerical result.",
+  "run_dir": "outputs/foundation-contact/20260812T131000Z-model-derived-rgbd-virtual-views-v1",
+  "evidence": [
+    "The warnings originated at the finite 4xN camera transform matmul on NumPy 2.2.6/Apple Accelerate and reproduced under -W error.",
+    "A direct np.dot of the same finite operands produced finite results without warnings; v1 artifacts remain preserved."
+  ],
+  "lessons": [
+    "A passing metric report is insufficient when the numerical path emits runtime warnings on real resolution data."
+  ],
+  "limitations": [
+    "v1 cannot be the accepted implementation evidence despite its nominal proposal metrics."
+  ],
+  "next_actions": [
+    "Use the warning-free explicit dot transform, add a full 280x504 regression, enforce RuntimeWarning=error, and rerun in a new directory."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "rgbd", "virtual-view", "numeric-warning", "partial"]
+}

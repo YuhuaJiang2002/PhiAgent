@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window398-protected-seam-gate-v1",
+  "recorded_at": "2026-08-11T12:30:00Z",
+  "scope": "Strict flower, two-hand, contact, aligned, semantic, and seam acceptance for global frames 398-486",
+  "status": "WORKING",
+  "summary": "Two overlapping 45-frame subwindows and their object-protected seam now pass every unchanged strict gate and produce one continuous 89-frame candidate.",
+  "run_dir": "outputs/gpu-flower-window398-joined/20260811T114500Z-v1",
+  "tags": ["gpu", "sam2", "real-flower-instances", "two-hand-contact", "temporal-repair", "protected-seam", "strict-gate", "working"],
+  "evidence": [
+    "The 398-442 final gate is WORKING with target identity 0.981228, motion 0.820884, temporal consistency 0.761053, and no failed flower, hand, contact, aligned, or semantic gates.",
+    "The 442-486 final gate is WORKING with target identity 0.975546, motion 0.864350, temporal consistency 0.801986, and no failed gates.",
+    "The selected conservative temporal repair raises the right-window temporal proxy from 0.743692 to 0.802390 before final seam encoding while flower/contact protected pixels remain exact pre-encode.",
+    "The final candidate has SHA-256 b53956ff0bf7d62fee7691d1489a06dc5ee599290b7e36c154c3048ce87ad6e6 and decodes 89 frames at 896x512 and 24 FPS.",
+    "The protected seam transition MAE is 1.453695 versus a full-window transition P90 of 1.185646; the local seam peak is 1.226079 times P90 and is not the maximum transition in the window.",
+    "Every final flower and hand mask was independently re-tracked on physical A800 GPUs after final encoding; no pre-blend mask was reused."
+  ],
+  "lessons": [
+    "Split windows can resolve source identity discontinuity without relaxing thresholds when both halves share one reviewed global-frame identity anchor.",
+    "A non-object seam fade must preserve flower and hand masks; whole-frame averaging is not safe.",
+    "Temporal-only repair is appropriate only after geometry_all_gates_passed is true."
+  ],
+  "limitations": [
+    "The contract is two overlapping 45-frame gates, not one 89-frame SAM2 propagation.",
+    "Contact is 2D camera-plane mask distance rather than force or 3D tactile contact.",
+    "Other full-film windows remain PARTIAL until independently gated."
+  ],
+  "next_actions": ["Freeze this 89-frame candidate and continue with the overlapping 470-558 window under the same thresholds."],
+  "supersedes": ["2026-08-11.gpu-flower-window398-source-tracking-v2", "2026-08-11.gpu-flower-window398-midpoint-seam-rejected"]
+}

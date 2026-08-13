@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 470,
+  "instances": [
+    {
+      "instance_id": "robot-hand-support-02",
+      "object_id": 102,
+      "anchor_source_frame": 22,
+      "box_xyxy": [548, 338, 640, 414],
+      "positive_points_xy": [[574, 366], [592, 382], [609, 390]],
+      "negative_points_xy": [[520, 348], [646, 370], [590, 422], [548, 325]],
+      "minimum_area_pixels": 180,
+      "maximum_area_pixels": 9000,
+      "role": "lower white-and-silver support mechanical hand and its short wrist"
+    }
+  ],
+  "notes": "Seed-44 first-half support hand; bouquet hand, torso, foliage, and table are explicit negatives."
+}

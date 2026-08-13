@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-controls-v4-grabcut-matte",
+  "recorded_at": "2026-08-11T05:13:37Z",
+  "status": "PARTIAL",
+  "scope": "Source-bottle-inpainted EPIC Ego controls using a GrabCut foreground matte",
+  "summary": "The control state contract passed, but the bottle matte included a dark rectangular counter patch that H3 copied into its first generated pour frame.",
+  "evidence": [
+    "All outputs decoded, trajectories were explicit, and the minimum pairwise state RMS was 113.5120 pixels.",
+    "The control contact sheet and the generated pour midframe both show the rectangular dark patch adjacent to the controlled bottle."
+  ],
+  "lessons": ["A segmentation matte can satisfy trajectory metrics while injecting a highly learnable background artifact; alpha support needs direct visual inspection."],
+  "limitations": ["The first formal H3 attempt based on these controls is invalid and was stopped early."],
+  "next_actions": ["Use a blue-foreground HSV matte that excludes dark counter pixels, rebuild every window, and restart in a new experiment directory."],
+  "run_dir": "outputs/epic-ego-bottle-controls/20260811T051337Z-epic-blue-bottle-controls-v4",
+  "supersedes": ["2026-08-11.epic-ego-controls-v3-source-bottle"],
+  "tags": ["acwm", "ego-video", "action-control", "matte-artifact", "negative-result"]
+}

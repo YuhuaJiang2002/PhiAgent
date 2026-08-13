@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-sim-smoke-v3-partial",
+  "recorded_at": "2026-08-12T12:55:00Z",
+  "status": "PARTIAL",
+  "scope": "Third 33-frame metric flower simulation smoke with complete exact assets",
+  "summary": "Rendering, robot, stem, force, hand, force-closure, causal-response, and video gates passed, but the camera stage rejected a left-handed world-from-camera rotation.",
+  "evidence": [
+    "Robot trajectory, stem centerlines, and contact forces passed while metric_camera alone failed.",
+    "The rotation orthogonality error was only 3.14e-16, isolating the failure to the negative determinant rather than numerical drift.",
+    "The video decoded all 33 frames and the run completed in 4.4931 seconds."
+  ],
+  "lessons": [
+    "Image-down camera coordinates cannot be inserted as SE(3) columns without preserving a proper right-handed rotation."
+  ],
+  "limitations": [
+    "An improper camera transform invalidates metric projection even when all other physical state is finite."
+  ],
+  "next_actions": [
+    "Recover the MuJoCo image-right axis with a proper rotation and rerun the complete smoke."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T125500Z-metric-flower-sim-smoke-v3",
+  "supersedes": [
+    "2026-08-12.metric-flower-sim-smoke-v2-partial"
+  ],
+  "tags": [
+    "flower",
+    "simulation",
+    "camera-frame",
+    "smoke",
+    "partial"
+  ]
+}

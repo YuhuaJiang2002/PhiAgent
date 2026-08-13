@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-raw-lineage-v2-partial",
+  "recorded_at": "2026-08-12T13:41:06Z",
+  "status": "PARTIAL",
+  "scope": "Calibration-critical raw DROID files for lineage-verified episodes 21, 60, and 77",
+  "summary": "Episodes 21 and 77 each downloaded one trajectory, one metadata JSON, and three SVOs with exact GCS generation/MD5 checks; episode 60 remains unavailable in the public raw bucket.",
+  "evidence": [
+    "Ten files total 28,421,193 bytes and have recorded GCS generations, MD5 values, and local SHA-256 values.",
+    "Episode 21 contributes five files and 13,734,106 bytes.",
+    "Episode 77 contributes five files and 14,687,087 bytes.",
+    "Episode 60 records no_objects_under_lineage_verified_public_gcs_prefix rather than fabricating or substituting a different episode.",
+    "A strict ZED calibration waiter is staged for episodes 21 and 77 and excludes BWM-reserved GPUs 1 and 4."
+  ],
+  "lessons": [
+    "Availability and rights are independent from lineage and must remain separate gates.",
+    "Partial real-data progress is preferable to simulator substitution or episode replacement."
+  ],
+  "limitations": [
+    "Raw DROID rights remain unresolved for training and redistribution.",
+    "Episode 60 cannot enter raw calibration evaluation from the current public bucket.",
+    "SVO intrinsics/depth extraction is queued and not yet a completed result."
+  ],
+  "next_actions": [
+    "Run ZED 5.1 calibration/depth extraction for episodes 21 and 77 on the first strictly free non-BWM GPU.",
+    "Seek an official source or clarification for the missing episode-60 raw tree without substituting another episode."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-raw-lineage/20260812T140500Z-heldout21-60-77-v2",
+  "supersedes": [
+    "2026-08-12.droid-raw-lineage-v1-availability-blocked"
+  ],
+  "tags": ["droid", "real-world", "raw-data", "calibration", "partial"]
+}

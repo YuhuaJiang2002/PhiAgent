@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-long-term-monitor-working",
+  "recorded_at": "2026-08-12T11:01:00Z",
+  "status": "WORKING",
+  "scope": "Seven-day persistent SOTA compute and terminal-artifact monitor",
+  "summary": "A detached monitor now audits all configured hosts and three critical long-running jobs every 120 seconds, persists capacity/transitions, and automatically launches the frozen BWM postprocessor after matched generation completes.",
+  "evidence": [
+    "Detached shellId 553 is running independently of the agent session.",
+    "The first verified heartbeat reports bwm-wipe20-seed42, droid-heldout-mapping, and curobo-source-transfer as running.",
+    "Capacity snapshots classify a GPU as free only below 1 GiB with no compute process.",
+    "The monitor writes capacity.jsonl, events.jsonl, heartbeat.json, config provenance, and successor logs under outputs/sota-monitor/20260812T110000Z-long-term-v1.",
+    "The BWM successor is a fixed argv command that discovers exactly one official and candidate campaign and runs the 20-independent-episode, 10,000-bootstrap evaluator."
+  ],
+  "lessons": [
+    "Long-running transfers and GPU queues require artifact-triggered continuation rather than relying on an interactive SSH/controller connection.",
+    "Any unexplained GPU allocation is now reserved, even when enough nominal memory remains for co-scheduling."
+  ],
+  "limitations": [
+    "The monitor depends on the local machine and SSH credentials remaining available.",
+    "zhaoli remains inaccessible and pro5000 remains unresolved.",
+    "Only the BWM terminal event currently has an automatic scientific postprocessor; DROID and Curobo successors remain explicit next actions."
+  ],
+  "next_actions": [
+    "Keep the monitor active until all three jobs are terminal, then append their results and stage the next matched experiments."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T110000Z-long-term-v1",
+  "supersedes": [],
+  "tags": ["sota", "monitor", "gpu", "heartbeat", "long-running", "working"]
+}

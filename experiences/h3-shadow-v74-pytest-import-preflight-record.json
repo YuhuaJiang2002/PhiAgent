@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v74-pytest-import-preflight",
+  "recorded_at": "2026-08-11T12:00:00+08:00",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T040500Z-softer-wider-strict-containment-v74-accepted",
+  "scope": "Focused unit-test preflight for the accepted v74 shadow-cleanup workflow",
+  "status": "BLOCKED",
+  "summary": "The first focused pytest invocation stopped during collection because this local pytest environment did not place the repository root on Python's module search path.",
+  "evidence": [
+    "Both test modules raised ModuleNotFoundError: No module named 'scripts' before executing any test.",
+    "Ruff, py_compile, video acceptance gates, and ledger validation passed independently."
+  ],
+  "lessons": [
+    "Invoke these script-importing tests with the repository root explicitly present in PYTHONPATH on this machine."
+  ],
+  "limitations": [
+    "No test assertions ran in this invocation; it is not test evidence for v74."
+  ],
+  "next_actions": [
+    "Rerun the same focused tests with PYTHONPATH=. and record the result in the accepted v74 ledger entry."
+  ],
+  "tags": ["minimax-h3", "pytest", "import-path", "preflight", "blocked"]
+}

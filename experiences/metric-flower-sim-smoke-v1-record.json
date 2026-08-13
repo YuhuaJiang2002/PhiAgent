@@ -1,0 +1,28 @@
+{
+  "record_id": "2026-08-12.metric-flower-sim-smoke-v1-partial",
+  "recorded_at": "2026-08-12T12:45:00Z",
+  "status": "PARTIAL",
+  "scope": "First 33-frame metric flower simulation smoke",
+  "summary": "The first smoke stopped before rendering because the short-rollout grasp-close interval began at a negative index and produced an empty destination slice.",
+  "evidence": [
+    "The run failed in build_metric_flower_schedule while assigning a 12-frame closure vector into an empty slice.",
+    "No GPU rendering or video acceptance claim was made."
+  ],
+  "lessons": [
+    "A full-length schedule can hide boundary errors that appear in the required reduced smoke test."
+  ],
+  "limitations": [
+    "The attempt produced no rendered or physical acceptance artifact."
+  ],
+  "next_actions": [
+    "Bound the close interval by the available approach prefix and rerun a new smoke directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T124500Z-metric-flower-sim-smoke-v1",
+  "tags": [
+    "flower",
+    "simulation",
+    "schedule",
+    "smoke",
+    "partial"
+  ]
+}

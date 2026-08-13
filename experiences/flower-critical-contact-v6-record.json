@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-critical-contact-v6",
+  "recorded_at": "2026-08-10T20:47:03Z",
+  "status": "WORKING",
+  "scope": "Real 17-frame single-flower and bimanual contact acceptance window",
+  "summary": "The same critical window passes complete human removal, two mechanical hands, clear active-stem contact, and retained flower identity, enabling geometry-gated relighting.",
+  "evidence": ["All five automatic gates pass.", "Active hand-to-stem maximum distance is 1.399994 pixels and support maximum distance is 8.196899 pixels.", "Exact active-flower preservation is 1.0 before encode and minimum hand areas are 1768/847 pixels.", "Dense human review passes all four semantic gates; evaluation decision is ALLOW_RELIGHTING_WINDOW."],
+  "lessons": ["Explicit instances plus exact composition can pass the real contact gate that VACE-only generation failed."],
+  "limitations": ["Acceptance is limited to the 17-frame real critical window."],
+  "next_actions": ["Run relighting only on this accepted geometry and expand the identity track without crossing discontinuities."],
+  "run_dir": "outputs/flower-contact-supervision/20260811T038000Z-real-contact-pairs-v6",
+  "supersedes": ["2026-08-11.flower-critical-contact-v1-v5"],
+  "tags": ["flower", "contact", "four-gates", "critical-window", "working"]
+}

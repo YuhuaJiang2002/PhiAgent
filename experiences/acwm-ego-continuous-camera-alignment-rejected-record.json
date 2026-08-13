@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-continuous-camera-alignment-rejected",
+  "recorded_at": "2026-08-11T12:35:00Z",
+  "status": "PARTIAL",
+  "scope": "Bounded camera alignment at the recursive H3 continuation seam",
+  "summary": "A decaying Euclidean camera alignment slightly improved the rinse seam but moved the unscrew robot geometry and raised its full-frame seam MAD, so the aligned variant was rejected from delivery.",
+  "evidence": [
+    "The unscrew ECC transform used 24 frames, correlation 0.5813, about 7.25 degrees rotation, and translations of 35.73/-63.21 pixels.",
+    "Unscrew seam MAD increased from 41.5532 without alignment to 43.5635 with alignment, and the review storyboard showed a larger robot-position jump.",
+    "The rinse seam improved from 16.8531 to 15.8029 MAD, but the task-level release unit is shared and the unscrew regression blocks promotion."
+  ],
+  "lessons": [
+    "Background camera alignment cannot be promoted when it improves the scene but displaces the manipulated robot/object geometry.",
+    "Prefer the unblended state-valid seam when subject geometry is more important than a small background registration gain."
+  ],
+  "limitations": [
+    "The alignment was a 2D camera-frame Euclidean warp, not calibrated 3D camera compensation."
+  ],
+  "next_actions": [
+    "Retain the unaligned, task-state-valid recursive continuation for the published comparison."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-continuous-candidates/20260811T123000Z-v4-camera-aligned",
+  "supersedes": [],
+  "tags": ["acwm", "h3", "camera-alignment", "negative-result", "partial"]
+}

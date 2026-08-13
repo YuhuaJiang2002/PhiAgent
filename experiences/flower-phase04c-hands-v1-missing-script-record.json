@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04c-hands-v1-missing-script",
+  "recorded_at": "2026-08-10T21:46:30Z",
+  "status": "PARTIAL",
+  "scope": "First remote launch of phase-04C fresh robot-hand anchors",
+  "summary": "The first launch did not start inference because the remote checkout lacked the new tracking entry-point; no masks were produced and the attempt is retained as a reproducibility failure.",
+  "evidence": ["The remote command failed before SAM2 execution with the tracking script absent.", "No output artifact was promoted from outputs/flower-full-expansion/20260811T055000Z-phase04c-hands-v1.", "The exact local tracking script was then copied to the remote execution environment for a fresh v2 run."],
+  "lessons": ["Remote source availability must be part of preflight, not assumed from the local checkout."],
+  "limitations": ["This attempt contains no model-quality evidence."],
+  "next_actions": ["Rerun in a new directory after copying the execution source and preserve its hash in provenance."],
+  "run_dir": "outputs/flower-full-expansion/20260811T055000Z-phase04c-hands-v1",
+  "supersedes": [],
+  "tags": ["flower", "phase04c", "remote-preflight", "missing-script", "partial"]
+}

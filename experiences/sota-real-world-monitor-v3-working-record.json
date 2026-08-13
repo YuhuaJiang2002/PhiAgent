@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v3-working",
+  "recorded_at": "2026-08-12T20:09:28Z",
+  "status": "WORKING",
+  "scope": "Seven-day real-world-only BWM and DROID monitor v3",
+  "summary": "A new detached monitor now watches the restarted seven-day WorldArena/BWM queue and the real DROID SVO calibration queue while preserving explicit simulator exclusions.",
+  "evidence": [
+    "The restarted BWM waiter is alive on a800-1 as PID 2604840 with maximum_wait_seconds=604800 and a verified waiting-official-bwm heartbeat.",
+    "The DROID calibration waiter remains alive on a800-1 as PID 1442133.",
+    "The first v3 monitor heartbeat records both jobs as running and both successors as not started.",
+    "The BWM postprocessor remains a fixed argv successor and can launch only after a WORKING result.json."
+  ],
+  "lessons": [
+    "Resource-wait recovery must change the timeout policy, preserve the old attempt, and use a new immutable directory.",
+    "Monitoring all active real-world queues prevents a single terminal event from ending campaign visibility."
+  ],
+  "limitations": [
+    "Both scientific jobs are still waiting for strictly available GPUs.",
+    "Action swaps remain diagnostic without physically executed counterfactual branches."
+  ],
+  "next_actions": [
+    "Continue 120-second capacity/job polling for up to seven days.",
+    "Automatically postprocess BWM only after both matched inference arms complete.",
+    "Append terminal DROID calibration and BWM outcomes to the ledger."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T201000Z-real-world-only-v3",
+  "supersedes": [
+    "2026-08-12.sota-real-world-monitor-v2-terminal"
+  ],
+  "tags": ["sota", "real-world", "monitor", "gpu", "working"]
+}

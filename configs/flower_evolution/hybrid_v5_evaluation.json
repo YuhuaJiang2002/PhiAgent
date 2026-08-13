@@ -1,0 +1,91 @@
+{
+  "candidate_id": "20260810T150109Z-hybrid-contact-layered-v5",
+  "coordinate_frame": "camera:source_pixels",
+  "evaluated_frames": 660,
+  "expected_frames": 660,
+  "measurements": [
+    {
+      "evidence": [
+        "outputs/flower-self-evolution/20260810T150109Z-hybrid-contact-layered-v5/manifest.json"
+      ],
+      "name": "background_lock",
+      "notes": "The candidate uses a stable clean plate but not exact source-background pixels.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [],
+      "name": "human_residual_absence",
+      "notes": "The source person is not composited directly, but restored flower masks still need a full-frame human-remnant audit.",
+      "score": null,
+      "verdict": "UNKNOWN"
+    },
+    {
+      "evidence": [
+        "outputs/flower-self-evolution/20260810T145647Z-contact-calibrated-3d-v3/manifest.json",
+        "outputs/flower-self-evolution/20260810T150109Z-hybrid-contact-layered-v5/dense-review.jpg"
+      ],
+      "name": "robot_morphology",
+      "notes": "One explicit MuJoCo mesh and attached hands remain complete across all 660 decoded frames.",
+      "score": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        "outputs/flower-self-evolution/20260810T145647Z-contact-calibrated-3d-v3/manifest.json"
+      ],
+      "name": "robot_identity",
+      "notes": "The same pinned G1 and Sharpa meshes/materials render every frame without generative identity drift.",
+      "score": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        "outputs/flower-self-evolution/20260810T150109Z-hybrid-contact-layered-v5/contact-evaluation.json"
+      ],
+      "name": "embodied_motion",
+      "notes": "Only 62.5% of rendered wrist observations fall within 35 source pixels; the two sides score 35.3% and 89.7%.",
+      "score": 0.625,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [],
+      "name": "flower_integrity",
+      "notes": "A tracked union is preserved, but held-instance identity and deformation are not independently verified.",
+      "score": null,
+      "verdict": "UNKNOWN"
+    },
+    {
+      "evidence": [
+        "outputs/flower-self-evolution/20260810T150109Z-hybrid-contact-layered-v5/contact-evaluation.json"
+      ],
+      "name": "hand_flower_contact",
+      "notes": "Conditional union-mask proximity is 90.9%, but the metric cannot identify the held flower and therefore cannot prove grasp continuity.",
+      "score": 0.9094076655052264,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/flower-self-evolution/20260810T150109Z-hybrid-contact-layered-v5/contact-review.jpg"
+      ],
+      "name": "occlusion_order",
+      "notes": "All flower pixels are composited in front of the robot instead of using per-contact depth order.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [],
+      "name": "temporal_consistency",
+      "notes": "The output decodes fully, but no all-frame limb/contact temporal acceptance score has been persisted.",
+      "score": null,
+      "verdict": "UNKNOWN"
+    },
+    {
+      "evidence": [],
+      "name": "full_video_human_preference",
+      "notes": "The new v5 candidate has not passed a blind complete-video preference review.",
+      "score": null,
+      "verdict": "UNKNOWN"
+    }
+  ]
+}

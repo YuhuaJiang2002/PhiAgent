@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-single-chain-controller-disconnect",
+  "recorded_at": "2026-08-12T05:35:18Z",
+  "status": "PARTIAL",
+  "scope": "Continuity-first 27.5-second single-chain controller completion",
+  "summary": "The persistent GPU subprocess completed all ten windows, but the SSH control stream disconnected while the launcher printed recovered progress, so the outer v4 metadata correctly retained failed status until immutable outputs were adopted.",
+  "evidence": [
+    "Batch 00 completed with return code 0 after running from 2026-08-12T05:11:55.830361Z to 05:25:38.585199Z.",
+    "The append-only event stream contains ten window_completed events and ten result hashes; the outer error is BrokenPipeError: [Errno 32] Broken pipe.",
+    "The verified-reuse v6 experiment matches every result hash to its window_completed event and preserves each rolling-reference event."
+  ],
+  "lessons": [
+    "Production launch must detach from an interactive SSH stream, and recovery must bind reused outputs to completed subprocess events rather than merely trusting files on disk."
+  ],
+  "limitations": [
+    "The v4 controller metadata is not a completed experiment even though the GPU subprocess completed; v6 is the authoritative recovered record."
+  ],
+  "next_actions": [
+    "Use a detached scheduler or service supervisor for future long runs and retain append-only per-window events for exact recovery."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-1pair-rolling-v4",
+  "supersedes": [],
+  "tags": [
+    "wan-animate2",
+    "long-video",
+    "controller",
+    "recovery",
+    "failure"
+  ]
+}

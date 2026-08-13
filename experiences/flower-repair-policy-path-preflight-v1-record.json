@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-repair-policy-path-preflight-v1",
+  "recorded_at": "2026-08-10T20:42:25Z",
+  "status": "PARTIAL",
+  "scope": "First local flower-repair policy training preflight",
+  "summary": "The first training attempt stopped before dataset loading because the path parser required eight components while the valid evolution path contract contains seven.",
+  "evidence": [
+    "scripts/train_flower_repair_policy.py raised ValueError: unexpected evolution path contract on the first measured evolution JSON.",
+    "The failure occurred before training, checkpoint creation, or candidate mutation.",
+    "The empty immutable attempt directory is outputs/flower-repair-policy/20260810T204225Z-82825ddb."
+  ],
+  "lessons": [
+    "Path-schema preflights need tests against the exact project-relative artifact layout rather than an assumed minimum depth."
+  ],
+  "limitations": [
+    "No model or evaluation result was produced by this attempt."
+  ],
+  "next_actions": [
+    "Correct the minimum path length to seven, retain campaign/action extraction at components two and four, and rerun in a new experiment directory."
+  ],
+  "run_dir": "outputs/flower-repair-policy/20260810T204225Z-82825ddb",
+  "supersedes": [],
+  "tags": [
+    "flower-repair-policy",
+    "preflight",
+    "path-contract",
+    "partial"
+  ]
+}

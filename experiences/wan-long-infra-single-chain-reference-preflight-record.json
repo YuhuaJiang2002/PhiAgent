@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-single-chain-reference-preflight",
+  "recorded_at": "2026-08-12T05:12:55Z",
+  "status": "PARTIAL",
+  "scope": "Continuity-first full-length single-chain input preflight",
+  "summary": "The first single-chain command stopped before GPU allocation because it named a nonexistent shorthand reference file instead of the recorded robot-reference-frame-0276.png input.",
+  "evidence": [
+    "Metadata records the missing reference ValueError at 2026-08-12T05:09:48Z.",
+    "The attempt completed in under one millisecond with no batch or generated window."
+  ],
+  "lessons": [
+    "Benchmark launchers should source immutable input paths directly from the matched baseline metadata rather than reconstructing filenames."
+  ],
+  "limitations": [
+    "No model process or GPU inference started."
+  ],
+  "next_actions": [
+    "Use the verified baseline reference path and rerun in a fresh experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-1pair-rolling-v3",
+  "supersedes": [],
+  "tags": [
+    "wan-animate2",
+    "long-video",
+    "preflight",
+    "missing-input",
+    "failure"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.droid-ego-third-person-label-overlay-v2",
+  "recorded_at": "2026-08-11T14:26:34Z",
+  "scope": "Permanent in-frame provenance labels for the DROID first-person to third-person demos",
+  "status": "WORKING",
+  "summary": "All three task videos and the ten-second reel now identify the wrist stream as REAL CONDITION, both exterior streams as REAL TARGETS, and the absent learned result as OUR GENERATED VIDEO: NOT AVAILABLE / NOT STARTED.",
+  "run_dir": "outputs/droid-ego-third-person/20260811T140500Z-labels-v2",
+  "evidence": [
+    "A transparent 1280x720 SVG overlay permanently labels the left panel REAL CONDITION / FIRST-PERSON and the middle/right panels REAL TARGET A/B / THIRD-PERSON.",
+    "Every frame footer states OUR GENERATED VIDEO: NOT AVAILABLE / NOT STARTED; the comparison and labels are PhiAgent-authored, but no novel-view pixels are claimed as generated.",
+    "The labeled duck-to-pot, block-to-bowl, and close-drawer outputs decode to 92, 144, and 100 frames at 1280x720 and 15 FPS; the labeled reel decodes to 150 frames and exactly 10 seconds.",
+    "The published poster was visually inspected at full resolution and shows all three panel labels plus the generated-video status without covering task pixels.",
+    "Manifest schema 2.0.0 records the condition, target, composition, generated-video status, new hashes, and the preserved claim boundary."
+  ],
+  "lessons": [
+    "Real condition, real ground-truth target, and model output are three distinct roles and should be labeled inside the video rather than only explained in surrounding prose.",
+    "When no learned output exists, an explicit NOT AVAILABLE label is more honest than visually implying that a synchronized target was generated."
+  ],
+  "limitations": [
+    "There is still no model-generated ego-to-third-person video; learned generation remains NOT STARTED.",
+    "The revision changes labeling and packaging only, not the underlying synchronized DROID pixels or task coverage."
+  ],
+  "next_actions": [
+    "Add a separate OUR GENERATED VIDEO panel only after a trained model has produced a held-out result and passed identity, object, temporal, and action gates."
+  ],
+  "supersedes": [
+    "2026-08-11.droid-ego-third-person-label-python-blocked",
+    "2026-08-11.droid-ego-third-person-paired-demo-v1"
+  ],
+  "tags": [
+    "droid",
+    "ego-to-third-person",
+    "provenance",
+    "condition",
+    "target",
+    "labeling",
+    "working"
+  ]
+}

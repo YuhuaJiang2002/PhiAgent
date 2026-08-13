@@ -6,6 +6,7 @@ import pytest
 
 from phiagent.evaluation.video_proxy import (
     DecodedFrames,
+    evaluate_decoded_core_proxy,
     evaluate_decoded_proxy,
     resolve_ffmpeg,
     write_evaluation_evidence,
@@ -122,6 +123,22 @@ def test_late_regional_flicker_is_not_hidden_by_full_frame_average() -> None:
     assert metrics.late_temporal_consistency < metrics.global_temporal_consistency
     assert metrics.regional_temporal_consistency < 0.5
     assert metrics.temporal_consistency < 0.5
+
+
+def test_core_proxy_keeps_object_gate_out_of_metric_result() -> None:
+    frames = _moving_frames()
+    decoded = _sequence(frames)
+
+    result = evaluate_decoded_core_proxy(
+        decoded,
+        decoded,
+        _sequence((frames[0],)),
+        decoded,
+    )
+
+    assert result["motion_preservation"] == pytest.approx(1.0)
+    assert result["temporal_consistency"] == pytest.approx(1.0)
+    assert "object_consistency" not in result
 
 
 def test_evidence_records_hashes_metrics_and_limitations(tmp_path) -> None:

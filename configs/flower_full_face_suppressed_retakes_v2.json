@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "retake_starts": [0, 72, 326, 470, 542, 571],
+  "seed": 42,
+  "fps": 24,
+  "window_frames": 89,
+  "output_width": 896,
+  "output_height": 512,
+  "infer_frames": 80,
+  "reference_frames": 1,
+  "maximum_rounds_per_window": 1,
+  "gpu_physical_indices": [2, 3, 4, 5],
+  "minimum_free_gpu_gib": 60,
+  "object_roi_xywh_normalized": [0.44, 0.37, 0.20, 0.27],
+  "prompt": "Two coherent graphite-black and brushed-silver H3 robot arms and mechanical hands completely replace every visible human hand, forearm, sleeve, torso fragment, head, hair, skin region, and human cast shadow. Closed black robot face panel with no human face. Preserve the exact flower identities, stems, vase, contacts, camera, worktable, shelves, wall, lighting, and background. No human skin, clothing, silhouette, residual limb, duplicate hand, detached shadow, smeared flower, or invented object.",
+  "accepted_inputs": {
+    "frozen_anchor_start": 110,
+    "frozen_anchor_gate": "56/56 WORKING",
+    "contact_temporal_window_start": 182,
+    "contact_temporal_gate": "39/39 WORKING",
+    "preserved_prior_human_removal_starts": [254, 398]
+  },
+  "routing": {
+    "suppress_source_face_control": true,
+    "use_relighting_lora": true,
+    "preserve_raw_candidate_even_when_proxy_rejects": true,
+    "require_dense_review_before_stitching": true
+  }
+}

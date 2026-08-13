@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-lr1e4-step75-validation-partial",
+  "recorded_at": "2026-08-12T09:50:00Z",
+  "scope": "Low-learning-rate early-checkpoint LoRA tournament on isolated validation episodes",
+  "status": "PARTIAL",
+  "summary": "Reducing the LoRA learning rate to 1e-4 and selecting step 75 reduced the appearance regression by roughly three to four times while improving motion, but the full two-episode validation still failed strict identity and motion gates.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T221500Z-lora-attn-r16-lr1e4-45f-early75",
+  "evidence": [
+    "A single continuous run completed 75 steps and saved adapter-only checkpoints at 25, 50, and 75 with SHA-256 values 787b0b8cbea758f6530b5fbe7b3fcf84eb00148d460b3864a4f843fb6a38c9aa, bfb834992465c6dfe6e2ff4e745b5cc7541a0416f4552b88f46b4f3c7ae9a01c, and 53318a7666765d52a5c80c4a3251808b45d14a4d05c550df3872e3c6ee7e67e5.",
+    "On ep012, step 75 was the motion Pareto candidate: correlation delta +0.067159 versus base and motion magnitude ratio 1.914198 versus base 2.022254, with appearance deltas between -0.020668 and -0.027544.",
+    "On the complete two-episode validation, step 75 improved motion correlation from 0.042949 to 0.099633 and motion magnitude ratio from 2.244277 to 2.217337.",
+    "Complete-validation appearance deltas remained negative: full-frame SSIM -0.051906, subject edge F1 -0.042030, and subject ROI SSIM -0.046330.",
+    "The strict evaluator returned PARTIAL; no demo or final-holdout evaluation was authorized from this checkpoint."
+  ],
+  "lessons": [
+    "Lower learning rate and early checkpointing materially improve preservation but do not fully separate useful motion adaptation from appearance drift.",
+    "The next bounded experiment should calibrate the adapter residual scale at inference, which directly interpolates between the immutable base and the learned motion residual without retraining."
+  ],
+  "limitations": [
+    "Step 75 does not pass strict gates and is not a publishable model.",
+    "The checkpoint tournament used ep012 for selection and ep020 only for confirmation; final holdout remains untouched."
+  ],
+  "next_actions": [
+    "Evaluate step 75 at residual scales 0.25 and 0.5 on ep012, select an appearance-preserving Pareto scale, and confirm only that scale on ep020."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "low-learning-rate",
+    "early-stopping",
+    "validation",
+    "partial"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-formal150-validation-rejected"
+  ]
+}

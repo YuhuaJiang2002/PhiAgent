@@ -1,0 +1,30 @@
+{
+  "record_id": "2026-08-12.foundation-contact-sharpa-ssh-sync",
+  "recorded_at": "2026-08-12T10:18:00Z",
+  "status": "PARTIAL",
+  "scope": "Pinned SSH synchronization of complete Sharpa visual and collision meshes to the A800 host",
+  "summary": "An authenticated sparse SSH checkout reached the exact official revision but blob transfer was stopped after sustained low throughput; the partial checkout was not used by inference and no trajectory result is claimed.",
+  "evidence": [
+    "GitHub SSH authentication and remote HEAD 6eea427eb24189519f32b9f21674cd534d3f973c were verified through agent forwarding.",
+    "The remote partial clone recorded the exact revision but had not materialized wave_01 files; its fetch pack reached only 6.6 MiB after more than three minutes.",
+    "All related local and remote transfer processes were terminated before handoff; the incomplete checkout was never selected as an exact asset."
+  ],
+  "lessons": [
+    "Source-revision verification and full asset materialization are separate preflight gates.",
+    "A correct Git commit cannot substitute for verifying every mesh required by the MJCF on the execution host."
+  ],
+  "limitations": [
+    "The A800 host still lacks a complete pinned left Sharpa mesh checkout for the full-q render experiment.",
+    "No robot trajectory or performance measurement was produced."
+  ],
+  "next_actions": [
+    "Stage the complete hashed asset bundle through the normal artifact cache, then resume the full-q run in a fresh experiment directory."
+  ],
+  "tags": [
+    "ssh",
+    "asset-sync",
+    "sharpa",
+    "preflight",
+    "partial"
+  ]
+}

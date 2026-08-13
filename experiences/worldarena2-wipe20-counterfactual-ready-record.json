@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.worldarena2-wipe20-counterfactual-ready",
+  "recorded_at": "2026-08-12T08:04:10Z",
+  "status": "WORKING",
+  "scope": "Twenty-independent-episode WorldArena BWM counterfactual diagnostic preparation",
+  "summary": "A pinned five-task, 100-physical-episode WorldArena cache was downloaded and compiled into task-disjoint BWM data; a compact 20-episode wipe_table transfer bundle and 20 lineage-safe factual/action-swap pairs are ready on a800-1.",
+  "evidence": [
+    "The source cache contains 300 verified files and 721,819,835 bytes at revision af1ac34d3881f84096345542c631fbb1b9540d50.",
+    "The compiled split contains 60 train, 20 validation, and 20 test physical episodes.",
+    "Eighty source videos contain one terminal frame beyond the HDF5 action length; the compiler now excludes only that sentinel and keeps every selected 57-frame window inside the aligned prefix.",
+    "The compact BWM test bundle contains 20 independent wipe_table episodes in 937,316 payload bytes.",
+    "The history-preserving counterfactual suite contains 20 independent physical groups and 40 factual/swapped rows."
+  ],
+  "lessons": [
+    "Full raw video transfer was unnecessary; deterministic 57-frame materialization reduced the claim-equivalent test payload below one megabyte.",
+    "Counterfactual compilation must slice each variable-length action episode to its declared 57-frame intervention window."
+  ],
+  "limitations": [
+    "Swapped futures still lack executable physical references and remain an action-sensitivity diagnostic.",
+    "The matched BWM GPU run is queued because all compatible a800-1 GPUs are occupied by other users."
+  ],
+  "next_actions": [
+    "Let the persisted GPU watcher launch official BWM and the promoted adapter on GPUs 1 and 4 when both exceed 61,000 MiB free, then run the frozen 20-episode evaluator."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-counterfactual-audit/20260812T073914Z-worldarena2-wipe20-lineage-safe-v5",
+  "supersedes": [],
+  "tags": ["acwm", "worldarena2", "counterfactual", "twenty-episodes", "working"]
+}

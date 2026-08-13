@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r2-epoch0-eval-preflight",
+  "recorded_at": "2026-08-10T22:18:15Z",
+  "scope": "First held-out inference attempt for the H3 topology r2 epoch-0 checkpoint",
+  "status": "BLOCKED",
+  "summary": "The first epoch-0 evaluation stopped at the GPU safety preflight because the requested physical GPU had less free memory than the declared minimum; no generation was attempted.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-rsi/20260811T071000Z-r2-epoch0-inspect-eval",
+  "evidence": [
+    "The copied rank-16 checkpoint has SHA-256 f022c783de9b4d76c9ecfa8d3384cba89a32e67c49d44d5b73a9e0bf89b8bac0.",
+    "GPU 1 had 43751 MiB free while the command required at least 70000 MiB.",
+    "The manifest records status failed, honest_status BLOCKED, and a PreflightError before model loading or generation.",
+    "All action variants remained pending and no output video was emitted."
+  ],
+  "lessons": [
+    "A checkpoint evaluation must select a currently suitable physical GPU rather than assuming the previously free device remains available.",
+    "Fail-closed GPU preflight prevents an unsafe partial load from being mistaken for a model-quality failure."
+  ],
+  "limitations": [
+    "This attempt contains no candidate-quality evidence."
+  ],
+  "next_actions": [
+    "Retry in a new experiment directory on a physical GPU that passes the measured free-memory threshold."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "gpu-preflight", "blocked", "epoch0"]
+}

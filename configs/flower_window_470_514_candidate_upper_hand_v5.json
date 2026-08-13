@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0", "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1], "global_source_frame_offset": 470,
+  "instances": [{
+    "instance_id": "robot-hand-upper-bouquet-01", "object_id": 101,
+    "anchor_source_frame": 22, "box_xyxy": [492, 245, 565, 360],
+    "positive_points_xy": [[515, 275], [525, 300], [538, 330], [548, 342]],
+    "negative_points_xy": [[486, 330], [578, 365], [572, 270], [520, 370]],
+    "minimum_area_pixels": 500, "maximum_area_pixels": 16000,
+    "role": "occluded upper hand plus its connected wrist support",
+    "correction_prompts": [
+      {"anchor_source_frame": 0, "box_xyxy": [490, 245, 570, 355], "positive_points_xy": [[535, 280], [520, 315], [512, 335]], "negative_points_xy": [[475, 320], [575, 365], [570, 250], [490, 365]]},
+      {"anchor_source_frame": 44, "box_xyxy": [500, 275, 650, 345], "positive_points_xy": [[535, 310], [575, 320], [610, 330]], "negative_points_xy": [[490, 300], [650, 360], [575, 270], [525, 350]]}
+    ]
+  }],
+  "notes": "V5 tracks the same upper endpoint together with connected wrist support so the real mid-window black-finger occlusion does not cause a hand-identity swap; flower, other hand, torso, and shoulder are negative prompts."
+}

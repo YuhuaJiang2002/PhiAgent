@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window254-dual-hand-gate-v1",
+  "recorded_at": "2026-08-11T10:45:00Z",
+  "scope": "Dual-hand-constrained retake and strict real-flower/contact acceptance for global frames 254-342",
+  "status": "WORKING",
+  "summary": "A new seed-42 dual-hand retake passes all 39 unchanged named-flower, two-hand, contact, motion, identity, temporal, and semantic gates after exact timeline correction and real-instance restoration.",
+  "run_dir": "outputs/gpu-flower-window254-supervision/20260811T103500Z-dual-hand-v3-round0",
+  "evidence": [
+    "The immutable raw Wan result has SHA-256 6b0961f68c634c3a6b8264eb15b70c908b8de0613e510d943feeeeb72ca74a13 and decodes 88 frames at 896x512/30 FPS.",
+    "The reproducible retimer applies setpts=1.25*PTS, a one-frame terminal clone, and 24-FPS output; the resulting candidate decodes exactly 89 frames before source-tracked flower restoration.",
+    "Two restored candidate flower tracks remain visible for 89/89 frames with mean adjacent IoU 0.8061 and 0.7856; source-candidate histogram cosines are 0.9953 and 0.9812.",
+    "A finger-only image-left prompt tracks the articulated support gripper for 89/89 frames with 9.69-pixel maximum centroid step and 0.9118 mean adjacent IoU; the independent image-right gripper tracks 89/89 with 11.62-pixel maximum step and 0.9337 mean adjacent IoU.",
+    "The two contact segments are visible throughout; left-to-cream p90/maximum distance is 0.0/14.87 pixels and right-to-cream is 3.0/12.04 pixels under unchanged 8/15-pixel thresholds.",
+    "The restored candidate scores motion 0.845566, target identity 0.982070, and temporal consistency 0.798759; strict-object-gate-v1 reports WORKING, ALLOW_FULL_FILM_EXPANSION, and 39/39 gates passed."
+  ],
+  "lessons": [
+    "Prompting the visible articulated fingers rather than the lower palm-root/wrist removes the semantic ambiguity that invalidated earlier left-hand tracks.",
+    "The generic bouquet object proxy remains unsuitable, but explicit named flowers plus independent hand/contact tracks provide an auditable acceptance route.",
+    "Exact raw-Wan retiming and terminal-frame cloning must precede restoration and tracking so every downstream artifact shares the 89-frame source timeline."
+  ],
+  "limitations": [
+    "Contact is 2D mask distance in camera pixels, not force, 3D geometry, or tactile sensing.",
+    "The terminal 89th frame is an exact clone because Wan emitted 88 real frames.",
+    "This acceptance covers only global frames 254-342 and does not promote unverified full-film windows."
+  ],
+  "next_actions": [
+    "Freeze this candidate and its flower/hand/contact masks as the third strict anchor.",
+    "Apply the same raw-retime, source-instance restoration, finger-level two-hand tracking, and unchanged gate to the next isolated overlap window before stitching."
+  ],
+  "supersedes": [
+    "2026-08-11.gpu-flower-window254-object-gate-rejection"
+  ],
+  "tags": [
+    "gpu",
+    "wan2.2-animate",
+    "sam2",
+    "real-flower-instances",
+    "two-hand-contact",
+    "strict-gate",
+    "working"
+  ]
+}

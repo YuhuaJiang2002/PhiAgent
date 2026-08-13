@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-model-rgbd-virtual-v2-working",
+  "recorded_at": "2026-08-12T12:59:00Z",
+  "scope": "Warning-free model-derived RGB-D, calibrated-pose virtual views, hash-bound v9 compiler, and adversarial supervisor",
+  "status": "WORKING",
+  "summary": "The corrected pipeline produces 110 interleaved RGB-D proposals and 55 exact-pose virtual views with complete lineage and passes proposal diagnostics, while correctly preserving physical PARTIAL status and zero promotion.",
+  "run_dir": "outputs/foundation-contact/20260812T132000Z-model-derived-rgbd-virtual-views-v2",
+  "evidence": [
+    "The interleaved artifact has 110 increasing source frames, maximum gap 6, effective 4 Hz sampling, 100% valid positive depth, and explicit distinct world frames for the two DA3 runs.",
+    "The two same-model run medians differ by 0.0018814675446848542 fraction; this passes a stability diagnostic but supplies zero independent physical groups.",
+    "The 55 alternating 4 cm virtual views have 0.9639547258297259 mean coverage and 0.9627210884353742 p05 coverage; high-resolution review shows disocclusion cracks and the report declares zero new occluded-surface fraction.",
+    "The real v2 run enforces RuntimeWarning=error and completes combine/render/audit in 18.94751229100075 seconds at 2.9027557367582566 virtual views per second.",
+    "The v9 compiler binds the source, model-derived report, and every declared output hash, remains 0/4 physical gates, and the checked v9 supervisor rejects 5/5 attacks without promotion."
+  ],
+  "lessons": [
+    "A virtual view can have exact constructed relative extrinsics while still adding no observation behind the original occluder.",
+    "Model-generated observations can improve temporal supervision and falsification coverage without being mislabeled as independent calibration."
+  ],
+  "limitations": [
+    "Absolute scale, cropped leg joints, occluded finger joints, persistent stem rods, and sensor/solver forces remain unresolved.",
+    "The original 27.5-second video remains PARTIAL and no new final video was generated in this experiment."
+  ],
+  "next_actions": [
+    "Acquire an external fiducial/RGB-D scale group or synchronized complete q/qdot telemetry; only then use the model RGB-D proposals for full-q and rod optimization.",
+    "Run inverse dynamics only after metric camera, robot trajectory, and stem geometry gates pass."
+  ],
+  "supersedes": [
+    "2026-08-12.foundation-contact-model-rgbd-virtual-v1-partial"
+  ],
+  "tags": ["foundation-contact", "rgbd", "virtual-view", "adversarial", "working"]
+}

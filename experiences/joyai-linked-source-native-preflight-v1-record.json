@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-13.joyai-linked-source-native-preflight-v1-partial",
+  "recorded_at": "2026-08-13T03:22:00Z",
+  "status": "PARTIAL",
+  "scope": "Strict native-resolution JoyAI preparation preflight for the user-linked 27.5-second candidate",
+  "summary": "The strict 1280x720 integer-crop contract rejected the linked artifact before generation because its decoded resolution is only 624x352.",
+  "evidence": [
+    "ffprobe decoded 660 frames at 24 FPS but reported 624x352 instead of the required native 1280x720 frame.",
+    "prepare_joyai_flower_windows.py raised ValueError before creating a JoyAI experiment or candidate."
+  ],
+  "lessons": [
+    "A low-resolution review export must not be silently relabelled as native-resolution model input; its geometric transform must be explicit."
+  ],
+  "limitations": [
+    "No JoyAI input window or generated video was produced by this strict attempt."
+  ],
+  "next_actions": [
+    "Run a separate explicitly labelled fit-height/crop preparation while retaining the native 1280x720 incumbent path as the authoritative route."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/joyai-flower-edit/20260813T032200Z-linked-original-prepare-v1",
+  "supersedes": [],
+  "tags": ["joyai", "flower-video", "preflight", "resolution", "partial"]
+}

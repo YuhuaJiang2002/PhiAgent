@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 254,
+  "instances": [
+    {
+      "instance_id": "robot-hand-left-support-01",
+      "object_id": 101,
+      "anchor_source_frame": 44,
+      "box_xyxy": [430, 245, 510, 355],
+      "positive_points_xy": [[470, 300], [480, 320], [455, 285]],
+      "negative_points_xy": [[500, 230], [530, 270], [540, 300], [520, 335]],
+      "minimum_area_pixels": 160,
+      "maximum_area_pixels": 9000,
+      "role": "image-left dark support gripper behind the held bouquet",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [430, 245, 515, 360],
+          "positive_points_xy": [[470, 302], [482, 325], [452, 285]],
+          "negative_points_xy": [[500, 230], [540, 300], [525, 345], [420, 265]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [435, 245, 515, 360],
+          "positive_points_xy": [[472, 302], [484, 325], [455, 285]],
+          "negative_points_xy": [[500, 230], [540, 300], [525, 345], [425, 265]]
+        }
+      ]
+    },
+    {
+      "instance_id": "robot-hand-right-grip-02",
+      "object_id": 102,
+      "anchor_source_frame": 44,
+      "box_xyxy": [500, 245, 590, 350],
+      "positive_points_xy": [[540, 300], [555, 315], [525, 285]],
+      "negative_points_xy": [[470, 300], [500, 230], [600, 260], [485, 335]],
+      "minimum_area_pixels": 160,
+      "maximum_area_pixels": 9500,
+      "role": "image-right silver gripper contacting the held stems",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [500, 245, 590, 350],
+          "positive_points_xy": [[540, 300], [558, 315], [525, 285]],
+          "negative_points_xy": [[470, 302], [500, 230], [600, 260], [485, 335]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [500, 245, 590, 350],
+          "positive_points_xy": [[540, 300], [555, 315], [525, 285]],
+          "negative_points_xy": [[472, 302], [500, 230], [600, 260], [488, 335]]
+        }
+      ]
+    }
+  ],
+  "notes": "Two overlapping robot grippers are prompted independently on the source-instance-restored candidate. The left/dark support gripper and right/silver grip are separated with cross-hand negative points; dense mask review is required before contact pairing."
+}

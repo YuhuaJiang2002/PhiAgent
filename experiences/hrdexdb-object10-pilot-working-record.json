@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.hrdexdb-object10-pilot-working",
+  "recorded_at": "2026-08-12T09:47:14Z",
+  "status": "WORKING",
+  "scope": "HRDexDB object-disjoint embodiment-transfer data pilot",
+  "summary": "A pinned 343,588,654-byte HRDexDB core pilot now contains ten unique objects with complete human/robot RGB, camera calibration, robot state/tactile timestamps, object pose, and mesh evidence under an object-disjoint split.",
+  "evidence": [
+    "The dataset revision is a46347556efd7ed87e70e7e87293b462d7253d6f with CC-BY-NC-4.0 and non-gated access.",
+    "Train objects are apple, attached_container, baby_beaker, balloon_whisk, bamboo_basket, and bamboo_box; validation is banana and beige_brush; sealed test is box_pink and cactus.",
+    "All selected robot scenes have grasp_success=true and a frozen paired human episode.",
+    "The final A800-4 manifest contains 269 files; 268 were reused by hard link after a transient network failure and one missing calibration file was transferred from the independently verified local copy."
+  ],
+  "lessons": [
+    "Successful grasp metadata alone does not guarantee that a scene contains robot raw/video/C2R assets; complete pairs must be explicitly selected and frozen.",
+    "Resumable hard-linked caches prevent repeated 300 MB downloads while preserving failed attempts."
+  ],
+  "limitations": [
+    "MANO per-frame parameters are not included in this core download.",
+    "The dataset is non-commercial and human privacy/personality rights require separate review."
+  ],
+  "next_actions": [
+    "Use validation objects only to test raw and geometry/object-factored methods; keep box_pink and cactus sealed until the method and thresholds are frozen."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/hrdexdb-pilot/20260812T094641Z-object10-core-a8004-v4",
+  "supersedes": [],
+  "tags": ["hrdexdb", "embodiment", "object-disjoint", "dataset", "working"]
+}

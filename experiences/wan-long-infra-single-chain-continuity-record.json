@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-single-chain-continuity-partial",
+  "recorded_at": "2026-08-12T05:35:18Z",
+  "status": "PARTIAL",
+  "scope": "Complete 27.5-second continuity-first Wan-Animate-2 generation",
+  "summary": "One persistent two-A800 temporal chain generated all ten windows with nine rolling source-camera-frame references, improving the worst raw overlap by 47.79% relative to the four-GPU two-chain profile while remaining 2.5460x faster and 60.723% cheaper in GPU-hours than baseline.",
+  "evidence": [
+    "Verified generation time is 822.754838 seconds for 660 useful frames, or 0.802183 useful FPS and 29.9184x real time; measured cost is 0.457086 A800 GPU-hours.",
+    "All 660 source frames, ten immutable result hashes, one temporal chain, and nine previous-window camera-frame links are recorded.",
+    "Worst best-seam MAD is 7.4452 versus 14.2593 for the two-chain throughput profile; mean best-seam MAD is 4.7994 versus 5.2356.",
+    "The radius-4 stitch decodes all 660 frames and reports temporal consistency 0.96397, maximum transition ratio 6.0800, motion preservation 0.26370, and SHA-256 bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91."
+  ],
+  "lessons": [
+    "A single rolling temporal dependency removes the independent-chain discontinuity, but camera-frame-only identity feedback accumulates late drift; speed-first parallelism and continuity-first dependency depth need separate operating profiles."
+  ],
+  "limitations": [
+    "The stitched result remains review_required because its maximum transition ratio exceeds the prior accepted visual route and motion preservation is low.",
+    "Dense and all-seam contact sheets show no obvious source-human return, but no claim is made for exact action, flower/stem identity, contact physics, collision safety, or real-robot execution."
+  ],
+  "next_actions": [
+    "Add a stateful cross-worker handoff or a bounded identity-refresh mechanism that limits rolling drift without reintroducing an independent-chain reset."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-1pair-rolling-adopted-v6",
+  "supersedes": [
+    "2026-08-12.wan-long-infra-single-chain-controller-disconnect",
+    "2026-08-12.wan-long-infra-single-chain-reference-preflight"
+  ],
+  "tags": [
+    "wan-animate2",
+    "long-video",
+    "rolling-anchor",
+    "continuity",
+    "partial"
+  ]
+}

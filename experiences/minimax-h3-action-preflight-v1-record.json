@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.minimax-h3-action-preflight-v1",
+  "recorded_at": "2026-08-10T12:55:32+08:00",
+  "status": "BLOCKED",
+  "scope": "MiniMax-H3 multi-action GPU preflight",
+  "summary": "The first multi-action preflight stopped before GPU inference because the requested DiffSynth checkout path did not contain the pinned H3 source files.",
+  "evidence": [
+    "/data0/jiangyuhua/PhiAgent-0/outputs/minimax-h3-action-control/20260810T045532Z-preflight-v1/metadata.json records the missing third_party/DiffSynth-Studio source files and a failed status"
+  ],
+  "lessons": [
+    "Remote paths must be read from the provenance of a previously successful experiment rather than inferred from local repository conventions."
+  ],
+  "limitations": [
+    "No model load or generation was attempted in this preflight."
+  ],
+  "next_actions": [
+    "Use the proven external/DiffSynth-Studio checkout at the recorded pinned revision and rerun in a new experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/minimax-h3-action-control/20260810T045532Z-preflight-v1",
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "preflight",
+    "blocked",
+    "remote-path"
+  ]
+}

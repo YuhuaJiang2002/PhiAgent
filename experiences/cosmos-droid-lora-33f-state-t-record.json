@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-33f-state-t-partial",
+  "recorded_at": "2026-08-12T08:00:00Z",
+  "scope": "First effective 33-frame rank-16 LoRA smoke after overlay isolation",
+  "status": "PARTIAL",
+  "summary": "Overlay isolation made the dataloader's 33-frame setting effective, but the pipeline retained state_t=24 (93 pixel frames) and rejected the shorter tensor before model training.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T194000Z-lora-attn-r16-33f-cp4-split128-smoke2",
+  "evidence": [
+    "The active dataset returned 33 frames and the pipeline temporal normalization requested its default 93 frames.",
+    "All ranks failed with numpy ValueError high <= 0 in temporal_sample before a training forward pass.",
+    "No checkpoint exists."
+  ],
+  "lessons": [
+    "For the Cosmos tokenizer's fourfold temporal compression, 33 pixel frames require state_t=9; 49, 65, and 93 require 13, 17, and 24 respectively."
+  ],
+  "limitations": [
+    "This attempt contains no optimizer-step evidence."
+  ],
+  "next_actions": [
+    "Set state_t from the selected pixel-frame window, archive the previous active runtime overlay, and rerun."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "state-t",
+    "33-frames",
+    "partial"
+  ],
+  "supersedes": []
+}

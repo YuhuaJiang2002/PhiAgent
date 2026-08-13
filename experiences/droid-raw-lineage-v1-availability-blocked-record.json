@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-raw-lineage-v1-availability-blocked",
+  "recorded_at": "2026-08-12T13:38:00Z",
+  "status": "BLOCKED",
+  "scope": "Raw DROID calibration-file download for lineage-verified episodes 21, 60, and 77",
+  "summary": "The first batch stopped before downloading because its strict assumption that every lineage prefix contains one trajectory, one metadata JSON, and three SVO files failed for episode 60.",
+  "evidence": [
+    "Official GCS listings contain the complete expected 12-object episode trees for episodes 21 and 77.",
+    "The lineage-verified episode-60 prefix returned zero public GCS objects.",
+    "The AUTOLab public raw bucket date inventory omits 2023-07-31 entirely."
+  ],
+  "lessons": [
+    "Structured NFS lineage does not imply that the corresponding raw episode was included in the public DROID bucket.",
+    "Batch download must report per-episode public availability without silently dropping unavailable episodes."
+  ],
+  "limitations": [
+    "No files were downloaded by this failed attempt."
+  ],
+  "next_actions": [
+    "Download complete available episodes while recording episode 60 as an explicit blocker."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-raw-lineage/20260812T134500Z-heldout21-60-77-v1",
+  "supersedes": [],
+  "tags": ["droid", "real-world", "raw-data", "availability", "blocked"]
+}

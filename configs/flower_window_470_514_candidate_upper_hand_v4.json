@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0", "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1], "global_source_frame_offset": 470,
+  "instances": [{
+    "instance_id": "robot-hand-upper-bouquet-01", "object_id": 101,
+    "anchor_source_frame": 22, "box_xyxy": [505, 300, 565, 360],
+    "positive_points_xy": [[538, 330], [548, 341], [526, 322]],
+    "negative_points_xy": [[490, 330], [578, 365], [550, 290], [520, 365]],
+    "minimum_area_pixels": 50, "maximum_area_pixels": 8000,
+    "role": "partially occluded black bouquet gripper with endpoint re-identification",
+    "correction_prompts": [
+      {"anchor_source_frame": 0, "box_xyxy": [492, 300, 545, 352], "positive_points_xy": [[512, 325], [525, 335], [503, 342]], "negative_points_xy": [[475, 320], [548, 363], [535, 292], [490, 360]]},
+      {"anchor_source_frame": 44, "box_xyxy": [500, 278, 568, 335], "positive_points_xy": [[528, 302], [543, 310], [518, 319]], "negative_points_xy": [[500, 250], [486, 304], [570, 290], [532, 342]]}
+    ]
+  }],
+  "notes": "V4 uses the magnified local-22 crop to target only the thin black fingers behind the bouquet, plus same-endpoint corrections at the two overlap anchors."
+}

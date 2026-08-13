@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.embodiment-wan-case1-seed42-partial",
+  "recorded_at": "2026-08-12T04:45:00Z",
+  "status": "PARTIAL",
+  "scope": "Raw Wan-Animate-2 distilled Hand2Dex case-1 baseline",
+  "summary": "The pinned raw baseline preserves motion and target appearance but fails object and temporal gates, so it is rejected for embodiment-transfer acceptance.",
+  "evidence": [
+    "The two-A800, 81-frame, 10-step, guidance-1.0 distilled run completed with a hashed raw result.",
+    "Frozen local evaluator scores were motion 0.807974, target identity 0.992787, object consistency 0.211167, and temporal consistency 0.314752.",
+    "The 0.75 object and temporal gates failed; no postprocessing result is substituted into the raw-model row."
+  ],
+  "lessons": [
+    "High target identity and source-motion similarity do not imply object-preserving, temporally coherent embodiment transfer.",
+    "The complete all-gates pass rate must remain the primary endpoint."
+  ],
+  "limitations": [
+    "This is one public case and one seed.",
+    "Proxy metrics do not validate 3-D contact, force, or physical execution."
+  ],
+  "next_actions": [
+    "Finish the other two frozen seed-42 cases; stop the three-seed expansion if the complete case-level smoke remains 0/3."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/embodiment-sota-smoke/20260812T043729Z-hand2dex-wan-animate2-v1/evaluations/case1-seed42",
+  "supersedes": [],
+  "tags": ["embodiment", "wan-animate2", "hand2dex", "partial", "negative-result"]
+}

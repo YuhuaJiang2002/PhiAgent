@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-r16-overlay-preflight-partial",
+  "recorded_at": "2026-08-12T07:38:00Z",
+  "scope": "Attention-only rank-16 LoRA smoke preflight",
+  "status": "PARTIAL",
+  "summary": "The first rank-16 launch stopped before GPU work because the safety check correctly refused to overwrite the previously installed rank-32 attention overlay with different content.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T183000Z-lora-attn-r16-cp4-smoke2",
+  "evidence": [
+    "The launcher raised FileExistsError on the differing managed overlay before torchrun started.",
+    "No model was loaded, no GPU work ran, and no checkpoint exists."
+  ],
+  "lessons": [
+    "Version third-party overlay filenames when their registered experiment implementation changes instead of overwriting earlier reproducibility artifacts."
+  ],
+  "limitations": [
+    "This attempt did not start training."
+  ],
+  "next_actions": [
+    "Install the rank-parameterized overlay under a new filename and rerun in another experiment directory."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "lora",
+    "overlay",
+    "preflight",
+    "partial"
+  ],
+  "supersedes": []
+}

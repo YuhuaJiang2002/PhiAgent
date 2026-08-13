@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-10.minimax-h3-action-control-compile-v2",
+  "recorded_at": "2026-08-10T16:40:00+08:00",
+  "status": "WORKING",
+  "scope": "deterministic action-control video compilation",
+  "summary": "Three explicit 124-frame arm-control videos were compiled at 1280x720 from language-specific camera-pixel trajectories and the reviewed high-quality robot anchor.",
+  "evidence": [
+    "outputs/minimax-h3-action-controls/20260810T134000Z-explicit-trajectories-v2/manifest.json records three decoded outputs and explicit left/right wrist coordinates for every frame.",
+    "The minimum pairwise two-wrist trajectory RMS separation is 81.1222 camera pixels, above the 40-pixel gate.",
+    "Contact sheets visibly separate insertion, chest-level handover, and eye-level inspection trajectories."
+  ],
+  "lessons": [
+    "Explicit per-frame trajectories make the intended action contrast inspectable before expensive H3 inference.",
+    "Intermediate controls must be visibly labelled and kept separate from final generated results."
+  ],
+  "limitations": [
+    "The controls use rigid 2D arm pieces and are not final model outputs, physical trajectories, or contact simulation."
+  ],
+  "next_actions": [],
+  "run_dir": "outputs/minimax-h3-action-controls/20260810T134000Z-explicit-trajectories-v2",
+  "supersedes": [
+    "2026-08-10.minimax-h3-action-control-compile-v1"
+  ],
+  "tags": [
+    "action-control",
+    "trajectory",
+    "control-video",
+    "camera-frame",
+    "working-intermediate"
+  ]
+}

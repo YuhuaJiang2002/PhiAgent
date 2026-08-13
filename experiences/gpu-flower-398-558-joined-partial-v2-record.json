@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-398-558-joined-partial-v2",
+  "recorded_at": "2026-08-11T16:45:00Z",
+  "scope": "Continuous 161-frame preview joining accepted 398-484, 485-524, and 514-558 flower windows",
+  "status": "PARTIAL",
+  "summary": "A continuous 398-558 preview was generated with bounded overlap fades, but its final 485-524 subwindow fails bouquet-hand IoU plus aligned motion/temporal and is therefore held from WORKING delivery.",
+  "run_dir": "outputs/gpu-flower-398-558-strict-expansion/20260811T160500Z-v2-prefix484",
+  "tags": ["full-film-expansion", "stitch", "temporal-jump", "sam2", "strict-gate", "partial"],
+  "evidence": [
+    "The compatibility preview has SHA-256 a59c58cd7ea909b952e1b26f7631a478f021aa212b2339c9f042b99027d0be91 and covers global frames 398-558 at 24 FPS.",
+    "The prefix-to-fade transition MAE is 1.853875, the left-to-right cut MAE is 0.664368, and the full transition p90 is 1.215124.",
+    "The joined 485-524 subwindow scores identity 0.977947, motion 0.815209, and temporal 0.731371; motion and temporal remain below 0.82/0.75.",
+    "Its bouquet-hand adjacent IoU is 0.867120 below 0.88, so the fail-closed repair eligibility rule correctly refuses temporal repair.",
+    "A dense-correction endpoint attempt reached only IoU 0.845182 and a single-endpoint attempt 0.855794; neither was promoted.",
+    "The joined 514-558 subwindow retains aligned identity 0.976050, motion 0.823919, and temporal 0.922662, but the overall delivery remains PARTIAL because both final subwindows must pass."
+  ],
+  "lessons": [
+    "Low pixel seam MAE is insufficient when overlapping candidates use different instance granularity for the same physical hand.",
+    "Crossfading can improve a visible seam while reducing motion and temporal proxies below the strict contract.",
+    "Accepted subwindows must not be relabeled as an accepted joined film without independent post-stitch tracking."
+  ],
+  "limitations": [
+    "The preview is useful for visual comparison but is not a WORKING full-film artifact.",
+    "Frames beyond global 558 remain not started under this strict expansion campaign."
+  ],
+  "next_actions": ["Regenerate a transition window anchored on the 398-486 terminal hand endpoints and seed-44 485-524 initial endpoints, then rerun both final subwindow gates."],
+  "supersedes": []
+}

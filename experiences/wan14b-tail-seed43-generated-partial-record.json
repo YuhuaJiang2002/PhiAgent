@@ -1,0 +1,27 @@
+{
+  "record_id": "2026-08-12.wan14b-tail-seed43-generated-partial",
+  "recorded_at": "2026-08-12T14:05:00Z",
+  "status": "PARTIAL",
+  "scope": "Official Wan2.2-Animate-14B seed-43 generation for global frames 571-659",
+  "summary": "Uncompressed reference transport removed the libpng failure and produced an 88-frame official raw tail plus a verified 89-frame/24-FPS retime; full-frame and every-frame hand crops look substantially more coherent, but this window alone is not a complete-demo promotion.",
+  "evidence": [
+    "The pinned official generator completed 20/20 denoising steps and wrote a 896x496, 30-FPS, 88-frame candidate.",
+    "Backend metadata spans 2026-08-12T13:52:54.640965Z to 2026-08-12T14:01:26.168630Z, or 511.528 seconds.",
+    "The uncompressed PPM transport and upstream src_ref.png both identify as 1280x720 Netpbm P6, and their hashes are persisted.",
+    "The retimed artifact passes its exact 89-frame, 24-FPS timeline contract."
+  ],
+  "lessons": [
+    "A full foundation model is useful as a bounded high-risk-window repairer even when it is too slow for the entire long video.",
+    "Generation speed and visual promotion must be reported separately."
+  ],
+  "limitations": [
+    "Generic proxy evaluation rejected the raw window; high-resolution review, object locks, and long-video stitching remain separate gates.",
+    "The window is perceptual synthetic data and supplies no physical force or depth evidence."
+  ],
+  "next_actions": [
+    "Generate the overlapping 542-630 bridge and route both official windows over the source-locked long-video incumbent."
+  ],
+  "run_dir": "outputs/wan-perceptual-vfm-tail/20260812T140000Z-wan14b-tail-v3-seed43",
+  "supersedes": ["2026-08-12.wan14b-tail-launch-v1-v2-failure"],
+  "tags": ["wan2.2", "foundation-model", "tail-window", "ppm-transport", "partial"]
+}

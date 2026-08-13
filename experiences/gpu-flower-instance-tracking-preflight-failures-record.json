@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-instance-tracking-preflight-failures",
+  "recorded_at": "2026-08-11T10:25:00Z",
+  "scope": "A800 preflight attempts for full-film named-flower and robot-hand instance tracking",
+  "status": "PARTIAL",
+  "summary": "Several bounded launch attempts failed before useful tracking work; every failed path was preserved and corrected with a new output directory rather than overwritten.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/gpu-flower-full-instance-supervision/20260811T094200Z-windows254-398-v1",
+  "evidence": [
+    "The first transfer attempted to target a missing remote parent and wrote no valid experiment.",
+    "The first SAM2 launch named a nonexistent standalone checkpoint path and failed with FileNotFoundError; the verified checkpoint is checkpoints/Wan2.2-Animate-14B/process_checkpoint/sam2/sam2_hiera_large.pt.",
+    "Two shell-background/log-directory attempts failed before GPU inference because their output/log paths were constructed incorrectly.",
+    "candidate-hand-tracks-0254-v3 failed before GPU inference because the launcher pre-created the experiment directory and the tracker correctly refused to overwrite it; the retry uses candidate-hand-tracks-0254-v4."
+  ],
+  "lessons": [
+    "Tracker output directories must not exist before launch; controller logs belong in a sibling log directory.",
+    "Checkpoint existence and destination-parent creation are mandatory preflight checks before allocating a GPU."
+  ],
+  "limitations": [
+    "These failed launches contain no tracking-quality evidence and do not supersede any successful or partial track result."
+  ],
+  "next_actions": [
+    "Keep using unique experiment directories, the verified bundled SAM2 checkpoint, physical-GPU validation, and sibling controller logs."
+  ],
+  "supersedes": [],
+  "tags": [
+    "gpu",
+    "sam2",
+    "preflight",
+    "negative-result",
+    "reproducibility",
+    "partial"
+  ]
+}

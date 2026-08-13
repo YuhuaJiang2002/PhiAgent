@@ -1,0 +1,36 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-heldout-v2-partial",
+  "recorded_at": "2026-08-12T21:20:00Z",
+  "status": "PARTIAL",
+  "scope": "Strict-lineage held-out VACE comparison with human semantic veto",
+  "summary": "Narrow contact proxies improve, but absolute visual recovery is extremely low and human review rejects the adapter; no remaining window is run.",
+  "evidence": [
+    "The evaluator verifies the validation record, frozen manifest assets, target/control/reference/trajectory hashes, both completed inference metadata files, model file hashes, prompt, seed, Git state, and adapter SHA.",
+    "Adapted-minus-zero contact ROI is +0.0006081 and contact motion is +0.0039676; proxy gates pass.",
+    "Absolute adapted contact/global similarities are only 0.058981/0.007765, and adapted global similarity is slightly below zero-shot 0.007811.",
+    "Human review rejects target flower identity, target background recovery, auditable hand-stem appearance, and visual superiority: both generated rows show a green rounded mass, dark field, and colored band.",
+    "human-review.json SHA-256 is 7c58de17672ff59eb8cbd2a6c328f0ad63819b99a91c6468acfe6a3dfebd65ad."
+  ],
+  "lessons": [
+    "Matched lineage and positive local proxies cannot override extremely low absolute quality or a semantic visual veto."
+  ],
+  "limitations": [
+    "Only the first unseen contact window runs under the fail-fast policy.",
+    "The result remains synthetic and does not improve the real Pexels replacement."
+  ],
+  "next_actions": [
+    "Reject this adapter and require stronger multi-scene or paired real/sim appearance supervision before further generation."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T212000Z-metric-vace-heldout-clip001-eval-v2",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-heldout-v1-partial",
+    "2026-08-12.metric-flower-vace-smoke-train-v6-working"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "strict-lineage",
+    "human-veto",
+    "partial"
+  ]
+}

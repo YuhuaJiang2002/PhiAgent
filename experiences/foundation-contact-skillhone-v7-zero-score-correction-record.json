@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-skillhone-v7-zero-score-correction",
+  "recorded_at": "2026-08-12T12:45:00Z",
+  "scope": "Correction to the first SkillHone exact-asset adversarial refresh conclusion",
+  "status": "PARTIAL",
+  "summary": "The old-harness job had not terminated when it was first inspected; it later wrote a complete score file with 0/7 passes, seven errors, and seven missing answers rather than no score file.",
+  "run_dir": "outputs/foundation-contact/20260812T123000Z-skillhone-exact-asset-adversarial-v7",
+  "evidence": [
+    "The eventual score.json records n_items=7, n_passed=0, n_errors=7, n_no_answer=7, and score=0.0.",
+    "Every retained trace reports no_answer_produced because the Claude-Agent/Ollama bridge never wrote answer.txt.",
+    "The provider-aware rerun is a separate experiment and remains 7/7 strict."
+  ],
+  "lessons": [
+    "A yielded command session can outlive an early directory inspection; terminal score artifacts must be checked again before concluding that they do not exist.",
+    "Zero answers from a harness mismatch measure infrastructure failure, not the skill's physical reasoning quality."
+  ],
+  "limitations": [
+    "The score's reported average duration includes semaphore queue time and is not an independent per-item latency measurement."
+  ],
+  "next_actions": [
+    "Use the provider-aware run for skill comparison and retain this 0/7 result only as a harness regression case."
+  ],
+  "supersedes": ["2026-08-12.foundation-contact-skillhone-v7-infra-failures"],
+  "tags": ["foundation-contact", "skillhone", "correction", "infrastructure", "partial"]
+}

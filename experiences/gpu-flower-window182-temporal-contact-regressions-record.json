@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window182-temporal-contact-regressions-v1-v3",
+  "recorded_at": "2026-08-11T09:15:00Z",
+  "scope": "Three bounded temporal-repair attempts on the geometry-approved frames 182-270 window",
+  "status": "PARTIAL",
+  "summary": "Temporal repair raised the proxy above 0.75, but independent post-repair SAM2 tracking exposed contact and geometry regressions in the first three variants. None was promoted, and thresholds were not lowered.",
+  "run_dir": "outputs/gpu-flower-instance-supervision/20260811T080000Z-window182-270-face-suppressed-v1",
+  "evidence": [
+    "strict-object-gate-v3 rejects the strong encoded variant at 36/39 for lower-hand centroid step, lime adjacent-area ratio, and lower-hand-to-lime p90 contact distance.",
+    "strict-object-gate-v4 rejects the balanced encoded variant at 36/39 for lime adjacent-area ratio and lower-hand-to-lime maximum and p90 contact distances.",
+    "Remote lossless regeneration in strict-object-gate-v5 reaches 38/39 with motion 0.841135, identity 0.979982, and temporal consistency 0.781989, but lower-hand-to-lime p90 distance is 9.510 pixels against the unchanged 8-pixel gate.",
+    "The trained FlowerRepairPolicy ranks local EPL crossfade/flow repairs over global smoothing, but final promotion is controlled by re-tracked object/contact gates rather than the proxy ranking."
+  ],
+  "lessons": [
+    "Passing an aggregate temporal metric is insufficient: even source-local pixel repair can move a thin stem/contact boundary enough to violate strict interaction geometry.",
+    "Post-repair flower and hand tracks must be recomputed; carrying forward pre-repair masks would hide the regression."
+  ],
+  "limitations": [
+    "These three variants are rejected and must not be used in the full film.",
+    "The repair remains an image-space temporal correction, not a learned 3-D dynamics model."
+  ],
+  "next_actions": [
+    "Increase the exact contact-protection band and rerun the least destructive policy rounds, then independently re-track and re-evaluate all gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "gpu",
+    "temporal-repair",
+    "flower-repair-policy",
+    "contact-regression",
+    "strict-gate",
+    "negative-result",
+    "partial"
+  ]
+}

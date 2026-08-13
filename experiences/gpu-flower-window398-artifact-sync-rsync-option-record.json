@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window398-artifact-sync-rsync-option",
+  "recorded_at": "2026-08-11T13:35:00Z",
+  "scope": "Sync accepted window-398 video and gate evidence from a800-2",
+  "status": "PARTIAL",
+  "summary": "The first sync used an unsupported rsync progress option on macOS; a portable retry completed and verified the candidate hash.",
+  "run_dir": "outputs/gpu-flower-window398-joined/20260811T114500Z-v1",
+  "tags": ["artifact-sync", "rsync", "corrected", "partial"],
+  "evidence": [
+    "The local rsync rejected --info=progress2 before transferring the video.",
+    "The retry used --progress, transferred the 16 MB candidate, and local SHA-256 equals b53956ff0bf7d62fee7691d1489a06dc5ee599290b7e36c154c3048ce87ad6e6.",
+    "Both strict gate reports, manifests, contact-pair files, and review storyboards are present locally."
+  ],
+  "lessons": ["Use rsync --progress rather than newer --info syntax on the bundled macOS rsync."],
+  "limitations": ["The failed invocation transferred no candidate video."],
+  "next_actions": ["Use the verified local artifact for review and delivery."],
+  "supersedes": []
+}

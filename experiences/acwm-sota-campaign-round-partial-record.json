@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-campaign-round-partial",
+  "recorded_at": "2026-08-11T10:07:00Z",
+  "status": "PARTIAL",
+  "scope": "Agentic latest-paper AC-WM SOTA and real-robot-demo request",
+  "summary": "The round produced a reproducible data/training/evaluation framework and a structurally verified BWM action-adapter smoke checkpoint, but did not establish SOTA or execute a physical-robot demo.",
+  "evidence": [
+    "Sixteen focused CPU tests, targeted Ruff, both campaign JSON validations, and the experience ledger validation pass.",
+    "A real RoboTwin Parquet smoke and the released BWM demo both load as 57-frame video with 14D robot-base actions.",
+    "The pinned official BWM/Wan runtime completed one GPU optimization step and saved a finite action-encoder-only artifact.",
+    "The promotion code fails closed until paired results beat every declared baseline on WorldArena, cross-embodiment, and at least 20 real-robot trials."
+  ],
+  "lessons": [
+    "Agentic iteration is useful for exposing and correcting integration failures, but it cannot replace balanced training, frozen comparisons, or physical evidence.",
+    "Recent AC-WM research supports action alignment, embodiment holdouts, memory ablations, and causal metrics; it does not justify an unevaluated SOTA claim."
+  ],
+  "limitations": [
+    "No balanced multi-embodiment training campaign or matched-seed baseline suite was run.",
+    "WorldArena, cross-embodiment, and real-robot promotion inputs remain absent.",
+    "No controllable physical robot, calibrated camera, operator approval, synchronized telemetry, safety log, or blind outcome review was available."
+  ],
+  "next_actions": [
+    "Reserve uncontended GPUs and run the frozen balanced campaign against public BWM, Ctrl-World, OSCAR, Kinema4D, and required ablations.",
+    "Obtain hardware and operator access, then execute prediction-before-action physical trials under configs/acwm/real_robot_demo_protocol.json."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0",
+  "supersedes": [],
+  "tags": ["acwm", "sota", "agentic", "real-robot", "claim-boundary", "partial"]
+}

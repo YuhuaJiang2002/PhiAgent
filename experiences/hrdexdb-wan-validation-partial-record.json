@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.hrdexdb-wan-validation-partial",
+  "recorded_at": "2026-08-12T10:14:13Z",
+  "status": "PARTIAL",
+  "scope": "Object-disjoint HRDexDB Wan-Animate-2 raw validation baseline",
+  "summary": "Using an apple train-object Inspire F1 reference, raw Wan-Animate-2 fails both validation objects; only target identity remains high, so held-out test objects stay sealed.",
+  "evidence": [
+    "Banana validation scores are motion 0.397773, identity 0.969381, object 0.003866, and temporal 0.116649.",
+    "Beige-brush core scores are motion 0.373124, identity 0.979186, and temporal 0.024394; the low-chroma object tracker is unresolved, so the object gate remains failed rather than fabricated.",
+    "Both runs use seed 42, the same train-object reference image, 81 frames, 10 distilled steps, guidance 1.0, and physical A800 GPUs 2-3.",
+    "Paired validation robot videos are used only as evaluator references and never generation inputs."
+  ],
+  "lessons": [
+    "The strong Hand2Dex identity result does not generalize to object-disjoint motion, object interaction, or temporal consistency.",
+    "A low-chroma object must use geometry/segmentation evidence; color-tracker failure is an unresolved hard gate."
+  ],
+  "limitations": [
+    "Only two validation objects and one seed were evaluated.",
+    "The current raw method is rejected before test-set confirmation."
+  ],
+  "next_actions": [
+    "Develop object-pose/mesh-projected masks and robot-geometry conditioning on train/validation objects; do not open box_pink or cactus for the unchanged raw method."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/hrdexdb-wan-evaluation",
+  "supersedes": ["2026-08-12.embodiment-wan-hand2dex-seed42-final-partial"],
+  "tags": ["hrdexdb", "wan-animate2", "validation", "object-disjoint", "partial"]
+}

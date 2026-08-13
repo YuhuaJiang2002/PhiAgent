@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r1-r2-epoch0-dinov2-tournament",
+  "recorded_at": "2026-08-10T22:17:00Z",
+  "scope": "Matched held-out tournament of rank-16 H3 topology-LoRA epoch-0 checkpoints and a deployment-scale ablation",
+  "status": "PARTIAL",
+  "summary": "Both rank-16 adapters remove the baseline head-to-torso and stable-proportion failure categories on the 124-frame demo, but neither repairs the raised-arm shoulder origin and both regress frozen worst-frame identity and motion, so no checkpoint is promoted.",
+  "run_dir": "outputs/h3-identity-rsi/20260810T215900Z-r2-epoch0-inspect-flower-eval",
+  "evidence": [
+    "The unchanged backbone fails left-shoulder attachment in 100 frames, stable proportions in 100 frames, and the head-to-torso chain in 82 frames; only 24/124 frames pass the full topology conjunction.",
+    "r1 epoch-0 and r2 epoch-0 retain only the 100 left-shoulder failures: the 82 head-to-torso failures and 100 stable-proportion failures are absent in digest-bound full-frame review, although the total fully passing frames remain 24/124.",
+    "r1 epoch-0 worst-frame DINOv2 identity is 0.7890441418 versus 0.8833816648 for baseline, and matched motion adherence is 0.9083083743; it is rejected.",
+    "r2 epoch-0 worst-frame DINOv2 identity is 0.8658662438 and matched motion adherence is 0.9685012815; it is the least-regressing structural candidate but still fails the 0.01 identity-gain and motion non-regression contract.",
+    "The r2 scale-0.5 ablation recovers worst-frame identity to 0.8800596893 but motion remains 0.9546766267 and all three baseline topology failure categories return, so scale reduction does not preserve the structural gain.",
+    "Scene preservation and temporal consistency pass their non-regression gates for all three measured candidates."
+  ],
+  "lessons": [
+    "The topology-positive curriculum can selectively stabilize a robot torso and head chain, demonstrating a measurable native backbone adaptation effect rather than a post-process.",
+    "The remaining shoulder-origin error is not solved by more generic topology repetition or lower LoRA strength; the next dataset revision must supervise unique shoulder attachment more directly.",
+    "LoRA scale is a real capability tradeoff: weakening the adapter restores appearance identity but also removes the structural improvement."
+  ],
+  "limitations": [
+    "All candidates use third-party NF4 MiniMax-H3 weights and one held-out 124-frame real-scene action.",
+    "The structural improvement is partial: fully passing topology frames remain 24/124, and no candidate passes the release contract.",
+    "The full-frame labels are 2-D semantic review bound to video digests, not 3-D kinematic evidence or real-robot execution.",
+    "Epoch-1 checkpoints were not used to claim an improvement because epoch-0 already exposed identity and motion regression."
+  ],
+  "next_actions": [
+    "Revise the training set with camera-matched raised-arm examples, explicit shoulder-origin crops, and hard negatives for arms emerging from the neck or head.",
+    "Add at least three held-out identities, scenes, and actions before any release claim, and retain the current demo as a frozen regression case.",
+    "Evaluate the official BF16 H3 base separately before publishing an adapter intended for broad use."
+  ],
+  "supersedes": [],
+  "tags": [
+    "h3",
+    "rsi",
+    "topology",
+    "lora",
+    "dinov2",
+    "matched-ablation",
+    "partial-improvement",
+    "rejected"
+  ]
+}

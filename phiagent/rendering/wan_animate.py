@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import fcntl
+import hashlib
 import json
 import os
 import platform
@@ -92,6 +93,7 @@ class WanAnimateConfig:
     retarget: bool = True
     use_flux: bool = False
     use_relighting_lora: bool = True
+    suppress_source_face_control: bool = False
     offload_model: bool = True
     t5_cpu: bool = False
     object_roi: tuple[float, float, float, float] | None = None
@@ -111,6 +113,8 @@ class WanAnimateConfig:
             raise ValueError("mode must be animation or replacement")
         if self.mode == "replacement" and (self.retarget or self.use_flux):
             raise ValueError("replacement mode does not support pose retargeting or FLUX")
+        if self.suppress_source_face_control and self.mode != "replacement":
+            raise ValueError("source-face suppression is only supported in replacement mode")
         if self.mode == "replacement" and self.object_roi is None:
             raise ValueError("replacement mode requires an object ROI for mask auditing")
         if self.object_roi is not None:
@@ -281,6 +285,14 @@ def _assert_files(paths: Iterable[Path], category: str) -> None:
         raise PreflightError(f"missing or empty {category}: " + ", ".join(missing))
 
 
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def _assert_sharded_onnx(directory: Path) -> None:
     """Validate the upstream external-data ONNX directory layout."""
 
@@ -412,6 +424,11 @@ class WanAnimateRenderer:
         if physical_gpu_index is not None:
             environment["CUDA_VISIBLE_DEVICES"] = str(physical_gpu_index)
         environment["PYTHONHASHSEED"] = str(seed)
+        existing_pythonpath = environment.get("PYTHONPATH")
+        environment["PYTHONPATH"] = os.pathsep.join(
+            [str(self.sam2_repo)]
+            + ([existing_pythonpath] if existing_pythonpath else [])
+        )
         nvidia_library_dirs = sorted(
             self.config.python_executable.parent.parent.glob(
                 "lib/python*/site-packages/nvidia/*/lib"
@@ -634,6 +651,66 @@ class WanAnimateRenderer:
             command.append("--t5_cpu")
         return command
 
+    @staticmethod
+    def build_face_suppression_command(
+        ffmpeg: Path, source_face: Path, suppressed_face: Path
+    ) -> list[str]:
+        """Build a deterministic all-black face-control rewrite.
+
+        Wan preprocessing writes a crop of the source human face to
+        ``src_face.mp4``.  A closed-panel robot must not receive that identity
+        signal, but pose and replacement-mask controls remain untouched.
+        """
+
+        return [
+            str(ffmpeg),
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-y",
+            "-i",
+            str(source_face),
+            "-vf",
+            "drawbox=x=0:y=0:w=iw:h=ih:color=black:t=fill",
+            "-an",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "medium",
+            "-crf",
+            "0",
+            "-pix_fmt",
+            "yuv420p",
+            str(suppressed_face),
+        ]
+
+    @staticmethod
+    def build_reference_transport_command(
+        ffmpeg: Path, source: Path, output: Path
+    ) -> list[str]:
+        """Encode a reference frame without PNG/zlib before upstream copies it.
+
+        Wan2.2 copies the reference bytes verbatim to a path named
+        ``src_ref.png``. OpenCV identifies the image by magic bytes, so an
+        uncompressed PPM payload remains readable at that upstream path and
+        avoids intermittent libpng decoder failures without changing pixels.
+        """
+
+        return [
+            str(ffmpeg),
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-y",
+            "-i",
+            str(source),
+            "-frames:v",
+            "1",
+            "-c:v",
+            "ppm",
+            str(output),
+        ]
+
     def _new_experiment_dir(self, root: Path) -> Path:
         root.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -705,10 +782,20 @@ class WanAnimateRenderer:
         preprocess_dir = experiment / "preprocess"
         generated_output = experiment / "wan_output.mp4"
         preserved_output = experiment / "object_preserved_output.mp4"
+        reference_transport = experiment / "robot_reference_transport.ppm"
         preprocess_dir.mkdir()
         metadata_path = experiment / "metadata.json"
 
-        preprocess_command = self.build_preprocess_command(video, image, preprocess_dir)
+        ffmpeg_executable = shutil.which("ffmpeg")
+        if ffmpeg_executable is None:
+            raise PreflightError("ffmpeg is required for reference-image transport")
+        ffmpeg_path = Path(ffmpeg_executable).resolve()
+        reference_transport_command = self.build_reference_transport_command(
+            ffmpeg_path, image, reference_transport
+        )
+        preprocess_command = self.build_preprocess_command(
+            video, reference_transport, preprocess_dir
+        )
         generate_command = self.build_generate_command(
             preprocess_dir, generated_output, request.prompt, request.seed
         )
@@ -718,7 +805,11 @@ class WanAnimateRenderer:
             "request": asdict(request),
             "renderer_config": asdict(self.config),
             "preflight": preflight,
-            "commands": {"preprocess": preprocess_command, "generate": generate_command},
+            "commands": {
+                "reference_transport": reference_transport_command,
+                "preprocess": preprocess_command,
+                "generate": generate_command,
+            },
             "provenance": self._project_provenance(),
             "limitations": [
                 "Wan2.2-Animate does not enforce robot kinematics, finger contacts, or physics.",
@@ -747,6 +838,22 @@ class WanAnimateRenderer:
             metadata["gpu_lease"] = str(lease_path)
             _write_json(metadata_path, metadata)
             self._execute(
+                reference_transport_command,
+                self.config.wan_repo,
+                experiment / "reference_transport.log",
+                environment,
+            )
+            _assert_files([reference_transport], "reference-image transport")
+            metadata["reference_transport"] = {
+                "format": "PPM P6 (uncompressed RGB)",
+                "reason": "avoid upstream src_ref.png libpng/zlib decoder failures",
+                "source": str(image),
+                "source_sha256": _sha256_file(image),
+                "transport": str(reference_transport),
+                "transport_sha256": _sha256_file(reference_transport),
+            }
+            _write_json(metadata_path, metadata)
+            self._execute(
                 preprocess_command,
                 self.config.wan_repo,
                 experiment / "preprocess.log",
@@ -761,6 +868,36 @@ class WanAnimateRenderer:
                     [preprocess_dir / "src_bg.mp4", preprocess_dir / "src_mask.mp4"]
                 )
             _assert_files(preprocessing_outputs, "Wan preprocessing outputs")
+            if self.config.suppress_source_face_control:
+                face_control = preprocess_dir / "src_face.mp4"
+                original_face_control = preprocess_dir / "src_face.source-human.mp4"
+                suppressed_face_control = preprocess_dir / "src_face.suppressed.mp4"
+                shutil.move(face_control, original_face_control)
+                suppression_command = self.build_face_suppression_command(
+                    ffmpeg_path, original_face_control, suppressed_face_control
+                )
+                self._execute(
+                    suppression_command,
+                    self.config.wan_repo,
+                    experiment / "face_control_suppression.log",
+                    environment,
+                )
+                if _probe_video_frame_count(original_face_control) != _probe_video_frame_count(
+                    suppressed_face_control
+                ):
+                    raise RuntimeError("face-control suppression changed the frame count")
+                shutil.move(suppressed_face_control, face_control)
+                metadata["source_face_control_suppression"] = {
+                    "enabled": True,
+                    "command": suppression_command,
+                    "source_human_face_control": str(original_face_control),
+                    "source_human_face_control_sha256": _sha256_file(original_face_control),
+                    "suppressed_face_control": str(face_control),
+                    "suppressed_face_control_sha256": _sha256_file(face_control),
+                    "frame_count": _probe_video_frame_count(face_control),
+                    "scope": "face control only; pose, replacement mask, flowers, and background are unchanged",
+                }
+                _write_json(metadata_path, metadata)
             self._execute(
                 generate_command,
                 self.config.wan_repo,
@@ -770,11 +907,7 @@ class WanAnimateRenderer:
             _assert_files([generated_output], "Wan output")
             delivered_output = generated_output
             if self.config.mode == "replacement":
-                ffmpeg = shutil.which("ffmpeg")
-                if ffmpeg is None:
-                    raise PreflightError("ffmpeg is required for object-mask auditing")
                 assert self.config.object_roi is not None
-                ffmpeg_path = Path(ffmpeg).resolve()
                 frame_count = _probe_video_frame_count(generated_output)
                 tracker_config = ObjectTrackerConfig(
                     initial_roi=NormalizedROI(*self.config.object_roi)

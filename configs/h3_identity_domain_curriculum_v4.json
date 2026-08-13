@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0.0",
+  "name": "h3-identity-domain-curriculum-v4b",
+  "seed": 20260811,
+  "fps": 24,
+  "width": 448,
+  "height": 256,
+  "num_frames": 39,
+  "source_manifest": "outputs/h3-identity-domain-sources/20260811T031200Z-pexels-domain-v4/manifest.json",
+  "background_policy": "reviewed-human-free-roi-resized-and-softened",
+  "actions": [
+    "left-raised-near-head",
+    "right-raised-near-head",
+    "cross-body",
+    "bilateral-reach"
+  ],
+  "scenes": [
+    {
+      "source_id": "pexels-3805775",
+      "scene_id": "flower-table-green",
+      "subject_id": "robot-amber-r4",
+      "split": "train",
+      "source_time_seconds": 2.0,
+      "human_free_roi_normalized": [0.87, 0.0, 1.0, 0.36],
+      "palette_bgr": [[42, 154, 235], [28, 67, 104], [188, 231, 255]],
+      "emblem": "A"
+    },
+    {
+      "source_id": "pexels-5399641",
+      "scene_id": "flower-shop-glass",
+      "subject_id": "robot-cobalt-r4",
+      "split": "train",
+      "source_time_seconds": 2.0,
+      "human_free_roi_normalized": [0.80, 0.0, 1.0, 0.62],
+      "palette_bgr": [[205, 104, 35], [102, 44, 17], [255, 221, 166]],
+      "emblem": "C"
+    },
+    {
+      "source_id": "pexels-4253728",
+      "scene_id": "steel-kitchen-counter",
+      "subject_id": "robot-graphite-r4",
+      "split": "train",
+      "source_time_seconds": 2.0,
+      "human_free_roi_normalized": [0.0, 0.38, 0.42, 1.0],
+      "palette_bgr": [[92, 99, 111], [34, 38, 45], [191, 238, 119]],
+      "emblem": "G"
+    },
+    {
+      "source_id": "pexels-6304745",
+      "scene_id": "cream-kitchen-board",
+      "subject_id": "robot-ivory-r4-heldout",
+      "split": "validation",
+      "source_time_seconds": 2.0,
+      "human_free_roi_normalized": [0.0, 0.42, 0.40, 1.0],
+      "palette_bgr": [[221, 228, 232], [112, 119, 124], [91, 198, 242]],
+      "emblem": "I"
+    },
+    {
+      "source_id": "pexels-8279355",
+      "scene_id": "brick-flower-workshop",
+      "subject_id": "robot-teal-r4-heldout",
+      "split": "test",
+      "source_time_seconds": 2.0,
+      "human_free_roi_normalized": [0.0, 0.0, 0.32, 1.0],
+      "palette_bgr": [[157, 151, 35], [77, 75, 17], [191, 255, 249]],
+      "emblem": "T"
+    },
+    {
+      "source_id": "pexels-4621365",
+      "scene_id": "bright-rose-studio",
+      "subject_id": "robot-violet-r4-heldout",
+      "split": "test",
+      "source_time_seconds": 2.0,
+      "human_free_roi_normalized": [0.0, 0.0, 0.28, 1.0],
+      "palette_bgr": [[177, 77, 176], [85, 35, 91], [244, 198, 255]],
+      "emblem": "V"
+    }
+  ]
+}

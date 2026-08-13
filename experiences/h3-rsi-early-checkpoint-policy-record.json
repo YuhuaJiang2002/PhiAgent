@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-rsi-early-checkpoint-policy",
+  "recorded_at": "2026-08-10T23:08:00Z",
+  "scope": "Early immutable checkpoint policy for future H3 RSI rounds",
+  "status": "PARTIAL",
+  "summary": "Future H3 RSI training now saves an immutable LoRA candidate every 30 optimizer steps so topology and capability regression can be detected before a full epoch completes.",
+  "evidence": [
+    "The pinned DiffSynth ModelLogger supports --save_steps and emits step-N.safetensors through the accelerator-safe model export path.",
+    "scripts/train_h3_identity_rsi.py validates a positive --save-steps value, defaults it to 30, forwards it to the pinned trainer, and records the checkpoint policy in the experiment manifest.",
+    "Ruff and Python bytecode compilation pass for the modified launcher."
+  ],
+  "lessons": [
+    "Checkpoint frequency is part of the safety loop: shorter intervals reduce the compute spent after a candidate has already become anatomically or behaviorally unacceptable."
+  ],
+  "limitations": [
+    "The already-running r3 job remains epoch-checkpointed because changing its arguments mid-run would invalidate reproducibility.",
+    "Saving a checkpoint does not evaluate or promote it; each step checkpoint still needs full held-out inference and review."
+  ],
+  "next_actions": [
+    "Use step-30 tournaments in the next round only if no r3 checkpoint passes the frozen contract."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "checkpoint", "early-stop", "non-regression", "partial"]
+}

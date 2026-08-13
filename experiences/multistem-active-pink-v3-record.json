@@ -1,0 +1,34 @@
+{
+  "record_id": "2026-08-13.multistem-active-pink-v3-partial",
+  "recorded_at": "2026-08-13T03:05:00Z",
+  "status": "PARTIAL",
+  "scope": "Exact material projection and observation-consistency audit of the real active stem",
+  "summary": "Exact material projection drives segment CV to numerical zero, but the required 1.5965-times-stem-length displacement rejects the old SAM2-skeleton/DA3-depth representation.",
+  "evidence": [
+    "Maximum temporal segment-length CV is 1.25884e-14.",
+    "Observation-residual p95 is 1.596501 times full material length versus the 0.10 bound.",
+    "Identity audit reports zero suspected swaps for the one available stem.",
+    "Metric binding remains false and the correct status is PARTIAL."
+  ],
+  "lessons": [
+    "The failed mask skeleton crosses flower-head or background depth and cannot be repaired by a stronger optimizer.",
+    "Persistent point identity is an input requirement, not an optimizer hyperparameter."
+  ],
+  "limitations": [
+    "Only one sparse stem is available and its observations are structurally incompatible.",
+    "No independent scale exists."
+  ],
+  "next_actions": [
+    "Replace the proposal with V-DPM and SpatialTrackerV2 point identities, retaining the same hard gates."
+  ],
+  "run_dir": "outputs/foundation-contact/20260813T030500Z-multistem-active-pink-v3",
+  "supersedes": [
+    "2026-08-13.multistem-active-pink-v2-partial"
+  ],
+  "tags": [
+    "flower",
+    "exact-rod",
+    "representation-failure",
+    "partial"
+  ]
+}

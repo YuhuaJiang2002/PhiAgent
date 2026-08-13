@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "experiment": "gpu-flower-window519-seed44-split-eval-v1",
+  "parent_global_frame_range_inclusive": [514, 558],
+  "parent_local_frame_range_half_open": [5, 45],
+  "global_frame_range_inclusive": [519, 558],
+  "frame_count": 40,
+  "fps": 24.0,
+  "coordinate_frame": "camera:source_video_pixels",
+  "object_roi_xywh_normalized": [0.44, 0.37, 0.2, 0.27],
+  "candidate_seed": 44,
+  "trim_codec": "libx264rgb-crf0-rgb24",
+  "decision_contract": {
+    "minimum_motion_preservation": 0.82,
+    "minimum_temporal_consistency": 0.75,
+    "minimum_target_identity": 0.95,
+    "minimum_dense_frames": 40
+  }
+}

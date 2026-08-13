@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r4b-domain-curriculum",
+  "recorded_at": "2026-08-11T03:53:04Z",
+  "scope": "Leakage-safe real-background topology curriculum generation and train-split compilation",
+  "status": "WORKING",
+  "summary": "The first six-domain composite was visually rejected for one residual forearm; the corrected r4b curriculum and its 12-clip training split pass the declared subject, scene, source, action, media, and topology-truth contracts.",
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/h3-identity-domain-curricula/20260811T034500Z-r4b-six-domain-topology",
+  "evidence": [
+    "The rejected r4a manifest SHA-256 is 6a9c14ac169a22a7a1c5aee792f09b780e623ae6c0cfffa3c6626939edebfd0a; its overview exposed a gray human forearm in the flower-table train background.",
+    "The corrected r4b manifest SHA-256 is fcb73a3ef2a7fbc36c23596827741b7476e598d70968de14988b31aa1b685f6c and plan SHA-256 is 0128f359d548558e6bcabf1261a8c73447b4c12577406223372dae95d34b85e2.",
+    "All ten domain gates pass: three train subjects/scenes, three held-out subjects/scenes, subject/scene/source disjointness, validation/test presence, and all required topology/action tags.",
+    "The generated plan has 24 clips with analytic per-frame joint/topology truth; the compiled train split contains 12 clips at 448x256, 24 FPS, 39 frames, and 32 kHz stereo audio.",
+    "The completed train dataset manifest SHA-256 is 31dd657193736fd78cf86af97de5d359f9d3110c329fe419f1d63c3af6e5d14b."
+  ],
+  "lessons": [
+    "Automated coverage contracts need a separate visual residual-human gate; the r4a contract passed despite an unsafe background ROI.",
+    "Treating no-human-residual as reviewed evidence rather than analytic renderer truth prevents a false provenance claim."
+  ],
+  "limitations": [
+    "The robot and joint truth are deterministic 2-D supervision, not 3-D dynamics or real-robot evidence.",
+    "The real-scene backgrounds are softened ROI crops rather than complete unmodified scenes.",
+    "Passing the curriculum contract is not evidence that H3 learned the topology."
+  ],
+  "next_actions": [
+    "Train only a bounded low-learning-rate candidate and require frozen held-out topology plus capability non-regression before promotion."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "dataset", "curriculum", "topology", "domain-diversity", "working"]
+}

@@ -1,0 +1,50 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index cf41a83..a533284 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -1,7 +1,5 @@
+ import torch, os, argparse, accelerate, warnings, json
+-from diffsynth.core import UnifiedDataset
+-from wan_video_action.data.operators import LoadCobotAction, ResolvePromptEmbPath, create_video_operator
+-from wan_video_action.data.data_utils import pack_paths
++from wan_video_action.data import RoboTwinUnifiedDataset, LoadCobotAction, ResolvePromptEmbPath, create_video_operator
+ from diffsynth.core import ModelConfig
+ from wan_video_action.pipelines.wan_video_action import build_wan_video_action_pipeline
+ from diffsynth.diffusion import *
+@@ -165,7 +163,7 @@ if __name__ == "__main__":
+         stats = json.load(f)
+     stat = {args.action_type: stats[args.action_type]} if args.action_type in stats else stats
+ 
+-    dataset = UnifiedDataset(
++    dataset = RoboTwinUnifiedDataset(
+         base_path=args.dataset_base_path,
+         metadata_path=args.dataset_metadata_path,
+         repeat=args.dataset_repeat,
+@@ -185,12 +183,6 @@ if __name__ == "__main__":
+         special_operator_map=special_operator_map,
+     )
+ 
+-    pack_paths(
+-        dataset.data,
+-        ("video", "start_frame", "end_frame"),
+-        ("action", "start_frame", "end_frame"),
+-    )
+-
+     if "action" in runtime_config["data_file_keys"]:
+         dataset.special_operator_map["action"] = LoadCobotAction(
+             base_path=args.dataset_base_path,
+diff --git a/wan_video_action/data/unified_dataset.py b/wan_video_action/data/unified_dataset.py
+index b805f04..6a1b11d 100644
+--- a/wan_video_action/data/unified_dataset.py
++++ b/wan_video_action/data/unified_dataset.py
+@@ -84,8 +84,8 @@ class RoboTwinUnifiedDataset(UnifiedDataset):
+                 return {"data": item, "start_frame": start_frame, "end_frame": end_frame}
+             if isinstance(item, dict):
+                 wrapped = item.copy()
+-                wrapped["start_frame"] = start_frame
+-                wrapped["end_frame"] = end_frame
++                wrapped.setdefault("start_frame", start_frame)
++                wrapped.setdefault("end_frame", end_frame)
+                 return wrapped
+             return item
+ 

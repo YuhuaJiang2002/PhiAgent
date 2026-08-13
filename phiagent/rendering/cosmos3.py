@@ -32,7 +32,7 @@ from phiagent.rendering.wan_animate import (
     select_gpu,
 )
 
-COSMOS3_FRAMEWORK_COMMIT = "4155d61d14b14e05a8cafe2bd796d090fcb5f145"
+COSMOS3_FRAMEWORK_COMMIT = "0ee50863a34777aa76448320ec8740b53bcf78a0"
 COSMOS3_MODEL_ID = "nvidia/Cosmos3-Nano"
 COSMOS3_MODEL_REVISION = "411f42a8fdfb8c5b2583cb8786e0938f49796eaa"
 COSMOS3_ASPECT_RATIOS = {"16,9", "4,3", "1,1", "3,4", "9,16"}
@@ -58,6 +58,7 @@ class Cosmos3Config:
     vision_only: bool = True
     use_torch_compile: bool = False
     hf_home: Path | None = None
+    wan_vae_override: Path | None = None
     offline: bool = True
 
     def validate(self) -> None:
@@ -87,6 +88,8 @@ class Cosmos3Config:
 
     @property
     def wan_vae_path(self) -> Path:
+        if self.wan_vae_override is not None:
+            return self.wan_vae_override.expanduser().resolve()
         return (
             self.resolved_hf_home
             / "hub"
@@ -348,6 +351,7 @@ class Cosmos3TrajectoryRenderer:
             model_config = payload["model"]["config"]
             model_config["sound_gen"] = False
             model_config["action_gen"] = False
+            model_config["tokenizer"]["vae_path"] = str(self.config.wan_vae_path)
             tokenizer = model_config["vlm_config"]["tokenizer"]
             tokenizer["config_variant"] = "hf"
             tokenizer["pretrained_model_name"] = str(self.config.checkpoint_dir)

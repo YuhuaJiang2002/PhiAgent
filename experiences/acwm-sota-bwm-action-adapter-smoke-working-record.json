@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-action-adapter-smoke-working",
+  "recorded_at": "2026-08-11T10:03:00Z",
+  "status": "WORKING",
+  "scope": "Pinned BWM action-adapter one-clip GPU training smoke",
+  "summary": "The audited public BWM path completed one real video/action training step and saved an action-adapter checkpoint on physical A800 GPU 7.",
+  "evidence": [
+    "Official BWM step-12000 was verified at 10051484872 bytes with SHA-256 75f863b9474d6e74934db45bb85728fef0adece3d123c667b78349bdade9c7f3.",
+    "The run loaded three verified Wan2.2 DiT shards, the verified VAE, BWM weights, one 57-frame video, nine history frames, and 14D action.",
+    "One forward/backward/optimizer step completed in 5.78 seconds and epoch-0.safetensors was saved at 199275904 bytes.",
+    "The output checkpoint SHA-256 is 30d6000a6a29ec401367f9a839aef7359f262fd79265dec4e08bfbac618631ec.",
+    "The run recorded CUDA_VISIBLE_DEVICES selection, physical GPU 7 inventory, process inventory, source/model revisions, packages, seed, command, logs, and outputs."
+  ],
+  "lessons": [
+    "The public training release requires seven narrow, hashed compatibility patches before its documented BWM data and history contracts execute end to end.",
+    "A one-clip smoke is useful acceptance for the training mechanism but supplies no comparative model-quality evidence."
+  ],
+  "limitations": [
+    "This is one optimization step on a released BWM demo clip, not a balanced RoboTwin training campaign.",
+    "The checkpoint was not evaluated against baselines, WorldArena, cross-embodiment trials, or a physical robot.",
+    "The run log warns that the host kernel 5.4.119 is below Accelerate's recommended 5.5 minimum and that NCCL cleanup was not called by the public runner."
+  ],
+  "next_actions": [
+    "Train matched-seed multi-embodiment candidates only after capacity is reserved, then run the frozen promotion suites.",
+    "Obtain operator-approved calibrated robot access before starting the real-robot protocol."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-sota-training/20260811T100155.434426Z-action-adapter-seed20260811",
+  "supersedes": [
+    "2026-08-11.acwm-sota-bwm-remote-ssh-preflight",
+    "2026-08-11.acwm-sota-bwm-environment-checkpoint-network",
+    "2026-08-11.acwm-sota-bwm-runtime-transformers-conflict",
+    "2026-08-11.acwm-sota-bwm-index-json-training-failure",
+    "2026-08-11.acwm-sota-bwm-dataset-contract-training-failure",
+    "2026-08-11.acwm-sota-bwm-video-shape-training-failure",
+    "2026-08-11.acwm-sota-bwm-history-loss-training-failure"
+  ],
+  "tags": ["acwm", "bwm", "gpu-training", "action-adapter", "smoke", "working"]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [398, 448, 1],
+  "instances": [
+    {
+      "instance_id": "robot-hand-diagonal-04c",
+      "object_id": 111,
+      "anchor_source_frame": 420,
+      "box_xyxy": [405, 245, 482, 330],
+      "positive_points_xy": [[438, 280], [448, 298], [463, 310]],
+      "negative_points_xy": [[420, 318], [486, 337], [505, 350], [475, 245]],
+      "minimum_area_pixels": 100,
+      "maximum_area_pixels": 7000,
+      "role": "diagonal-arm mechanical gripper at the upper side of the bouquet"
+    },
+    {
+      "instance_id": "robot-hand-horizontal-04c",
+      "object_id": 112,
+      "anchor_source_frame": 420,
+      "box_xyxy": [440, 300, 535, 370],
+      "positive_points_xy": [[472, 334], [488, 342], [505, 348]],
+      "negative_points_xy": [[438, 284], [425, 310], [520, 310], [535, 365]],
+      "minimum_area_pixels": 100,
+      "maximum_area_pixels": 7000,
+      "role": "horizontal-arm mechanical gripper supporting the lower side of the bouquet"
+    }
+  ],
+  "notes": "Fresh frame-420 anchors avoid propagating the phase-04A hand identities across the 378--397 occlusion/tool transition."
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04a-contact-v1-v2",
+  "recorded_at": "2026-08-10T21:24:07Z",
+  "status": "PARTIAL",
+  "scope": "First two 106-frame phase-04A geometry compositions",
+  "summary": "The first run exposed NumPy/OpenCV temporary boolean-buffer mutation that corrupted exact-flower accounting; the second exposed an invalid human audit based on source-color similarity. Both are retained and rejected.",
+  "evidence": ["v1 reports active_flower_identity_exact_before_encode=false and NaN exactness despite intended exact composition.", "The compositor was corrected to use explicit copied logical masks.", "v2 showed that robot surfaces can coincidentally match source skin color, so color similarity cannot be the human-removal acceptance test.", "The audit was replaced with unexpected edits relative to the immutable H3 candidate in the unprotected person region."],
+  "lessons": ["Boolean-mask aliasing can silently invalidate exact-preservation evidence.", "Source-skin color is diagnostic only after human-to-robot replacement because gray robot materials can match it."],
+  "limitations": ["Neither v1 nor v2 is an accepted geometry candidate."],
+  "next_actions": ["Recompose all 106 frames with copied masks and the immutable-candidate human audit."],
+  "run_dir": "outputs/flower-full-expansion/20260811T050000Z-phase04a-contact-v2",
+  "supersedes": [],
+  "tags": ["flower", "phase04a", "mask-aliasing", "audit-correction", "partial"]
+}

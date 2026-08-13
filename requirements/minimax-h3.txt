@@ -1,0 +1,14 @@
+# Optional MiniMax-H3 validation environment. Install only in an isolated GPU
+# environment after the host-specific PyTorch/CUDA stack. DiffSynth-Studio is
+# checked out separately at commit b1c02ce76aabc989f6bf534756b2da84532249e5.
+accelerate==1.5.2
+av==15.1.0
+bitsandbytes==0.50.0
+huggingface-hub==1.27.0
+modelscope==1.39.1
+numpy==1.26.4
+peft==0.20.0
+pillow==11.3.0
+safetensors==0.8.0
+tqdm==4.67.1
+transformers==5.8.1

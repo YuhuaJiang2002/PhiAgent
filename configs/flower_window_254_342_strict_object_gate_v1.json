@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "window_local_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 254,
+  "candidate_sha256": "4f81243ea6a2195c04ae50a3c5431b37b05ecde8233338c331dce3b7fd5bdc67",
+  "flower_instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "source_track_run": "source-head-tracks-v1",
+      "candidate_track_run": "candidate-flower-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    },
+    {
+      "instance_id": "lime-flower-middle-02",
+      "source_track_run": "source-head-tracks-v1",
+      "candidate_track_run": "candidate-flower-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    }
+  ],
+  "robot_hand_track_run": "candidate-hand-tracks-merged-v1",
+  "robot_hands": [
+    "robot-hand-left-support-01",
+    "robot-hand-right-grip-02"
+  ],
+  "contact_segments": [
+    {
+      "hand_id": "robot-hand-left-support-01",
+      "flower_instance_id": "cream-flower-left-01",
+      "local_frame_start": 6,
+      "local_frame_end_exclusive": 89,
+      "role": "image-left articulated support fingers remain adjacent to the restored cream-flower stem/head through the held-bouquet motion"
+    },
+    {
+      "hand_id": "robot-hand-right-grip-02",
+      "flower_instance_id": "cream-flower-left-01",
+      "local_frame_start": 8,
+      "local_frame_end_exclusive": 89,
+      "role": "image-right silver gripper remains adjacent to the same restored cream-flower stem/head after the initial approach"
+    }
+  ],
+  "thresholds": {
+    "minimum_candidate_visible_fraction": 1.0,
+    "maximum_flower_centroid_step_pixels": 40.0,
+    "minimum_flower_adjacent_iou_mean": 0.68,
+    "maximum_adjacent_area_ratio": 2.0,
+    "minimum_pairwise_horizontal_order_agreement": 0.98,
+    "maximum_offset_centered_trajectory_p90_pixels": 8.0,
+    "minimum_positive_velocity_cosine_fraction": 0.8,
+    "minimum_median_hs_histogram_cosine": 0.8,
+    "maximum_hand_centroid_step_pixels": 20.0,
+    "minimum_hand_adjacent_iou_mean": 0.88,
+    "minimum_contact_visible_fraction": 1.0,
+    "maximum_contact_distance_p90_pixels": 8.0,
+    "maximum_contact_distance_pixels": 15.0,
+    "minimum_aligned_identity_score": 0.97,
+    "minimum_aligned_motion_score": 0.82,
+    "minimum_aligned_temporal_score": 0.75
+  },
+  "semantic_review": {
+    "reviewer_type": "codex_dense_and_consecutive_crop_visual_review",
+    "reviewed_local_frames": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88],
+    "complete_human_removal": true,
+    "two_mechanical_hands_visible": true,
+    "named_flower_identity_order_preserved": true,
+    "contact_pairs_visually_plausible": true,
+    "notes": "Review used the raw-Wan every-fourth-frame board, five full-resolution contact crops, post-restoration board, two independent flower boards, the image-left finger-only board, and the independent image-right gripper board. The earlier palm-root/wrist and pink-ribbon tracks are excluded."
+  },
+  "notes": "V1 evaluates round-0 seed 42 after exact 30-to-24-FPS retiming, terminal-frame clone, source-tracked flower restoration, independent left-finger and right-gripper SAM2 tracking, and unchanged frames-182 strict thresholds. Contact remains a 2D camera-pixel mask-distance proxy, not force sensing."
+}

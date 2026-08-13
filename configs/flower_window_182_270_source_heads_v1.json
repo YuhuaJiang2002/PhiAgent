@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 182,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 44,
+      "box_xyxy": [522, 296, 558, 334],
+      "positive_points_xy": [[539, 311], [545, 319], [535, 325]],
+      "negative_points_xy": [[568, 329], [594, 340], [520, 345], [553, 288]],
+      "minimum_area_pixels": 70,
+      "maximum_area_pixels": 2500,
+      "role": "cream blossom identity in the manipulated bouquet",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [527, 243, 564, 276],
+          "positive_points_xy": [[545, 254], [551, 261], [542, 268]],
+          "negative_points_xy": [[580, 292], [596, 327], [526, 286], [568, 277]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [466, 247, 502, 290],
+          "positive_points_xy": [[483, 260], [488, 269], [481, 279]],
+          "negative_points_xy": [[509, 207], [493, 238], [509, 278], [469, 229]]
+        }
+      ]
+    },
+    {
+      "instance_id": "lime-flower-middle-02",
+      "object_id": 2,
+      "anchor_source_frame": 44,
+      "box_xyxy": [551, 312, 587, 348],
+      "positive_points_xy": [[567, 321], [575, 329], [565, 339]],
+      "negative_points_xy": [[540, 318], [595, 340], [560, 355], [584, 303]],
+      "minimum_area_pixels": 65,
+      "maximum_area_pixels": 2400,
+      "role": "lime-yellow blossom identity in the manipulated bouquet",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [560, 276, 602, 314],
+          "positive_points_xy": [[580, 285], [590, 293], [579, 302]],
+          "negative_points_xy": [[546, 258], [596, 327], [566, 321], [609, 298]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [492, 188, 530, 226],
+          "positive_points_xy": [[507, 198], [516, 207], [507, 216]],
+          "negative_points_xy": [[484, 269], [492, 239], [531, 214], [491, 224]]
+        }
+      ]
+    },
+    {
+      "instance_id": "pink-flower-right-03",
+      "object_id": 3,
+      "anchor_source_frame": 44,
+      "box_xyxy": [576, 318, 618, 362],
+      "positive_points_xy": [[593, 328], [603, 338], [592, 350]],
+      "negative_points_xy": [[540, 318], [568, 329], [579, 365], [617, 326]],
+      "minimum_area_pixels": 90,
+      "maximum_area_pixels": 3000,
+      "role": "pink carnation identity in the manipulated bouquet",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [573, 305, 619, 354],
+          "positive_points_xy": [[591, 316], [603, 327], [593, 340]],
+          "negative_points_xy": [[546, 258], [580, 292], [569, 335], [620, 317]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [474, 217, 511, 255],
+          "positive_points_xy": [[489, 226], [499, 237], [491, 246]],
+          "negative_points_xy": [[509, 207], [484, 269], [471, 240], [515, 247]]
+        }
+      ]
+    }
+  ],
+  "notes": "Window-local frames 0--88 map to source frames 182--270. Three manually named bouquet blossoms are anchored at the start, midpoint, and end because the florist rotates the bouquet substantially within the window."
+}

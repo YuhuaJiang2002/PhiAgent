@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-v72-source-preflight-failure",
+  "recorded_at": "2026-08-11T11:18:00+08:00",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T031700Z-softer-wider-hand-contained-v72-pending",
+  "scope": "Preflight for the v72 softer, wider, hand-contained H3 shadow cleanup candidate",
+  "status": "BLOCKED",
+  "summary": "The first v72 command stopped before frame processing because the source-aligned video path omitted the stitch-recursive-deflicker-final directory component.",
+  "evidence": [
+    "reduce_h3_arm_shadow.py raised FileNotFoundError: missing inputs: ['source_video'] before creating or modifying video outputs.",
+    "The accepted v71 manifest resolves the source to outputs/minimax-h3-long-flower/20260810T044200Z-h3-epl-continuation-v3-recovery/stitch-recursive-deflicker-final/source-aligned-660.mp4."
+  ],
+  "lessons": [
+    "Derive immutable input paths directly from the accepted predecessor manifest rather than reconstructing nested experiment paths."
+  ],
+  "limitations": [
+    "No v72 frames or acceptance metrics were produced by this command."
+  ],
+  "next_actions": [
+    "Rerun v72 in a new experiment directory using the manifest-resolved source path."
+  ],
+  "tags": ["minimax-h3", "shadow-cleanup", "preflight", "missing-input", "blocked"]
+}

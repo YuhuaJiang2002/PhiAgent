@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-h3-v1-black-matte",
+  "recorded_at": "2026-08-11T05:32:00Z",
+  "status": "PARTIAL",
+  "scope": "First MiniMax-H3 EPIC Ego window generation using v4 controls",
+  "summary": "The first pour generation produced plausible first-person mechanical hands and bottle interaction but faithfully copied the control's black counter rectangle, so the campaign was stopped during shake step 3/20.",
+  "evidence": [
+    "The completed pour midframe contains a dark rectangular patch adjacent to the bottle matching the v4 control matte.",
+    "The remote metadata records the selected GPU and stopped/failed campaign state; no output from this directory is routed to the demo."
+  ],
+  "lessons": ["Early generated-frame review is an effective stop gate because conditioning artifacts can propagate even when the model produces strong robot geometry."],
+  "limitations": ["The run did not complete all actions and its pour output is visually invalid."],
+  "next_actions": ["Regenerate from v5 controls in a new immutable experiment directory."],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T051600Z-epic-blue-bottle-v1",
+  "supersedes": [],
+  "tags": ["acwm", "minimax-h3", "ego-video", "early-stop", "negative-result"]
+}

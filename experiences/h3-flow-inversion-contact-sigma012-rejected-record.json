@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-flow-inversion-contact-sigma012-rejected",
+  "recorded_at": "2026-08-11T13:22:18+08:00",
+  "scope": "56-frame contact-window MiniMax-H3 flow-inversion probe at sigma 0.12",
+  "status": "PARTIAL",
+  "summary": "The first protected flow-inversion probe decoded and preserved pixels outside the safety envelope, but sigma 0.12 increased robot-ROI temporal jerk by 10.01% and was rejected before full-video expansion.",
+  "run_dir": "outputs/h3-flow-retake/20260811T062000Z-contact-f236-56f-sigma012-v1",
+  "evidence": [
+    "The 56-frame result decoded completely and outside-safety exactness passed before encoding.",
+    "Mean robot-ROI jerk increased from 6.3177944 to 6.9500016, a ratio of 1.1000677.",
+    "Visual review also found the default delivery encode softer than the accepted v78 input."
+  ],
+  "lessons": [
+    "For an already accepted composite, high flow-inversion sigma can regenerate too much appearance and amplify temporal motion even when spatial protection is exact.",
+    "Contact-window gating must precede a costly full-timeline run."
+  ],
+  "limitations": [
+    "This was a 56-frame contact-window probe using third-party MiniMax-H3 NF4 weights, not official BF16 weights."
+  ],
+  "next_actions": [
+    "Reduce sigma to 0.08, blend model detail conservatively, and encode the validation result at high quality."
+  ],
+  "supersedes": [],
+  "tags": ["minimax-h3", "nf4", "flow-matching", "noise-reversal", "contact-window", "rejected", "partial"]
+}

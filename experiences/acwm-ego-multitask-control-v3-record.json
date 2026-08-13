@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-control-v3-camera-lag",
+  "recorded_at": "2026-08-11T10:13:00Z",
+  "status": "PARTIAL",
+  "scope": "Fixed-anchor correction of same-scene place and rinse controls",
+  "summary": "The corrected static anchors improved the early task phases, but dense full-timeline review showed the dish rack moving right with the head camera while the bottle endpoint remained fixed, so the place control was rejected.",
+  "evidence": [
+    "Five full-timeline samples at frames 0, 60, 120, 180, and 239 exposed the rack/endpoint drift.",
+    "The deterministic trajectory itself remained fully decoded and state-explicit."
+  ],
+  "lessons": [
+    "A target attached to a moving Ego scene needs an image-plane trajectory, not one static pixel anchor."
+  ],
+  "limitations": [
+    "No heavyweight generation was launched from the rejected place trajectory."
+  ],
+  "next_actions": [
+    "Use a smooth time-varying rack target aligned to the camera pan."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101000Z-epic-p03_28-v3",
+  "supersedes": ["2026-08-11.acwm-ego-multitask-control-v2-target-error"],
+  "tags": ["acwm", "epic-kitchens", "multitask", "camera-motion", "target-tracking", "partial"]
+}

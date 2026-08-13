@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04-full-tracks-v1",
+  "recorded_at": "2026-08-10T21:11:53Z",
+  "status": "PARTIAL",
+  "scope": "Initial single-anchor stem and two-hand propagation over source frames 272 through 447",
+  "summary": "Full-range propagation produced masks but failed continuous semantic identity: the stem jumps at the release/tool boundary and the lower hand is absent for 62 frames.",
+  "evidence": ["The flower track has 176/176 masks but adjacent IoU falls to 0.410480 at 377--378 and 0.393162 at 381--382; maximum centroid step is 24.912 pixels.", "The lower hand has 62 empty frames, including source ranges 382--398 and 403--447.", "Dense review identifies a release/occlusion/tool transition rather than one continuous flower manipulation."],
+  "lessons": ["Nonempty SAM2 masks do not prove persistent identity across action boundaries.", "Full-film unions must be split at observable semantic discontinuities."],
+  "limitations": ["The upper hand remains tracked, but that does not repair the missing lower-hand and flower-identity evidence."],
+  "next_actions": ["Accept only the continuous prefix [272,378) and re-anchor later phases independently."],
+  "run_dir": "outputs/flower-full-expansion/20260811T047000Z-phase04-stem-full-v1",
+  "supersedes": [],
+  "tags": ["flower", "sam2", "identity-jump", "phase-split", "partial"]
+}

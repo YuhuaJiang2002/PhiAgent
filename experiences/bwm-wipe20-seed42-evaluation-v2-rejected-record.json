@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.bwm-wipe20-seed42-evaluation-v2-rejected",
+  "recorded_at": "2026-08-12T21:43:30Z",
+  "status": "PARTIAL",
+  "scope": "Corrected 20-episode seed-42 BWM factual/action-sensitivity evaluation",
+  "summary": "The promoted adapter significantly improves factual future SSIM but regresses factual flow EPE and both primary wrong-action margins, so the frozen action audit fails and no action-control/SOTA promotion is made.",
+  "evidence": [
+    "The audit is decision-eligible with 20 independent physical episodes, one task, one inference seed, and 10,000 bootstrap iterations.",
+    "Factual future SSIM rises from 0.852103 to 0.864253; oriented gain is +0.012150 with 95% lower bound +0.009287.",
+    "Factual flow EPE changes from 1.749200 to 1.759784 pixels; lower-is-better oriented gain is -0.010584 with lower bound -0.024289.",
+    "Wrong-action SSIM margin changes from +0.001349 to -0.003368; gain -0.004717 and lower bound -0.008530.",
+    "Wrong-action flow-EPE margin changes from -0.011021 to -0.024267; gain -0.013246 and lower bound -0.032644.",
+    "all_primary_metric_lower_bounds_positive=false and audit_passed=false.",
+    "The corrected evaluation SHA-256 is 3827b3af00ef3a98d7b9a2f7d50d78c2f38c342157cb980ce0180f70e0e73342."
+  ],
+  "lessons": [
+    "Greater factual image similarity and action-effect pixel MAD do not establish correct action use.",
+    "A larger independent-episode suite reverses the apparent action-sensitivity optimism from smaller diagnostics."
+  ],
+  "limitations": [
+    "Only wipe_table and seed 42 are represented.",
+    "Wrong-action rollouts have no physical target and remain diagnostic.",
+    "Conditioning is realized absolute EEF state rather than low-level command."
+  ],
+  "next_actions": [
+    "Complete seeds 314159 and 20260811 and aggregate seeds before physical-episode bootstrap.",
+    "Do not promote the adapter for action control."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2/evaluation-final-v2",
+  "supersedes": [
+    "2026-08-12.bwm-wipe20-evaluation-v1-stale-limitations"
+  ],
+  "tags": ["acwm", "worldarena2", "counterfactual", "action-audit", "rejected", "partial"]
+}

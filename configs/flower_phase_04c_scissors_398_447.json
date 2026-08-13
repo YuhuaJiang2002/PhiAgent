@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [398, 448, 1],
+  "instances": [
+    {
+      "instance_id": "scissors-04c",
+      "object_id": 201,
+      "anchor_source_frame": 403,
+      "box_xyxy": [500, 260, 555, 330],
+      "positive_points_xy": [[516, 282], [526, 291], [535, 300]],
+      "negative_points_xy": [[500, 289], [512, 315], [548, 276], [490, 330]],
+      "minimum_area_pixels": 20,
+      "maximum_area_pixels": 2200,
+      "role": "black/silver flower scissors held by the source right hand"
+    }
+  ],
+  "notes": "The tool is strongly hand-occluded; this prompt is an explicit falsifiable probe and must not be treated as a valid track until its full storyboard is reviewed."
+}

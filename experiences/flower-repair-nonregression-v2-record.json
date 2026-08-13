@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-repair-nonregression-v2",
+  "recorded_at": "2026-08-10T20:57:00Z",
+  "status": "PARTIAL",
+  "scope": "Capability-non-regressing learned flower-repair evolution",
+  "summary": "A constrained training objective plus measured online guard prevents aggregate preservation gains from hiding action, EPL, temporal, identity, or subject-replacement collapse; the held-out result preserves action within tolerance but requests regeneration because no available repair also preserves the flowers.",
+  "evidence": [
+    "Run outputs/flower-repair-policy/20260810T205055Z-e65420b0 uses 45 hashed candidates and leave-one-action-out folds with 0.01 motion/EPL/temporal/identity and 0.02 subject-replacement regression limits.",
+    "First-choice and guarded non-regression rates are 9/9; constrained-oracle selection is 8/9 with 0.00000593 mean regret and two mean candidate evaluations instead of five.",
+    "Maximum selected regressions are motion 0.004713, EPL 0.005250, temporal 0.000463, identity 0.000350, and subject replacement 0.000004, all within their contracts.",
+    "The held-out inspect-flower replay trained only on insert/handover selects face-safe-background-lock with motion 0.565746 and EPL 0.511592, versus raw 0.570023/0.516750 and superseded v1 0.481940/0.449531.",
+    "A deliberate old-policy stress replay rejects face-safe-plus-flower-restore for 0.078083 excess motion and 0.057219 excess EPL regression, rejects the next flower repair for 0.160420 excess motion, and only then admits the non-regressing candidate.",
+    "The final workflow records REGENERATE_WORLD_MODEL_CANDIDATE because object lock remains 0.000520 and strict absolute gates fail.",
+    "The 124-frame four-column demo SHA-256 is d89a0cee9c130b52e1093bea5a07936df324e65f9c09e9b0386f3c5b4a0c7f1f; its poster and six-time storyboard were visually reviewed."
+  ],
+  "lessons": [
+    "Aggregate proxy optimization must be subordinate to per-capability non-regression gates.",
+    "The training objective reduces bad first choices, while an independent measured guard is still required for predictor errors and distribution shift.",
+    "When the repair set cannot satisfy both task preservation and action fidelity, regeneration is safer than selecting a visually attractive tradeoff."
+  ],
+  "limitations": [
+    "All training candidates share one source scene, three action labels, and four repair recipes.",
+    "The non-regression contract is relative to a raw candidate whose absolute motion, EPL, identity, and object scores already fail task thresholds.",
+    "No available post-processing candidate simultaneously passes flower protection and action non-regression; object lock in the selected result is only 0.000520.",
+    "This is learned repair routing over generated 2D video, not video-model fine-tuning, contact physics, or real-robot execution."
+  ],
+  "next_actions": [
+    "Generate new world-model candidates with action/contact conditioning that improve flower identity without exceeding the non-regression contract, then repeat scene-grouped held-out evaluation across additional cameras and embodiments."
+  ],
+  "run_dir": "outputs/flower-repair-policy/20260810T205055Z-e65420b0",
+  "supersedes": [
+    "2026-08-11.flower-repair-policy-held-action-v1"
+  ],
+  "tags": [
+    "flower-repair-policy",
+    "non-regression",
+    "held-action",
+    "catastrophic-regression",
+    "guarded-evolution",
+    "partial"
+  ]
+}

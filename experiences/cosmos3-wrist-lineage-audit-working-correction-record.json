@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos3-wrist-lineage-audit-engineering-correction",
+  "recorded_at": "2026-08-12T13:16:11Z",
+  "scope": "Correction of wrist-only DROID pixel-lineage audit engineering evidence",
+  "status": "WORKING",
+  "summary": "The fail-closed audit implementation and local gate tests work, but its planned all-record remote execution has not occurred; the earlier wording that it had verified all 348 planned records was incorrect.",
+  "evidence": [
+    "All 60 Cosmos3-focused CPU tests pass in 0.66 seconds, including two new audit gate tests.",
+    "Targeted Ruff, py_compile, and git diff whitespace checks pass.",
+    "The implementation is coded to iterate every record in the supplied contract and verify source, target, and condition SHA-256 values; no all-record result artifact exists yet.",
+    "The frozen gates require at least 0.97 SSIM for wrist condition lineage, derived frame-0 wrist lineage, and sampled named-exterior future lineage, plus a 0.05 wrist-over-exterior condition margin.",
+    "The audit records the canonical DROID composite, resized wrist, resized named-exterior, and 768x432 RGB comparison coordinate frames without mixing them implicitly."
+  ],
+  "lessons": [
+    "Implementation coverage and measured dataset coverage must be reported separately.",
+    "Declaring a wrist-only transform in metadata is insufficient; decoded pixels must be checked against hash-bound source cameras before training promotion."
+  ],
+  "limitations": [
+    "WORKING applies only to the local audit implementation and tests; the remote materialized dataset has not yet been audited because SSH access is blocked by the current sandbox.",
+    "No Cosmos3 wrist-only training, generated video, strict quality acceptance, or public demo is claimed."
+  ],
+  "next_actions": [
+    "When remote access is available, sync the audit, run it in a new immutable directory over the completed dataset, and ledger the measured number of checked records and metric extrema.",
+    "Keep DCP conversion, smoke training, formal SFT, validation generation, and demo promotion behind their respective gates."
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos3-wrist-lineage-audit-engineering-working"
+  ],
+  "tags": [
+    "cosmos3",
+    "droid",
+    "wrist-only",
+    "pixel-lineage",
+    "correction",
+    "working"
+  ]
+}

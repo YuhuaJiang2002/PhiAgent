@@ -1,0 +1,35 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-smoke-train-v5-working",
+  "recorded_at": "2026-08-12T19:10:00Z",
+  "status": "WORKING",
+  "scope": "Trainability smoke for the leakage-free metric flower VACE data",
+  "summary": "After retaining three environment failures, the pinned rank-4 VACE trainer completes all 12 steps and emits a reproducible adapter.",
+  "evidence": [
+    "The first attempt failed before model load because Accelerate lacked the DiffSynth root in PYTHONPATH; the second exposed missing declared modelscope, and the third exposed missing declared librosa.",
+    "The corrected environment imports the complete pinned trainer, ModelScope 1.39.1, and librosa 0.11.0.",
+    "Physical A800 GPU 1 runs 12/12 steps in approximately 27 seconds.",
+    "epoch-0.safetensors is 5,503,040 bytes with SHA-256 f40480603d31f40fa92a51ce0b12189adb4cf2b6f4137175059ff93c56856cc4.",
+    "Metadata binds the dataset manifest, model files, DiffSynth commit, GPU, source Git state, packages, seed, command, and PYTHONPATH prefix."
+  ],
+  "lessons": [
+    "A successful checkpoint preparation is not a complete trainer environment; the actual entrypoint import must be preflighted."
+  ],
+  "limitations": [
+    "Successful optimization alone does not establish held-out or real-video improvement."
+  ],
+  "next_actions": [
+    "Compare zero-shot and adapted outputs on a source-frame-disjoint contact window with identical inputs and seed."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T190000Z-metric-vace-smoke-train-v5/20260812T152618Z-cd2a9617",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-runtime-v2-working",
+    "2026-08-12.metric-flower-vace-data-v2-working"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "lora",
+    "training-smoke",
+    "working"
+  ]
+}

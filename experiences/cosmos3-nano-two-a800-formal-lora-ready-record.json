@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos3-nano-two-a800-formal-lora-ready",
+  "recorded_at": "2026-08-12T13:20:05Z",
+  "scope": "Resource-feasible formal Cosmos3-Nano wrist-only generation-pathway LoRA controller",
+  "status": "NOT STARTED",
+  "summary": "A strict 500-step, 93-frame Nano LoRA profile is locally implemented for an even allocation of at least two GPUs, but it has not launched because the verified DCP and measured all-record dataset audit are still pending.",
+  "evidence": [
+    "The current official Cosmos Framework FAQ explicitly supports enabling LoRA on the Nano vision SFT recipe to reduce optimizer memory.",
+    "The profile uses the official vision_sft_super generation-adapter values: rank 16, alpha 32, q/k/v/o generation-MoE targets, adapter-only optimizer selection, no EMA, full activation checkpointing, and context parallelism 2.",
+    "The formal objective remains 500 optimizer steps, 93 frames, 45,056 packed tokens, 50 warmup steps, and deterministic cuDNN settings.",
+    "The launcher accepts two GPUs for formal_lora but rejects odd counts, records both physical GPU selection and allocator configuration, and still requires the accepted dataset-lineage audit.",
+    "All 64 Cosmos3-focused CPU tests pass in 0.62 seconds; targeted Ruff, py_compile, and whitespace checks pass."
+  ],
+  "lessons": [
+    "An official adapter pathway can remove the eight-GPU optimizer-state blocker without weakening data-lineage or held-out quality gates.",
+    "Resource feasibility is not model quality evidence; the profile remains NOT STARTED until real backpropagation completes."
+  ],
+  "limitations": [
+    "No Nano LoRA optimization step, trained checkpoint, validation generation, or demo exists from this profile.",
+    "Two-A800 fit is expected from LoRA plus full activation/context sharding but remains unproven until the gated real smoke/formal launch.",
+    "Cosmos3-Super remains a larger 64B fallback, but its official generator LoRA recipe and 133 GB checkpoint have not been provisioned on this host."
+  ],
+  "next_actions": [
+    "Complete indexed Nano checkpoint recovery and DCP conversion, complete and audit all wrist-only records, then run the existing two-step smoke.",
+    "If smoke proves load/backpropagation, launch formal_lora on the two free A800 GPUs and evaluate every validation sample before any demo promotion.",
+    "If Nano fails the frozen strict validation after checkpoint selection, provision the official Cosmos3-Super LoRA lane rather than publishing a weak result."
+  ],
+  "supersedes": [],
+  "tags": [
+    "cosmos3",
+    "nano",
+    "droid",
+    "wrist-only",
+    "lora",
+    "two-a800",
+    "not-started"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "reviewer": "codex-human-visual-review",
+  "review_method": "all-124-frame contact sheet plus original-resolution baseline-left/candidate-right checks at frames 0, 24, 42, 60, 84, 108, and 123",
+  "ranges": [
+    {
+      "start_frame": 0,
+      "end_frame": 23,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": true,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": true,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "confidence": 0.97,
+      "note": "The r1 epoch-0 candidate remains coherent in the opening interval."
+    },
+    {
+      "start_frame": 24,
+      "end_frame": 123,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": true,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": true,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": true,
+      "no_extra_or_missing_limbs": true,
+      "no_human_residual": true,
+      "confidence": 0.97,
+      "note": "The torso panel and head-to-torso chain remain stable, repairing two baseline failure modes, but the raised arm still originates behind the head/neck instead of a unique left shoulder."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-gpu-sync-v2",
+  "recorded_at": "2026-08-11T05:38:00Z",
+  "status": "WORKING",
+  "scope": "Compact immutable EPIC Ego action-window GPU input pack",
+  "summary": "A compact 832x480 H.264 pack containing both source windows, all six controls, manifests, action state, and robot reference was transferred and hash-verified on the remote host.",
+  "evidence": [
+    "Every source and control window decodes to 124 frames at 24 FPS and 832x480.",
+    "Local and remote SHA-256 values matched for every file in the GPU input pack.",
+    "The remote experiment path is /data0/jiangyuhua/PhiAgent-0/outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2."
+  ],
+  "lessons": ["Pre-encoding only the legal H3 windows makes remote transfer auditable and substantially smaller than copying full source trees."],
+  "limitations": [],
+  "next_actions": [],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2",
+  "supersedes": ["2026-08-11.acwm-ego-gpu-sync-preflight"],
+  "tags": ["acwm", "gpu", "rsync", "reproducibility", "working"]
+}

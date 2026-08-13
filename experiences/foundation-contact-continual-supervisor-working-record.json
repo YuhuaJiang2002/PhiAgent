@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-continual-supervisor-working",
+  "recorded_at": "2026-08-12T11:39:00Z",
+  "status": "WORKING",
+  "scope": "Fail-closed continual foundation-contact supervisor and behavior-skill evolution loop",
+  "summary": "The authored supervisor, local Forgejo/SkillHone setup, provider-aware evaluator, and promoted decision skill now form a reproducible behavior-evolution loop without promoting the still-unverified physical video model.",
+  "evidence": [
+    "outputs/foundation-contact/20260812T214500Z-continual-supervisor-final-v2/supervisor-manifest.json completes in 0.0990 seconds, passes 5/5 spoof-rejection attacks, keeps 0/4 physical gates false, and selects calibrated-metric-camera-bridge-v1.",
+    "Native SkillHone outputs 20260812T213000Z, 20260812T213500Z, and 20260812T214000Z pass 4/4 probe, 3/3 test, and 4/4 adversarial respectively.",
+    "The same qwen3:4b, seed 42, probe split improves from strict 0/4 to 4/4; promotion-decision.json records a 1.0 score gain with no regressed UID and promote_physical_model=false.",
+    "Recorded mean probe item latency falls from 44.07 seconds to 4.36 seconds, a 10.11x improvement, after direct Ollama JSON routing.",
+    "Local Forgejo skill commit 91a1a5c and private evaluation commit fa9d4fa are pushed; ~/.skillhone/settings.json and the Forgejo token are mode 0600."
+  ],
+  "lessons": [
+    "Stable decision reason codes and request-type precedence turn semantic agreement into a machine-verifiable supervisor ABI.",
+    "Provider-aware routing improves cost and reliability without relaxing any physical or adversarial gate.",
+    "Behavioral supervisor success must remain explicitly separate from metric camera, full-q, persistent-stem, and force evidence."
+  ],
+  "limitations": [
+    "All four real physical evidence gates remain false on the 27.5-second candidate.",
+    "The private benchmark has eleven hand-authored cases and does not establish broad model generalization."
+  ],
+  "next_actions": [
+    "Execute calibrated-metric-camera-bridge-v1 with an independent scale observation, then rerun the unchanged physical and adversarial contract on at least two independent groups."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T214500Z-continual-supervisor-final-v2",
+  "supersedes": ["2026-08-12.skillhone-ollama-agent-write-protocol-partial"],
+  "tags": ["foundation-contact", "continual-supervision", "skillhone", "forgejo", "working"]
+}

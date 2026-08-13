@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-motion-lag-skill-v2-continuous-working",
+  "recorded_at": "2026-08-11T04:08:00Z",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T130000Z-skill-motion-lag-v75-continuous-pending",
+  "scope": "Second real-660 forward test of the repair-shadow-motion-lag skill",
+  "status": "WORKING",
+  "summary": "The evolved motion-lag skill passes its scoped 2-D acceptance contract: median-filtered arm centroids, continuous motion confidence, and low-alpha-only camera-frame warping align shadow cleanup on 149 high-motion frames without breaking temporal or protection gates.",
+  "evidence": [
+    "The 660-frame video SHA-256 is a07d74b91045a012606700d1a892002d3a83db9a5a7f15a8f09a2daf796edcf6.",
+    "The independent assessment SHA-256 is 17e0a4c1820bfeade2d67e316884ebe8899df9a2c52d18f22af401a98239d283 and all seven automatic/human gates pass.",
+    "Motion alignment activates on 149 frames with maximum capped camera-frame displacement 28.2860 pixels.",
+    "Relative to accepted v71, ROI jerk changes from 1.6804897 to 1.6858711, ratio 1.00320 within the 1.03 non-regression gate.",
+    "Protected robot/flower content and pixels outside the safety mask are exact in every preencode frame.",
+    "All 149 high-motion frames plus the 24 largest-displacement frames were reviewed with v71/candidate/difference sheets; no leading/trailing halo, exposed source skin, migrated robot material, or flower edit was found."
+  ],
+  "lessons": [
+    "Continuous confidence and centroid denoising remove the jerk regression caused by a hard motion threshold.",
+    "Warp only low-alpha shadow support and preserve alpha at or above 0.70 in place.",
+    "An independent assessment can promote a renderer run whose immutable manifest correctly retains its original pending-review state."
+  ],
+  "limitations": [
+    "WORKING is scoped to the accepted 660-frame H3 2-D composite and its pinned masks, not arbitrary scenes or physical illumination.",
+    "High-motion clean-plate distance is a proxy and was allowed 3% non-regression; perceptual attachment still required manual review.",
+    "The skill does not generate physical contact shadows or infer 3-D lighting."
+  ],
+  "next_actions": [
+    "Use this reviewed motion candidate as the parent for bounded shadow-intensity lightening.",
+    "Keep the rejected hard-threshold run available as a regression fixture."
+  ],
+  "supersedes": [
+    "2026-08-11.h3-shadow-motion-lag-skill-v1-hard-switch-rejected"
+  ],
+  "tags": [
+    "shadow",
+    "motion-lag",
+    "skill-evolution",
+    "continuous-alignment",
+    "full-660",
+    "working"
+  ]
+}

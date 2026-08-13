@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.video-action-spatial-ridge-v2-partial",
+  "recorded_at": "2026-08-12T04:30:20Z",
+  "status": "PARTIAL",
+  "scope": "Spatial-flow per-channel WorldArena video-to-action ridge follow-up",
+  "summary": "The spatial-grid and per-channel-alpha follow-up overfit more severely and was rejected, closing the uncalibrated linear-flow branch.",
+  "evidence": [
+    "Validation selected alphas [10,10,1,10,10,10,10,10,10,10,10,10,10,10] across the 14 channels.",
+    "Test translation-delta RMSE regressed to 0.7177 cm, rotation-delta geodesic error to 37.2670 degrees, and absolute translation RMSE to 11.3694 cm.",
+    "Every primary lower-bound comparison against zero-delta and train-mean controls was negative; promotion_eligible was false."
+  ],
+  "lessons": [
+    "Increasing raw pixel/flow feature capacity does not repair the missing camera-to-robot geometry and semantic correspondence.",
+    "The next attempt must change the information representation rather than repeat ridge or learning-rate sweeps."
+  ],
+  "limitations": [
+    "The same two physical test episodes and fixed camera/embodiment boundary apply.",
+    "No calibrated camera transform, robot keypoint teacher, contact truth, or phase labels were available."
+  ],
+  "next_actions": [
+    "Build the next labeling lane from calibrated robot keypoints or raw DROID/WorldArena geometry, with field-level abstention when robot-base transforms are unavailable."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/video-action-labeling/20260812T042935Z-worldarena2-video-ridge-spatial-v3",
+  "supersedes": [],
+  "tags": ["video-to-action", "worldarena2", "spatial-flow", "partial", "negative-result"]
+}

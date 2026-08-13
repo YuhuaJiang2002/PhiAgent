@@ -1,0 +1,4 @@
+interface:
+  display_name: "AC-WM Long Action Control"
+  short_description: "Build verified 8-12s public-Ego AC-WM demos"
+  default_prompt: "Use $acwm-long-action-control to build and verify a matched 10-second AC-WM action comparison from a licensed public egocentric dataset."

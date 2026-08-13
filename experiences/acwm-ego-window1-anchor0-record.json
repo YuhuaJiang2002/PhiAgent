@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-window1-anchor0-complete",
+  "recorded_at": "2026-08-11T07:00:00Z",
+  "status": "PARTIAL",
+  "scope": "Completed two-window MiniMax-H3 EPIC Ego pour, shake, and handover generation",
+  "summary": "Changing the following scene anchor from frame 60 to overlap frame 0 allowed a complete six-output campaign with all provenance recorded, but H3 still reinterpreted the following window viewpoint and retained a visible cross-window pose reset.",
+  "evidence": [
+    "Both window metadata files record completed status for pour-bottle, shake-bottle, and handover-bottle; all six outputs decode at 832x480, 124 frames, and 24 FPS.",
+    "Both windows selected physical NVIDIA A800 GPU 2 with 63713 MiB free, CUDA_VISIBLE_DEVICES=2, PyTorch 2.6.0+cu124, seed 20260811, and 20 steps.",
+    "The following window uses one action-specific frame-116 continuation image per action and scene-anchor-frame 0; its three output SHA-256 values are a8ee2fda6274b1cd8bd8b798880559c8b5c4cd57dc492d9733152e91a452c7d2, 9a42ef9c2e83541473d701f82698d1e655a004e9d859c91761ec3cb51a759670, and 9f6f9e0b077a219ba5b09483d1849a85b9c3fafed819d4d3ea8a02b1207c6761.",
+    "Frame review confirms coherent first-person mechanical arms and one blue bottle in all three actions, while overlap review still finds a viewpoint/pose reset."
+  ],
+  "lessons": ["Aligning the scene anchor to the overlap is necessary but not sufficient; a single RGB continuation and control video do not carry diffusion/camera state across H3 windows."],
+  "limitations": ["The six raw windows are generated visualizations without calibrated robot state, contact, force, or real execution, and they require strict evaluation before packaging."],
+  "next_actions": ["Run domain-matched repair tournaments, strict window gates, action-distinctness metrics, and hard-seam review before publishing a PARTIAL comparison."],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2",
+  "supersedes": ["2026-08-11.acwm-ego-window1-anchor60-jump"],
+  "tags": ["acwm", "ego-video", "minimax-h3", "long-action", "partial"]
+}

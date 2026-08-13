@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window254-dual-hand-multiround",
+  "recorded_at": "2026-08-11T10:55:00Z",
+  "scope": "Two-round face-suppressed dual-hand Wan retake experiment for global frames 254-342",
+  "status": "PARTIAL",
+  "summary": "The GPU batch completed two immutable raw retakes. Round 0 was promoted only after exact retiming, named-flower restoration, independent two-hand tracking, contact pairing, and a separate 39/39 strict gate; round 1 remains an unverified comparison and is not eligible for stitching.",
+  "run_dir": "outputs/gpu-flower-window254-retake/20260811T104000Z-dual-hand-v3",
+  "evidence": [
+    "The run selected physical NVIDIA A800 GPU 4 with CUDA_VISIBLE_DEVICES=4 and saved GPU inventory, hostname, packages, command, config, seeds, source hashes, logs, and outputs.",
+    "Round 0 used seed 42. Its raw wan_output.mp4 has SHA-256 6b0961f68c634c3a6b8264eb15b70c908b8de0613e510d943feeeeb72ca74a13; the generic evaluator reports motion 0.803215, identity 0.982014, temporal consistency 0.779911, and object consistency 0.0.",
+    "Round 1 used seed 1051. Its raw wan_output.mp4 has SHA-256 7aa3bc9341695a142fba97e9d13039bb5e4c60d8645c46c9aebb8f4b872d5a0b; the generic evaluator reports motion 0.813587, identity 0.980596, temporal consistency 0.660658, and object consistency 0.0.",
+    "Dense every-four-frame and five-anchor hand-crop storyboards are retained locally for both rounds. Both appear face-suppressed and dual-hand, but those boards do not prove named-flower identity or contact continuity.",
+    "Only the round-0 raw result was retimed and restored downstream. Its independent strict-object-gate-v1 result is WORKING with 39/39 gates passed under record 2026-08-11.gpu-flower-window254-dual-hand-gate-v1."
+  ],
+  "lessons": [
+    "The generic bouquet proxy rejects both useful and unusable candidates because it does not model named flowers or contacts; promotion must remain downstream and instance-specific.",
+    "A later sampling round is not automatically better: round 1 improves the generic motion proxy slightly but regresses regional temporal consistency substantially.",
+    "Raw Wan output must be retained separately from the generic object-preserved proxy candidate because strict named-instance restoration operates on the raw generation."
+  ],
+  "limitations": [
+    "Round 1 has not received exact 89-frame retiming, named-flower restoration, SAM2 hand tracking, contact pairing, or the strict evaluator.",
+    "The batch manifest reports PARTIAL because the generic proxy rejected both rounds; the separate downstream round-0 acceptance does not retroactively validate the generic proxy.",
+    "This experiment covers only global frames 254-342 and provides no evidence for frames 398-486 or the complete film."
+  ],
+  "next_actions": [
+    "Freeze round 0 as the only promoted candidate for this window.",
+    "Retain round 1 only for comparison unless a later regression study explicitly runs the full unchanged strict gate.",
+    "Continue full-film expansion window by window; do not stitch across frame 398 until real flower identity and two-hand contact supervision pass."
+  ],
+  "tags": [
+    "gpu",
+    "wan2.2-animate",
+    "multiround",
+    "source-face-suppression",
+    "dual-hand",
+    "strict-promotion",
+    "partial"
+  ]
+}

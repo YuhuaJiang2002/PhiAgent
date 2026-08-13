@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-view-three-clip-heldout-partial",
+  "recorded_at": "2026-08-11T16:47:00Z",
+  "scope": "Three-temporal-clip-per-episode DROID View LoRA heldout evaluation",
+  "status": "PARTIAL",
+  "summary": "Expanding every training episode to start/middle/end clips improves aggregate motion correlation but substantially regresses subject and scene consistency, so the route is rejected in favor of the earlier appearance-stronger candidate and neither is accepted.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-view-lora-training-full91-target-a-3clips/20260811T162417Z-73af9124",
+  "evidence": [
+    "Training completed 273/273 steps on physical A800 GPU 4 at rank 16, learning rate 2e-5, and seed 20260811.",
+    "The checkpoint is 21,908,240 bytes with SHA-256 e0d504a76f3bb61ebfcddffdf92013db7713b1cf6521fe296950c277b5a408d6.",
+    "All three heldout generations record real_target_passed_to_model=false and use the frozen 15-step recipe.",
+    "Aggregate motion correlation improves from -0.262506 to 0.374912, but full-frame SSIM falls from 0.520788 to 0.390229 and subject-ROI SSIM falls from 0.376567 to 0.270019.",
+    "Aggregate edge F1 is 0.316603 and static-anchor gain is -0.473055; every episode remains rejected.",
+    "Episode 60 additionally exceeds the motion-magnitude ceiling at 4.410914."
+  ],
+  "lessons": [
+    "Temporal diversity helps the timing proxy but does not solve appearance-preserving cross-view geometry under raw wrist-pixel VACE control.",
+    "Model selection must keep subject consistency and motion as independent hard dimensions rather than trading one for the other."
+  ],
+  "limitations": [
+    "The selected public candidate is still PARTIAL because its stronger appearance does not compensate for failed motion and static-anchor gates.",
+    "No route proves calibrated 3D viewpoint synthesis or physical robot execution."
+  ],
+  "next_actions": [
+    "Replace raw wrist-pixel spatial control with a cross-view motion representation or calibrated camera/action conditioning before another promotion attempt."
+  ],
+  "supersedes": [],
+  "tags": ["droid", "view-generalization", "temporal-diversity", "heldout", "negative-result", "partial"]
+}

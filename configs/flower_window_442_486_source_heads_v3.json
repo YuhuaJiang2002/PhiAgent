@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 442,
+  "instances": [
+    {
+      "instance_id": "lime-bud-upper-01",
+      "object_id": 1,
+      "anchor_source_frame": 22,
+      "box_xyxy": [445, 292, 479, 327],
+      "positive_points_xy": [[462, 307], [468, 312], [457, 301]],
+      "negative_points_xy": [[485, 330], [495, 315], [458, 338]],
+      "minimum_area_pixels": 35,
+      "maximum_area_pixels": 1200,
+      "role": "same compact lime bud after the shared global-442 identity anchor",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [433, 290, 468, 331],
+          "positive_points_xy": [[451, 310], [457, 315], [447, 303]],
+          "negative_points_xy": [[477, 344], [497, 330], [470, 300]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [445, 263, 480, 305],
+          "positive_points_xy": [[463, 283], [468, 288], [458, 278]],
+          "negative_points_xy": [[495, 289], [480, 320], [440, 290]]
+        }
+      ]
+    },
+    {
+      "instance_id": "pink-flower-upper-02",
+      "object_id": 2,
+      "anchor_source_frame": 22,
+      "box_xyxy": [468, 311, 502, 348],
+      "positive_points_xy": [[485, 330], [490, 335], [479, 325]],
+      "negative_points_xy": [[462, 307], [508, 326], [480, 360]],
+      "minimum_area_pixels": 45,
+      "maximum_area_pixels": 1400,
+      "role": "same compact salmon-pink flower after the shared global-442 identity anchor",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [460, 327, 495, 362],
+          "positive_points_xy": [[477, 344], [483, 348], [471, 339]],
+          "negative_points_xy": [[451, 310], [500, 332], [480, 370]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [478, 270, 513, 310],
+          "positive_points_xy": [[495, 289], [500, 294], [489, 284]],
+          "negative_points_xy": [[463, 283], [515, 292], [490, 325]]
+        }
+      ]
+    }
+  ],
+  "notes": "V3 starts from the exact global-442 prompts used by the first subwindow and stops before propagation can reuse the former full-window terminal correction incorrectly."
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 45,
+      "box_xyxy": [506, 244, 554, 389],
+      "positive_points_xy": [[531, 272], [542, 304], [548, 361]],
+      "negative_points_xy": [[571, 282], [561, 319], [595, 329], [520, 334]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 5200,
+      "role": "left cream flower head and its visible stem in the held bouquet"
+    },
+    {
+      "instance_id": "lime-bud-center-02",
+      "object_id": 2,
+      "anchor_source_frame": 45,
+      "box_xyxy": [548, 257, 588, 393],
+      "positive_points_xy": [[571, 282], [568, 307], [562, 358]],
+      "negative_points_xy": [[531, 272], [560, 319], [595, 329], [583, 382]],
+      "minimum_area_pixels": 60,
+      "maximum_area_pixels": 4200,
+      "role": "central lime bud and its visible stem"
+    },
+    {
+      "instance_id": "gold-flower-middle-03",
+      "object_id": 3,
+      "anchor_source_frame": 45,
+      "box_xyxy": [535, 292, 582, 401],
+      "positive_points_xy": [[560, 319], [558, 346], [558, 381]],
+      "negative_points_xy": [[531, 272], [571, 282], [595, 329], [583, 378]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 4800,
+      "role": "middle gold flower head and its visible stem"
+    },
+    {
+      "instance_id": "pink-flower-right-04",
+      "object_id": 4,
+      "anchor_source_frame": 45,
+      "box_xyxy": [568, 292, 618, 407],
+      "positive_points_xy": [[595, 329], [584, 354], [574, 388]],
+      "negative_points_xy": [[531, 272], [571, 282], [560, 319], [548, 375]],
+      "minimum_area_pixels": 90,
+      "maximum_area_pixels": 5200,
+      "role": "right pink flower head and its visible stem"
+    }
+  ],
+  "notes": "Window-local frames 0--88 map to global source frames 110--198. Four visually separable held flowers are prompted independently; the source and robot candidate are tracked in separate runs so the gate cannot reuse source masks as candidate evidence."
+}

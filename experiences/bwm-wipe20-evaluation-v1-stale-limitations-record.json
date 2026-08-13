@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.bwm-wipe20-evaluation-v1-stale-limitations",
+  "recorded_at": "2026-08-12T21:39:09Z",
+  "status": "PARTIAL",
+  "scope": "Seed-42 wipe20 BWM frozen evaluation v1",
+  "summary": "The first postprocessor completed all 40 model-trial records and correct bootstrap calculations, but its limitations text incorrectly retained an old four-episode statement.",
+  "evidence": [
+    "The comparison itself reports 20 independent trials, 10,000 bootstrap iterations, and decision_eligible=true.",
+    "The output limitations incorrectly states only four independent source episodes.",
+    "The monitor successor returned code 0, so the inconsistency was detected by result audit rather than process failure."
+  ],
+  "lessons": [
+    "Narrative limitations must be derived from the same records used by statistical gates."
+  ],
+  "limitations": [
+    "The v1 evaluation must not be cited because its narrative provenance contradicts its comparison payload."
+  ],
+  "next_actions": [
+    "Generate dynamic episode/task/seed limitations and rerun into a new output directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T201000Z-seed42-gpu1-4-v2/evaluation-final-v1",
+  "supersedes": [],
+  "tags": ["acwm", "worldarena2", "evaluation", "provenance", "partial"]
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-flow-inversion-full27s-v7-working",
+  "recorded_at": "2026-08-11T14:36:41+08:00",
+  "scope": "Accepted full-660-frame human-to-robot flower-arranging comparison refined by protected MiniMax-H3 flow inversion",
+  "status": "WORKING",
+  "summary": "Seven overlapping MiniMax-H3 NF4 flow-inversion windows were stitched into a complete 27.5-second demo that preserves the accepted background and flowers, reduces robot-ROI temporal jerk by 4.27%, passes every automatic gate, and passes agent visual review of the full timeline, contact frames, and seam frames.",
+  "run_dir": "outputs/h3-flow-retake/20260811T064500Z-full-27s-sigma008-v3/final-delivery-v7-accepted",
+  "evidence": [
+    "All three delivery videos decode as 660 frames at 24 FPS and 27.500 seconds; robot-only is 832x480 and both vertical comparisons are 672x768.",
+    "Full robot-ROI mean jerk falls from 5.6770102 to 5.4344812, a ratio of 0.9572788 and a 4.2721% reduction.",
+    "The mean and maximum edit-mask fractions are 0.0983543 and 0.1157076; outside-safety and flower changed-pixel counts are both zero before H.264 encoding.",
+    "All twelve seam probes stay below the 1.25 gate; the highest seam ratio is 1.1035420 and the previously weak seam 612 is 1.0438260.",
+    "Dense full-timeline review plus frames 96, 102, 198, 204, 236, 260, 306, 408, 510, 612, 636, and 659 found no recognizable human hand/garment leak, flower deletion, robot topology break, or visible seam flash.",
+    "The published robot-only SHA-256 is f6ec95a6c7a6f351d0c02a59788fb70d69276e825bce9161c34bbcb1a5da4892; the human comparison SHA-256 is d1e6c6f960fa5e37aa050d3d7cc42630ed7b1162f51a46eff7397cb49ea94f0e."
+  ],
+  "lessons": [
+    "Noise reversal helps this accepted composite only at low sigma with conservative model mixing, bounded detail reuse, and exact protected-region recomposition.",
+    "Overlapping model windows need independent seam gates and an explicit isolated-seam repair path rather than relying on full-video averages.",
+    "A stronger model pass is not automatically better: sigma 0.12 failed the contact temporal gate while sigma 0.08 passed and scaled to the full timeline."
+  ],
+  "limitations": [
+    "WORKING is scoped to this pinned 660-frame camera-frame demo and pinned masks; it is not a general replacement claim.",
+    "The execution used third-party MiniMax-H3 NF4 weights because official BF16 weights were not installed; LingBot v2 was not used.",
+    "Exact background and flower preservation is measured before the final H.264 encode, and the demo does not demonstrate physical robot execution."
+  ],
+  "next_actions": [],
+  "supersedes": [
+    "2026-08-11.h3-shadow-v78-wide-full-person-accepted",
+    "2026-08-11.h3-flow-inversion-contact-sigma008-working",
+    "2026-08-11.h3-flow-inversion-stitch-v1-v5-partial"
+  ],
+  "tags": ["minimax-h3", "nf4", "flow-matching", "noise-reversal", "epl", "full-timeline", "showcase", "accepted", "working"]
+}

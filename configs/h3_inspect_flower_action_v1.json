@@ -1,0 +1,9 @@
+{
+  "actions": [
+    {
+      "label": "inspect-flower",
+      "instruction": "Lift one pink flower to eye level with the right hand, rotate the wrist clockwise to inspect it, pause, then lower it without placing it in the vase.",
+      "timeline": "0.000-1.000 s: approach and grasp one pink stem with the right hand; 1.000-2.200 s: lift the flower to the robot's eye level; 2.200-3.200 s: rotate the right wrist clockwise by about 45 degrees while keeping the elbow stable; 3.200-4.100 s: pause with the flower held in front of the dark face panel; 4.100-5.167 s: lower the flower slightly while maintaining the grasp. The left hand remains away from the vase."
+    }
+  ]
+}

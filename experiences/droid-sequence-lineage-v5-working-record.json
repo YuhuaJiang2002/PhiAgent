@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-sequence-lineage-v5-working",
+  "recorded_at": "2026-08-12T13:56:00Z",
+  "status": "WORKING",
+  "scope": "Structured raw-to-LeRobot DROID lineage for held-out episodes 21, 60, and 77",
+  "summary": "All three real DROID SequenceExamples now have structured raw trajectory/recording paths, exact task and frame-count matches, hashed LeRobot source videos, and passing frame-level PSNR/dHash lineage across wrist plus a predeclared one-to-one exterior assignment.",
+  "evidence": [
+    "Episode 21 maps to 1.0.1/AUTOLab/success/2023-07-14/Fri_Jul_14_16:55:45_2023 with swapped exterior assignment.",
+    "Episode 60 maps to 1.0.1/AUTOLab/success/2023-07-31/Mon_Jul_31_20:04:00_2023 with identity exterior assignment.",
+    "Episode 77 maps to 1.0.1/PennPAL/success/2023-04-29/Sat_Apr_29_20:28:46_2023 with swapped exterior assignment.",
+    "Across all nine selected stream comparisons, frame PSNR p05 is 33.201-36.297 dB and dHash Hamming p95 is 1-2 bits, passing frozen 25 dB and 8-bit gates.",
+    "The three LeRobot source MP4 SHA-256 values are ca8e4e013dbfd46b5a6c89df299aa806385e1ccd7733d88057a331085ab663bf, 6ef76cd3ee4b7da229339ff9d4cec03c05b750ce5857f8c0cfc38747815be3d3, and 92d4ed033f667ba871ef742338be1a2ebcd3405aa4121b7441afcf2d657f62da."
+  ],
+  "lessons": [
+    "Raw DROID camera paths can be recovered structurally without printable-string heuristics.",
+    "Exterior stream lineage must preserve an explicit episode-local camera assignment rather than silently assuming name identity."
+  ],
+  "limitations": [
+    "The official raw DROID license remains unresolved, so raw-data training and redistribution are still blocked.",
+    "Lineage does not establish novel-view generation quality or real physical task success."
+  ],
+  "next_actions": [
+    "Use the recovered raw prefixes to retrieve calibration/depth for held-out episodes under internal audit only.",
+    "Keep camera assignments explicit in every geometry and novel-view record.",
+    "Resolve official raw-data rights before any claim-eligible raw-data training."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-sequence-lineage/20260812T135600Z-episodes21-60-77-v5",
+  "supersedes": [
+    "2026-08-12.droid-sequence-lineage-v4-camera-permutation-partial"
+  ],
+  "tags": ["droid", "real-world", "lineage", "pixel-audit", "working"]
+}

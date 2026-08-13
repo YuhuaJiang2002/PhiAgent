@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-view-manifest-relative-path-fix",
+  "recorded_at": "2026-08-11T16:37:00Z",
+  "scope": "Relative adaptation-manifest asset resolution in DiffSynth VACE training preflight",
+  "status": "WORKING",
+  "summary": "The first remote training preflight exposed that frozen relative asset paths were resolved against the process working directory; the loader now resolves them against the manifest directory and the focused CPU tests pass.",
+  "run_dir": "outputs/droid-view-lora-training/20260811T150706Z-92dd23e8",
+  "evidence": [
+    "The first invocation failed before GPU model loading because Path(asset[path]) used the process working directory.",
+    "phiagent/training/diffsynth_animate.py now resolves relative frozen-manifest paths from manifest_path.parent before validating assets.",
+    "The focused build/train/inference suite passes 9 tests after the patch; the evaluator suite passes 2 additional tests.",
+    "The corrected rank-4 smoke run completed 24/24 optimizer steps on physical A800 GPU 6 and produced a 5,503,040-byte checkpoint with SHA-256 72fae3209d4400a08e157032cf8d436aed9a621f80725a9aad36c960b76bb2e2."
+  ],
+  "lessons": [
+    "Frozen manifests must remain portable across local and remote roots, so all relative assets need one documented resolution base."
+  ],
+  "limitations": [
+    "The successful smoke training proves trainability only, not heldout viewpoint quality."
+  ],
+  "next_actions": [
+    "Keep the relative-path regression tests in the CPU-only suite."
+  ],
+  "supersedes": [],
+  "tags": ["droid", "diffsynth", "manifest", "relative-path", "training", "working"]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-artifact-scp-working",
+  "recorded_at": "2026-08-12T11:49:00Z",
+  "scope": "Explicit-path recovery of real calibration inputs from a800-4",
+  "status": "WORKING",
+  "summary": "Explicit scp recovered the 31 MB DA3 samples, metric stem samples, and three exact robot assets, and all files were SHA-256 validated locally.",
+  "run_dir": "outputs/foundation-contact/20260812T174200Z-da3-nested-full27p5s-2hz-v3",
+  "evidence": [
+    "da3-metric-camera-samples.npz SHA-256 is b50ede3f687ed2efcb6e0a7999161c13a5c862703c2502c1714c58f8bbac2272.",
+    "metric-stem-centerlines.npz SHA-256 is 81ea22a57308b1829e02e1096ae0971c727be803b0790cc66be6ffa9e7b396b8.",
+    "G1, left Sharpa, and right Sharpa hashes match the frozen compiler registry."
+  ],
+  "lessons": [
+    "Explicit non-glob paths plus post-transfer hashes are portable across the available macOS SSH tooling."
+  ],
+  "limitations": [
+    "The artifacts contain learned camera geometry and a rejected stem proposal, not new physical calibration observations."
+  ],
+  "next_actions": [
+    "Run the independent metric-camera bridge without upgrading learned evidence."
+  ],
+  "supersedes": ["2026-08-12.foundation-contact-artifact-rsync-partial"],
+  "tags": ["foundation-contact", "artifact-transfer", "scp", "working"]
+}

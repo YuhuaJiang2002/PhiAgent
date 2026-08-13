@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "pose-rig-v16-bouquet-layer-order-20260810",
+  "recorded_at": "2026-08-10T23:31:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Complete-bouquet RGBA integration with restored 1.0-scale robot hands",
+  "summary": "v16 kept a complete bouquet for all 660 frames and restored successful 1.0-scale hand proportions, but compositing the bouquet below every arm piece made flowers appear to pass through the forearms.",
+  "run_dir": "outputs/robot-person-replacement/pose-rig-runs/20260810T150100Z-bouquet-bound-proportion-v16-pending",
+  "evidence": [
+    "final/manifest.json records 660 bouquet frames, fixed 0.202639 scale, 0.29 percent p99/p01 area variation, and exact grip-anchor mapping.",
+    "assets/review-frame-0250.png shows the bouquet incorrectly occluded by complete forearms rather than only by the hands."
+  ],
+  "lessons": ["Object presence, scale stability, and contact-layer ordering need separate gates."],
+  "limitations": ["Human visual review failed because the depth ordering was physically implausible."],
+  "next_actions": ["Composite upper/lower arms first, bouquet second, and both hands last."],
+  "supersedes": ["pose-rig-v15-source-flower-mask-preflight-20260810"],
+  "tags": ["flower-video", "pose-rig", "bouquet", "occlusion", "partial"]
+}

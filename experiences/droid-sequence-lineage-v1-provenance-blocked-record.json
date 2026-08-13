@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-sequence-lineage-v1-provenance-blocked",
+  "recorded_at": "2026-08-12T13:19:00Z",
+  "status": "BLOCKED",
+  "scope": "Structured DROID SequenceExample lineage audit v1",
+  "summary": "The first real-input lineage audit stopped before data comparison because the remote experiment copy lacked a Git worktree and could not satisfy the provenance gate.",
+  "evidence": [
+    "The run created a new immutable directory and saved its command/config before git status failed with exit code 128.",
+    "No protobuf, task, path, or pixel result was accepted from this attempt."
+  ],
+  "lessons": [
+    "Remote experiment copies without .git require an explicit commit/branch snapshot and an exact audit-script hash."
+  ],
+  "limitations": [
+    "The attempt produced no DROID lineage conclusion."
+  ],
+  "next_actions": [
+    "Add explicit Git provenance overrides and rerun in a new directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-sequence-lineage/20260812T131900Z-episodes21-60-77-v1",
+  "supersedes": [],
+  "tags": ["droid", "real-world", "lineage", "provenance", "blocked"]
+}

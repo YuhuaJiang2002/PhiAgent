@@ -86,6 +86,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--height", type=int, default=480)
     parser.add_argument("--width", type=int, default=832)
     parser.add_argument("--num-frames", type=int, default=81)
+    parser.add_argument("--source-git-head")
+    parser.add_argument("--source-git-status-sha256")
     parser.add_argument(
         "--smoke",
         action="store_true",
@@ -97,6 +99,10 @@ def _parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = _parser().parse_args()
+    if bool(args.source_git_head) != bool(args.source_git_status_sha256):
+        raise ValueError(
+            "source Git head and status SHA-256 must be supplied together"
+        )
     project_root = Path(__file__).resolve().parents[1]
     manifest = load_frozen_manifest(args.manifest)
     if manifest.arm is not AdaptationArm.VACE_LORA:
@@ -177,7 +183,11 @@ def main() -> int:
         "platform": platform.platform(),
         "python": sys.version,
         "packages": packages,
-        "git": _git_state(project_root),
+        "git": {
+            "execution_workspace": _git_state(project_root),
+            "source_git_head": args.source_git_head,
+            "source_git_status_sha256": args.source_git_status_sha256,
+        },
         "limitations": [
             "Development pseudo-targets validate trainability but cannot support quality claims.",
             "This VACE-1.3B student is not the unreleased PhiZero model.",
@@ -190,22 +200,59 @@ def main() -> int:
         return 0
 
     log_path = experiment / "training.log"
+    training_env = os.environ.copy()
+    diffsynth_pythonpath = str(args.diffsynth_repo.expanduser().resolve())
+    existing_pythonpath = training_env.get("PYTHONPATH")
+    training_env["PYTHONPATH"] = (
+        diffsynth_pythonpath
+        if not existing_pythonpath
+        else os.pathsep.join((diffsynth_pythonpath, existing_pythonpath))
+    )
+    record["training_pythonpath_prefix"] = diffsynth_pythonpath
+    _write_json(metadata_path, record)
     with log_path.open("w", encoding="utf-8") as log:
         completed = subprocess.run(
             command,
             cwd=args.diffsynth_repo.expanduser().resolve(),
-            env=os.environ.copy(),
+            env=training_env,
             stdout=log,
             stderr=subprocess.STDOUT,
             check=False,
         )
     record["completed_at"] = datetime.now(timezone.utc).isoformat()
     record["returncode"] = completed.returncode
-    record["status"] = "completed" if completed.returncode == 0 else "failed"
-    record["training_log"] = str(log_path)
-    _write_json(metadata_path, record)
+    record["training_log"] = {
+        "path": str(log_path),
+        "sha256": _sha256(log_path),
+        "bytes": log_path.stat().st_size,
+    }
     if completed.returncode:
+        record["status"] = "failed"
+        _write_json(metadata_path, record)
         raise SystemExit(f"VACE training failed with code {completed.returncode}; see {log_path}")
+    produced_checkpoints = sorted(
+        (experiment / "checkpoints").glob("epoch-*.safetensors")
+    )
+    if not produced_checkpoints or any(
+        not path.is_file() or path.stat().st_size == 0
+        for path in produced_checkpoints
+    ):
+        record["status"] = "failed"
+        record["error"] = "training returned zero without a nonempty epoch checkpoint"
+        _write_json(metadata_path, record)
+        raise RuntimeError(str(record["error"]))
+    record["outputs"] = {
+        "checkpoints": [
+            {
+                "path": str(path),
+                "sha256": _sha256(path),
+                "bytes": path.stat().st_size,
+            }
+            for path in produced_checkpoints
+        ]
+    }
+    record["status"] = "completed"
+    _write_json(metadata_path, record)
     print(json.dumps({"experiment": str(experiment), "status": "completed"}))
     return 0
 

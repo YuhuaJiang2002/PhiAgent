@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-pose-contact-full660-v4-partial",
+  "recorded_at": "2026-08-12T16:34:00Z",
+  "status": "PARTIAL",
+  "scope": "Full exact-contact rollout with a fixed grasp quaternion",
+  "summary": "The fixed-quaternion contact mode keeps wrist pose error small but regresses force closure to 187/300 because the grasp does not follow the bending stem tangent.",
+  "evidence": [
+    "Maximum wrist position/orientation errors are 0.000317 m and 0.000143 rad, and the 0.0812 rad joint-step gate passes.",
+    "Only 187/300 contact frames pass; failures begin when the local stem tangent departs from the initial grasp direction.",
+    "The run completes in 238.571 seconds and remains machine_acceptance_passed=false."
+  ],
+  "lessons": [
+    "Holding world-frame wrist orientation is not contact preservation for a deformable rod whose local tangent changes."
+  ],
+  "limitations": [
+    "One hundred thirteen failed contact frames block promotion."
+  ],
+  "next_actions": [
+    "Transport the grasp orientation with the local stem tangent and test reachability."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T163000Z-metric-flower-pose-contact-full660-v4",
+  "supersedes": [
+    "2026-08-12.metric-flower-exact-contact-full660-v3-partial"
+  ],
+  "tags": [
+    "flower",
+    "wrist-pose",
+    "force-closure",
+    "full-video",
+    "partial"
+  ]
+}

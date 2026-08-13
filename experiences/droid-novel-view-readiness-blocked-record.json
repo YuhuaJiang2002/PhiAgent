@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-novel-view-readiness-blocked",
+  "recorded_at": "2026-08-12T04:40:13Z",
+  "status": "BLOCKED",
+  "scope": "Calibration-aware DROID Strict-W novel-view generation lane",
+  "summary": "The DROID-100 subset is synchronized but cannot support a calibrated wrist-to-exterior SOTA experiment; the new readiness gate blocks further raw-pixel VACE tuning.",
+  "evidence": [
+    "The audit found both wrist and exterior RGB streams plus frame-aligned state/action/timestamps.",
+    "It also found unnamed motor channels and no camera serials, intrinsics, distortion, time-varying wrist extrinsics, exterior extrinsics, depth lineage, timestamp-offset evidence, or reviewed raw-DROID rights contract.",
+    "The persisted readiness result is BLOCKED rather than treating synchronized RGB as calibrated novel-view geometry."
+  ],
+  "lessons": [
+    "Episode synchronization is necessary but not sufficient for geometric novel-view generation.",
+    "The current VACE wrist-pixel condition is in the wrong image coordinate system for an exterior target."
+  ],
+  "limitations": [
+    "No GEN3C, TrajectoryCrafter, or ReCamMaster comparison can be claim-eligible without a target-camera contract.",
+    "The DROID-100 metadata does not identify the seven state/action channels beyond generic motor names."
+  ],
+  "next_actions": [
+    "Acquire and rights-review raw DROID SVO/calibration/depth assets, then satisfy the Strict-W readiness contract before launching geometry-aware baselines."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/droid-novel-view-readiness/20260812T044013Z-droid100-strict-w-v1",
+  "supersedes": [],
+  "tags": ["novel-view", "droid", "calibration", "blocked", "strict-w"]
+}

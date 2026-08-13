@@ -1,0 +1,33 @@
+{
+  "record_id": "2026-08-12.metric-flower-exact-contact-full660-v3-partial",
+  "recorded_at": "2026-08-12T15:36:00Z",
+  "status": "PARTIAL",
+  "scope": "Second full exact-contact rollout with reduced positional motion amplitude",
+  "summary": "Reducing positional amplitude without controlling wrist orientation regresses full force closure from 296/300 to 281/300, so the change is rejected.",
+  "evidence": [
+    "Nineteen frames fail force closure, beginning at source frame 315, while 281/300 pass.",
+    "Several failures have only four or five positive wrenches or positive-wrench rank below six; others retain rank six but have large origin residual.",
+    "The run still passes 298/298 causal-response frames and completes in 358.649 seconds."
+  ],
+  "lessons": [
+    "Smaller Cartesian motion is not a substitute for an orientation-constrained contact mode.",
+    "A repair variable must address the diagnosed failure; amplitude tuning cannot correct unobserved wrist rotation."
+  ],
+  "limitations": [
+    "Nineteen failed contact frames prevent promotion."
+  ],
+  "next_actions": [
+    "Solve all seven right arm and wrist joints against a frozen grasp quaternion during contact."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T153000Z-metric-flower-exact-contact-full660-v3",
+  "supersedes": [
+    "2026-08-12.metric-flower-exact-contact-full660-v2-partial"
+  ],
+  "tags": [
+    "flower",
+    "exact-contact",
+    "wrist-orientation",
+    "full-video",
+    "partial"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-flow-inversion-contact-sigma008-working",
+  "recorded_at": "2026-08-11T13:32:18+08:00",
+  "scope": "56-frame contact-window MiniMax-H3 protected flow-inversion selection at sigma 0.08",
+  "status": "WORKING",
+  "summary": "The weaker sigma 0.08 flow-inversion candidate passed the contact-window temporal and spatial gates and was selected for full 27.5-second expansion.",
+  "run_dir": "outputs/h3-flow-retake/20260811T063500Z-contact-f236-56f-sigma008-v2",
+  "evidence": [
+    "Mean robot-ROI jerk fell from 6.3177944 to 5.9292160, a ratio of 0.9384946.",
+    "The 56-frame result decoded fully, the bounded edit fraction passed, and pixels outside the tracked safety envelope were exact before encoding.",
+    "The selected configuration used six Heun inversion steps, sixteen forward steps, model mix 0.65, and no noise refresh."
+  ],
+  "lessons": [
+    "Weak, reversible latent movement is better suited than a broad regeneration pass when geometry, flowers, and background are already accepted.",
+    "A pinned v78 detail residual can recover texture after the model pass without reopening the protected background."
+  ],
+  "limitations": [
+    "WORKING is scoped to frames 236--291 and third-party MiniMax-H3 NF4 weights; a full-timeline result still required window, seam, and visual acceptance."
+  ],
+  "next_actions": [
+    "Run overlapping 124-frame windows over all 660 frames and enforce exact flower/background restoration during stitching."
+  ],
+  "supersedes": ["2026-08-11.h3-flow-inversion-contact-sigma012-rejected"],
+  "tags": ["minimax-h3", "nf4", "flow-matching", "noise-reversal", "contact-window", "accepted-probe", "working"]
+}

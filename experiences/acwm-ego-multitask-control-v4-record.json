@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-control-v4-working",
+  "recorded_at": "2026-08-11T10:17:00Z",
+  "status": "WORKING",
+  "scope": "Camera-aligned controls for place-in-rack, unscrew-cap, and rinse-bottle",
+  "summary": "Three exact ten-second task controls now share the same EPIC P03_28 scene and initial state while encoding distinct phase, holder, and target trajectories, including a rack endpoint that follows the head-camera pan.",
+  "evidence": [
+    "The immutable control manifest passes decode, explicit-trajectory, holder-state, and pairwise-separation gates.",
+    "Minimum pairwise state RMS is 97.51 pixels; terminal holders are dish_rack, right_hand, and right_hand.",
+    "Full-timeline review at frames 0, 60, 120, 180, and 239 confirms the corrected task paths."
+  ],
+  "lessons": [
+    "Named holder transitions plus time-varying scene targets provide a stronger language-to-motion contract than prompt text alone."
+  ],
+  "limitations": [
+    "These are deterministic camera-frame controls, not generated videos or calibrated robot-base trajectories."
+  ],
+  "next_actions": [
+    "Generate H3 robot drivers, apply robot-factored Wan refinement, and require dense visual and task review."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/controls",
+  "supersedes": ["2026-08-11.acwm-ego-multitask-control-v3-camera-lag"],
+  "tags": ["acwm", "epic-kitchens", "multitask", "camera-frame-control", "working"]
+}

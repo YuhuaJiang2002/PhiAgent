@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-svo-lineage-v2-schema-partial",
+  "recorded_at": "2026-08-12T21:19:49Z",
+  "status": "PARTIAL",
+  "scope": "Held-out DROID episodes 21/77 ZED calibration v2",
+  "summary": "The combined RLinf NumPy plus ZED 5.1 runtime opened and processed all three episode-21 SVOs, but final result construction failed because the extractor required the legacy episode_id field instead of the new episode_index lineage schema.",
+  "evidence": [
+    "ZED opened serials 18026681, 22008760, and 24400334 and downloaded their official calibration files.",
+    "Depth sample artifacts were written before the final KeyError on download['episode_id'].",
+    "episode 77 was not started after the fail-closed episode-21 return code."
+  ],
+  "lessons": [
+    "Calibration extraction must normalize both legacy UUID manifests and lineage-mapped episode-index manifests."
+  ],
+  "limitations": [
+    "No terminal calibration.json was accepted from this attempt."
+  ],
+  "next_actions": [
+    "Resolve episode identity from metadata UUID plus optional episode_index and rerun in a new directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T212500Z-episodes21-77-v2",
+  "supersedes": [
+    "2026-08-12.droid-svo-lineage-v1-runtime-blocked"
+  ],
+  "tags": ["droid", "real-world", "calibration", "schema", "partial"]
+}

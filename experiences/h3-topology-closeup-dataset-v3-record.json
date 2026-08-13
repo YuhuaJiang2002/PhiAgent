@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-closeup-dataset-v3",
+  "recorded_at": "2026-08-10T22:27:00Z",
+  "scope": "Leakage-safe close-up shoulder curriculum for the next bounded H3 topology RSI round",
+  "status": "WORKING",
+  "summary": "A ten-clip mixed-scale dataset was compiled from two rights-attributed synthetic articulated robot videos, with eight upper-body crops that make shoulder ancestry and head clearance materially more visible to training.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-datasets/20260811T074000Z-topology-closeup-v3-train",
+  "evidence": [
+    "The immutable dataset manifest has SHA-256 14f4a55133e41dd7d79d90792a4c23545bf61ea2b998a57e40987843d5f340f0.",
+    "All 10 clips contain 39 frames at 448x256 with a 32 kHz audio stream and explicit image reference.",
+    "Two full-body clips retain global morphology context; eight upper-body clips use the declared [96, 0, 448, 256] source crop for shoulder, crossed-arm, head-clearance, and release supervision.",
+    "The train set contains two distinct articulated subjects. Same-real-scene v14 and v19 artifacts remain validation/test only and are not compiled into this train directory.",
+    "The source-crop feature rejects non-integer, negative, odd, or non-positive crop declarations and records each applied crop in the manifest."
+  ],
+  "lessons": [
+    "The earlier full-body curriculum devoted too few pixels to shoulder ancestry; scale is part of supervision quality, not merely a rendering detail.",
+    "Targeted close-ups can improve the failure signal without leaking the held-out real flower scene into optimization.",
+    "Mixed-scale examples are retained to reduce the risk that close-up specialization catastrophically erases full-body appearance."
+  ],
+  "limitations": [
+    "The sources are deterministic synthetic/3-D renders and remain PARTIAL task evidence rather than real-robot manipulation data.",
+    "The dataset has been compiled and visually checked but has not yet produced an accepted model checkpoint.",
+    "The close-ups emphasize visible 2-D anatomy; they do not establish physical joint dynamics."
+  ],
+  "next_actions": [
+    "Use this dataset only if the completed conservative r2 round fails its frozen held-out contract.",
+    "Promote no resulting checkpoint without 124/124 topology passes plus motion-profile, task-action/EPL, scene, and temporal non-regression."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "dataset", "topology", "shoulder", "closeup", "working"]
+}

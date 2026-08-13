@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "reviewer": "codex-human-visual-review",
+  "review_method": "full-timeline semantic review from every-second-frame robot crops and every-fourth-frame full-scene verification",
+  "ranges": [
+    {
+      "start_frame": 0,
+      "end_frame": 23,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": false,
+      "left_shoulder_attachment": true,
+      "right_shoulder_attachment": false,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": false,
+      "no_human_residual": true,
+      "confidence": 0.99,
+      "note": "Epoch 1 collapses the second visible arm from the opening frame; its unique shoulder chain cannot be verified and the robot is visibly one-armed."
+    },
+    {
+      "start_frame": 24,
+      "end_frame": 123,
+      "single_robot_subject": true,
+      "single_head_torso_chain": true,
+      "exactly_two_arms": false,
+      "left_shoulder_attachment": false,
+      "right_shoulder_attachment": false,
+      "continuous_arm_segments": true,
+      "stable_robot_proportions": false,
+      "no_extra_or_missing_limbs": false,
+      "no_human_residual": true,
+      "confidence": 0.99,
+      "note": "The second arm remains absent while the surviving raised arm drifts behind and above the head without a unique shoulder origin."
+    }
+  ]
+}

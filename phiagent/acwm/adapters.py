@@ -27,8 +27,16 @@ OSCAR_COSMOS_REASON_REVISION = "3210bec0495fdc7a8d3dbb8d58da5711eab4b423"
 OSCAR_WAN_VAE_REVISION = "37ec512624d61f7aa208f7ea8140a131f93afc9a"
 BWM_REPOSITORY_COMMIT = "44acfd1b06f35f365f02f7bb2fc5da6beafcd6bc"
 BWM_MODEL_REVISION = "738a8d3c008e637b8b1b18d5e98a82f6de9c04aa"
+BWM_MODEL_SHA256 = "75f863b9474d6e74934db45bb85728fef0adece3d123c667b78349bdade9c7f3"
+BWM_MODEL_BYTES = 10_051_484_872
+BWM_BASE_MODEL_REVISION = "921dbaf3f1674a56f47e83fb80a34bac8a8f203e"
 KINEMA4D_REPOSITORY_COMMIT = "716e80249376cb2843af41188a832d56a2d8d78d"
 KINEMA4D_MODEL_REVISION = "0c52ee34ee464e9a568e84945e431f62106c4270"
+FLOWWAM_REPOSITORY_COMMIT = "f06fa46042e97738c6619c868f1097be6749d48d"
+FLOWWAM_MODEL_REVISION = "1e68f76cecfb2caa973abfb24fca92cbc5312a6e"
+FLOWWAM_MODEL_SHA256 = "e211e32b6b79b293f7dec1a70794a69c3c1bf922483c06aef3c5f6d5c3be96c4"
+FLOWWAM_MODEL_BYTES = 10_137_267_208
+FLOWWAM_TOKENIZER_REVISION = "37ec512624d61f7aa208f7ea8140a131f93afc9a"
 
 
 def _sha256(path: Path) -> str:
@@ -203,10 +211,15 @@ class BWMConfig:
     config_path: Path | None = None
     gpu_index: int | None = None
     minimum_free_gpu_mib: int = 32 * 1024
+    output_fps: int = 24
 
     @property
     def python(self) -> Path:
         return self.python_executable or self.repository / ".venv" / "bin" / "python"
+
+    def __post_init__(self) -> None:
+        if self.output_fps <= 0:
+            raise ValueError("BWM output FPS must be positive")
 
     @property
     def resolved_config(self) -> Path:
@@ -228,6 +241,25 @@ class Kinema4DConfig:
     @property
     def python(self) -> Path:
         return self.python_executable or self.repository / ".venv" / "bin" / "python"
+
+
+@dataclass(frozen=True)
+class FlowWAMConfig:
+    repository: Path
+    base_model_root: Path
+    checkpoint_path: Path
+    python_executable: Path | None = None
+    gpu_index: int | None = None
+    minimum_free_gpu_mib: int = 60 * 1024
+    output_fps: int = 24
+
+    @property
+    def python(self) -> Path:
+        return self.python_executable or self.repository / ".venv" / "bin" / "python"
+
+    def __post_init__(self) -> None:
+        if self.output_fps <= 0:
+            raise ValueError("FlowWAM output FPS must be positive")
 
 
 class _ExternalBatchAdapter:
@@ -328,6 +360,10 @@ class _ExternalBatchAdapter:
                     "source_video": str(request.case.source_video.expanduser().resolve()),
                     "condition": str(condition_path),
                     "prompt": request.case.prompt,
+                    "auxiliary_inputs": {
+                        key: str(path.expanduser().resolve())
+                        for key, path in request.case.auxiliary_inputs
+                    },
                     "output": str(output),
                     "seed": request.seed,
                     "num_inference_steps": request.num_inference_steps,
@@ -564,12 +600,32 @@ class BWMRenderer(_ExternalBatchAdapter):
 
     def _model_preflight(self) -> dict[str, Any]:
         base = _require_dir(self.config.base_model_dir, "BWM Wan2.2 base model")
+        base_marker = _require_file(
+            base / ".phiagent-model-revision", "BWM Wan2.2 base-model revision marker"
+        )
+        base_revision = base_marker.read_text().strip()
+        if base_revision != BWM_BASE_MODEL_REVISION:
+            raise PreflightError(
+                f"BWM Wan2.2 base-model revision is {base_revision}, "
+                f"expected {BWM_BASE_MODEL_REVISION}"
+            )
         checkpoint = _require_file(self.config.checkpoint_path, "BWM checkpoint")
         stats = _require_file(self.config.action_stats, "BWM action statistics")
         config = _require_file(self.config.resolved_config, "BWM inference config")
         marker = _require_file(
             checkpoint.parent / ".phiagent-model-revision", "BWM revision marker"
         )
+        verification_path = _require_file(
+            checkpoint.parent / ".phiagent-model-verification.json",
+            "BWM checkpoint verification",
+        )
+        verification = json.loads(verification_path.read_text())
+        if (
+            verification.get("sha256") != BWM_MODEL_SHA256
+            or int(verification.get("bytes", -1)) != BWM_MODEL_BYTES
+            or checkpoint.stat().st_size != BWM_MODEL_BYTES
+        ):
+            raise PreflightError("BWM checkpoint verification manifest is invalid")
         revision = marker.read_text().strip()
         if revision != self.expected_model_revision:
             raise PreflightError(
@@ -577,7 +633,9 @@ class BWMRenderer(_ExternalBatchAdapter):
             )
         return {
             "base_model": str(base),
+            "base_model_revision": base_revision,
             "checkpoint": str(checkpoint),
+            "checkpoint_sha256": BWM_MODEL_SHA256,
             "action_stats": str(stats),
             "config": str(config),
             "revision": revision,
@@ -595,6 +653,8 @@ class BWMRenderer(_ExternalBatchAdapter):
             str(self.config.action_stats.expanduser().resolve()),
             "--config",
             str(self.config.resolved_config.expanduser().resolve()),
+            "--fps",
+            str(self.config.output_fps),
         ]
 
 
@@ -665,4 +725,98 @@ class Kinema4DRenderer(_ExternalBatchAdapter):
             str(self.config.episode_list.expanduser().resolve()),
             "--kinema-mode",
             self.config.mode,
+        ]
+
+
+class FlowWAMRenderer(_ExternalBatchAdapter):
+    """Dense robot-flow renderer for geometry-grounded action conditioning."""
+
+    name = "flowwam"
+    expected_commit = FLOWWAM_REPOSITORY_COMMIT
+    expected_model_revision = FLOWWAM_MODEL_REVISION
+
+    def __init__(self, config: FlowWAMConfig, *, project_root: Path | None = None) -> None:
+        super().__init__(project_root=project_root)
+        self.config = config
+
+    @property
+    def repository(self) -> Path:
+        return self.config.repository
+
+    @property
+    def python(self) -> Path:
+        return self.config.python
+
+    @property
+    def gpu_index(self) -> int | None:
+        return self.config.gpu_index
+
+    @property
+    def minimum_free_gpu_mib(self) -> int:
+        return self.config.minimum_free_gpu_mib
+
+    def supports(self, case: ACWMCase) -> BackendSupport:
+        reasons: list[str] = []
+        if case.action.representation is not ActionRepresentation.ROBOT_FLOW:
+            reasons.append("requires a camera-frame robot_flow condition")
+        if case.action.visual_condition is None:
+            reasons.append("requires an encoded robot-only optical-flow video")
+        for key in ("robot_urdf", "camera_calibration", "flow_provenance"):
+            if key not in case.assets:
+                reasons.append(f"requires {key}")
+        return BackendSupport(self.name, not reasons, tuple(reasons))
+
+    def _model_preflight(self) -> dict[str, Any]:
+        base = _require_dir(self.config.base_model_root, "FlowWAM Wan model root")
+        base_manifest_path = _require_file(
+            base / ".phiagent-flowwam-base-revisions.json",
+            "FlowWAM base-model revision manifest",
+        )
+        base_manifest = json.loads(base_manifest_path.read_text())
+        if (
+            base_manifest.get("wan22_ti2v_revision") != BWM_BASE_MODEL_REVISION
+            or base_manifest.get("wan21_tokenizer_revision")
+            != FLOWWAM_TOKENIZER_REVISION
+        ):
+            raise PreflightError("FlowWAM base-model revision manifest is invalid")
+        checkpoint = _require_file(self.config.checkpoint_path, "FlowWAM checkpoint")
+        marker = _require_file(
+            checkpoint.parent / ".phiagent-model-revision",
+            "FlowWAM model revision marker",
+        )
+        verification_path = _require_file(
+            checkpoint.parent / ".phiagent-model-verification.json",
+            "FlowWAM checkpoint verification",
+        )
+        verification = json.loads(verification_path.read_text())
+        if (
+            verification.get("sha256") != FLOWWAM_MODEL_SHA256
+            or int(verification.get("bytes", -1)) != FLOWWAM_MODEL_BYTES
+            or checkpoint.stat().st_size != FLOWWAM_MODEL_BYTES
+        ):
+            raise PreflightError("FlowWAM checkpoint verification manifest is invalid")
+        revision = marker.read_text().strip()
+        if revision != self.expected_model_revision:
+            raise PreflightError(
+                f"FlowWAM model revision is {revision}, expected {self.expected_model_revision}"
+            )
+        return {
+            "base_model_root": str(base),
+            "base_model_revisions": base_manifest,
+            "checkpoint": str(checkpoint),
+            "checkpoint_sha256": FLOWWAM_MODEL_SHA256,
+            "revision": revision,
+            "stage": "worldarena_stage1_without_seedvr_refiner",
+        }
+
+    def _runner_arguments(self) -> list[str]:
+        return [
+            "--repository",
+            str(self.repository.expanduser().resolve()),
+            "--base-model",
+            str(self.config.base_model_root.expanduser().resolve()),
+            "--checkpoint",
+            str(self.config.checkpoint_path.expanduser().resolve()),
+            "--fps",
+            str(self.config.output_fps),
         ]

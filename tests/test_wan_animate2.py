@@ -10,6 +10,7 @@ from phiagent.rendering.wan_animate2 import (
     WAN_ANIMATE2_MODELSCOPE_REVISION,
     select_wan_animate2_gpus,
     verify_wan_animate2_checkpoint,
+    wan_animate2_master_port,
     write_runtime_config,
 )
 
@@ -35,6 +36,18 @@ def _checkpoint(tmp_path: Path) -> Path:
     return checkpoint
 
 
+def _runtime_template(model_name: str) -> str:
+    paths = (
+        "../ckpts/videomodel/Wan-AI/models_t5_umt5-xxl-enc-bf16.pth",
+        "../ckpts/videomodel/Wan-AI/umt5-xxl",
+        "../ckpts/videomodel/Wan-AI/vae.pth",
+        "../ckpts/videomodel/Wan-AI/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth",
+        "../ckpts/videomodel/Wan-AI/xlm-roberta-large",
+        f"../ckpts/wan_animate_2/{model_name}",
+    )
+    return "\n".join(f"path_{index}: {path}" for index, path in enumerate(paths)) + "\n"
+
+
 def test_checkpoint_requires_pinned_revision(tmp_path: Path) -> None:
     checkpoint = _checkpoint(tmp_path)
 
@@ -53,10 +66,9 @@ def test_checkpoint_requires_pinned_revision(tmp_path: Path) -> None:
 
 def test_runtime_config_uses_only_absolute_checkpoint_paths(tmp_path: Path) -> None:
     repo = tmp_path / "repo"
-    template = Path("external/Wan-Animate-2/infer/wan_animate_2.yaml").read_text()
     config = repo / "infer" / "wan_animate_2.yaml"
     config.parent.mkdir(parents=True)
-    config.write_text(template)
+    config.write_text(_runtime_template("wan_animate_2_bf16.safetensors"))
     checkpoint = _checkpoint(tmp_path)
     output = tmp_path / "experiment" / "config" / "wan_animate_2.yaml"
 
@@ -67,10 +79,9 @@ def test_runtime_config_uses_only_absolute_checkpoint_paths(tmp_path: Path) -> N
     assert str(checkpoint.resolve()) in rendered
 
     distilled_output = tmp_path / "distilled" / "config.yaml"
-    distilled_template = (
-        Path("external/Wan-Animate-2/infer/wan_animate_2_distillation.yaml").read_text()
+    (repo / "infer" / "wan_animate_2_distillation.yaml").write_text(
+        _runtime_template("wan_animate_2_bf16_distillation.safetensors")
     )
-    (repo / "infer" / "wan_animate_2_distillation.yaml").write_text(distilled_template)
     write_runtime_config(repo, checkpoint, distilled_output, distilled=True)
     assert "wan_animate_2_bf16_distillation.safetensors" in distilled_output.read_text()
 
@@ -87,3 +98,19 @@ def test_select_two_free_physical_gpus() -> None:
     assert tuple(gpu.physical_index for gpu in selected) == (0, 1)
     with pytest.raises(ValueError, match="exactly two distinct"):
         select_wan_animate2_gpus(gpus, (0, 0), 60000)
+
+
+def test_wan_animate2_master_port_is_unique_per_gpu_pair() -> None:
+    gpus = (
+        GPUInfo(0, "A800", 81920, 1000, 80920),
+        GPUInfo(1, "A800", 81920, 1000, 80920),
+        GPUInfo(2, "A800", 81920, 1000, 80920),
+        GPUInfo(3, "A800", 81920, 1000, 80920),
+    )
+
+    first = wan_animate2_master_port((gpus[0], gpus[1]))
+    second = wan_animate2_master_port((gpus[2], gpus[3]))
+
+    assert first == 15001
+    assert second == 15203
+    assert first != second

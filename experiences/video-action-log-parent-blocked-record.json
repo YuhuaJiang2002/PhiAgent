@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.video-action-log-parent-blocked",
+  "recorded_at": "2026-08-12T04:27:30Z",
+  "status": "BLOCKED",
+  "scope": "First WorldArena video-to-action pilot launch",
+  "summary": "The first launch did not start because shell redirection targeted a log file under a parent directory that had not yet been created.",
+  "evidence": [
+    "The command exited before the Python entry point with `No such file or directory` for outputs/video-action-labeling/...-output.tmp.",
+    "No experiment directory or model artifact was created by the failed launch."
+  ],
+  "lessons": [
+    "Outer launcher log parents must be created before redirection; experiment-owned directories cannot be relied on before the entry point starts."
+  ],
+  "limitations": [
+    "This attempt produced no scientific result."
+  ],
+  "next_actions": [
+    "Create the outer log parent explicitly and retry in a new immutable experiment directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/video-action-labeling",
+  "supersedes": [],
+  "tags": ["video-to-action", "launcher", "blocked", "worldarena2"]
+}

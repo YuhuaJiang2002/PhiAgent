@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-data-v2-working",
+  "recorded_at": "2026-08-12T18:10:00Z",
+  "status": "WORKING",
+  "scope": "Leakage-free physical-control VACE dataset from accepted v6",
+  "summary": "The corrected exporter produces 12 training and four validation clips with zero source-frame overlap, no target RGB in controls, and an independent robot-only identity image.",
+  "evidence": [
+    "validation.json reports passed=true, train_validation_frame_overlap=0, target_pixels_excluded_from_controls=true, and identity_reference_independent_of_target_clips=true.",
+    "Every control contains calibrated depth, depth boundaries, the projected persistent stem centerline, and contact state only.",
+    "All source files are hash-bound to the accepted v6 simulation report; no Pexels frame enters training."
+  ],
+  "lessons": [
+    "Control and reference independence must be audited in addition to split disjointness."
+  ],
+  "limitations": [
+    "All clips share one simulated rollout and cannot establish scene-level generalization."
+  ],
+  "next_actions": [
+    "Run a bounded VACE trainability smoke and fail-fast held-out comparison."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T180000Z-metric-physical-vace-data-v2",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-data-v1-revoked"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "target-independent",
+    "dataset",
+    "working"
+  ]
+}

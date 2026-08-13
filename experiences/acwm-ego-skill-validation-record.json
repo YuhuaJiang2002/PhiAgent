@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-skill-validation",
+  "recorded_at": "2026-08-11T05:24:00Z",
+  "status": "WORKING",
+  "scope": "Domain-neutral AC-WM long-action agentic skill validation",
+  "summary": "The skill was generalized from flower-specific routing to public Ego scenes and passed the official quick validator plus SkillHone offline static checks using an isolated PyYAML tool path.",
+  "evidence": [
+    "agentic_skills/acwm-long-action-control/SKILL.md now routes public Ego bottle tasks without flower-scene defaults.",
+    "The official generator produced agents/openai.yaml, quick_validate.py passed, and SkillHone static_check.py passed.",
+    "PyYAML was installed only under /tmp/phiagent-skill-deps.QKiEGV and was not added to the import-time PhiAgent dependency set."
+  ],
+  "lessons": ["An isolated tool dependency preserves the package's CPU-light import contract while allowing complete skill metadata validation."],
+  "limitations": [],
+  "next_actions": [],
+  "run_dir": "agentic_skills/acwm-long-action-control",
+  "supersedes": ["2026-08-11.acwm-ego-skill-pyyaml-preflight"],
+  "tags": ["acwm", "agentic-skill", "skillhone", "ego-video", "working"]
+}

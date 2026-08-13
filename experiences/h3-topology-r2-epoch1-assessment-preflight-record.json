@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r2-epoch1-assessment-preflight",
+  "recorded_at": "2026-08-10T22:54:45Z",
+  "scope": "First strict assessment invocation for the second r2 epoch-1 replication",
+  "status": "BLOCKED",
+  "summary": "The first assessment invocation stopped before reading model evidence because the remote checkout did not yet contain the assessment script; it produced no assessment directory or quality conclusion.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-topology-rsi/20260811T082500Z-r2-epoch1-assessment-v2",
+  "evidence": [
+    "The remote Python interpreter reported that scripts/assess_h3_identity_rsi.py did not exist.",
+    "No output directory or assessment JSON was created by this invocation.",
+    "The script was then copied from the tested local workspace and the assessment was rerun as a separate successful engineering attempt."
+  ],
+  "lessons": [
+    "Remote evaluation preflight must verify that the exact assessment script revision is present before launching an evidence-producing command."
+  ],
+  "limitations": [
+    "This attempt contains no model-quality evidence."
+  ],
+  "next_actions": [
+    "Use the subsequently completed digest-bound assessment as the authoritative result."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "assessment", "remote-preflight", "blocked"]
+}

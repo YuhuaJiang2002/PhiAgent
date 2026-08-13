@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-object-factored-source-state-v2",
+  "recorded_at": "2026-08-12T14:23:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Complete 27.5-second source-state projection v2",
+  "summary": "The first fully verified 660-frame projection made known source and accepted flower pixels exact by construction, but review of the metrics found that the color-only skin negative removed too much of the tracked flower layer.",
+  "evidence": [
+    "The run encoded and verified 660 frames in 15.2708 seconds at 43.2199 projection FPS.",
+    "Known-source exactness, flower MAD, and flower temporal residual all reached their exact pre-encode gates.",
+    "Only 942140 restore pixels survived from 4213773 tracked flower pixels inside the edit support because the unconstrained skin proxy classified broad warm scene regions."
+  ],
+  "lessons": [
+    "Occlusion negatives must be the intersection of skin evidence with explicit source-hand tracks, not a scene-wide color decision."
+  ],
+  "limitations": [
+    "The run is not promoted because the broad negative could leave generated flower pixels inside the edit support.",
+    "Human semantic review remained pending."
+  ],
+  "next_actions": [
+    "Constrain skin negatives with the 660-frame source-hand coordinate track and rerun in a fresh directory."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-long-object-factored/20260812T142000Z-source-state-projection-v2",
+  "supersedes": [
+    "2026-08-12.wan-long-object-factored-ffv1-probe-failure"
+  ],
+  "tags": [
+    "long-video",
+    "object-factored",
+    "flower-preservation",
+    "partial"
+  ]
+}

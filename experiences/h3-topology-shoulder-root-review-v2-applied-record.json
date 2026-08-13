@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-shoulder-root-review-v2-applied",
+  "recorded_at": "2026-08-10T23:09:52Z",
+  "scope": "Real-video application of the twelve-gate H3 shoulder-root review and full non-regression contract",
+  "status": "PARTIAL",
+  "summary": "The twelve-gate review was applied to the second r2 epoch-1 replication and confirms that its 100 failing frames have both a non-unique left shoulder root and arm-root intrusion into the head/neck region; the complete contract rejects the candidate.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-topology-rsi/20260811T083700Z-r2-epoch1-assessment-v4-full-contract",
+  "evidence": [
+    "The schema-2 topology evidence covers all 124 decoded frame digests and all twelve semantic gates; evidence SHA-256 is 4e30d8575e3a2341c82153a9e185dfaadd62860cbb146696415ddd0682fb7ab7.",
+    "Twenty-four frames pass. One hundred frames fail left_shoulder_attachment, stable_robot_proportions, unique_left_shoulder_origin, and arm_roots_clear_of_head_and_neck; 82 also fail single_head_torso_chain.",
+    "Both topology_decoded_frame_digests and topology_kinematic_detail evidence gates pass, so rejection is caused by measured anatomy and capability failures rather than missing labels.",
+    "The full automatic metrics SHA-256 is 255f3721e87c48c1d73b0dc0405f875efe3ca37beb4404dbc9cc84a0ecd134c0 and assessment SHA-256 is cdb60f7552b0a6e6444992ea308526da097c4e7435c7bdafb26b492656e5abcc.",
+    "Identity gain, identity floor, topology, matched motion, and action non-regression fail; scene and temporal non-regression pass."
+  ],
+  "lessons": [
+    "Separating shoulder uniqueness and head/neck clearance turns a vague body-consistency complaint into two independently countable failure modes.",
+    "Complete detailed evidence can pass its provenance gates while the candidate correctly fails the semantic and capability gates."
+  ],
+  "limitations": [
+    "This remains one 124-frame 2-D real-scene clip, not physical or multi-scene validation.",
+    "The rejected video is diagnostic evidence and not an improved demo."
+  ],
+  "next_actions": [
+    "Apply the identical twelve-gate schema to every r3 scale candidate."
+  ],
+  "supersedes": [
+    "2026-08-11.h3-topology-shoulder-root-review-v2"
+  ],
+  "tags": ["h3", "rsi", "topology", "shoulder-root", "head-neck", "real-video", "rejected", "partial"]
+}

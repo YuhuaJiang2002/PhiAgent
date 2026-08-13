@@ -27,6 +27,8 @@ def test_vace_training_entrypoint_persists_pinned_provenance() -> None:
     assert '"diffsynth_commit": diffsynth_commit' in source
     assert '"checkpoint_files": [' in source
     assert '"manifest_sha256": _sha256' in source
+    assert 'training_env["PYTHONPATH"]' in source
+    assert '"training_pythonpath_prefix"' in source
 
 
 def _asset(path: Path, asset_id: str, kind: AdaptationAssetKind) -> AdaptationAsset:

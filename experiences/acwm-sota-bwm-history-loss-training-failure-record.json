@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-history-loss-training-failure",
+  "recorded_at": "2026-08-11T10:00:00Z",
+  "status": "PARTIAL",
+  "scope": "Fourth pinned BWM action-adapter GPU training attempt",
+  "summary": "The attempt reached VAE encoding and loss construction, where DiffSynth's one-frame SFT loss conflicted with BWM's three encoded history latents.",
+  "evidence": [
+    "Nine pixel-space history frames encoded to three latent frames.",
+    "The generic loss attempted to assign a three-latent tensor into a one-latent slice and returned code 1."
+  ],
+  "lessons": [
+    "BWM long-history training must preserve and exclude every encoded condition latent from the denoising target, not silently truncate history to one latent."
+  ],
+  "limitations": [
+    "The attempt completed VAE encoding but no backward or optimizer step."
+  ],
+  "next_actions": [
+    "Use a bounded history-aware flow-matching loss and retain the public scheduler weighting."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-sota-training/20260811T095905.958093Z-action-adapter-seed20260811",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "gpu-training", "negative-result", "history-conditioning"]
+}

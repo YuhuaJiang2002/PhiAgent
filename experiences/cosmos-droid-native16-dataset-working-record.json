@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-native16-dataset-working",
+  "recorded_at": "2026-08-12T06:19:00Z",
+  "scope": "Leakage-safe native-layout DROID dataset for Cosmos-Predict2 14B adaptation",
+  "status": "WORKING",
+  "summary": "A 180-sample native 2x2 DROID dataset now provides two temporal windows for each of 86 training episodes while keeping legacy development, validation, and final episodes disjoint; the corrected temporal near-duplicate gate passes.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-multiview/20260812T161500Z-composite-v6-native16-2clips",
+  "evidence": [
+    "The source contract SHA-256 is 352fd63a41ca550f430bfa6f3bb6c7ffa99275fc234d9f96e996191928a4343 and contains 172 train, 3 legacy-dev, 2 validation, and 3 final samples.",
+    "The composite contract SHA-256 is 1e6bc998e2a938453a0bc38c94840de8c6522b82713d1ff9591889f62e54ddb3; every video is 768x432, 16 FPS, and 97 frames with a 93-frame training window.",
+    "The layout is exterior-1 top-left, exterior-2 top-right, wrist/ego bottom-left, and inactive black bottom-right, matching the official GR00T-Dreams-DROID format.",
+    "The corrected temporal audit SHA-256 is 9faf167764a9e39b9475799a440ba4041d6d88974e827e09577305aab9fa9d1d and passes with median 0.09375 and P90 0.1770833 near-duplicate fractions against frozen maxima 0.15 and 0.30.",
+    "The contract records final_holdout_used_for_training=false and final_holdout_used_for_checkpoint_selection=false; only the train directory is eligible for embedding and optimization."
+  ],
+  "lessons": [
+    "Two deterministic episode windows improve temporal coverage without crossing episode-level split boundaries.",
+    "A 97-frame source avoids the upstream exact-93-frame random-window edge case while preserving the model's 93-frame training contract."
+  ],
+  "limitations": [
+    "DROID-100 provides synchronized camera pixels but no usable camera intrinsics or extrinsics in this conversion, so the dataset does not establish calibrated 3-D geometry.",
+    "Ninety-six of 180 prompts use a disclosed fixed neutral fallback because those source episodes have empty task annotations.",
+    "The source is 15 FPS and is nearest-time sampled once to the model's 16 FPS rate; the gate limits but does not eliminate near duplicates."
+  ],
+  "next_actions": [
+    "Compute SHA-bound T5 embeddings, run the public 14B baseline, then train and select the view-weighted LoRA using validation only."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "multiview",
+    "dataset",
+    "holdout",
+    "working"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-dataset-iterations-partial"
+  ]
+}

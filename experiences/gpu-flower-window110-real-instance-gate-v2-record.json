@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window110-real-instance-gate-v2",
+  "recorded_at": "2026-08-11T07:11:30Z",
+  "scope": "Strict named-flower, robot-hand, and contact-pair acceptance for real flower-arranging frames 110-198",
+  "status": "WORKING",
+  "summary": "The frozen 3.708-second seed-42 cabbage-route candidate passed all 56 strict gates after adding persistent named flower instances, two independent robot-hand tracks, and phase-specific image-plane contact pairs.",
+  "run_dir": "outputs/gpu-flower-instance-supervision/20260811T062348Z-window110-198-real-instances-v1",
+  "evidence": [
+    "strict-object-gate-v2/gate-report.json records 56/56 passing gates and ALLOW_FULL_FILM_EXPANSION without lowering thresholds.",
+    "Three named flower instances and both robot hands are tracked over 89 camera-frame pixels; four phase-specific contact pairs pass visibility, p90-distance, and maximum-distance gates.",
+    "Aligned motion preservation is 0.841772, target identity is 0.981864, and temporal consistency is 0.758863.",
+    "Dense semantic review passes complete human removal, two mechanical hands, plausible contact, and named-flower identity/order preservation.",
+    "The accepted 896x512, 24 FPS, 89-frame video has SHA-256 2afd1238a976b3b87b10ebbcbccb83ac3d5e3ca630af184738bb8bb2df00f255."
+  ],
+  "lessons": [
+    "A generic bouquet area proxy is not a valid substitute for persistent per-flower identity and explicit hand-to-stem contact supervision.",
+    "The original seed-42 pixels were already geometrically viable; correcting the supervision, rather than regenerating the accepted window, preserved its quality."
+  ],
+  "limitations": [
+    "Only three visually separable held flowers are assigned identities; background flowers are outside this claim.",
+    "Contact is a 2-D camera-pixel mask-distance measurement, not force or 3-D tactile sensing.",
+    "The result validates one 89-frame window, not the complete 27.5-second film."
+  ],
+  "next_actions": [
+    "Freeze this window and require every overlapping expansion window to pass the same human-removal, identity, contact, and temporal gates before stitching."
+  ],
+  "supersedes": [
+    "2026-08-11.gpu-flower-cabbage-route-window110-198-three-round-v1"
+  ],
+  "tags": [
+    "gpu",
+    "flower-arranging",
+    "sam2",
+    "instance-tracking",
+    "contact-supervision",
+    "strict-gate",
+    "working"
+  ]
+}

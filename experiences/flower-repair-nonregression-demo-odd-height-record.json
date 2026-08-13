@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-repair-nonregression-demo-odd-height",
+  "recorded_at": "2026-08-10T20:52:00Z",
+  "status": "PARTIAL",
+  "scope": "First four-column non-regression comparison encoding attempt",
+  "summary": "The first comparison encode failed because the 320x185 video tiles plus a 76-pixel header produced an odd 261-pixel H.264 yuv420p frame height.",
+  "evidence": [
+    "libx264 rejected the 1280x261 stream with 'height not divisible by 2'.",
+    "The immutable failed output is a zero-byte MP4 under outputs/flower-repair-policy/20260810T205055Z-e65420b0/demo-nonregression-v2.",
+    "Training, held-action metrics, and source candidate videos were not modified by the failed presentation encode."
+  ],
+  "lessons": [
+    "Presentation builders using yuv420p must validate both composed dimensions as even before starting the encoder."
+  ],
+  "limitations": [
+    "This attempt produced no playable demo artifact."
+  ],
+  "next_actions": [
+    "Round the derived tile height up to the next even integer and rerun in a new output directory."
+  ],
+  "run_dir": "outputs/flower-repair-policy/20260810T205055Z-e65420b0/demo-nonregression-v2",
+  "supersedes": [],
+  "tags": [
+    "flower-repair-policy",
+    "video-demo",
+    "ffmpeg",
+    "failed-encode",
+    "partial"
+  ]
+}

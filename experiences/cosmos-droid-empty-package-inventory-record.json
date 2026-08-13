@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-empty-package-inventory-partial",
+  "recorded_at": "2026-08-12T06:31:00Z",
+  "scope": "Cosmos T5 embedding experiment provenance preflight",
+  "status": "PARTIAL",
+  "summary": "The first embedding experiment was stopped before T5 model loading because its official uv environment has no pip module and the launcher silently wrote an empty package inventory.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-multiview/20260812T163000Z-t5-embeddings-v1",
+  "evidence": [
+    "packages.txt is zero bytes while command.txt, experiment-config.json, and gpu-selection.json preserve the attempted launch.",
+    "The controller and orphaned worker were both resolved and terminated; physical GPU 5 returned to 72,576 MiB free.",
+    "No T5 pickle was written to the formal training dataset by this attempt.",
+    "The shared provenance helper now inventories importlib.metadata distributions directly and returns 163 packages, including torch==2.6.0+cu126, in the official environment."
+  ],
+  "lessons": [
+    "A successful environment sync does not imply that python -m pip is installed.",
+    "Package provenance must fail closed or use a standard-library fallback instead of accepting empty stdout from a best-effort command."
+  ],
+  "limitations": [
+    "This attempt contains no embedding or model-quality evidence."
+  ],
+  "next_actions": [
+    "Run the corrected launcher in a new experiment directory and require a non-empty package inventory plus 172 hash-bound embeddings."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "t5",
+    "provenance",
+    "preflight",
+    "partial"
+  ],
+  "supersedes": []
+}

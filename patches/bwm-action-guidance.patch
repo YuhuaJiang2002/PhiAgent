@@ -1,0 +1,215 @@
+diff --git a/scripts/infer.py b/scripts/infer.py
+index 21d349b..adee9d5 100644
+--- a/scripts/infer.py
++++ b/scripts/infer.py
+@@ -60,6 +60,12 @@ def _build_autoregressive_action_condition(
+     return action_condition
+ 
+ 
++def _build_hold_action_baseline(action: torch.Tensor) -> torch.Tensor:
++    if action.ndim != 3 or int(action.shape[1]) < 1:
++        raise ValueError("Hold-action guidance requires a non-empty B,T,D action tensor.")
++    return action[:, :1, :].repeat(1, int(action.shape[1]), 1)
++
++
+ def _run_autoregressive(
+     pipe,
+     sample: Dict,
+@@ -70,6 +76,9 @@ def _run_autoregressive(
+     total_frames = int(sample["total_frames"])
+     input_video = sample["video"]
+     action = sample["action"]
++    action_guidance_baseline = (
++        _build_hold_action_baseline(action) if float(args.cfg_scale) != 1.0 else None
++    )
+     output_path = sample["output_path"]
+ 
+     history_frames = int(args.num_history_frames)
+@@ -99,6 +108,17 @@ def _run_autoregressive(
+             future_count=current_future,
+             infer_frames=infer_frames,
+         )
++        chunk_action_guidance_baseline = (
++            _build_autoregressive_action_condition(
++                action=action_guidance_baseline,
++                history_indices=history_indices,
++                future_start=future_start,
++                future_count=current_future,
++                infer_frames=infer_frames,
++            )
++            if action_guidance_baseline is not None
++            else None
++        )
+         print(
+             f"[window] sample_index={sample_index} episode_index={episode_index} "
+             f"window={chunk_idx} future_start={future_start} future_count={current_future} "
+@@ -109,6 +129,7 @@ def _run_autoregressive(
+         chunk_video = pipe(
+             input_video=chunk_input_video,
+             action=chunk_action,
++            action_guidance_baseline=chunk_action_guidance_baseline,
+             seed=seed,
+             rand_device="cpu",
+             tiled=False,
+@@ -251,6 +272,10 @@ def main():
+     print("[resolved_config] time_division_remainder:", args.time_division_remainder)
+     print("[resolved_config] action_type:", args.action_type)
+     print("[resolved_config] cfg_scale:", args.cfg_scale)
++    print(
++        "[resolved_config] action_guidance:",
++        "target_vs_hold" if float(args.cfg_scale) != 1.0 else "disabled",
++    )
+     print("[resolved_config] num_inference_steps:", args.num_inference_steps)
+     print("[resolved_config] fps:", args.fps)
+ 
+diff --git a/wan_video_action/pipelines/wan_video_action.py b/wan_video_action/pipelines/wan_video_action.py
+index 48364d7..116b02e 100644
+--- a/wan_video_action/pipelines/wan_video_action.py
++++ b/wan_video_action/pipelines/wan_video_action.py
+@@ -96,6 +96,7 @@ def _install_wan_video_action_call(pipeline: WanVideoPipeline) -> None:
+         num_frames: int = 81,
+         num_history_frames: int = 1,
+         action: Optional[torch.Tensor] = None,
++        action_guidance_baseline: Optional[torch.Tensor] = None,
+         cfg_scale: float = 1.0,
+         num_inference_steps: int = 50,
+         sigma_shift: float = 5.0,
+@@ -107,6 +108,8 @@ def _install_wan_video_action_call(pipeline: WanVideoPipeline) -> None:
+         output_type: str = "quantized",
+         **_: dict,
+     ):
++        if float(cfg_scale) <= 0:
++            raise ValueError("Action guidance scale must be positive.")
+         self.scheduler.set_timesteps(num_inference_steps, denoising_strength=denoising_strength, shift=sigma_shift)
+         input_video = input_video.to(dtype=self.torch_dtype, device=self.device)
+ 
+@@ -123,6 +126,7 @@ def _install_wan_video_action_call(pipeline: WanVideoPipeline) -> None:
+             "num_frames": num_frames,
+             "num_history_frames": num_history_frames,
+             "action": action,
++            "action_guidance_baseline": action_guidance_baseline,
+             "cfg_scale": cfg_scale,
+             "tiled": tiled,
+             "tile_size": tile_size,
+@@ -144,14 +148,38 @@ def _install_wan_video_action_call(pipeline: WanVideoPipeline) -> None:
+ 
+         for progress_id, timestep in enumerate(progress_bar_cmd(self.scheduler.timesteps)):
+             timestep = timestep.unsqueeze(0).to(dtype=self.torch_dtype, device=self.device)
+-            noise_pred_posi = self.model_fn(
++            noise_pred_target = self.model_fn(
+                 **models,
+                 **inputs_shared,
+                 timestep=timestep,
+                 use_gradient_checkpointing=use_gradient_checkpointing,
+                 use_gradient_checkpointing_offload=use_gradient_checkpointing_offload,
+             )
+-            noise_pred = noise_pred_posi
++            if float(cfg_scale) == 1.0:
++                noise_pred = noise_pred_target
++            else:
++                baseline_action_emb = inputs_shared.get("baseline_action_emb")
++                baseline_action_mod_emb = inputs_shared.get("baseline_action_mod_emb")
++                if baseline_action_emb is None or baseline_action_mod_emb is None:
++                    raise ValueError(
++                        "Action guidance with cfg_scale != 1 requires "
++                        "`action_guidance_baseline`."
++                    )
++                baseline_inputs = {
++                    **inputs_shared,
++                    "action_emb": baseline_action_emb,
++                    "action_mod_emb": baseline_action_mod_emb,
++                }
++                noise_pred_baseline = self.model_fn(
++                    **models,
++                    **baseline_inputs,
++                    timestep=timestep,
++                    use_gradient_checkpointing=use_gradient_checkpointing,
++                    use_gradient_checkpointing_offload=use_gradient_checkpointing_offload,
++                )
++                noise_pred = noise_pred_baseline + float(cfg_scale) * (
++                    noise_pred_target - noise_pred_baseline
++                )
+             inputs_shared["latents"] = self.scheduler.step(
+                 noise_pred,
+                 self.scheduler.timesteps[progress_id],
+@@ -289,22 +317,19 @@ def build_wan_video_action_pipeline(
+ class WanVideoUnit_ActionEmbedder(PipelineUnit):
+     def __init__(self):
+         super().__init__(
+-            input_params=("action", "num_frames"),
+-            output_params=("action_emb", "action_mod_emb"),
++            input_params=("action", "action_guidance_baseline", "num_frames"),
++            output_params=(
++                "action_emb",
++                "action_mod_emb",
++                "baseline_action_emb",
++                "baseline_action_mod_emb",
++            ),
+             onload_model_names=("action_encoder",)
+         )
+ 
+-    def process(self, pipe, action=None, num_frames=None):
+-        if action is None:
+-            return {}
+-        if pipe.action_encoder is None:
+-            raise ValueError("Action encoder is not available in the pipeline.")
+-        if any(param.device != pipe.device for param in pipe.action_encoder.parameters()):
+-            pipe.action_encoder = pipe.action_encoder.to(device=pipe.device, dtype=pipe.torch_dtype)
+-
+-        pipe.load_models_to_device(self.onload_model_names)
+-        action = torch.as_tensor(action, device=pipe.device, dtype=pipe.torch_dtype)
+-
++    @staticmethod
++    def _align_action(action, *, num_frames, device, dtype):
++        action = torch.as_tensor(action, device=device, dtype=dtype)
+         target_groups = (int(num_frames) - 1) // 4 + 1
+         target_action_frames = 1 + 4 * (target_groups - 1)
+         current_action_frames = int(action.shape[1])
+@@ -315,8 +340,46 @@ class WanVideoUnit_ActionEmbedder(PipelineUnit):
+                 f"Action sequence too short for latent groups: action_frames={current_action_frames}, "
+                 f"required={target_action_frames}, target_groups={target_groups}"
+             )
++        return action
++
++    def process(
++        self,
++        pipe,
++        action=None,
++        action_guidance_baseline=None,
++        num_frames=None,
++    ):
++        if action is None:
++            return {}
++        if pipe.action_encoder is None:
++            raise ValueError("Action encoder is not available in the pipeline.")
++        if any(param.device != pipe.device for param in pipe.action_encoder.parameters()):
++            pipe.action_encoder = pipe.action_encoder.to(device=pipe.device, dtype=pipe.torch_dtype)
++
++        pipe.load_models_to_device(self.onload_model_names)
++        action = self._align_action(
++            action,
++            num_frames=num_frames,
++            device=pipe.device,
++            dtype=pipe.torch_dtype,
++        )
+         action_emb, action_mod_emb = pipe.action_encoder.encode_ti2v2(action)
+-        return {"action_emb": action_emb, "action_mod_emb": action_mod_emb}
++        outputs = {"action_emb": action_emb, "action_mod_emb": action_mod_emb}
++        if action_guidance_baseline is not None:
++            baseline = self._align_action(
++                action_guidance_baseline,
++                num_frames=num_frames,
++                device=pipe.device,
++                dtype=pipe.torch_dtype,
++            )
++            baseline_emb, baseline_mod_emb = pipe.action_encoder.encode_ti2v2(baseline)
++            outputs.update(
++                {
++                    "baseline_action_emb": baseline_emb,
++                    "baseline_action_mod_emb": baseline_mod_emb,
++                }
++            )
++        return outputs
+ 
+ 
+ class WanVideoUnit_InputVideoEmbedder(PipelineUnit):

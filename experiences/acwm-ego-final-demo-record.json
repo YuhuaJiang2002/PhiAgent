@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-bottle-10s-demo-v1",
+  "recorded_at": "2026-08-11T07:10:00Z",
+  "status": "PARTIAL",
+  "scope": "Public-Ego ten-second AC-WM comparison for pour, shake, and handover",
+  "summary": "The new main AC-WM demo uses a verified EPIC-KITCHENS-100 Ego interval and produces three exact ten-second, visibly distinct robot/bottle actions, but every strict window evaluation rejects and the two-window seam remains visible, so this is PARTIAL evidence rather than accepted long-horizon embodied control.",
+  "evidence": [
+    "The official P03_28 source matched MD5 801bf911ae9eb4293abec88480f17c4c; the selected 25.83-35.83 second clip is 240 frames at 24 FPS and is attributed under CC BY-NC 4.0 with annotation/downloader revisions and hashes recorded.",
+    "The comparison plus pour, shake, and handover videos each decode to exactly 240 frames / 10.0 seconds. The portable comparison SHA-256 is 2c65fbeaa670ac66e81bc26f33ae2a69f071d321aded5418d7f2534b31399f32.",
+    "Minimum pairwise full-frame MAD is 14.657888; every pair exceeds 2.0 MAD in 100% of frames, so macro actions are measurably separated.",
+    "All six strict evaluations reject. Conservative EPL minima are 0.067490 for pour, 0.283180 for shake, and 0.335349 for handover; following-window pour object lock is 0.067490. Background lock is 1.0, robot identity is 0.7105-0.8850, motion is 0.7591-0.8540, and temporal consistency is 0.8016-0.9388.",
+    "Best-seam subject MAD is 21.223728 for pour, 22.331053 for shake, and 17.536915 for handover; dense seam review marks human_review failed because the pose reset is visible near five seconds.",
+    "The trained 30-row held-action Ego repair router and alpha sweep were rejected: selection accuracy stayed 1/6 and no candidate jointly passed background-lock 0.95 and the non-regression contract. The formal demo therefore uses the deterministic tight-support repair, whose mean support is about 25% instead of 57%.",
+    "Repository verification passed 392 tests with one optional MuJoCo skip; Ruff, git diff checks, skill-creator validation, SkillHone static checks, exact decode checks, and the append-only ledger validator pass."
+  ],
+  "lessons": [
+    "Public Ego data, explicit holder state, and action-specific controls substantially improve task relevance and action separation over the legacy flower demo, but RGB-only recursive continuation does not solve long-window camera/robot state.",
+    "A learned repair module must be rejected when its feasible background/non-regression set is empty; deterministic bounded repair plus an honest PARTIAL label is safer than promoting the checkpoint.",
+    "Proxy and human gates remain distinct: visually coherent mechanical hands do not override low source-skin/EPL or object-lock scores."
+  ],
+  "limitations": [
+    "MiniMax-H3 uses third-party NF4 weights and two overlapping diffusion windows rather than one native ten-second trajectory.",
+    "The source is a recorded public Ego observation and the outputs are image-space visualizations, not calibrated robot-base commands, joint trajectories, force/contact sensing, collision checks, or real-robot execution.",
+    "The repair router training covers one scene, one seed, two windows, and three actions; it is rejected and not deployed.",
+    "Visible seam reset, sink-region repair smearing, imperfect bottle lock, and failed source-skin/EPL gates remain."
+  ],
+  "next_actions": [
+    "Train a continuation-state adapter on multiple licensed Ego scenes with synchronized camera pose, robot joint/EEF state, object identity/holder state, and overlap supervision.",
+    "Replace color-only source-skin and bottle proxies with tracked instance masks and causal holder-transition evaluation.",
+    "Require a calibrated seam threshold and real-robot contact evaluation before upgrading long-horizon action control to WORKING."
+  ],
+  "run_dir": "outputs/minimax-h3-long-ego-action-demo/20260811T070900Z-epic-blue-bottle-v1",
+  "supersedes": [
+    "2026-08-11.acwm-long-action-control-10s-v1",
+    "2026-08-11.acwm-ego-h3-v1-black-matte",
+    "2026-08-11.acwm-ego-window1-anchor0-complete"
+  ],
+  "tags": ["acwm", "epic-kitchens", "ego-video", "long-action", "action-control", "partial"]
+}

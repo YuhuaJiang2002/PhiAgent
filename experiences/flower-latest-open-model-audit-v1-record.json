@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-13.flower-latest-open-model-audit-v1-working",
+  "recorded_at": "2026-08-13T02:35:00Z",
+  "status": "WORKING",
+  "scope": "Verified 2026-08-13 literature and open-artifact audit for real flower replacement",
+  "summary": "The audit separates runnable proposal models from sensing-gated and paper-only methods and selects an explicit multi-stem/robot/contact state with bounded neural appearance residual.",
+  "evidence": [
+    "Public revisions, weights, licenses and custom-input paths were verified for DA3, MoGe-2, MegaSaM, CARI4D, V-DPM, SpatialTrackerV2, VideoManip, GMR, dex-retargeting, TrackDLO/MultiDLO, PhysTwin, DeformMaster, Wan and VACE.",
+    "C2Dex, CHOIR, ObjRetarget, HOWTransfer, Human2Humanoid, X-Humanoid, H2R-Grounder, PGRD, ContactFlow and LongDPM lack executable artifacts required by this task.",
+    "The selected architecture uses V-DPM/SpatialTracker proposals, persistent multi-rod state, exact G1/Sharpa retargeting, coupled pad/rod force and source-locked rendering.",
+    "The complete audit, novelty matrix, ranked architecture and immutable gates are recorded in docs/FLOWER_LATEST_OPEN_MODELS_20260813.md."
+  ],
+  "lessons": [
+    "No single latest model changes the information-theoretic boundary of a monocular RGB clip.",
+    "Open project pages must not be treated as runnable code or weights."
+  ],
+  "limitations": [
+    "The audit does not supply the missing original-scene metric observation.",
+    "Several conceptually strong 2026 methods remain paper-only."
+  ],
+  "next_actions": [
+    "Run pinned V-DPM and SpatialTrackerV2 proposals when their checkpoints are available, then compare them under one optimizer."
+  ],
+  "run_dir": null,
+  "tags": [
+    "flower",
+    "literature",
+    "open-source",
+    "first-principles",
+    "working"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "record_id": "2026-08-12.metric-flower-contact-projection-full660-v6-working",
+  "recorded_at": "2026-08-12T17:50:00Z",
+  "status": "WORKING",
+  "scope": "Accepted full simulated physical flower-contact bundle with exact bounded projection",
+  "summary": "The full 27.5-second rollout now passes all exact contact, articulated, deformable, force, causal, video, visual, and cross-stage lineage gates.",
+  "evidence": [
+    "All 300/300 contact frames pass distributed exact-Sharpa-pad force closure; minimum distinct contacting fingertips is two, minimum wrench rank is six, and maximum surface gap is 2.999998 mm.",
+    "All 298/298 driven frames produce a causal stem response with zero frozen driver frames.",
+    "The four original failures at frames 401, 405, 455, and 466 are each repaired by the first candidate, exactly [-0.002,0,0] m in robot_base:g1; the other 296 contact frames are unchanged.",
+    "The 73-coordinate trajectory has zero joint-limit violations and 2.310924 rad/s maximum velocity; stem segment CV is 0.042649 and force residual p95 is 0.0006188 N.",
+    "The independent compile at outputs/foundation-contact/20260812T175000Z-compiled-contact-projection-full660-v6 passes every artifact hash, bundle ID, source hash, frame, FPS, timeline, coordinate, and instance-ID gate.",
+    "Uniform, contact, and consecutive repair-neighborhood review finds a continuous robot, flower, contact, release, and no visible 2 mm repair jump.",
+    "Generation and audit complete in 375.464 seconds."
+  ],
+  "lessons": [
+    "A fail-closed contact projection can repair sparse infeasible frames without changing accepted frames or relaxing the physical contract.",
+    "Exact mesh contact and common bundle lineage are both necessary for a meaningful simulated WORKING result."
+  ],
+  "limitations": [
+    "This is simulated physical supervision, not metric evidence from the Pexels scene or a real robot.",
+    "The rendered scene is intentionally simple and not photorealistic."
+  ],
+  "next_actions": [
+    "Use target-independent controls for bounded appearance adaptation and keep the real replacement PARTIAL."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/foundation-contact/20260812T174000Z-metric-flower-contact-projection-full660-v6",
+  "supersedes": [
+    "2026-08-12.metric-flower-tangent-contact-full660-v5-partial"
+  ],
+  "tags": [
+    "flower",
+    "exact-contact",
+    "contact-projection",
+    "bundle-lineage",
+    "full-video",
+    "working"
+  ]
+}

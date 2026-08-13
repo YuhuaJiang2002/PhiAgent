@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "pose-rig-v17-wrist-midpoint-contact-20260810",
+  "recorded_at": "2026-08-10T23:32:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Forearm-bouquet-hand depth ordering and dual-wrist bouquet binding",
+  "summary": "v17 fixed the forearm/flower/hand depth order, but binding the flower to the mean of both wrists produced zero hand-flower overlap in some frames when the hands separated.",
+  "run_dir": "outputs/robot-person-replacement/pose-rig-runs/20260810T151500Z-bouquet-contact-v17-pending",
+  "evidence": [
+    "final/manifest.json records mean hand occlusion 2309 pixels but minimum hand occlusion 0 pixels.",
+    "assets/review-frame-0250.png confirms the corrected flowers-before-hands layer order."
+  ],
+  "lessons": ["A manipulated object should follow its holding hand, not the midpoint of both hands."],
+  "limitations": ["The bouquet could float between separated hands despite correct scale and layer order."],
+  "next_actions": ["Bind the bouquet grip anchor inside the holding hand while keeping the other hand independent."],
+  "supersedes": ["pose-rig-v16-bouquet-layer-order-20260810"],
+  "tags": ["flower-video", "pose-rig", "contact", "holding-hand", "partial"]
+}

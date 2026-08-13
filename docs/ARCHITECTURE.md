@@ -72,6 +72,58 @@ pose-matched case-1 run visibly replaces the human hand with one Sharpa hand, bu
 object and temporal gates remain failed. This is not learned physical language or
 unchanged-token decoding.
 
+The accepted long flower visualization applies that same short-window model
+without changing its learned weights or inference recipe:
+
+    660-frame source + one fixed robot reference + one fixed prompt/seed
+      -> ten overlapping 81-frame Wan-Animate-2 driving jobs
+      -> nine identical half-window-offset bridge jobs
+      -> per-window physical-GPU preflight and immutable provenance
+      -> bounded stable-background color alignment
+      -> stable-range minimum-cost seam search over all 19 windows
+      -> four-frame-radius cosine blend on corresponding global-time frames
+      -> unchanged central core from the reviewed three-second anchor
+      -> bounded cosine repair at six diagnosed anchor-external transitions
+      -> encoded-metric, dense, before/after, and residual-peak review
+
+The windows share source time, reference, prompt, seed, model, and settings but
+do not share diffusion memory. The staggered jobs avoid a repeatable unstable
+local-frame position, while explicit protected ranges prevent temporal repair
+from rewriting the reviewed three-second core. Overlap and local processing
+reduce visible resets; they do not create long-horizon state or prove contact
+consistency.
+
+The early-continuity hybrid uses the rejected-as-pixels H3 run only as a motion
+teacher:
+
+    stitched Wan pixels + full-length H3 guide + real source
+      -> subject-region transition energy and rolling local ratios
+      -> retain events where Wan is an outlier against H3/source consensus
+      -> convert H3/source motion weights into monotonic bridge timing
+      -> interpolate only between nearby Wan endpoints
+      -> protect the reviewed three-second Wan anchor
+      -> encoded rescoring plus consecutive-frame and dense review
+
+This transfers temporal information without transferring H3 appearance or
+identity. It is a bounded repair stage, not shared diffusion state or a learned
+long-horizon controller.
+
+Contact-rich, same-scene manipulation needs a stricter route than the gesture
+showcase or a whole-frame character generator:
+
+    real RGB video + camera calibration
+      -> per-frame person / left hand / right hand / flower / tool tracks
+      -> named camera-frame hand, wrist, object, and contact trajectories
+      -> target-robot IK and grasp/contact feasibility checks in robot-base frame
+      -> pose-conditioned robot rendering or video replacement inside tracked support
+      -> source flower/tool layers composited by per-frame depth and contact order
+      -> visual gates + simulation gates + real-robot acceptance
+
+The visual branch can produce a presentation proxy; it cannot establish that the
+robot can execute the task. Promotion therefore requires independent full-body
+replacement, object/contact preservation, temporal, kinematic, collision, and
+real-input review gates. No camera-to-robot-base transform is inferred implicitly.
+
 For long-duration and low-latency output, a deterministic hybrid baseline avoids
 full-frame generation:
 
@@ -87,6 +139,41 @@ placement is not a calibrated 3D wrist pose, exposed human-hand pixels are not
 yet removed, and no generative region enhancement has run. This path targets
 stable long-video engineering rather than exact PhiZero reproduction.
 
+The accepted jump-audited flower visualization uses a related but stricter
+global trajectory compositor:
+
+    real source + per-frame 2D shoulder/elbow/wrist/hand landmarks
+      -> centered temporal-median outlier rejection
+      -> zero-phase trajectory smoothing with same-frame index map
+      -> reviewed arm-removed robot torso base in camera pixels
+      -> generated robot-only alpha cutout aligned by ORB/RANSAC
+      -> six alpha-masked rigid robot limb layers
+      -> exact-endpoint per-part similarity transforms in camera pixels
+      -> hard source-person clear + unchanged source background
+      -> full-frame and person-ROI transition gates + consecutive-frame review
+
+It is accepted only for zero detected artificial discontinuities and same-frame
+2D action correspondence in the reviewed same-scene visualization. The torso is
+not a moving 3D body, the limb transforms are not robot joint commands, and
+finger articulation, flower contact, depth, force, and collision safety are not
+inferred. Those exclusions prevent a visually clean result from being used as
+evidence of task transfer or robot capability.
+
+The CPU-only scene replacement planner adds an explicit contract above local
+compositors:
+
+    ordered shots + per-shot normalized entity tracks
+      -> identity-stable subject routes with explicit left/right side
+      -> hand, hand-and-forearm, or full-body replacement operations
+      -> protected-object operations composited after robot layers
+      -> structured missing-track and low-confidence diagnostics
+
+Tracks never carry across a declared camera cut. Multiple subjects and protected
+objects are routed independently, and replacement pixels are clipped to their
+declared image boxes. This solves deterministic scene routing and z-order policy;
+it does not infer tracks, generate photorealistic robot pixels, or verify 3D
+contact physics.
+
 ArtiCraft remains an independent asset-generation research path:
 
     text description / reference image
@@ -97,6 +184,62 @@ ArtiCraft remains an independent asset-generation research path:
 
 Generated assets do not bypass simulation gates, but they are not inputs
 required by the paper's Sharpa video-transfer protocol.
+
+## Native action-conditioned world-model branch
+
+The AC-WM branch is independent of the PhiZero reproduction mainline and the
+generic human-to-robot visual replacement proxies:
+
+    language instruction or exact numeric action + real-scene source
+      -> typed frame-explicit ACWMActionCondition
+      -> representation/frame compatibility router
+      -> isolated OSCAR, BWM, Kinema4D, or FlowWAM adapter
+      -> matched-seed candidate batch in a new experiment directory
+      -> action, embodiment, object, temporal, and background gates
+      -> mandatory human review
+      -> accept, native-condition repair, or compatible-backend reroute
+
+The router preserves the training-time action interface of every backend.
+OSCAR consumes `camera:*` 2D robot skeleton videos. Boundless World Model
+consumes exactly 14 `robot_base:*` EEF or joint channels. Kinema4D consumes a
+robot pointmap condition and additionally requires an explicit robot URDF and
+camera calibration. FlowWAM consumes robot-only optical-flow videos and requires
+the URDF, camera calibration, and flow-producer provenance that produced them.
+A camera-pixel wrist trace is never silently promoted to a metric robot-base
+action, 3D pointmap, or geometry-grounded robot flow.
+
+The interactive numeric branch specializes the BWM route to its released
+57-action-frame, dual-arm absolute-EEF contract. Action sample rate and output
+video FPS are separate. Its standard-library compiler either preserves every
+supplied 14D frame or interpolates declared keyframes with linear translation
+and profile-appropriate Euler interpolation or quaternion SLERP. It validates
+the named frame and channel profile against the exact normalization statistics
+and can lock frame 0 to a measured first-frame state. A durable single-worker
+job manager invokes the same pinned GPU adapter, records provenance and
+failures, and serves generated MP4 byte ranges to the demo. The output remains
+pending evaluation and human review; the API does not equate successful
+decoding with action adherence or execution.
+
+The current Hand2Dex-2 source has only the native OSCAR action condition, so the
+OSCAR path ran while BWM and Kinema4D stopped at the input-contract gate. Raw
+OSCAR accepts upward lifting; posthoc user review rejects the rightward result
+because its hand topology fragments, and leftward movement fails to move the
+object. The bounded morphology-repair branch is:
+
+    shared real/robot first frame
+      -> pinned SAM2 prompted robot-hand mask
+      -> select one bowl-excluding connected component
+      -> fixed-scale rigid projection from camera skeleton contact/elbow points
+      -> inpaint only declared hand support
+      -> restore protected yellow-object pixels exactly before encoding
+      -> topology, area, edit-support, object, visual, and AC-WM gates
+
+The repaired rightward result keeps one connected hand and passes the complete
+gate, so the workflow is 2/3 accepted after one labelled repair while raw OSCAR
+is 1/3. Finger articulation is deliberately frozen; the repair cannot be
+reported as raw model morphology, 3-D hand kinematics, calibrated contact
+physics, or physical robot execution. See `docs/ACWM_WORKFLOW.md` for revisions,
+commands, metrics, and evidence paths.
 
 ## PhiZero acceptance gates
 

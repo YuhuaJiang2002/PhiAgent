@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-h3-drivers-v1",
+  "recorded_at": "2026-08-11T10:52:00Z",
+  "status": "PARTIAL",
+  "scope": "Six MiniMax-H3 windows and three stitched ten-second multitask robot drivers",
+  "summary": "Corrected reference composition produced complete, sharp H3 robot-action windows for place-in-rack, unscrew-cap, and rinse-bottle, but their stitched subject seams remain too large for direct delivery and are routed only as Wan motion/geometry drivers.",
+  "evidence": [
+    "All six independent H3 experiments completed on physical A800 GPUs 0, 2, and 3 with seed 20260811 and 20 steps.",
+    "Dense five-frame review of each window found coherent two-arm robot geometry, one persistent blue bottle, and task-specific motion; unscrewing visibly separates the cap.",
+    "All three stitched drivers decode to 240 frames at 24 FPS with SHA-256 values ed213c2faaf176670efe9462b2f51677d6a5a0164450b3769d11738e84204514, dc18ebc112f5f9e2be7836779653660d0657a48e23a6e32845b055a9b356b04b, and 10dfdd3226a9b4089fec3b3319327e78d32996caa83ef32517b28a105b9686e4.",
+    "Best overlap subject MAD remains 47.06 place, 41.09 unscrew, and 24.80 rinse, so direct H3 delivery is rejected."
+  ],
+  "lessons": [
+    "Appending action-specific RGB continuation and control-video references preserves task state while retaining explicit motion conditioning.",
+    "Good individual windows do not waive a measured seam failure; the raw result can still serve as a second-stage driver."
+  ],
+  "limitations": [
+    "The drivers use third-party H3 NF4 weights and hard seam selection; they are not final videos.",
+    "Action semantics remain camera-frame visual evidence, not force/contact or robot-base control."
+  ],
+  "next_actions": [
+    "Use full-length robot-factored Wan replacement to regularize seams and enforce zero human residual without post blur."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/inputs/raw-action-drivers",
+  "supersedes": ["2026-08-11.acwm-ego-multitask-h3-continuation-overwrite"],
+  "tags": ["acwm", "minimax-h3", "multitask", "action-driver", "seam-rejected", "partial"]
+}

@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-controls-v2-broad-blur",
+  "recorded_at": "2026-08-11T05:10:45Z",
+  "status": "PARTIAL",
+  "scope": "Source-motion-preserving EPIC Ego bottle controls with broad hand cleanup",
+  "summary": "Per-frame camera motion was restored, but the broad skin cleanup excessively blurred task-relevant kitchen content.",
+  "evidence": [
+    "The controls retain source-frame camera motion and still satisfy the explicit holder-state traces.",
+    "Contact-sheet review found an oversized soft region around the original hands."
+  ],
+  "lessons": ["Camera preservation and localized human removal need independent visual gates."],
+  "limitations": ["The broad blur could bias H3 toward an artificial low-detail region."],
+  "next_actions": ["Reduce the cleanup support while retaining source-frame rendering."],
+  "run_dir": "outputs/epic-ego-bottle-controls/20260811T051045Z-epic-blue-bottle-controls-v2",
+  "supersedes": ["2026-08-11.epic-ego-controls-v1-static-cleanplate"],
+  "tags": ["acwm", "ego-video", "action-control", "skin-cleanup", "negative-result"]
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "scene": "public EPIC-KITCHENS P03_28 egocentric bottle workspace",
+  "coordinate_frame": "camera:epic_kitchens_p03_28_pixels",
+  "object_name": "bottle",
+  "actions": [
+    {
+      "label": "handover-bottle",
+      "instruction": "Starting with the blue bottle held in the right robot hand, bring it to the center, transfer it into the left robot hand, separate the hands, and hold the bottle only in the left hand.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "present", "start_s": 0.0, "end_s": 3.8, "description": "preserve the right-hand grasp and bring the upright blue bottle to the center while the left hand opens", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "dual-contact", "start_s": 3.8, "end_s": 5.3, "description": "close the left fingers around the bottle while the right hand keeps contact", "entry_object_holder": "right_hand", "exit_object_holder": "both_hands"},
+        {"name": "transfer", "start_s": 5.3, "end_s": 6.8, "description": "release the right fingers only after the left-hand grasp is established", "entry_object_holder": "both_hands", "exit_object_holder": "left_hand"},
+        {"name": "separate", "start_s": 6.8, "end_s": 8.5, "description": "move the empty right hand away while the left hand holds the bottle", "entry_object_holder": "left_hand", "exit_object_holder": "left_hand"},
+        {"name": "display", "start_s": 8.5, "end_s": 10.0, "description": "hold the bottle visibly in only the left hand", "entry_object_holder": "left_hand", "exit_object_holder": "left_hand"}
+      ]
+    },
+    {
+      "label": "unscrew-bottle-cap",
+      "instruction": "Starting with the blue bottle held in the right robot hand, stabilize the bottle body, twist the cap counterclockwise with the left gripper, lift the separated cap, and hold the open-bottle display pose.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "stabilize", "start_s": 0.0, "end_s": 0.7, "description": "preserve the initial right-hand bottle grasp", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "center-bottle", "start_s": 0.7, "end_s": 1.5, "description": "bring the upright blue bottle to the center without releasing it", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "grasp-cap", "start_s": 1.5, "end_s": 2.2, "description": "close the left gripper on the cap while the right gripper stabilizes the bottle body", "entry_object_holder": "right_hand", "exit_object_holder": "both_hands"},
+        {"name": "unscrew", "start_s": 2.2, "end_s": 3.7, "description": "rotate the left wrist counterclockwise without rotating the bottle body", "entry_object_holder": "both_hands", "exit_object_holder": "both_hands"},
+        {"name": "remove-cap", "start_s": 3.7, "end_s": 4.4, "description": "lift the separated cap while the right gripper holds the open bottle", "entry_object_holder": "both_hands", "exit_object_holder": "right_hand"},
+        {"name": "display", "start_s": 4.4, "end_s": 5.125, "description": "display the open bottle in the right hand and cap in the left", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "hold-terminal-state", "start_s": 5.125, "end_s": 10.0, "description": "hold the accepted separated-cap terminal frame without interpolation", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"}
+      ]
+    },
+    {
+      "label": "rinse-bottle",
+      "instruction": "Starting with the blue bottle held in the right robot hand, move it under the faucet, use the left robot hand to operate the faucet, orient the bottle for rinsing, and hold the rinsing pose.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "stabilize", "start_s": 0.0, "end_s": 0.7, "description": "preserve the initial right-hand bottle grasp", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "move-under-faucet", "start_s": 0.7, "end_s": 2.0, "description": "move the bottle directly below the visible faucet", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "operate-faucet", "start_s": 2.0, "end_s": 3.0, "description": "reach the faucet control with the left gripper", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "orient-for-rinse", "start_s": 3.0, "end_s": 5.125, "description": "orient the bottle beneath the faucet while keeping the right-hand grasp", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "hold-terminal-state", "start_s": 5.125, "end_s": 10.0, "description": "hold the accepted rinsing pose without interpolation", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"}
+      ]
+    }
+  ]
+}

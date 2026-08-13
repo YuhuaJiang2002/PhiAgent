@@ -431,6 +431,13 @@ class AgenticACWMController:
                     "source_video_sha256": _sha256(case.source_video),
                     "action": case.action.to_dict(),
                     "prompt": case.prompt,
+                    "auxiliary_inputs": {
+                        key: {
+                            "path": str(path.resolve()),
+                            "sha256": _sha256(path),
+                        }
+                        for key, path in case.auxiliary_inputs
+                    },
                 }
                 for case in request.cases
             ],

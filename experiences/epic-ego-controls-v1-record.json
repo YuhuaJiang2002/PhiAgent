@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-controls-v1-static-cleanplate",
+  "recorded_at": "2026-08-11T05:09:20Z",
+  "status": "PARTIAL",
+  "scope": "First deterministic EPIC Ego bottle action-control render",
+  "summary": "The controls encoded explicit separated trajectories, but a static clean-plate reconstruction removed the source head-camera dynamics and visibly damaged the kitchen scene.",
+  "evidence": [
+    "All three control videos decoded and reached the declared terminal holders.",
+    "Contact-sheet review showed scene destruction and loss of the original Ego camera motion."
+  ],
+  "lessons": [
+    "An Ego control must preserve the per-frame source background and camera motion; a single static clean plate is not an acceptable conditioning canvas."
+  ],
+  "limitations": ["The rendered controls are unsuitable for formal H3 generation despite valid state traces."],
+  "next_actions": ["Render on the moving source frames and restrict cleanup to the human-hand support."],
+  "run_dir": "outputs/epic-ego-bottle-controls/20260811T050920Z-epic-blue-bottle-controls-v1",
+  "supersedes": [],
+  "tags": ["acwm", "ego-video", "action-control", "clean-plate", "negative-result"]
+}

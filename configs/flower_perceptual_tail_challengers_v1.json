@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "claim_scope": "perceptually plausible synthetic video data",
+  "physical_evidence": false,
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range_inclusive": [571, 659],
+  "seed_candidates": [43, 44],
+  "fps": 24,
+  "window_frames": 89,
+  "output_width": 896,
+  "output_height": 512,
+  "infer_frames": 80,
+  "reference_frames": 1,
+  "maximum_rounds_per_candidate": 1,
+  "gpu_physical_indices": [0, 1],
+  "minimum_free_gpu_gib": 60,
+  "object_roi_xywh_normalized": [0.44, 0.37, 0.20, 0.27],
+  "foundation_model": {
+    "name": "Wan2.2-Animate-14B",
+    "mode": "replacement",
+    "checkpoint": "checkpoints/Wan2.2-Animate-14B",
+    "repository": "external/Wan2.2",
+    "suppress_source_face_control": true
+  },
+  "prompt": "Exactly two coherent graphite-black and brushed-silver H3 robot arms and two anatomically consistent five-finger mechanical hands replace every visible human body region. Each wrist remains continuously connected to one forearm. The bouquet-gripping hand keeps stable finger count, rigid links, occlusion order, and continuous stem contact; the support hand stays spatially separate. Preserve source timing and the visible inertial response of every flower and stem. Preserve the exact camera, flowers, vase, worktable, shelves, wall, lighting, and background. No human residue, extra or fused fingers, detached hand, motion smear, frozen flower, duplicate object, or invented flower.",
+  "promotion": {
+    "selection": "all perceptual hard gates before utility",
+    "high_resolution_human_review_veto": true,
+    "disallowed_claims": [
+      "metric depth",
+      "calibrated camera",
+      "exact q/qdot",
+      "contact force",
+      "force closure",
+      "real-robot executability"
+    ]
+  }
+}

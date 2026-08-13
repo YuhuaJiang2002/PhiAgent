@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-attention-r16-full93-oom-partial",
+  "recorded_at": "2026-08-12T07:42:00Z",
+  "scope": "Attention-only rank-16 LoRA smoke on the full 93-frame window",
+  "status": "PARTIAL",
+  "summary": "Rank 16 reduced attention adapter parameters to 42,467,328, but the full 93-frame activation footprint still left insufficient space for a 200 MiB backward FSDP all-gather on shared GPU 1.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T184000Z-lora-attn-r16-cp4-smoke2",
+  "evidence": [
+    "The 14B base, rank-16 Q/K/V/output adapters, 172 samples, FSDP4 optimizer, and training loop initialized successfully.",
+    "The adapter contained 42,467,328 trainable parameters, half the rank-32 attention profile.",
+    "Backward failed during an FSDP all-gather requesting 200 MiB with 83 MiB physically free on rank 1; no checkpoint exists."
+  ],
+  "lessons": [
+    "At this point native 93-frame activations, not adapter capacity, dominate the shared-card peak.",
+    "The official video dataset supports random contiguous subwindows, enabling a 49-to-65-to-93 temporal curriculum without temporal resampling or frame duplication."
+  ],
+  "limitations": [
+    "No optimizer step completed and no quality conclusion can be drawn."
+  ],
+  "next_actions": [
+    "Smoke test rank-16 attention LoRA on random 49-frame native-16fps subwindows, with deployment inference remaining 93 frames."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "rank16",
+    "93-frames",
+    "oom",
+    "curriculum",
+    "partial"
+  ],
+  "supersedes": []
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-shadow-lighten-skill-v2-working",
+  "recorded_at": "2026-08-11T04:18:00Z",
+  "run_dir": "outputs/minimax-h3-shadow-removal/20260811T133000Z-skill-shadow-lighten-v1-gain120-pending",
+  "scope": "Real-660 forward test of the corrected lighten-robot-shadows skill contract",
+  "status": "WORKING",
+  "summary": "The alpha-only lightening skill passes its scoped contract on top of the reviewed motion candidate: gain 1.20/cap 0.32 lightens the low-alpha shadow band while preserving high-alpha hard negatives, motion configuration, protected content, and temporal bounds.",
+  "evidence": [
+    "The 660-frame video SHA-256 is 13eefbe413becf09e1dea8335e090b37c8308e3c08bb787cd944d1435b7b1e5b.",
+    "The corrected assessment SHA-256 is 1d9c353c728f140966dbb039eaca008ab9c39db6ebb6f7bb3161689c479f742c and all eight automatic/human gates pass.",
+    "Absolute post-cleanup plate MAE falls 4.39%, from 26.4339 to 25.2723; bounded plate alpha increases 6.63%, from 0.0076077 to 0.0081118.",
+    "Mean modified area rises 5.65%, from 0.0527730 to 0.0557533, within the 8% bound.",
+    "ROI jerk changes from 1.6858711 to 1.6882625, ratio 1.00142; all renderer temporal gates pass.",
+    "High-motion and full 1-fps timeline review found no pale robot, faded flowers, exposed source skin, new glow, or background pumping."
+  ],
+  "lessons": [
+    "Low-alpha gain with a high-alpha protection threshold isolates shadow lightening from reviewed removal masks.",
+    "Use the weakest passing gain and retain motion alignment as an exact inherited configuration.",
+    "LoRA, global noise, and full-frame EPL are unnecessary for this bounded residual-shadow correction and would confound background preservation."
+  ],
+  "limitations": [
+    "WORKING is scoped to this pinned 660-frame 2-D H3 composite and does not prove general relighting.",
+    "The clean plate is an appearance proxy, not a calibrated illumination model.",
+    "Postencode flower-edge differences can occur from independent H.264 quantization even though preencode protected pixels are exact."
+  ],
+  "next_actions": [
+    "Use the gain-1.20 candidate as the current combined motion-following and lighter-shadow parent.",
+    "Reject stronger gains unless the weakest passing candidate is still visibly too dark."
+  ],
+  "supersedes": [
+    "2026-08-11.h3-shadow-lighten-skill-v1-metric-preflight"
+  ],
+  "tags": [
+    "shadow",
+    "lightening",
+    "skill-evolution",
+    "alpha-only",
+    "full-660",
+    "working"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-window398-source-tracking-v2",
+  "recorded_at": "2026-08-11T10:31:00Z",
+  "scope": "Corrected real source-flower instance tracking for global frames 398-486",
+  "status": "PARTIAL",
+  "summary": "Corrected prompts avoid the V1 hand-contaminated masks, but both source flower tracks still violate strict motion/scale stability and the window remains isolated.",
+  "run_dir": "outputs/gpu-flower-full-instance-supervision/20260811T094200Z-windows254-398-v1/source-tracks-0398-v2",
+  "evidence": [
+    "V1 is rejected because its supposed cream and pink flower masks visibly select human hands or mixed hand/flower regions; one centroid step reaches 110.94 pixels and one area ratio reaches 8.09.",
+    "V2 tracks the corrected green bud and lower pink flower without empty frames on physical A800 GPU 5.",
+    "The green track still has maximum centroid step 50.43 pixels, adjacent-IoU minimum 0.0, and global area ratio 4.50.",
+    "The lower pink track has global area ratio 9.83 and maximum centroid step 20.98 pixels; dense review shows strong late-window scale/shape change."
+  ],
+  "lessons": [
+    "Removing hand contamination is necessary but not sufficient; source tracks must also survive occlusion and scale changes under the same strict temporal identity criteria.",
+    "A corrected semantic label should not be promoted when numeric discontinuity still exposes identity ambiguity."
+  ],
+  "limitations": [
+    "No candidate restoration, two-hand tracking, contact pairing, or strict all-window gate was run for frames 398-486."
+  ],
+  "next_actions": [
+    "Split or re-anchor the source window around the late occlusion/identity discontinuity, then require stable 89-frame tracks before candidate restoration."
+  ],
+  "supersedes": [],
+  "tags": [
+    "gpu",
+    "sam2",
+    "source-flower-tracking",
+    "identity-ambiguity",
+    "negative-result",
+    "partial"
+  ]
+}

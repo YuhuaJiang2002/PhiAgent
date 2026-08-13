@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-33f-overlay-import-partial",
+  "recorded_at": "2026-08-12T07:56:00Z",
+  "scope": "First rank-16 33-frame curriculum smoke launch",
+  "status": "PARTIAL",
+  "summary": "The launch stopped before model loading because Cosmos recursively imported an older preserved runtime overlay whose frame validator excluded 33; no GPU training began.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-training/20260812T193000Z-lora-attn-r16-33f-cp4-split128-smoke2",
+  "evidence": [
+    "All ranks raised ValueError from the older phiagent_droid_lora_attention_curriculum.py during recursive experiment-package import.",
+    "The failure occurred before tokenizer or 14B checkpoint loading and no checkpoint exists."
+  ],
+  "lessons": [
+    "Reproducibility copies cannot remain in a recursively imported runtime config directory when their import-time validators differ.",
+    "Archive prior runtime overlays into the new immutable experiment directory with hashes, then install exactly one active overlay; keep the project source overlay unchanged."
+  ],
+  "limitations": [
+    "Training was not started."
+  ],
+  "next_actions": [
+    "Implement and unit-test recoverable overlay staging, then rerun 33-frame smoke in a new directory."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "overlay",
+    "config-import",
+    "preflight",
+    "partial"
+  ],
+  "supersedes": []
+}

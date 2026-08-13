@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-baseline-t5-device-partial",
+  "recorded_at": "2026-08-12T06:50:30Z",
+  "scope": "First Cosmos-Predict2 14B DROID public-baseline generation",
+  "status": "PARTIAL",
+  "summary": "The first public-baseline attempt loaded the verified 14B DiT and CPU-offloaded T5 but stopped before sampling because the upstream offload path moved T5 weights to CUDA while retaining CPU token IDs on every rank.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-baseline/20260812T170000Z-ep060-seed20260812",
+  "evidence": [
+    "All four ranks initialized on recorded physical GPUs 0, 1, 3, and 5 and successfully loaded the tokenizer, T5, and SHA-verified 14B DROID DiT.",
+    "All four ranks raised the same RuntimeError at T5 embedding lookup: CUDA weights and CPU input IDs were on different devices.",
+    "The failure occurred before the log entry for video sampling and no generated.mp4 exists; result.json correctly records status PARTIAL.",
+    "The selected GPUs returned to their pre-run memory states after torchrun resolved every child process."
+  ],
+  "lessons": [
+    "The upstream offload helper moves the text-encoder module but does not update CosmosT5TextEncoder.device, producing an internal device mismatch.",
+    "On partially occupied A800s, moving a 22 GB BF16 T5 encoder beside the replicated 14B DiT would also reduce safety margin; CPU encoding is the safer explicit contract."
+  ],
+  "limitations": [
+    "This attempt produced no generated frames and contains no baseline-quality evidence."
+  ],
+  "next_actions": [
+    "Keep T5 weights and token IDs on CPU, move only the resulting embeddings to CUDA, test that helper, and rerun in a new immutable directory."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "baseline",
+    "t5",
+    "device-mismatch",
+    "partial"
+  ],
+  "supersedes": []
+}

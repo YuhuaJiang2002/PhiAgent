@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 254,
+  "instances": [
+    {
+      "instance_id": "robot-hand-left-support-01",
+      "object_id": 101,
+      "anchor_source_frame": 0,
+      "box_xyxy": [480, 255, 535, 345],
+      "positive_points_xy": [[501, 284], [508, 300], [514, 316]],
+      "negative_points_xy": [[540, 284], [550, 300], [475, 275], [500, 350]],
+      "minimum_area_pixels": 120,
+      "maximum_area_pixels": 7000,
+      "role": "image-left articulated support fingers immediately left of the silver foreground gripper",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 22,
+          "box_xyxy": [480, 255, 538, 350],
+          "positive_points_xy": [[504, 286], [512, 302], [518, 319]],
+          "negative_points_xy": [[542, 286], [552, 302], [475, 275], [505, 355]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [485, 255, 540, 350],
+          "positive_points_xy": [[508, 286], [515, 302], [521, 319]],
+          "negative_points_xy": [[545, 286], [555, 302], [480, 275], [508, 355]]
+        },
+        {
+          "anchor_source_frame": 66,
+          "box_xyxy": [490, 255, 545, 350],
+          "positive_points_xy": [[513, 286], [520, 302], [526, 319]],
+          "negative_points_xy": [[550, 286], [560, 302], [485, 275], [513, 355]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [495, 255, 550, 350],
+          "positive_points_xy": [[518, 286], [525, 302], [531, 319]],
+          "negative_points_xy": [[555, 286], [565, 302], [490, 275], [518, 355]]
+        }
+      ]
+    }
+  ],
+  "notes": "V4 targets only the visible image-left articulated fingers instead of the stable but semantically ambiguous lower palm-root/wrist patch. Cross-hand negatives exclude the image-right foreground gripper."
+}

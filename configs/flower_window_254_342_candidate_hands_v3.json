@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 254,
+  "instances": [
+    {
+      "instance_id": "robot-hand-left-support-01",
+      "object_id": 101,
+      "anchor_source_frame": 44,
+      "box_xyxy": [445, 305, 525, 395],
+      "positive_points_xy": [[477, 347], [491, 362], [505, 342]],
+      "negative_points_xy": [[540, 305], [560, 325], [475, 285], [430, 320]],
+      "minimum_area_pixels": 140,
+      "maximum_area_pixels": 8500,
+      "role": "lower dark support gripper behind the stems, distinct from the silver foreground fingers",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [445, 310, 525, 400],
+          "positive_points_xy": [[475, 350], [490, 370], [507, 350]],
+          "negative_points_xy": [[540, 305], [560, 325], [475, 285], [430, 320]]
+        },
+        {
+          "anchor_source_frame": 22,
+          "box_xyxy": [445, 305, 525, 395],
+          "positive_points_xy": [[477, 347], [492, 365], [507, 345]],
+          "negative_points_xy": [[540, 305], [560, 325], [475, 285], [430, 320]]
+        },
+        {
+          "anchor_source_frame": 66,
+          "box_xyxy": [445, 305, 525, 395],
+          "positive_points_xy": [[477, 347], [492, 365], [507, 345]],
+          "negative_points_xy": [[540, 305], [560, 325], [475, 285], [430, 320]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [445, 305, 525, 395],
+          "positive_points_xy": [[477, 347], [492, 365], [507, 345]],
+          "negative_points_xy": [[540, 305], [560, 325], [475, 285], [430, 320]]
+        }
+      ]
+    },
+    {
+      "instance_id": "robot-hand-right-grip-02",
+      "object_id": 102,
+      "anchor_source_frame": 44,
+      "box_xyxy": [500, 245, 590, 350],
+      "positive_points_xy": [[525, 285], [535, 300], [545, 315]],
+      "negative_points_xy": [[480, 345], [492, 365], [500, 235], [600, 270]],
+      "minimum_area_pixels": 150,
+      "maximum_area_pixels": 9500,
+      "role": "silver foreground gripping fingers contacting the stems",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [500, 245, 590, 350],
+          "positive_points_xy": [[525, 285], [535, 300], [545, 315]],
+          "negative_points_xy": [[480, 345], [492, 365], [500, 235], [600, 270]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [500, 245, 590, 350],
+          "positive_points_xy": [[525, 285], [535, 300], [545, 315]],
+          "negative_points_xy": [[480, 345], [492, 365], [500, 235], [600, 270]]
+        }
+      ]
+    }
+  ],
+  "notes": "V3 shifts the left-support anchors below the bouquet and away from the pink background ribbon, adds frame-22 and frame-66 corrections, and preserves cross-hand negative prompts. It is a strict retry; identity drift or persistent occlusion still rejects the window."
+}

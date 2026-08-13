@@ -1,6 +1,6 @@
 # Agentic AC-WM workflow
 
-Evidence date: 2026-08-10.
+Evidence date: 2026-08-12.
 
 ## Result
 
@@ -34,6 +34,53 @@ yellow-object and image-edge proxies, so these results demonstrate controlled
 image-space futures, not calibrated 3D action, contact force, or real-robot
 execution.
 
+## EPIC Ego ten-second visual recovery
+
+The first EPIC-KITCHENS `P03_28` bottle comparison is user-rejected: all three
+actions show source-human hand or sleeve ghosts and the repaired output is too
+blurred. The failure came from restoring source pixels after H3 generation, not
+from a missing decode check. Its ledger record is retained and the old videos
+remain negative evidence.
+
+The recovery route follows the accepted cabbage demo's stronger invariant: one
+joint subject replacement is the candidate, and no source-person alpha repair or
+temporal blur runs afterward. H3 supplies an action-specific 240-frame robot
+driver. Wan2.2-Animate receives one robot reference, the full driver pose, five
+history frames, and the real Ego image only outside a conservative replacement
+support. `factored_guard` combines the driver subject mask with a lower-frame
+human-risk guard, so an uncertain human pixel is generated rather than copied.
+The source face control is blacked out. Every run records its physical GPU,
+`CUDA_VISIBLE_DEVICES`, seed, revisions, commands, masks, logs, and hashes.
+
+This engineering route is informed by, but does not claim to reproduce, recent
+training papers:
+
+- [Robot-Factored World Models](https://arxiv.org/abs/2607.22535) motivates
+  factoring visible robot geometry from environment prediction.
+- [OSCAR](https://arxiv.org/abs/2606.04463) supports explicit kinematic pose
+  control and domain-curated egocentric/robot training data.
+- [LongVie](https://arxiv.org/abs/2508.03694) and
+  [LongVie2](https://arxiv.org/abs/2512.13604) motivate global control
+  normalization, history context, and degradation-aware training/routing.
+- [Cosmos Policy](https://arxiv.org/abs/2601.16163) and the official
+  [Cosmos Predict2.5 repository](https://github.com/nvidia-cosmos/cosmos-predict2.5)
+  define the future path for action-conditioned stateful world-model training.
+
+The completed recovery produces three 880x512, 240-frame, 24 FPS videos. Dense
+60-frame/action review plus full-resolution boundary frames finds no visible
+human residual or destructive blur. Foreground p10 sharpness is 1.2345--1.6177x
+the user-rejected version, safe-background/source sharpness is 0.8781--0.9287,
+and all pairwise action MAD means are 22.4176--26.6564. This is WORKING visual
+recovery, but action control remains PARTIAL and image-space only.
+
+The deployed recovery uses the pinned Wan and H3 checkpoints without claiming
+that those papers were retrained locally. The repository contains an
+explicit BWM action-adapter training entry point and a real-robot WorldArena
+compiler. The older RoboTwin conversion module is historical and excluded from
+active training, evaluation, and claims. BWM action promotion remains gated on
+balanced real-data training, frozen real-video evaluation, and physically
+executed correct/counterfactual branches.
+
 ## Branch structure
 
 ```text
@@ -44,6 +91,7 @@ language instruction + real scene
        camera:skeleton         -> OSCAR
        robot_base:EEF/joints   -> Boundless World Model
        camera:pointmap + URDF  -> Kinema4D
+       camera:robot_flow + provenance -> FlowWAM
   -> pinned backend batch on one selected physical GPU
   -> action / embodiment / object / temporal / background evaluator
   -> mandatory human review
@@ -56,20 +104,108 @@ or joint actions. Kinema4D additionally requires an explicit robot URDF and
 camera calibration. These checks prevent a visually plausible condition from
 being reported as a physically grounded robot action.
 
+## Exact numeric action-to-video path
+
+`phiagent/acwm/numeric.py` and `phiagent/agent/numeric_action.py` add an
+executable numeric-control skill above the native BWM adapter:
+
+```text
+exact JSON samples or numeric keyframes
+  -> strict 14D validation
+       robot_base:* frame
+       dual-arm XYZ meters + Euler/gripper
+       or dual-arm XYZ meters + quaternion XYZW
+       exact coordinate-frame/channel match to action statistics
+  -> preserve 57 exact samples
+       or linear-position + Euler-linear / quaternion-SLERP interpolation
+  -> optional measured frame-0 lock against the configured first-frame state
+  -> immutable action.json + request.json + job.json
+  -> BWM physical-GPU preflight and isolated inference
+  -> prediction.mp4 + backend metadata + experiment manifest
+  -> browser Range playback
+  -> GENERATED / PENDING REVIEW
+```
+
+The fixed public-checkpoint contract is 57 action frames. Action sample rate and
+generated-video FPS are separate fields: for example, the selected WorldArena2
+case has synchronized 30 Hz observations/actions while BWM writes a 24 FPS
+prediction. Exact-sample mode does not interpolate, resample, transform, or
+relabel values. Keyframe mode requires frames 0 and 56 and records its
+profile-specific interpolation in the action timeline. The semantic instruction
+describes the scene, but the 14D values are the motion condition.
+
+WorldArena2 `observations/end_pose` contains two `XYZ + quaternion XYZW`
+poses. The previous compiler preserved these values but mislabeled the final
+four-value blocks as Euler plus gripper. The corrected compiler and
+`scripts/prepare_worldarena_numeric_action_case.py` prove unit quaternion norms
+before emitting derived channel metadata; historical numeric arrays and hashes
+are not rewritten.
+
+Start the loopback service with a real scene, the matching named robot frame,
+the pinned BWM artifacts, and preferably a measured default condition:
+
+```bash
+PYTHONPATH=. python scripts/serve_numeric_acwm_demo.py \
+  --first-frame /absolute/path/to/first-frame.png \
+  --source-video /absolute/path/to/source-video.mp4 \
+  --coordinate-frame robot_base:your-robot \
+  --default-condition /absolute/path/to/measured-57-frame-action.json \
+  --bwm-repo external/boundless-world-model \
+  --bwm-base-model checkpoints/Wan2.2-TI2V-5B \
+  --bwm-checkpoint checkpoints/BWM/step-12000.safetensors \
+  --bwm-action-stats /absolute/path/to/action-stat.json \
+  --gpu 0
+```
+
+The service exposes:
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/numeric-capabilities` | action frame/rate, output FPS, named frame, channel profile, unit, and training bounds |
+| `POST /api/numeric-jobs` | validate an explicitly matching `coordinate_frame`, compile, persist, and queue one exact action |
+| `GET /api/numeric-jobs/<id>` | durable status and generated-video URL |
+| `GET /api/numeric-jobs/<id>/action` | canonical per-frame action actually sent to BWM |
+| `GET /api/numeric-jobs/<id>/video` | byte-range MP4 playback after generation |
+
+Every completed or failed job is appended to the experience ledger. Failures do
+not return a preset or synthetic success-shaped fallback. Generation alone
+remains `PARTIAL`: action adherence, embodiment consistency, causal object
+interaction, and human review must still run before acceptance.
+
+### Measured WorldArena2 run
+
+The selected real input is held-out `wipe_table/episode_0`, source/action frames
+296--352. It is preferred over the other 19 test episodes because the right EEF
+travels 0.484006 m with 0.126686 m terminal displacement while all 798 values
+remain inside both the matching training min/max and p01/p99 bounds. The source
+is 640x480 at 30 Hz and the two four-value orientation blocks have norms within
+`[0.9999999727, 1.0000000271]`.
+
+Official BWM revision `738a8d3c` ran on `a800-4` physical A800 GPU 0, selected
+with 81,225 MiB free and no compute process. Seed 20260812 and 20 inference steps
+produced 57 frames at 896x672/24 FPS in 52.9085 seconds. The generated MP4 hash
+is `5f62ef4c53139d62456347ad706242597f1b35b3d7f2c8fc8e0abffb36b27cae`.
+Future SSIM is 0.85843 and motion-amplitude error is 0.08721, but flow-direction
+cosine is only 0.14303. Dense storyboard review also finds a large later
+shadow-like duplicate. The result is therefore published as
+`GENERATED / REJECTED / PARTIAL`, not accepted control or execution evidence.
+
 ## Model router
 
-| Backend | Native action input | Current Hand2Dex-2 route | Reason |
+| Backend | Native action input | Current route | Reason |
 | --- | --- | --- | --- |
 | OSCAR-2B | first frame, `camera:*` 2D skeleton video, prompt | RAN | all native inputs are present |
 | SAM2 morphology lock | reviewed canonical robot-hand mask + existing camera skeleton | USER-REJECTED | stable silhouette but rigid whole-hand translation |
-| Boundless World Model | 14-channel `robot_base:*` EEF or joint sequence | GATED | synchronized robot state and calibration are absent |
+| Boundless World Model | 14-channel `robot_base:*` EEF or joint sequence | RAN / USER-REJECTED | synchronized WorldArena quaternion state is now supported; direction and duplicate-robot gates fail |
 | Kinema4D | robot RGB+pointmap condition, URDF, camera calibration | GATED | calibrated geometry preprocessing is absent |
-| MiniMax-H3 | reference images/video and text/control proxy | NEGATIVE BASELINE | prior three-action result failed user visual review |
+| FlowWAM | robot-only optical-flow video, URDF, camera calibration, flow provenance | INTEGRATED / GATED ON THIS SCENE | released backend is wired; Cobot-Magic action-to-flow calibration is not verified |
+| MiniMax-H3 | reference images/video and text/control proxy | RAN / PARTIAL | 10 s macro-action distinctness passes, but strict window and seam gates fail |
 
-The BWM and Kinema4D adapters are implemented and preflight their native
-artifacts, model revisions, environment, and GPU. They have not been run on this
-scene, because manufacturing their required 3D inputs from 2D wrist traces
-would invalidate the comparison.
+The BWM, Kinema4D, and FlowWAM adapters preflight native artifacts, revisions,
+environment, and GPU. BWM has run on synchronized WorldArena state. Kinema4D and
+FlowWAM remain gated for that Cobot-Magic scene because manufacturing pointmaps
+or robot-only flow without a verified robot/camera producer would invalidate
+the comparison.
 
 ## Pinned upstream inputs
 

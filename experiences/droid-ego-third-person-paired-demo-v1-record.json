@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.droid-ego-third-person-paired-demo-v1",
+  "recorded_at": "2026-08-11T13:58:31Z",
+  "scope": "Real synchronized first-person to third-person paired demos for three embodied robot tasks",
+  "status": "WORKING",
+  "summary": "Three complete DROID episodes and a ten-second reel now show one wrist-camera first-person input beside two synchronized exterior-camera targets. All camera streams share the same physical episode, dataset frame interval, and timestamp range, providing exact subject and action lineage without calling the targets model-generated views.",
+  "run_dir": "outputs/droid-ego-third-person/20260811T135000Z",
+  "evidence": [
+    "The wrist, exterior-1, and exterior-2 source streams each decode to 320x180, 32,212 frames, 15 FPS, and 2,147.466667 seconds; their SHA-256 hashes and probes are saved in the manifest.",
+    "Episodes 21, 60, and 77 provide duck-to-pot, block-to-bowl, and close-drawer tasks with 92, 144, and 100 synchronized frames. Every camera has the exact same start and end timestamp range within each episode, so maximum cross-camera timestamp-range delta is 0 seconds and all 3/3 trajectory-lineage gates pass.",
+    "The three packaged task videos decode to 1280x720 H.264 at 15 FPS for 6.133333, 9.600000, and 6.666667 seconds; the reel decodes to exactly 150 frames and 10.000000 seconds.",
+    "Twelve full-timeline samples per task were visually reviewed. They retain the same Franka robot, task object, scene, and action state across the wrist and both exterior panels, with no regenerated subject or interpolated view.",
+    "A real local browser loaded all four new videos at readyState 4 with 1280x720 metadata, correct durations, no media errors, and dynamic manifest values showing 3/3 PASS, 32,212 frames, 0.000-second sync delta, and learned generation NOT STARTED."
+  ],
+  "lessons": [
+    "First-person to third-person viewpoint work should use explicitly named wrist and exterior camera frames; small image-plane homographies are a different problem and must not be featured as equivalent evidence.",
+    "Synchronized real multi-camera pairs give the strongest possible subject-consistency target because robot, object, and action identity come from one physical trajectory rather than independent redraws.",
+    "Paired target packaging is useful training and evaluation infrastructure, but it is not evidence that a model can synthesize the exterior view from the wrist view."
+  ],
+  "limitations": [
+    "The exterior views are measured ground-truth targets, not model-generated novel views; learned ego-to-third-person generation remains NOT STARTED.",
+    "The LeRobot sample is 320x180 and this demo does not use camera calibration, depth, or 3-D reconstruction.",
+    "The visual lineage gate does not establish counterfactual generation, contact-force prediction, or policy success on held-out real robot trajectories."
+  ],
+  "next_actions": [
+    "Create train/validation splits that hold out tasks, scenes, and camera layouts, then train a baseline conditioned only on wrist frames and robot state.",
+    "Evaluate generated exterior videos against the synchronized targets with identity, object, temporal, action-state, and human-review gates before replacing the measured-target label.",
+    "Keep both exterior cameras as independent held-out targets and fail closed when either robot or object identity drifts."
+  ],
+  "supersedes": [
+    "2026-08-11.acwm-viewpoint-generalization-demo-v1"
+  ],
+  "tags": [
+    "acwm",
+    "droid",
+    "ego-to-third-person",
+    "multi-camera",
+    "identity-consistency",
+    "real-robot",
+    "demo",
+    "working"
+  ]
+}

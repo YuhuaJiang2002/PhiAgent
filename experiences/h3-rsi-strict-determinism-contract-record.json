@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-rsi-strict-determinism-contract",
+  "recorded_at": "2026-08-10T23:03:00Z",
+  "scope": "Strict reproducibility contract for future native H3 RSI training rounds",
+  "status": "PARTIAL",
+  "summary": "The H3 seeded-training wrapper now enables deterministic Torch algorithms, deterministic cuDNN, disabled cuDNN benchmarking, and the required cuBLAS workspace contract; future unsupported nondeterministic kernels fail instead of silently producing divergent checkpoints.",
+  "evidence": [
+    "Two prior rank-16 runs with the same declared data, seed, rank, learning rate, repeat, and epoch count produced different checkpoint SHA-256 values and different visible topology failures.",
+    "scripts/run_h3_seeded_training.py now sets PYTHONHASHSEED and CUBLAS_WORKSPACE_CONFIG=:4096:8 before Torch CUDA initialization, seeds Python/NumPy/Torch/CUDA, disables cuDNN benchmarking, enables deterministic cuDNN, and calls torch.use_deterministic_algorithms(True).",
+    "scripts/train_h3_identity_rsi.py persists the strict determinism mode, both environment values, and the seeded-wrapper SHA-256 in every future manifest.",
+    "Ruff and Python bytecode compilation pass for both modified entry points."
+  ],
+  "lessons": [
+    "Seeds alone are not a reproducibility guarantee for CUDA training.",
+    "A nondeterministic checkpoint must still be treated as an immutable independent candidate; it cannot borrow evidence from a nominal replica."
+  ],
+  "limitations": [
+    "No new H3 training run has yet executed under the strict deterministic path.",
+    "The already-running r3 process loaded the earlier wrapper and remains independently reviewable but is not retroactively deterministic."
+  ],
+  "next_actions": [
+    "Run the next required training round under the strict path and verify matching checkpoint hashes in a bounded replication before claiming deterministic training."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "determinism", "cuda", "reproducibility", "partial"]
+}

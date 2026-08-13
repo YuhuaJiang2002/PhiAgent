@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-supervisor-camera-bridge-v5-working",
+  "recorded_at": "2026-08-12T12:24:00Z",
+  "scope": "Continual supervision after the hash-bound metric-camera bridge attempt",
+  "status": "WORKING",
+  "summary": "The supervisor consumes the latest real report in 0.05085 seconds, rejects all five spoof classes, keeps 0/4 physical gates false, and schedules the still-unresolved metric-camera bridge without promotion.",
+  "run_dir": "outputs/foundation-contact/20260812T122300Z-continual-supervisor-camera-bridge-v5",
+  "evidence": [
+    "All five adversarial audit values are true.",
+    "metric_camera, robot_trajectory, stem_centerlines, and contact_forces are all false.",
+    "promoted=false and next_experiment=calibrated-metric-camera-bridge-v1.",
+    "Geometry diagnostic throughput remains 10.744486 FPS, 5.282706x warm source real time, and 1.007757x cold source real time."
+  ],
+  "lessons": [
+    "A failed architecture implementation can improve observability and rejection strength without being eligible for promotion."
+  ],
+  "limitations": [
+    "The supervisor is WORKING infrastructure; it does not make the generated video physically correct."
+  ],
+  "next_actions": [
+    "Acquire independent scale observations; keep robot, rod, and force experiments dependency-blocked until metric camera passes."
+  ],
+  "supersedes": ["2026-08-12.foundation-contact-continual-supervisor-working"],
+  "tags": ["foundation-contact", "continual-supervision", "adversarial", "working"]
+}

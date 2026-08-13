@@ -1,0 +1,4 @@
+interface:
+  display_name: "Evolve Demo Video Factory"
+  short_description: "Train and run a guarded batch video-data flywheel"
+  default_prompt: "Use $evolve-demo-video-factory to turn reviewed agentic video traces into a promoted lightweight router and a reproducible batch data campaign."

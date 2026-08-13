@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-r3-fail-closed-structure-delivery",
+  "recorded_at": "2026-08-11T00:04:39Z",
+  "scope": "Fail-closed agentic delivery routing after rejection of the learned r3 identity candidate",
+  "status": "WORKING",
+  "summary": "The delivery layer now verifies every learned-candidate gate and its video hash. Because r3 failed, it selected an independently accepted structure-locked v19 interval whose manifest passes limb-root, action, temporal, background, and human-review gates. The result is body-consistent in the declared 2-D scope and is explicitly labelled as a fallback rather than an RSI training success.",
+  "run_dir": "outputs/h3-identity-rsi/20260811T085300Z-r3-reject-structure-fallback-v2",
+  "evidence": [
+    "The r3 scale-1.0 assessment is bound to candidate SHA-256 28bdbdccea93e8acd5e091738a1aadd506af6c8f2098fb7c4c7168ddb6e1bf85 and rejects identity gain, identity floor, topology, and motion non-regression.",
+    "The fallback manifest is bound to the accepted 660-frame v19 video SHA-256 cf814cd716cb467cda5f72828bb7b485599aef6a6abf64cd5e5a54ec457bef05.",
+    "Routing requires human review, connected limb chains, exact segment endpoints and hand roots, action direction/magnitude correspondence, exact temporal indexing, background/person clearing, and zero transition outliers; all required v19 gates are true.",
+    "Frames 216-339 are delivered at the candidate contract of 832x480, 24 FPS, and 124 frames. The output SHA-256 is d453533bc6e914f7ed09d0587b51580e44ffe7eccee4271ea5209b4801c91dac.",
+    "The candidate-left/delivered-right comparison has 124 frames and SHA-256 538c9ea7bd784814a986073f6f05ba8cba94f0796b54fb52cb0ab2cc384b28c0.",
+    "The routing manifest SHA-256 is 1da6af31150c6bb242813c868c51dbad47b25c186519525b76f4558b37591bbd.",
+    "Nineteen focused routing/identity tests pass, and Ruff passes for the routing module, delivery script, and tests."
+  ],
+  "lessons": [
+    "A generation workflow needs a separate fail-closed delivery decision so a visually plausible but rejected model result cannot be surfaced accidentally.",
+    "An accepted deterministic structure renderer is a valid safety fallback only when its independent manifest and exact video hash are checked.",
+    "Preserving a usable output does not justify relabelling a failed learned experiment; the route and limitations must remain explicit."
+  ],
+  "limitations": [
+    "The delivered result is a 2-D structure-locked render, not a learned MiniMax-H3 improvement.",
+    "The result inherits the v19 limits: no hidden 3-D dynamics, force closure, calibrated contact physics, or real-robot execution is claimed.",
+    "The demo covers the frozen 124-frame inspect interval and does not prove generalization."
+  ],
+  "next_actions": [
+    "Keep the fail-closed router in front of every future H3 identity delivery.",
+    "Replace the fallback only after a learned candidate passes all topology, identity, motion, action, scene, and temporal gates on multiple held-out scenes."
+  ],
+  "supersedes": [],
+  "tags": [
+    "h3",
+    "rsi",
+    "routing",
+    "fail-closed",
+    "structure-lock",
+    "safe-fallback",
+    "working"
+  ]
+}

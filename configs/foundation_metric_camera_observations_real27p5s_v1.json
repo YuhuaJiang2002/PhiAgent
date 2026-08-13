@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "source_video_sha256": "bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91",
+  "camera_frame": "camera:da3_processed_metric",
+  "timeline": "frame:source_video",
+  "observations": [],
+  "collection_status": "MISSING",
+  "required_next_capture": [
+    "at least 20 registered sparse metric-depth observations",
+    "at least two independently acquired calibration groups",
+    "per-observation standard deviation and source name",
+    "same fixed camera/environment as the 27.5-second source"
+  ],
+  "honest_note": "No RGB-D, fiducial, independently measured scene geometry, or complete-q exact-asset reprojection is available for this generated clip."
+}

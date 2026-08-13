@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "window_local_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 182,
+  "candidate_sha256": "b7d249939def45458d1bba84adfff48f0be11d62a223bbdf949f25fe6fa83e43",
+  "flower_instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "source_track_run": "source-head-tracks-v2",
+      "candidate_track_run": "candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    },
+    {
+      "instance_id": "lime-flower-middle-02",
+      "source_track_run": "source-head-tracks-v2",
+      "candidate_track_run": "candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    },
+    {
+      "instance_id": "pink-flower-right-03",
+      "source_track_run": "source-head-tracks-v2",
+      "candidate_track_run": "candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    }
+  ],
+  "robot_hand_track_run": "candidate-hand-tracks-v1",
+  "robot_hands": [
+    "robot-hand-upper-left-01",
+    "robot-hand-lower-right-02"
+  ],
+  "contact_segments": [
+    {
+      "hand_id": "robot-hand-upper-left-01",
+      "flower_instance_id": "cream-flower-left-01",
+      "local_frame_start": 23,
+      "local_frame_end_exclusive": 50,
+      "role": "upper hand is visibly adjacent to the cream stem/head during the mid-window bouquet rotation"
+    },
+    {
+      "hand_id": "robot-hand-lower-right-02",
+      "flower_instance_id": "pink-flower-right-03",
+      "local_frame_start": 0,
+      "local_frame_end_exclusive": 59,
+      "role": "lower hand supports the pink stem and bouquet base before the lift"
+    }
+  ],
+  "thresholds": {
+    "minimum_candidate_visible_fraction": 1.0,
+    "maximum_flower_centroid_step_pixels": 40.0,
+    "minimum_flower_adjacent_iou_mean": 0.68,
+    "maximum_adjacent_area_ratio": 2.0,
+    "minimum_pairwise_horizontal_order_agreement": 0.98,
+    "maximum_offset_centered_trajectory_p90_pixels": 8.0,
+    "minimum_positive_velocity_cosine_fraction": 0.8,
+    "minimum_median_hs_histogram_cosine": 0.8,
+    "maximum_hand_centroid_step_pixels": 20.0,
+    "minimum_hand_adjacent_iou_mean": 0.88,
+    "minimum_contact_visible_fraction": 1.0,
+    "maximum_contact_distance_p90_pixels": 8.0,
+    "maximum_contact_distance_pixels": 15.0,
+    "minimum_aligned_identity_score": 0.97,
+    "minimum_aligned_motion_score": 0.82,
+    "minimum_aligned_temporal_score": 0.75
+  },
+  "semantic_review": {
+    "reviewer_type": "codex_dense_storyboard_visual_review",
+    "reviewed_local_frames": [0, 2, 5, 7, 9, 11, 14, 16, 18, 20, 23, 25, 27, 29, 32, 34, 36, 38, 41, 43, 45, 47, 50, 52, 54, 56, 59, 61, 63, 65, 68, 70, 72, 74, 77, 79, 81, 83, 86, 88],
+    "complete_human_removal": true,
+    "two_mechanical_hands_visible": true,
+    "named_flower_identity_order_preserved": true,
+    "contact_pairs_visually_plausible": true,
+    "notes": "Dense face-suppressed and source-instance-restored storyboard review. The pink source track rotates rapidly near local 38; consecutive-mask review preserves the same visible bouquet region but does not constitute physical tagging."
+  },
+  "notes": "The 40-pixel flower step bound is declared before evaluation because this source window contains a reviewed fast bouquet rotation; source-candidate centered trajectory and color gates remain substantially tighter than the anchor gate. Temporal acceptance remains unchanged at 0.75 and is expected to fail until temporal repair is evaluated."
+}

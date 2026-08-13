@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "global_source_frame_range_inclusive": [398, 486],
+  "source_video": "outputs/gpu-flower-full-instance-supervision/20260811T094200Z-windows254-398-v1/inputs/source-0398-0486-89f-24fps.mp4",
+  "candidate_video": "outputs/gpu-flower-full-instance-supervision/20260811T094200Z-windows254-398-v1/inputs/candidate-0398-raw-retimed-89f-24fps.mp4",
+  "review_stride_frames": 4,
+  "accepted_overlapping_subwindows_local_frames": [[0, 45], [44, 89]],
+  "accepted_overlapping_subwindows_global_frames_inclusive": [[398, 442], [442, 486]],
+  "notes": "Dense review identified a stable shared frame at global 442. Each 45-frame subwindow can satisfy the unchanged dense-review requirement, and the one-frame overlap provides an exact identity/join audit. No split is accepted merely because a proxy metric improves."
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-gpu-sync-preflight",
+  "recorded_at": "2026-08-11T05:26:00Z",
+  "status": "PARTIAL",
+  "scope": "Transfer of the prepared Ego action windows to the remote GPU host",
+  "summary": "The initial full-tree rsync failed because the remote parent did not exist, and a later compact sync invocation failed because that rsync build does not support --info=progress2.",
+  "evidence": [
+    "The first transfer exited before writing the experiment because its remote parent directory was absent.",
+    "The compact retry with --info=progress2 was rejected as an unsupported option and made no writes.",
+    "A full uncompressed tree transfer was stopped after proving impractically slow; the source data remained intact."
+  ],
+  "lessons": ["Remote capability checks must create the exact parent first and use only options supported by the installed rsync before transferring video assets."],
+  "limitations": ["These transfer attempts did not establish a complete immutable GPU input pack."],
+  "next_actions": ["Build a compact 832x480 pack, create the exact remote directory, use supported --progress output, and compare every transferred SHA-256."],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T051600Z-epic-blue-bottle-v1",
+  "supersedes": [],
+  "tags": ["acwm", "gpu", "rsync", "preflight", "negative-result"]
+}

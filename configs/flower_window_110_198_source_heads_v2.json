@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 110,
+  "instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "object_id": 1,
+      "anchor_source_frame": 45,
+      "box_xyxy": [510, 248, 551, 294],
+      "positive_points_xy": [[529, 266], [535, 276], [522, 279]],
+      "negative_points_xy": [[544, 304], [570, 282], [560, 319], [595, 329]],
+      "minimum_area_pixels": 100,
+      "maximum_area_pixels": 2600,
+      "role": "cream flower head identity anchor; stem contact is supervised separately"
+    },
+    {
+      "instance_id": "lime-bud-center-02",
+      "object_id": 2,
+      "anchor_source_frame": 45,
+      "box_xyxy": [554, 263, 588, 301],
+      "positive_points_xy": [[570, 277], [577, 284], [567, 289]],
+      "negative_points_xy": [[535, 276], [560, 319], [595, 329], [569, 307]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 2200,
+      "role": "lime bud identity anchor; stem contact is supervised separately"
+    },
+    {
+      "instance_id": "gold-flower-middle-03",
+      "object_id": 3,
+      "anchor_source_frame": 45,
+      "box_xyxy": [540, 299, 581, 342],
+      "positive_points_xy": [[558, 313], [566, 322], [553, 328]],
+      "negative_points_xy": [[535, 276], [570, 282], [595, 329], [558, 346]],
+      "minimum_area_pixels": 100,
+      "maximum_area_pixels": 2600,
+      "role": "gold flower head identity anchor; stem contact is supervised separately"
+    },
+    {
+      "instance_id": "pink-flower-right-04",
+      "object_id": 4,
+      "anchor_source_frame": 45,
+      "box_xyxy": [574, 305, 618, 353],
+      "positive_points_xy": [[594, 320], [602, 330], [588, 338]],
+      "negative_points_xy": [[535, 276], [570, 282], [560, 319], [584, 355]],
+      "minimum_area_pixels": 110,
+      "maximum_area_pixels": 2800,
+      "role": "pink flower head identity anchor; stem contact is supervised separately"
+    }
+  ],
+  "notes": "Window-local frames 0--88 map to global frames 110--198. V2 deliberately tracks only blossom heads as immutable identity anchors after V1 full-stem masks switched to hands under occlusion. Visible stem contact points are a separate supervision channel."
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r2-epoch1-replication-action-binding",
+  "recorded_at": "2026-08-10T22:54:45Z",
+  "scope": "Second stochastic r2 epoch-1 held-out replication with SHA-bound component-wise action non-regression",
+  "status": "PARTIAL",
+  "summary": "The second r2 epoch-1 replication preserves two visible arms but reproduces the baseline shoulder/head/proportion failure and regresses both pixel motion and task action; the strict contract rejects it. The action audit was corrected to bind each scorecard to the assessed video and prevent a healthy component from hiding another component's regression.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-topology-rsi/20260811T082500Z-r2-epoch1-assessment-v2",
+  "evidence": [
+    "The candidate video has SHA-256 959ee744a1484334c2dd4f8d19814177bd41f8511c611ad3fc2d9343f1f13823 and contains 124/124 decodable frames.",
+    "Digest-bound topology evidence passes only 24/124 frames; left-shoulder attachment and proportions fail on 100 frames and the head-to-torso chain fails on 82 frames.",
+    "Frozen worst-frame DINOv2 appearance falls from 0.8833816648 to 0.8004875779 and matched pixel-motion adherence is 0.9341589991.",
+    "The corrected raw-video action comparison binds baseline SHA-256 8de6f59a650a9ec7e2010826358fd1ee5de529023ca7310ccaccf9a827ab1607 and candidate SHA-256 959ee744a1484334c2dd4f8d19814177bd41f8511c611ad3fc2d9343f1f13823.",
+    "Task-motion ratio is 0.9672172561, EPL ratio is 0.9601125440, and object-lock ratio is 1.0; minimum action adherence is therefore 0.9601125440 and fails the 0.99 gate.",
+    "The corrected automatic metrics SHA-256 is 2640602d5176a97c8dc8e0421887d498cdb6494ba35635a96b50f0e1956fee0c and the final assessment SHA-256 is ee1c5f93685241bad4a07d3f409d04116546741648fe23311804bac5932b91f5.",
+    "Fourteen focused CPU tests and Ruff pass for video binding, shared action context, per-component aggregation, topology, and backward-compatible metric loading."
+  ],
+  "lessons": [
+    "A scalar minimum of raw action scores is invalid for non-regression because a shared near-zero object score can hide material motion and EPL loss.",
+    "Action evaluation must select the scorecard corresponding to the assessed video digest and must share source, motion-control, robot-reference, and mask digests across baseline and candidate.",
+    "Identical rank, seed, data, and hyperparameters can still yield materially different H3 topology failures, so each checkpoint must be treated as an immutable independently reviewed candidate."
+  ],
+  "limitations": [
+    "The result covers one held-out identity, scene, and inspect-flower action with third-party NF4 H3 weights.",
+    "The topology review establishes visible 2-D structure, not 3-D joint validity or physical robot execution.",
+    "The candidate is rejected and is not a release-quality improved demo."
+  ],
+  "next_actions": [
+    "Evaluate each checkpoint from the already-running r3 close-up shoulder curriculum with the same 124/124 topology and component-wise action gates.",
+    "Do not promote any checkpoint unless topology is 1.0 and every motion, EPL, object, scene, temporal, and identity gate passes."
+  ],
+  "supersedes": [],
+  "tags": ["h3", "rsi", "topology", "action-binding", "non-regression", "epoch1", "rejected", "partial"]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-support-v2-tight",
+  "recorded_at": "2026-08-11T07:01:00Z",
+  "status": "WORKING",
+  "scope": "Tight domain-matched support mask for EPIC Ego robot/bottle repair",
+  "summary": "A 32-level threshold with 7-pixel close and 13-pixel dilation reduced mean action support to about 25% while retaining the generated robot arms and blue bottle, materially reducing the fog artifact.",
+  "evidence": [
+    "Window-00 pour mean support fell from 0.5788 to 0.2497.",
+    "Reviewed tight-support frames preserve both forearms, hands, and bottle while restoring substantially more of the exact public-Ego background.",
+    "The support-mask unit tests and full repository test suite pass."
+  ],
+  "lessons": ["A domain-calibrated threshold and bounded morphology are required before repair-recipe training has meaningful inputs."],
+  "limitations": [],
+  "next_actions": [],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2",
+  "supersedes": ["2026-08-11.acwm-ego-support-v1-broad"],
+  "tags": ["acwm", "ego-video", "repair-support", "mask", "working"]
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 514,
+  "instances": [
+    {
+      "instance_id": "lime-bud-upper-01",
+      "object_id": 1,
+      "anchor_source_frame": 0,
+      "box_xyxy": [505, 235, 537, 282],
+      "positive_points_xy": [[520, 252], [515, 260], [525, 266]],
+      "negative_points_xy": [[498, 309], [540, 285], [499, 235]],
+      "minimum_area_pixels": 35,
+      "maximum_area_pixels": 1700,
+      "role": "same lime bud with source-mask-derived dense identity corrections",
+      "correction_prompts": [
+        {"anchor_source_frame": 8, "box_xyxy": [500, 239, 533, 290], "positive_points_xy": [[516, 264], [511, 264], [520, 264]], "negative_points_xy": [[496, 264], [536, 264], [516, 235]], "maximum_area_pixels": 1700},
+        {"anchor_source_frame": 17, "box_xyxy": [494, 232, 526, 281], "positive_points_xy": [[508, 255], [504, 255], [511, 255]], "negative_points_xy": [[490, 255], [529, 255], [508, 228]], "maximum_area_pixels": 1700},
+        {"anchor_source_frame": 21, "box_xyxy": [488, 231, 525, 288], "positive_points_xy": [[505, 258], [500, 258], [511, 258]], "negative_points_xy": [[484, 258], [528, 258], [505, 227]], "maximum_area_pixels": 1700},
+        {"anchor_source_frame": 33, "box_xyxy": [465, 244, 518, 295], "positive_points_xy": [[492, 269], [486, 269], [500, 269]], "negative_points_xy": [[461, 269], [521, 269], [492, 240]], "maximum_area_pixels": 1700},
+        {"anchor_source_frame": 35, "box_xyxy": [466, 239, 522, 293], "positive_points_xy": [[497, 268], [492, 268], [504, 268]], "negative_points_xy": [[462, 268], [525, 268], [497, 235]], "maximum_area_pixels": 1700},
+        {"anchor_source_frame": 39, "box_xyxy": [481, 249, 518, 286], "positive_points_xy": [[500, 266], [495, 266], [505, 266]], "negative_points_xy": [[477, 266], [521, 266], [500, 245]], "maximum_area_pixels": 1700},
+        {"anchor_source_frame": 44, "box_xyxy": [483, 247, 517, 286], "positive_points_xy": [[500, 264], [505, 269], [495, 258]], "negative_points_xy": [[529, 290], [480, 290], [515, 245]], "maximum_area_pixels": 1700}
+      ]
+    },
+    {
+      "instance_id": "pink-flower-upper-02",
+      "object_id": 2,
+      "anchor_source_frame": 0,
+      "box_xyxy": [480, 285, 518, 333],
+      "positive_points_xy": [[498, 309], [502, 314], [493, 304]],
+      "negative_points_xy": [[520, 252], [522, 340], [530, 322]],
+      "minimum_area_pixels": 45,
+      "maximum_area_pixels": 1800,
+      "role": "same salmon-pink flower at the shared global-514 identity anchor",
+      "correction_prompts": [
+        {"anchor_source_frame": 44, "box_xyxy": [509, 270, 548, 313], "positive_points_xy": [[529, 290], [534, 294], [523, 285]], "negative_points_xy": [[500, 264], [553, 310], [515, 325]]}
+      ]
+    }
+  ],
+  "notes": "Dense lime-bud corrections are derived from the accepted source masks at the measured negative-velocity transitions; they supervise identity only and do not edit video pixels."
+}

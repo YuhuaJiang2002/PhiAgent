@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-h3-continuation-overwrite",
+  "recorded_at": "2026-08-11T10:38:00Z",
+  "status": "PARTIAL",
+  "scope": "First launch of the second H3 multitask window with recursive continuation",
+  "summary": "A pre-diffusion audit found that control-video reference assembly replaced the per-action continuation image instead of appending the motion video. All three runs were stopped at 0/20, recorded as failed, and restarted in new directories after a tested fix.",
+  "evidence": [
+    "All three immutable metadata files record SIGTERM failure from the deliberate early stop.",
+    "The affected jobs had loaded models but remained at diffusion step 0/20, so no candidate output was created.",
+    "A regression test now requires reference order robot image, scene image, continuation image, control video."
+  ],
+  "lessons": [
+    "Metadata declaring a continuation input is not enough; the actual model reference list must be tested when multiple conditioning branches compose."
+  ],
+  "limitations": [
+    "These stopped runs contain no video and are not eligible for stitching."
+  ],
+  "next_actions": [
+    "Run the corrected append-only reference composition in new second-window experiment directories."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/h3-window-01",
+  "supersedes": [],
+  "tags": ["acwm", "minimax-h3", "continuation", "conditioning", "early-stop", "partial"]
+}

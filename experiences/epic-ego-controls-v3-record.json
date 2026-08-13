@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.epic-ego-controls-v3-source-bottle",
+  "recorded_at": "2026-08-11T05:12:15Z",
+  "status": "PARTIAL",
+  "scope": "Localized hand-cleanup EPIC Ego bottle controls",
+  "summary": "The smaller cleanup preserved the kitchen, but the original blue bottle remained visible beneath the controlled bottle and created a duplicate-object condition.",
+  "evidence": [
+    "The minimum pairwise state RMS remained 113.5120 pixels with pour and shake ending on the counter and handover ending in the left hand.",
+    "Visual review found the source blue bottle still visible in addition to the controlled bottle."
+  ],
+  "lessons": ["The task object requires its own source-object suppression and persistence check, separate from human-hand cleanup."],
+  "limitations": ["A duplicate bottle invalidates object persistence and action causality."],
+  "next_actions": ["Inpaint the source bottle before compositing the single controlled bottle."],
+  "run_dir": "outputs/epic-ego-bottle-controls/20260811T051215Z-epic-blue-bottle-controls-v3",
+  "supersedes": ["2026-08-11.epic-ego-controls-v2-broad-blur"],
+  "tags": ["acwm", "ego-video", "action-control", "object-persistence", "negative-result"]
+}

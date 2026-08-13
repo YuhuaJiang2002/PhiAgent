@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-artifact-rsync-partial",
+  "recorded_at": "2026-08-12T11:47:00Z",
+  "scope": "Synchronize real DA3, stem, and exact robot assets from a800-4",
+  "status": "PARTIAL",
+  "summary": "The first artifact transfer attempt stopped because the macOS rsync build does not support --protect-args; it wrote no accepted artifact.",
+  "run_dir": "outputs/foundation-contact/20260812T174200Z-da3-nested-full27p5s-2hz-v3",
+  "evidence": [
+    "rsync rejected the --protect-args option before transfer.",
+    "The remote source remained available at /data0/jiangyuhua/PhiAgent-0 on SSH alias a800-4."
+  ],
+  "lessons": [
+    "Do not assume GNU/new-rsync flags on the macOS system rsync."
+  ],
+  "limitations": [
+    "No local artifact was validated by this attempt."
+  ],
+  "next_actions": [
+    "Use explicit-path scp and validate every transferred SHA-256."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "artifact-transfer", "rsync", "partial"]
+}

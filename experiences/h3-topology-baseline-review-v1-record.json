@@ -1,0 +1,27 @@
+{
+  "record_id": "2026-08-11.h3-topology-baseline-review-v1",
+  "recorded_at": "2026-08-10T21:11:00Z",
+  "status": "PARTIAL",
+  "scope": "Full-frame semantic topology audit of the held-out MiniMax-H3 inspect-flower baseline",
+  "summary": "The new fail-closed topology review rejects the previously selected H3 candidate because its robot body ceases to be one coherent anatomical chain.",
+  "evidence": [
+    "All 124 decoded frames are bound to the candidate SHA-256 and covered by explicit semantic labels.",
+    "Only 24/124 frames pass; 100 frames fail unique shoulder attachment and stable-proportion gates.",
+    "Eighty-two frames additionally fail the single head-to-torso chain gate.",
+    "The annotated 832x480x124 review video has SHA-256 f23f3bc50bd1b3980c9ac42b0cc5aaf2c04ffa0434b6723ffd86ad19376e2ce8."
+  ],
+  "lessons": [
+    "A scalar masked identity proxy cannot stand in for visible robot topology.",
+    "Topology must be a hard conjunction over full-frame evidence so an average score cannot hide a bad shoulder or duplicate limb."
+  ],
+  "limitations": [
+    "The labels are semantic 2-D visual review, not 3-D kinematic reconstruction.",
+    "This audit rejects the old output but does not itself repair the generator."
+  ],
+  "next_actions": [
+    "Train the first bounded native H3 Ref2VA LoRA round on topology-positive clips and test the same held-out real flower action."
+  ],
+  "run_dir": "outputs/h3-identity-topology-rsi/20260810T211009Z-baseline-review-v1",
+  "supersedes": [],
+  "tags": ["h3", "identity", "topology", "full-frame-review", "rsi", "partial"]
+}

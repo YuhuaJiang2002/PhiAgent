@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-object-factored-source-state-v6",
+  "recorded_at": "2026-08-12T15:24:00+08:00",
+  "status": "WORKING",
+  "scope": "Source flower and background preservation in one complete 27.5-second replacement",
+  "summary": "Object-factored v6 makes known source scene and accepted visible-flower preservation exact by construction and verifies the invariants again after lossless encoding, while the inherited Wan robot layer remains honestly partial.",
+  "evidence": [
+    "The run contains 660 frames over 27.5 seconds at 624x352 and 24 FPS.",
+    "The original generated candidate measures 26.071080 flower MAD and 3.650666 flower temporal-residual MAD on the accepted visible layer; v6 measures exactly 0.0 for both before encoding and after lossless decode.",
+    "Known-source exactness is 1.0 before encoding and after lossless decode; flower/person-core and flower/skin-negative overlaps are both zero pixels.",
+    "CPU projection and encoding take 16.465421 seconds at 40.084003 FPS; projection plus two full encoded-output audits take 46.257137 seconds at 14.268068 FPS.",
+    "The review MP4 SHA-256 is caa1eae8adca22552f4da8bafc521c6eaf4da9afddc02e6b9320a24c3a0135b4 and the lossless FFV1 SHA-256 is 261f0eda01fecf1c5365090fe50aac451d67306828453f3d7ca277fb76f897b3.",
+    "Dense, full-resolution, flower-track-gap, contact-window, and continuous three-column review pass scoped flower/background consistency and source-human leakage."
+  ],
+  "lessons": [
+    "For source-conditioned replacement, known object/background state should be projected, not regenerated; time-horizon error then applies only to the generated subject layer.",
+    "Exactness metrics need semantic conflict negatives and decoded-output verification or they can promote a contaminated mask."
+  ],
+  "limitations": [
+    "The complete video remains PARTIAL because late color and fine-structure artifacts inside the Wan robot layer remain.",
+    "Exact hand-flower contact, per-stem identity through every occlusion, 3-D physics, and real-robot execution are not accepted.",
+    "The source flower supervision is a union track with seven empty frames; source pixels outside the person edit support remain exact during those frames, but persistent per-stem identity is not claimed."
+  ],
+  "next_actions": [
+    "Train a robot-RGB-plus-alpha model with a canonical identity attention sink, self-generated robot histories, and variable 5-30 second context, then rerun the full real-input topology/action/contact gates."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-long-object-factored/20260812T151000Z-source-state-projection-v6",
+  "supersedes": [
+    "2026-08-12.wan-long-object-factored-source-state-v5"
+  ],
+  "tags": [
+    "long-video",
+    "object-factored",
+    "flower-preservation",
+    "background-preservation",
+    "working-scoped"
+  ]
+}

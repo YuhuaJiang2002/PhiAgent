@@ -147,6 +147,8 @@ class G1IkRenderer:
             )
             for side in ("left", "right")
         }
+        if any(body_id < 0 for body_id in self.wrist_body_ids.values()):
+            raise RuntimeError("G1 model is missing a wrist body")
         self.previous_q = {
             side: self.data.qpos[list(addresses)].copy()
             for side, addresses in self.qpos_addresses.items()
@@ -204,6 +206,37 @@ class G1IkRenderer:
     def wrist_pose(self, side: str) -> tuple[Any, Any]:
         body_id = self.wrist_body_ids[side]
         return self.data.xpos[body_id].copy(), self.data.xquat[body_id].copy()
+
+    def generalized_joint_state(self) -> tuple[tuple[str, ...], Any, Any]:
+        """Return every scalar URDF joint, including the static lower body/waist."""
+
+        names, values, limits = [], [], []
+        for joint_id in range(self.model.njnt):
+            joint_type = int(self.model.jnt_type[joint_id])
+            if joint_type == int(self.mujoco.mjtJoint.mjJNT_FREE):
+                continue
+            if joint_type == int(self.mujoco.mjtJoint.mjJNT_BALL):
+                raise RuntimeError("G1 scalar joint export does not support a ball joint")
+            name = self.mujoco.mj_id2name(
+                self.model, self.mujoco.mjtObj.mjOBJ_JOINT, joint_id
+            )
+            if not name:
+                raise RuntimeError("G1 contains an unnamed scalar joint")
+            address = int(self.model.jnt_qposadr[joint_id])
+            names.append(str(name))
+            values.append(float(self.data.qpos[address]))
+            limits.append(
+                (
+                    float(self.model.jnt_range[joint_id, 0]),
+                    float(self.model.jnt_range[joint_id, 1]),
+                )
+            )
+        return tuple(names), self.np.asarray(values), self.np.asarray(limits)
+
+    def floating_base_pose(self) -> tuple[Any, Any]:
+        """Return robot-base translation and MuJoCo wxyz quaternion."""
+
+        return self.data.qpos[:3].copy(), self.data.qpos[3:7].copy()
 
     def render(self) -> tuple[Any, Any]:
         self.renderer.update_scene(self.data, camera=self.camera)
@@ -357,19 +390,66 @@ class AttachedHandRenderer:
         self.renderer.disable_segmentation_rendering()
         return rgb, _geom_mask(self.mujoco, self.np, segmentation)
 
+    def generalized_joint_state(self) -> tuple[tuple[str, ...], Any, Any]:
+        """Return every scalar hand joint after retargeting and clamping."""
+
+        names, values, limits = [], [], []
+        for joint_id in range(self.model.njnt):
+            joint_type = int(self.model.jnt_type[joint_id])
+            if joint_type == int(self.mujoco.mjtJoint.mjJNT_FREE):
+                continue
+            if joint_type == int(self.mujoco.mjtJoint.mjJNT_BALL):
+                raise RuntimeError("hand scalar joint export does not support a ball joint")
+            name = self.mujoco.mj_id2name(
+                self.model, self.mujoco.mjtObj.mjOBJ_JOINT, joint_id
+            )
+            if not name:
+                raise RuntimeError("hand contains an unnamed scalar joint")
+            address = int(self.model.jnt_qposadr[joint_id])
+            names.append(str(name))
+            values.append(float(self.data.qpos[address]))
+            limits.append(
+                (
+                    float(self.model.jnt_range[joint_id, 0]),
+                    float(self.model.jnt_range[joint_id, 1]),
+                )
+            )
+        return tuple(names), self.np.asarray(values), self.np.asarray(limits)
+
     def close(self) -> None:
         self.renderer.close()
 
 
+def _pose_landmark_is_valid(np: Any, wrist: Any) -> bool:
+    coordinates = np.asarray((wrist.x, wrist.y), dtype=np.float64)
+    visibility = float(getattr(wrist, "visibility", 1.0))
+    return bool(np.all(np.isfinite(coordinates)) and math.isfinite(visibility) and visibility >= 0.2)
+
+
+def _default_pose_targets(np: Any) -> dict[str, Any]:
+    return {
+        "left": np.asarray((0.30, 0.09, 0.82), dtype=np.float64),
+        "right": np.asarray((0.30, -0.09, 0.82), dtype=np.float64),
+    }
+
+
 def _pose_targets(np: Any, landmarks: Any, previous: dict[str, Any] | None) -> dict[str, Any]:
+    fallback = previous if previous is not None else _default_pose_targets(np)
     targets = {}
     for side, wrist_index in (("left", 15), ("right", 16)):
+        if len(landmarks) <= wrist_index or not _pose_landmark_is_valid(
+            np, landmarks[wrist_index]
+        ):
+            targets[side] = fallback[side].copy()
+            continue
         wrist = landmarks[wrist_index]
+        wrist_x = float(np.clip(wrist.x, 0.0, 1.0))
+        wrist_y = float(np.clip(wrist.y, 0.0, 1.0))
         target = np.asarray(
             (
                 0.30,
-                (wrist.x - 0.60) * 1.25,
-                1.25 - wrist.y * 0.68,
+                (wrist_x - 0.60) * 1.25,
+                1.25 - wrist_y * 0.68,
             ),
             dtype=np.float64,
         )
@@ -377,6 +457,20 @@ def _pose_targets(np: Any, landmarks: Any, previous: dict[str, Any] | None) -> d
             target = 0.12 * target + 0.88 * previous[side]
         targets[side] = target
     return targets
+
+
+def _validated_hand_points(np: Any, points: Any) -> Any | None:
+    points = np.asarray(points, dtype=np.float64)
+    if points.shape != (21, 3) or not np.all(np.isfinite(points)):
+        return None
+    if float(np.max(np.abs(points))) > 10.0:
+        return None
+    try:
+        bends = _finger_bends(np, points)
+    except (ValueError, FloatingPointError):
+        return None
+    values = np.asarray(tuple(bend for finger in bends.values() for bend in finger))
+    return points if np.all(np.isfinite(values)) else None
 
 
 def _default_hand_points(np: Any) -> Any:
@@ -503,14 +597,22 @@ def main() -> int:
             rgb_source = cv2.cvtColor(source_frame, cv2.COLOR_BGR2RGB)
             pose_result = pose_detector.process(rgb_source)
             if pose_result.pose_landmarks:
+                landmarks = pose_result.pose_landmarks.landmark
+                valid_pose_sides = sum(
+                    _pose_landmark_is_valid(np, landmarks[index])
+                    for index in (15, 16)
+                    if len(landmarks) > index
+                )
                 targets = _pose_targets(
                     np,
-                    pose_result.pose_landmarks.landmark,
+                    landmarks,
                     previous_targets,
                 )
                 previous_targets = {
                     side: target.copy() for side, target in targets.items()
                 }
+                if valid_pose_sides < 2:
+                    carried_pose_frames += 1
             elif previous_targets is not None:
                 targets = {
                     side: target.copy()
@@ -534,10 +636,13 @@ def main() -> int:
             for hand, classification in zip(world_hands, handedness):
                 label = classification.classification[0].label.lower()
                 side = "left" if label == "left" else "right"
-                points = np.asarray(
+                observed_points = np.asarray(
                     [(point.x, point.y, point.z) for point in hand.landmark],
                     dtype=np.float64,
                 )
+                points = _validated_hand_points(np, observed_points)
+                if points is None:
+                    continue
                 previous_hand_points[side] = (
                     0.3 * points + 0.7 * previous_hand_points[side]
                 )

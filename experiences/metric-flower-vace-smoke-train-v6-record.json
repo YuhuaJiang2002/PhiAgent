@@ -1,0 +1,34 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-smoke-train-v6-working",
+  "recorded_at": "2026-08-12T20:55:00Z",
+  "status": "WORKING",
+  "scope": "Checkpoint-bound VACE smoke training on final v3 data",
+  "summary": "The final 12-step trainer run completes and marks success only after hashing a nonempty adapter and training log.",
+  "evidence": [
+    "GPU1 completes 12/12 rank-4 steps on the frozen v3 manifest.",
+    "The 5,503,040-byte adapter SHA-256 is 5e76632ee41c996107a17310ec03c99ec5eaf49bb3062789c0b1e19c6052381e.",
+    "The 5,371-byte training log SHA-256 is 63278927ce2fc7ca647a943e31080e8e736f59cf9115d85391254a1f6500da4a.",
+    "Metadata binds model files, tokenizer, DiffSynth revision, dataset, GPU, seed, source Git, PYTHONPATH, log, and adapter."
+  ],
+  "lessons": [
+    "A zero trainer exit is not success until expected checkpoint files exist and are hashed."
+  ],
+  "limitations": [
+    "Trainability alone is not a quality result."
+  ],
+  "next_actions": [
+    "Run matched zero-shot/adapted inference and require frozen held-out lineage plus human review."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T204500Z-metric-vace-smoke-train-v6/20260812T160447Z-d0baf19b",
+  "supersedes": [
+    "2026-08-12.metric-flower-vace-smoke-train-v5-working",
+    "2026-08-12.metric-flower-vace-data-v3-working"
+  ],
+  "tags": [
+    "flower",
+    "vace",
+    "checkpoint-bound",
+    "training-smoke",
+    "working"
+  ]
+}

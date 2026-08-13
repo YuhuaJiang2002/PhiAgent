@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.acwm-counterfactual-lineage-fix-partial",
+  "recorded_at": "2026-08-12T04:23:06Z",
+  "status": "PARTIAL",
+  "scope": "History-preserving BWM counterfactual pilot before physical-lineage correction",
+  "summary": "History-preserving rebased futures were generated correctly, but manifest audit found that four compiled clips represented only two physical episodes and some donor pairs came from another clip of the same episode.",
+  "evidence": [
+    "All four derived sequences preserved the first nine states exactly and had finite future RMS differences of 0.3571 to 0.6258.",
+    "The WorldArena manifest showed wipe_table episode_0/1 share source episode_0 and episode_2/3 share source episode_1.",
+    "The run completed, but it is excluded from independent-episode statistics."
+  ],
+  "lessons": [
+    "Compiled episode indices are not necessarily independent reset episodes; source_episode lineage must drive grouping and donor selection.",
+    "Seeds and clips are repeated measurements, not additional independent units."
+  ],
+  "limitations": [
+    "The suite manifest initially reported four sources instead of two physical episodes.",
+    "Same-physical-episode action donors invalidated part of the intended counterfactual contrast."
+  ],
+  "next_actions": [
+    "Attach lineage from the frozen dataset manifest, require cross-group donors, and aggregate clips within physical episodes before bootstrap."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-counterfactual-audit/20260812T041810Z-worldarena2-wipe-table-history-preserving-v2",
+  "supersedes": ["2026-08-12.acwm-counterfactual-whole-swap-partial"],
+  "tags": ["acwm", "bwm", "counterfactual", "lineage", "partial"]
+}

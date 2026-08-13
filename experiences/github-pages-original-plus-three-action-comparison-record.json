@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.github-pages-original-plus-three-action-comparison",
+  "recorded_at": "2026-08-11T14:39:00Z",
+  "status": "WORKING",
+  "scope": "Replace the single handover card with the three-action AC-WM comparison on the original PhiAgent page",
+  "summary": "The original page now contains one added AC-WM card whose only video compares handover, cap unscrewing, and bottle rinsing in the same Ego scene. The handover-only MP4 was removed from the deployed site.",
+  "evidence": [
+    "GitHub compare from original commit 93b7828 to deployed main lists exactly demo/index.html with 11 additions and demo/showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4 as the only two changed files.",
+    "The public page contains exactly two references to the three-action MP4 and no reference to the handover-only MP4; the removed URL returns HTTP 404.",
+    "The public comparison SHA-256 is 6fbf1a1adca17c26988e2d8444ded47c4578c7e7b4355c10e5b79c4a01c588f1 and decodes to 1248x298, 240 frames, 24 FPS, and 10.000 seconds.",
+    "GitHub Actions Pages run 31502633922 completed successfully for merge commit bc78b2375ec9842d1977282d0300c71beae4ca48."
+  ],
+  "lessons": [
+    "A three-action comparison should replace, rather than accompany, the single-action card when the requested page scope is one added video."
+  ],
+  "limitations": [
+    "The comparison demonstrates camera-frame visual futures and does not establish force-verified contact or physical robot execution."
+  ],
+  "next_actions": [],
+  "run_dir": "demo",
+  "supersedes": [
+    "2026-08-11.github-pages-original-plus-single-handover"
+  ],
+  "tags": ["github-pages", "acwm", "three-action-comparison", "minimal-diff", "working"]
+}

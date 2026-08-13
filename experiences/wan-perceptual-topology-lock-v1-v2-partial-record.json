@@ -1,0 +1,26 @@
+{
+  "record_id": "2026-08-12.wan-perceptual-topology-lock-v1-v2-partial",
+  "recorded_at": "2026-08-12T13:40:00Z",
+  "status": "PARTIAL",
+  "scope": "Two native-720p topology-lock compositor attempts for the complete 27.5-second flower replacement",
+  "summary": "Both candidates preserved the source flowers and background but were rejected by high-resolution human review because the transported canonical hand sprites became small, detached, duplicated, or implausibly scaled.",
+  "evidence": [
+    "V1 processed 660 frames in 108.24 seconds at 6.10 FPS; V2 processed them in 58.91 seconds at 11.20 FPS.",
+    "Both candidates preserved every protected flower pixel before encoding and retained source flower motion on 98.01% of frame transitions.",
+    "The V1 review exposed giant late flower/base artifacts plus floating hands; the V2 review still exposed tiny detached hands and neon late material artifacts."
+  ],
+  "lessons": [
+    "A canonical 2-D sprite cannot be transported through large occlusion and viewpoint changes using a single similarity transform.",
+    "Automatic preservation metrics cannot override high-resolution topology review."
+  ],
+  "limitations": [
+    "Neither candidate is DISPLAY_READY.",
+    "No physical depth, force, telemetry, or execution claim is made."
+  ],
+  "next_actions": [
+    "Replace sprite transport with official Wan2.2-Animate-14B local window generation and route only reviewed windows."
+  ],
+  "run_dir": "outputs/wan-perceptual-demo",
+  "supersedes": [],
+  "tags": ["wan", "long-video", "perceptual", "topology", "human-review", "partial"]
+}

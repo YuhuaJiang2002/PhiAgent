@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.bwm-wipe20-three-seed-evaluation-rejected",
+  "recorded_at": "2026-08-12T22:10:00Z",
+  "status": "PARTIAL",
+  "scope": "Three-seed, 20-physical-episode WorldArena BWM action-sensitivity audit",
+  "summary": "After averaging seeds 42, 314159, and 20260811 within each physical episode, the promoted adapter retains a significant factual SSIM gain but regresses factual flow EPE and both wrong-action primary margins; the frozen action audit fails.",
+  "evidence": [
+    "The audit evaluates 120 model-seed-trial records and 120 hashed factual/swapped/reference artifact tuples.",
+    "Factual future SSIM rises from 0.849294 to 0.861907; oriented gain is +0.012613 with 95% lower bound +0.009622.",
+    "Factual flow EPE changes from 1.734004 to 1.739377 pixels; lower-is-better gain is -0.005373 with lower bound -0.016480.",
+    "Wrong-action SSIM margin changes from -0.000159 to -0.004156; gain -0.003997 with lower bound -0.007483.",
+    "Wrong-action flow-EPE margin changes from -0.001791 to -0.010558; gain -0.008767 with lower bound -0.019301.",
+    "The comparison is decision-eligible with 20 independent physical episodes and 10,000 bootstrap iterations, but all_primary_metric_lower_bounds_positive=false and audit_passed=false.",
+    "The evaluation SHA-256 is a43ce1c390207766fe571d5deecf7cccd43e7247be9e1e014b4194000ee7a0aa."
+  ],
+  "lessons": [
+    "The negative action-use conclusion persists after seed aggregation and is not a seed42 anomaly.",
+    "The current adapter optimizes factual appearance without learning a stronger correct-versus-wrong action separation."
+  ],
+  "limitations": [
+    "The suite covers one real-robot task.",
+    "Wrong-action branches are diagnostic because they lack physically executed targets.",
+    "Conditioning is realized absolute EEF state, not low-level command."
+  ],
+  "next_actions": [
+    "Do not promote the adapter for action control or SOTA.",
+    "Require a changed training objective or additional real physical intervention data before another expensive matched inference campaign."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-multiseed-evaluation/20260812T220500Z-seeds42-314159-20260811-v1",
+  "supersedes": [
+    "2026-08-12.bwm-wipe20-seed42-evaluation-v2-rejected"
+  ],
+  "tags": ["acwm", "worldarena2", "counterfactual", "multiseed", "rejected", "partial"]
+}

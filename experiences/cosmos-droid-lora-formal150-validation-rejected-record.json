@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-formal150-validation-rejected",
+  "recorded_at": "2026-08-12T09:10:00Z",
+  "scope": "Same-sample validation comparison of the step-150 LoRA checkpoint and immutable public DROID base",
+  "status": "PARTIAL",
+  "summary": "The 4.8828125e-4 step-150 adapter improved motion correlation but substantially degraded appearance and static consistency on both isolated validation episodes, so it is rejected for demos and further continuation.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-validation",
+  "evidence": [
+    "Both methods independently generated ep012 and ep020 at 768x432, 16 fps, 93 frames with the same real first-frame conditions, prompt embeddings, negative embedding, seed 20260812, and guidance 7.",
+    "Condition-frame SSIM remained high and comparable: public base 0.977883 versus LoRA-150 0.976853.",
+    "LoRA-150 versus base deltas were mean full-frame SSIM -0.166347, subject edge F1 -0.199977, subject ROI SSIM -0.131816, and minimum full-frame SSIM -0.139936.",
+    "Motion correlation improved from 0.042949 to 0.227065 (+0.184116), but motion magnitude ratio worsened from 2.244277 to 2.847688.",
+    "Neither base nor LoRA-150 passed all strict gates; LoRA-150 output status is PARTIAL and is not eligible for demo promotion."
+  ],
+  "lessons": [
+    "At rank 16, the original learning rate is too aggressive for appearance-preserving task adaptation even though it begins to learn temporal motion.",
+    "The next experiment should sweep much earlier checkpoints at a lower explicit learning rate and require base-relative appearance preservation before considering motion gains."
+  ],
+  "limitations": [
+    "The validation set has two episodes; it is used for checkpoint selection only and no final-holdout claim is made.",
+    "Pixel-aligned metrics do not replace visual review, but the degradation is broad and large enough to reject this checkpoint before demo review."
+  ],
+  "next_actions": [
+    "Train a fresh 1e-4 run with checkpoints at steps 25, 50, and 75; evaluate candidates against the same public-base validation outputs and stop any candidate that violates appearance-preservation constraints."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "validation",
+    "rejected",
+    "appearance-drift",
+    "motion-improvement"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-formal150-training-working"
+  ]
+}

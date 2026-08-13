@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "scene": "public EPIC-KITCHENS P03_28 egocentric bottle workspace",
+  "coordinate_frame": "camera:epic_kitchens_p03_28_pixels",
+  "actions": [
+    {
+      "label": "unscrew-bottle-cap",
+      "instruction": "Continue from the shown open-bottle state: the cap is already fully detached and held by the left robot gripper while the right robot gripper holds the open bottle. Lift and turn the detached cap for inspection, separate both hands, and finish by displaying the open bottle and cap apart.",
+      "timeline": "This is the continuation at absolute 4.833-10.000 seconds of one uncut action. At the first frame the cap is already fully detached; it must never reattach, touch the bottle neck, disappear, duplicate, or reset. Local 0.000-2.000 seconds: lift and gently rotate the detached cap in the left gripper while the right gripper stabilizes the open bottle. Local 2.000-4.200 seconds: move both grippers farther apart and inspect the cap while preserving the open neck. Local 4.200-5.167 seconds: finish with subtle natural hand motion in a clear open-bottle display pose, cap in the left gripper and bottle in the right gripper. Preserve the exact continuation-frame camera, robot identity, bottle identity, grasp, lighting, and depth ordering."
+    },
+    {
+      "label": "rinse-bottle",
+      "instruction": "Continue from the shown rinsing state with the same blue bottle held in the right robot gripper beneath the faucet. Rotate and sweep it through several additional rinsing orientations, return it upright, and move it out of the water while keeping the grasp.",
+      "timeline": "This is the continuation at absolute 4.833-10.000 seconds of one uncut action. At the first frame the same bottle is already held under the faucet; do not reset it to the counter, change hands, duplicate it, or restart the approach. Local 0.000-2.800 seconds: continue multiple visible rotations and short sweeps beneath the faucet while the right grasp stays closed and the left gripper remains near the faucet control. Local 2.800-4.400 seconds: return the bottle upright and move it away from the water while the left arm retracts. Local 4.400-5.167 seconds: make a small draining tilt above the basin and settle into a held pose without releasing the bottle. Preserve the exact continuation-frame camera, robot identity, bottle identity, grasp, lighting, and depth ordering."
+    }
+  ]
+}

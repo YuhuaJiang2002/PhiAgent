@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "hosts": [
+    "a800-1",
+    "a800-2",
+    "a800-3",
+    "a800-4",
+    "zhaoli",
+    "pro5000"
+  ],
+  "jobs": [
+    {
+      "id": "bwm-wipe20-seed42",
+      "type": "remote_process",
+      "host": "a800-1",
+      "pid": 349396,
+      "success_json": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-wipe20-matched/20260812T080410Z-seed42-gpu1-4-v1/result.json",
+      "success_status": "WORKING",
+      "successor": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "a800-1",
+        "cd /data0/jiangyuhua/PhiAgent-0 && python3 scripts/postprocess_bwm_matched_pair.py --watcher-root outputs/acwm-wipe20-matched/20260812T080410Z-seed42-gpu1-4-v1 --suite-manifest outputs/acwm-counterfactual-audit/20260812T073914Z-worldarena2-wipe20-lineage-safe-v5/manifest.json --output-dir outputs/acwm-wipe20-matched/20260812T080410Z-seed42-gpu1-4-v1/evaluation-final-v1 --seed 42"
+      ]
+    },
+    {
+      "id": "droid-heldout-mapping",
+      "type": "remote_process",
+      "host": "a800-1",
+      "pid": 865723,
+      "success_json": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-mapping-shards/20260812T104002Z-episodes21-60-77-v2/manifest.json",
+      "success_status": "WORKING"
+    },
+    {
+      "id": "curobo-source-transfer",
+      "type": "remote_file",
+      "host": "a800-4",
+      "path": "/data0/jiangyuhua/PhiAgent-0/inputs/curobo/curobo-v0.7.8.tar.gz",
+      "expected_bytes": 58897152,
+      "expected_sha256": "702415790acf030aaf48c49f3381b8963d24b80bc4ab40d4a10808244ad5ee19"
+    }
+  ]
+}

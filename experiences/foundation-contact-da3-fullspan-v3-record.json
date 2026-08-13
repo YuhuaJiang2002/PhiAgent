@@ -1,0 +1,32 @@
+{
+  "record_id": "2026-08-12.foundation-contact-da3-fullspan-v3",
+  "recorded_at": "2026-08-12T10:02:00Z",
+  "status": "PARTIAL",
+  "scope": "DA3 Nested learned-metric camera reconstruction over the complete 27.5-second candidate span",
+  "summary": "Pinned DA3 Nested processed 55 uniformly sampled frames at 2 Hz in 5.1189 inference seconds and passed the narrow context-sensitivity camera gate, but no independent observation bounds absolute common-mode scale bias.",
+  "evidence": [
+    "The input is 660 frames at 624x352 and 24 FPS with SHA-256 bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91.",
+    "Physical A800 GPU 1 produced 55 depth, confidence, intrinsics, and world-from-camera samples at 10.7445 sampled frames per inference second and 5.2827 source-video seconds per inference second.",
+    "Frame extraction, one-time model load, and inference took 0.3614, 21.8081, and 5.1189 seconds; peak allocated GPU memory was 13,537 MiB.",
+    "Twelve shared frames across two temporal contexts have scale-ratio variation p95 0.003107 and worst relative-depth residual p95 0.027975."
+  ],
+  "lessons": [
+    "Sparse full-span foundation geometry can run much faster than video time after model loading.",
+    "Agreement between two contexts of one model bounds context sensitivity but cannot establish externally calibrated metric scale."
+  ],
+  "limitations": [
+    "No RGB-D, fiducial, multiview calibration, or known-length link observation independently validates absolute depth scale.",
+    "The 2 Hz camera pass does not by itself provide 24 FPS contact geometry."
+  ],
+  "next_actions": [
+    "Bind learned scale to an independent metric observation and propagate that calibration covariance into robot, rod, and force stages."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T174200Z-da3-nested-full27p5s-2hz-v3",
+  "tags": [
+    "foundation-model",
+    "da3",
+    "metric-camera",
+    "long-video",
+    "partial"
+  ]
+}

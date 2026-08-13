@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-long-window0-missing-reference-v1",
+  "recorded_at": "2026-08-11T03:49:40Z",
+  "status": "PARTIAL",
+  "scope": "First remote launch attempt for the initial 10-second AC-WM action window",
+  "summary": "The first remote window-0 launch failed before experiment initialization because the robot identity reference from a multi-file rsync command had not landed at the declared remote path.",
+  "evidence": [
+    "outputs/minimax-h3-long-action-control/20260811T034500Z-10s-v1/window-00-launch.log records ValueError: experiment input does not exist or is empty for input/robot-reference.png.",
+    "No window-00-h3/metadata.json or generated candidate was created.",
+    "The failure occurred before model loading and before a CUDA process was created."
+  ],
+  "lessons": [
+    "Verify every remote input by content hash after transfer instead of inferring success from a preceding directory rsync.",
+    "Keep required identity, mask, and policy files at explicit stable names in the remote run input directory."
+  ],
+  "limitations": [
+    "This attempt contains no model or video-quality result."
+  ],
+  "next_actions": [
+    "Transfer each required file to an explicit destination, compare local and remote SHA-256 values, and launch into a new immutable window-00-h3-v2 directory."
+  ],
+  "run_dir": "outputs/minimax-h3-long-action-control/20260811T034500Z-10s-v1",
+  "supersedes": [],
+  "tags": [
+    "acwm",
+    "long-action",
+    "remote-preflight",
+    "missing-input",
+    "partial"
+  ]
+}

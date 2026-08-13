@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-wan-difference-mask-rejected",
+  "recorded_at": "2026-08-11T11:12:00Z",
+  "status": "PARTIAL",
+  "scope": "Full Wan unscrew and rinse generation with appearance-difference fallback masks",
+  "summary": "Both 240-frame generations completed, but dense review found pervasive black block artifacts that reproduce the high-frequency fallback-mask topology. The candidates are rejected despite valid geometry and successful execution; a smooth pose-capsule support route supersedes the mask construction for the next run.",
+  "evidence": [
+    "The immutable runs full-v2/unscrew-bottle-cap/20260811T105115Z-36b79ab0 and full-v2/rinse-bottle/20260811T105114Z-8696b0c3 both decode to 880x512, 240 frames, and 24 FPS.",
+    "Every-fourth-frame contact sheets and full-resolution key frames show dense black strokes across the upper background and interaction region in both candidates.",
+    "The artifacts align spatially with the fragmented white/black regions in the threshold-64, dilation-3 appearance-difference masks; the clean native place preprocessing instead uses large smooth support regions."
+  ],
+  "lessons": [
+    "A nonempty binary mask is not sufficient: high-frequency topology can leak as visible black conditioning artifacts even when mean support coverage looks reasonable.",
+    "Fallback masks should be derived from smooth kinematic capsules and object support, with small-component removal, rather than raw scene-difference texture."
+  ],
+  "limitations": [
+    "No quality or task claim is made for either rejected candidate.",
+    "The diagnosis is based on controlled visual correspondence, not an internal Wan attention trace."
+  ],
+  "next_actions": [
+    "Regenerate both tasks using smooth pose-capsule plus blue-object support and retain the same model, seed, prompt, and no-blur settings."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/full-v2",
+  "supersedes": [
+    "2026-08-11.acwm-ego-multitask-wan-mask-routing-v2"
+  ],
+  "tags": ["acwm", "wan2.2-animate", "mask-artifact", "dense-review", "rejected", "partial"]
+}

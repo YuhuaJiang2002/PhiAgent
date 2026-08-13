@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0.0",
+  "status": "PARTIAL",
+  "purpose": "Matched harness smoke only; three Hand2Dex cases cannot establish SOTA.",
+  "methods": [
+    "wan_animate2_distilled_raw_output",
+    "wan2.2_animate_replacement_raw_output",
+    "oscar_2b_native_input_raw_output"
+  ],
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "inference_budget": {
+    "wan_animate2": {
+      "width": 640,
+      "height": 352,
+      "frames": 81,
+      "steps": 10,
+      "guidance_scale": 1.0,
+      "distilled": true
+    }
+  },
+  "thresholds": {
+    "motion_preservation": 0.75,
+    "target_identity": 0.8,
+    "object_consistency": 0.75,
+    "temporal_consistency": 0.75
+  },
+  "seed_expansion_requires_case_passes": 1,
+  "cases": [
+    {
+      "case": 1,
+      "source_sha256": "d863b91c4f160d0b634a73a6b996b5362359245910e7402197b78a14e5ad9a03",
+      "reference_sha256": "014d3615ba0448e6500cbe76f63801603943373d7e47ae7562a1af75666dcd39",
+      "object_roi_xywh_normalized": [
+        0.43,
+        0.77,
+        0.19,
+        0.13
+      ]
+    },
+    {
+      "case": 2,
+      "source_sha256": "3245e585ad2351f1340b02ab37e211866960b89a4d24e4b3a78f5c041b064098",
+      "reference_sha256": "2fc8e9c3d48ed987fabc3e90bcc47cb2432433f8137346a0a3a641088c663327",
+      "object_roi_xywh_normalized": [
+        0.24,
+        0.4,
+        0.31,
+        0.4
+      ]
+    },
+    {
+      "case": 3,
+      "source_sha256": "ad33958a7e291aa2edde71f4437de2959bff2950e740a98e0ee87ee2c787a8c0",
+      "reference_sha256": "af57f9606c7d27696df573ccd086eee4e9f3481512e93d09f2a534ea28ccc834",
+      "object_roi_xywh_normalized": [
+        0.41,
+        0.62,
+        0.14,
+        0.24
+      ]
+    }
+  ],
+  "independent_unit": "object-action-scene case; inference seeds are repeated measurements",
+  "claim_boundary": "Proxy image metrics and three public examples do not validate physical contact, force, cross-object generalization, or exact PhiZero inference."
+}

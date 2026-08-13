@@ -1,0 +1,31 @@
+{
+  "record_id": "2026-08-12.metric-flower-vace-data-v1-working",
+  "recorded_at": "2026-08-12T13:15:00Z",
+  "status": "WORKING",
+  "scope": "Leakage-safe VACE data export from accepted metric flower simulation",
+  "summary": "The accepted 660-frame physical rollout was converted into 12 training clips and four source-frame-disjoint validation clips with explicit depth, centerline, contact, target, and identity controls.",
+  "evidence": [
+    "Dataset validation reports train_clips=12, validation_clips=4, and train_validation_frame_overlap=0.",
+    "Every clip is hash-bound to the accepted simulation, metric camera, and persistent stem artifacts.",
+    "The control review shows calibrated inverse depth, robot and flower edges, the named centerline, and the active contact marker.",
+    "The frozen manifest authorizes only BSD-3-Clause G1 and Apache-2.0 Sharpa-derived procedural frames; no Pexels frame enters training."
+  ],
+  "lessons": [
+    "Physical state should be compiled into training controls before appearance adaptation rather than asking a diffusion model to infer contact from pixels."
+  ],
+  "limitations": [
+    "All clips share one simulated rollout and validation is not an independent scene or seed.",
+    "The exported data alone does not show that a VACE adapter improves a real replacement."
+  ],
+  "next_actions": [
+    "Run a bounded trainer smoke and compare the adapted checkpoint with zero-shot generation on all four held-out windows."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/flower-task-adaptation/20260812T131500Z-metric-physical-vace-data-v1",
+  "tags": [
+    "flower",
+    "vace",
+    "metric-control",
+    "dataset",
+    "working"
+  ]
+}

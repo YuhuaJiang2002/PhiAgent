@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-phase04c-hands-v2",
+  "recorded_at": "2026-08-10T21:58:00Z",
+  "status": "PARTIAL",
+  "scope": "Fresh two-hand SAM2 re-anchors on the 50-frame scissors phase [398,448)",
+  "summary": "Both masks are nonempty and numerically smooth, but full-storyboard review rejects their semantics: one follows flower material and the other a wrist/forearm patch instead of two distinct grippers.",
+  "evidence": ["Both prompted instances have 50/50 nonempty masks.", "Adjacent IoU means are 0.943218 and 0.936371.", "The all-frame diagonal storyboard shows a large flower-material mask; the horizontal storyboard isolates wrist/forearm rather than a clear gripper.", "human-review.json records REJECT_PHASE_04C_HAND_SUPERVISION."],
+  "lessons": ["Smooth mask statistics can strongly false-accept the wrong semantic instance; dense review is mandatory."],
+  "limitations": ["No accepted two-gripper supervision exists for phase 04C."],
+  "next_actions": ["Use gripper-part-specific anchors or a tool/hand detector before recomputing contact pairs."],
+  "run_dir": "outputs/flower-full-expansion/20260811T056000Z-phase04c-hands-v2",
+  "supersedes": ["2026-08-11.flower-phase04c-hands-v1-missing-script"],
+  "tags": ["flower", "phase04c", "robot-hands", "semantic-failure", "partial"]
+}

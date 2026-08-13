@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.gpu-flower-face-suppressed-retakes-v2",
+  "recorded_at": "2026-08-11T10:27:00Z",
+  "scope": "Black-source-face-control retakes for six human-residual windows in the 660-frame flower film",
+  "status": "PARTIAL",
+  "summary": "All six source-face-suppressed A800 retakes produced human-free raw Wan candidates, but none is authorized for stitching until named flowers, two independent hands, contact, and temporal gates pass.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/gpu-flower-full-seed42-retakes/20260811T092954Z-face-suppressed-v2",
+  "evidence": [
+    "Physical A800 GPUs 2, 3, 4, and 5 generated starts 0, 72, 326, 470, 542, and 571 with seed 42, relighting LoRA routing, and an exact black source-face control.",
+    "Every raw wan_output.mp4 decodes 88 frames at 896x512 and 30 FPS; the immutable run manifest preserves all six candidates.",
+    "Every-fourth-frame review of all six raw candidates finds a closed robot face panel and no source-human face, skin, sleeve, or torso.",
+    "Postprocessed candidates at starts 0, 72, and 542 contain only 70 frames at 24 FPS; starts 326, 470, and 571 contain 88 frames at 30 FPS, so downstream work must use and deterministically retime the raw Wan output.",
+    "The generated flowers visibly differ from the real source instances, so human removal alone is insufficient for acceptance."
+  ],
+  "lessons": [
+    "Suppressing source-face identity control generalizes the anchor's complete-human-removal behavior across difficult poses.",
+    "The proxy's postprocessing can truncate an 88-frame raw candidate to 70 frames; raw Wan preservation is required before timeline correction and instance restoration."
+  ],
+  "limitations": [
+    "Dense review is an internal Codex semantic audit, not independent human annotation.",
+    "No retake in this batch has passed source-to-candidate flower identity, two-hand, contact, or temporal acceptance."
+  ],
+  "next_actions": [
+    "Retime each raw Wan output to the exact 89-frame, 24-FPS source timeline.",
+    "Restore source-tracked named flowers, track both robot hands independently, and run the unchanged strict object/contact gate per window before overlap stitching."
+  ],
+  "supersedes": [
+    "2026-08-11.gpu-flower-overlap-expansion-v1-human-removal-review"
+  ],
+  "tags": [
+    "gpu",
+    "wan2.2-animate",
+    "source-face-suppression",
+    "human-removal",
+    "full-film-retakes",
+    "partial"
+  ]
+}

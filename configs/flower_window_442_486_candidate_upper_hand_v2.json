@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 442,
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-diagonal-01",
+      "object_id": 101,
+      "anchor_source_frame": 0,
+      "box_xyxy": [463, 298, 528, 354],
+      "positive_points_xy": [[486, 318], [505, 327], [476, 338]],
+      "negative_points_xy": [[528, 360], [462, 315], [548, 335], [485, 372]],
+      "minimum_area_pixels": 140,
+      "maximum_area_pixels": 6500,
+      "role": "upper diagonal articulated gripper propagated forward from the shared global-442 anchor"
+    }
+  ],
+  "notes": "V2 removes later correction prompts so the upper-hand identity cannot transfer during the release."
+}

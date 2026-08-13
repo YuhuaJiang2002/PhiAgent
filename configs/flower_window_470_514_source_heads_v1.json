@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0.0", "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1], "global_source_frame_offset": 470,
+  "instances": [
+    {"instance_id": "lime-bud-upper-01", "object_id": 1, "anchor_source_frame": 0, "box_xyxy": [451, 292, 484, 319], "positive_points_xy": [[466, 304], [471, 307], [460, 300]], "negative_points_xy": [[477, 338], [495, 320], [450, 330]], "minimum_area_pixels": 35, "maximum_area_pixels": 1500, "role": "same lime bud inherited from accepted global frame 470", "correction_prompts": [{"anchor_source_frame": 44, "box_xyxy": [505, 235, 537, 282], "positive_points_xy": [[520, 252], [515, 260], [525, 266]], "negative_points_xy": [[498, 309], [540, 285], [499, 235]]}]},
+    {"instance_id": "pink-flower-upper-02", "object_id": 2, "anchor_source_frame": 0, "box_xyxy": [457, 305, 495, 362], "positive_points_xy": [[477, 337], [482, 342], [471, 330]], "negative_points_xy": [[466, 304], [501, 340], [470, 365]], "minimum_area_pixels": 45, "maximum_area_pixels": 1800, "role": "same salmon-pink flower inherited from accepted global frame 470", "correction_prompts": [{"anchor_source_frame": 44, "box_xyxy": [480, 285, 518, 333], "positive_points_xy": [[498, 309], [502, 314], [493, 304]], "negative_points_xy": [[520, 252], [522, 340], [530, 322]]}]}
+  ],
+  "notes": "Two bloom-tight identities are anchored by the already accepted 398-486 overlap at global 470 and corrected only at shared global frame 514."
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "scene": "real flower-arranging workspace",
+  "coordinate_frame": "camera:real_flower_source_pixels",
+  "object_name": "flower",
+  "actions": [
+    {
+      "label": "insert-flower",
+      "instruction": "Use the right hand to grasp one pink flower stem, lift it, carry it to the vase, insert it, release it, and retract while the left hand stabilizes the bouquet.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "approach", "start_s": 0.0, "end_s": 1.5, "description": "keep the torso stable and approach one pink stem with the open right hand", "entry_object_holder": "none", "exit_object_holder": "none"},
+        {"name": "grasp", "start_s": 1.5, "end_s": 2.5, "description": "close the right fingers around one stem before the flower begins moving", "entry_object_holder": "none", "exit_object_holder": "right_hand"},
+        {"name": "lift-carry", "start_s": 2.5, "end_s": 5.3, "description": "lift the held flower vertically and carry it toward the vase opening", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "insert", "start_s": 5.3, "end_s": 7.3, "description": "lower the held stem into the vase while the left hand stabilizes the bouquet", "entry_object_holder": "right_hand", "exit_object_holder": "vase"},
+        {"name": "release", "start_s": 7.3, "end_s": 8.3, "description": "open the right fingers and leave the flower supported by the vase", "entry_object_holder": "vase", "exit_object_holder": "vase"},
+        {"name": "retract", "start_s": 8.3, "end_s": 10.0, "description": "retract both hands slightly without moving the inserted flower", "entry_object_holder": "vase", "exit_object_holder": "vase"}
+      ]
+    },
+    {
+      "label": "handover-flower",
+      "instruction": "Pick up one pink flower with the right hand, transfer the stem into the left hand at chest height, then separate the hands and display the flower only in the left hand.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "approach", "start_s": 0.0, "end_s": 1.5, "description": "approach one pink flower with the open right hand", "entry_object_holder": "none", "exit_object_holder": "none"},
+        {"name": "grasp", "start_s": 1.5, "end_s": 2.5, "description": "grasp the stem with the right fingers and begin lifting", "entry_object_holder": "none", "exit_object_holder": "right_hand"},
+        {"name": "present", "start_s": 2.5, "end_s": 5.3, "description": "bring the held stem to chest center while the left hand opens", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "transfer", "start_s": 5.3, "end_s": 6.8, "description": "place the stem into the left palm, close the left fingers, then release the right fingers", "entry_object_holder": "right_hand", "exit_object_holder": "left_hand"},
+        {"name": "separate", "start_s": 6.8, "end_s": 8.5, "description": "move the empty right hand away while the left hand keeps holding the flower", "entry_object_holder": "left_hand", "exit_object_holder": "left_hand"},
+        {"name": "display", "start_s": 8.5, "end_s": 10.0, "description": "hold the flower visibly in only the left hand without inserting it into the vase", "entry_object_holder": "left_hand", "exit_object_holder": "left_hand"}
+      ]
+    },
+    {
+      "label": "inspect-flower",
+      "instruction": "Lift one pink flower to eye level with the right hand, rotate the wrist clockwise to inspect it, pause, then lower it while maintaining the grasp and never placing it in the vase.",
+      "duration_s": 10.0,
+      "phases": [
+        {"name": "approach", "start_s": 0.0, "end_s": 1.5, "description": "approach one pink stem with the open right hand", "entry_object_holder": "none", "exit_object_holder": "none"},
+        {"name": "grasp", "start_s": 1.5, "end_s": 2.5, "description": "grasp one stem with the right fingers before lifting it", "entry_object_holder": "none", "exit_object_holder": "right_hand"},
+        {"name": "lift", "start_s": 2.5, "end_s": 4.5, "description": "lift the flower to the robot eye line with continuous shoulder and elbow motion", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "rotate", "start_s": 4.5, "end_s": 6.5, "description": "rotate the right wrist clockwise by about 45 degrees while keeping the grasp", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "pause", "start_s": 6.5, "end_s": 8.0, "description": "pause with the flower held in front of the dark face panel", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"},
+        {"name": "lower", "start_s": 8.0, "end_s": 10.0, "description": "lower the flower slightly without releasing it or placing it in the vase", "entry_object_holder": "right_hand", "exit_object_holder": "right_hand"}
+      ]
+    }
+  ]
+}

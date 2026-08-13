@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-sequence-lineage-v3-av1-blocked",
+  "recorded_at": "2026-08-12T13:31:00Z",
+  "status": "BLOCKED",
+  "scope": "Structured DROID SequenceExample lineage audit v3",
+  "summary": "All payload integrity checks passed, but the OpenCV video backend could not software-decode the LeRobot AV1 files and stopped at episode 21 frame 5046.",
+  "evidence": [
+    "The decoder emitted repeated AV1 missing-sequence-header/pixel-format diagnostics.",
+    "The run failed before any frame-alignment metric was accepted.",
+    "/usr/bin/ffmpeg subsequently decoded the same frame through libdav1d to the expected 172,800 BGR bytes."
+  ],
+  "lessons": [
+    "AV1 lineage audits must pin an explicit software decoder rather than relying on environment-dependent OpenCV codec support."
+  ],
+  "limitations": [
+    "The attempt produced no pixel-lineage conclusion."
+  ],
+  "next_actions": [
+    "Use pinned ffmpeg/libdav1d segment decoding and rerun in a new directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-sequence-lineage/20260812T133100Z-episodes21-60-77-v3",
+  "supersedes": [
+    "2026-08-12.droid-sequence-lineage-v2-integrity-blocked"
+  ],
+  "tags": ["droid", "real-world", "lineage", "av1", "blocked"]
+}

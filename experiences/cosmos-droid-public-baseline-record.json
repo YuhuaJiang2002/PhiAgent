@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-public-baseline-partial",
+  "recorded_at": "2026-08-12T07:22:00Z",
+  "scope": "Cosmos-Predict2 14B GR00T-Dreams-DROID public baseline on isolated legacy-development episode 60",
+  "status": "PARTIAL",
+  "summary": "The SHA-verified 14B task-matched checkpoint completed native 2x2 multiview generation from one real condition frame using pinned precomputed T5 embeddings, but strict continuation quality gates rejected every evaluated view.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-baseline/20260812T174000Z-ep060-seed20260812-precomputed-t5",
+  "evidence": [
+    "Inference completed 35 sampling steps and produced a 768x432, 16 fps, 93-frame H.264 video with SHA-256 e9969833252717a57234d671b05e5d84bdd30c98caba61be345538999724bd08.",
+    "The model received only the real first composite frame, disclosed task text, and precomputed positive/negative T5 embeddings; real future frames were evaluation-only.",
+    "Mean first-condition SSIM was 0.9705, confirming correct conditioning, while strict per-view evaluation rejected exterior_1, exterior_2, and wrist continuations.",
+    "Aggregate continuation full-frame SSIM was 0.5638, subject edge F1 was 0.6063, motion correlation was 0.2219, and static-anchor SSIM gain was -0.2154.",
+    "Contact-sheet inspection found broadly coherent robot appearance and successful block-to-bowl semantics, but texture drift, exterior-view mismatch, and weak wrist-view temporal alignment remain visible."
+  ],
+  "lessons": [
+    "Precomputed text conditioning removes redundant per-rank T5 loading and reaches efficient four-GPU context-parallel sampling.",
+    "A task-matched public checkpoint is a materially better starting point than the rejected VACE route but is not sufficient for this dataset's exact cameras and identity requirement.",
+    "Fine-tuning should emphasize both exterior tiles, keep the inactive tile weight low, and validate motion rather than optimizing only first-frame similarity."
+  ],
+  "limitations": [
+    "Only a legacy-development sample was evaluated; no validation or final-holdout sample was used for selection.",
+    "This baseline is not accepted for the user-facing demo."
+  ],
+  "next_actions": [
+    "Run a two-step four-GPU LoRA smoke test with adapter-only checkpoints, then train and select checkpoints exclusively on the validation split before a single final-holdout evaluation."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "14b",
+    "baseline",
+    "multiview",
+    "rejected",
+    "partial"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-baseline-t5-device-partial",
+    "2026-08-12.cosmos-droid-baseline-cpu-t5-repetition-partial"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.h3-topology-r2-frame-action-bound-correction",
+  "recorded_at": "2026-08-10T22:56:55Z",
+  "scope": "Authoritative r2 epoch-1 reassessment with both decoded-frame topology binding and component-wise action binding",
+  "status": "PARTIAL",
+  "summary": "The final r2 replication remains rejected after strengthening the evidence contract so that every topology label carries its decoded-frame SHA-256 and every action component is compared on video-bound matched context.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/h3-identity-topology-rsi/20260811T083200Z-r2-epoch1-assessment-v3-frame-action-bound",
+  "evidence": [
+    "All 124 topology records include a SHA-256 over the corresponding decoded raw frame; the topology evidence SHA-256 is 1c0b009a9dfdbede735aba35c5b58ae0b01cf87d31a4f0ec367bbadf39254db2.",
+    "The new topology_decoded_frame_digests gate passes, while only 24/124 frames pass the semantic topology conjunction.",
+    "The action evidence binds baseline video SHA-256 8de6f59a650a9ec7e2010826358fd1ee5de529023ca7310ccaccf9a827ab1607 and candidate video SHA-256 959ee744a1484334c2dd4f8d19814177bd41f8511c611ad3fc2d9343f1f13823 to their raw-round scorecards.",
+    "The authoritative automatic metrics SHA-256 is fb5830c8618a3d7d3f4bb9b2d2c7d03c06a3a319f9168744003aff0e422aced0 and assessment SHA-256 is 97e806f6f071e81f915950695a596aca158117860ef3d414774e611fecdcda2f.",
+    "The candidate fails identity gain, identity floor, topology, matched motion, and action non-regression; scene and temporal non-regression pass.",
+    "The complete local suite passes 335 tests with one optional MuJoCo skip; focused remote tests pass 15/15 and Ruff passes."
+  ],
+  "lessons": [
+    "Whole-video hashes prevent candidate substitution, while per-frame decoded hashes make the mapping from each semantic label to the actual reviewed frame explicit and auditable.",
+    "A promotion contract should fail closed on missing evidence even when the reported aggregate metric appears favorable."
+  ],
+  "limitations": [
+    "Per-frame digests prove evidence alignment, not the correctness of human semantic judgments.",
+    "The evaluation remains a single held-out 2-D real-scene clip and does not establish physical joint validity."
+  ],
+  "next_actions": [
+    "Apply the decoded-frame and action-context binding gates to every r3 checkpoint before considering promotion.",
+    "Retain all rejected r2 videos only as diagnostic evidence."
+  ],
+  "supersedes": [
+    "2026-08-11.h3-topology-r2-epoch1-replication-action-binding"
+  ],
+  "tags": ["h3", "rsi", "topology", "frame-digest", "action-binding", "correction", "rejected", "partial"]
+}

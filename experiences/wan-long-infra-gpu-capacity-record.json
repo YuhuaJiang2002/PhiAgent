@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-gpu-capacity-preflight",
+  "recorded_at": "2026-08-12T04:33:40Z",
+  "status": "PARTIAL",
+  "scope": "Corrected two-pair full-length launch capacity preflight",
+  "summary": "The corrected launch stopped before model allocation because another experiment acquired physical GPU 5 and reduced its free memory below the declared 70000 MiB minimum.",
+  "evidence": [
+    "Metadata records GPU 5 with 57810 MiB free against the 70000 MiB requirement.",
+    "No persistent batch was launched and no GPU inference from this attempt started."
+  ],
+  "lessons": [
+    "Long-video launch must revalidate all GPU pairs together immediately before starting workers; capacity races are expected on the shared host."
+  ],
+  "limitations": [
+    "This attempt contains no performance or quality evidence."
+  ],
+  "next_actions": [
+    "Wait for four eligible GPUs and rerun the same pinned command in a fresh directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-persistent-2pair-rolling-v2",
+  "supersedes": [],
+  "tags": ["wan-animate2", "long-video", "gpu-preflight", "capacity", "failure"]
+}

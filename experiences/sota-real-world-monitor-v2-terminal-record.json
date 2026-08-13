@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.sota-real-world-monitor-v2-terminal",
+  "recorded_at": "2026-08-12T20:06:51Z",
+  "status": "PARTIAL",
+  "scope": "Real-world-only long-term monitor v2 terminal state",
+  "summary": "The v2 monitor exited cleanly after its only watched BWM process disappeared at the 12-hour GPU-wait timeout; it correctly did not launch the scientific postprocessor.",
+  "evidence": [
+    "The monitor persisted 183 six-host capacity snapshots and two state-transition events.",
+    "Its final heartbeat records bwm-wipe20-seed42-real-world as failed and successor_started=false.",
+    "The detached monitor itself exited with code 0 after 26,417.63 seconds because all configured jobs were terminal."
+  ],
+  "lessons": [
+    "Monitor process success and scientific job success must be reported separately.",
+    "Long-term monitor scope must include every active real-world waiter so one queue timeout does not end all campaign observation."
+  ],
+  "limitations": [
+    "v2 watched only the BWM queue and did not include the DROID SVO calibration waiter."
+  ],
+  "next_actions": [
+    "Start a v3 monitor for both the seven-day BWM waiter and DROID calibration waiter."
+  ],
+  "run_dir": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/sota-monitor/20260812T124500Z-real-world-only-v2",
+  "supersedes": [],
+  "tags": ["sota", "real-world", "monitor", "terminal", "partial"]
+}

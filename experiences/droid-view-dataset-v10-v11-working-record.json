@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-view-dataset-v10-v11-working",
+  "recorded_at": "2026-08-11T16:36:00Z",
+  "scope": "Accepted target-A DROID wrist-to-exterior LoRA data contracts",
+  "status": "WORKING",
+  "summary": "The accepted v10 contract provides 91 episode-disjoint target-A training pairs and three heldout pairs; v11 expands each training episode to start/middle/end clips for 273 pairs without changing the heldout episodes.",
+  "run_dir": "outputs/droid-view-lora/20260811T154800Z-dataset-v11-full91-target-a-3clips",
+  "evidence": [
+    "v10 contains 91 training examples from 91 training episodes, three heldout examples, and excludes validation episodes 12/20/54/66/91 plus holdouts 21/60/77 and too-short episode 79.",
+    "v11 contains 273 training examples from the same 91 training episodes by sampling three deterministic temporal positions per episode.",
+    "Both contracts attest episode_disjoint=true, heldout_anchors_used_for_training=false, and heldout_targets_used_for_training=false.",
+    "v11 dataset-contract SHA-256 is 673fc86ccd3a0a75165f67f00980ca59b732053de1250d28f7de230583bf22dd and adaptation-manifest SHA-256 is 74e1cd2819aaab73a53db68f9120175138b864b47d158fdd5cf46f41a4098672.",
+    "The four v11 transfer archives matched their local SHA-256 values before extraction on a800-2.",
+    "Coordinate frames are explicit: camera:wrist_image_left_pixels to camera:exterior_image_1_left_pixels."
+  ],
+  "lessons": [
+    "Episode-level holdout is required because temporally adjacent clips from the same robot episode would leak appearance and action state.",
+    "One real target-view anchor frame can be disclosed while the synchronized remaining target video stays withheld for post-generation evaluation."
+  ],
+  "limitations": [
+    "The data contract validates synchronization and leakage boundaries; it does not imply that a trained model will generalize."
+  ],
+  "next_actions": [
+    "Evaluate every trained checkpoint on episodes 21, 60, and 77 with the frozen target-leakage guard."
+  ],
+  "supersedes": ["2026-08-12.droid-view-dataset-iterations"],
+  "tags": ["droid", "view-generalization", "dataset", "target-a", "working"]
+}

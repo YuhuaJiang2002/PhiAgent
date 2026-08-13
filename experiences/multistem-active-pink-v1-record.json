@@ -1,0 +1,28 @@
+{
+  "record_id": "2026-08-13.multistem-active-pink-v1-partial",
+  "recorded_at": "2026-08-13T02:45:00Z",
+  "status": "PARTIAL",
+  "scope": "First persistent-rod optimization of the real 17-frame active pink stem proposal",
+  "summary": "Soft temporal and length constraints improve maximum segment CV from 1.857 to 0.803 but remain far above the frozen 0.12 gate.",
+  "evidence": [
+    "The optimizer processes all 17 real source frames in 0.1205 seconds.",
+    "Identity continuity passes for active-pink-stem-01.",
+    "Maximum segment-length CV is 0.802965 and metric binding remains false."
+  ],
+  "lessons": [
+    "A soft rod loss is repeatedly overridden by inconsistent per-frame depth observations."
+  ],
+  "limitations": [
+    "The single-stem structure and metric gates fail."
+  ],
+  "next_actions": [
+    "Make material length a hard constraint and add an observation-residual gate."
+  ],
+  "run_dir": "outputs/foundation-contact/20260813T023500Z-multistem-active-pink-v1",
+  "tags": [
+    "flower",
+    "multistem",
+    "real-proposal",
+    "partial"
+  ]
+}

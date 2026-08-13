@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-route-fallback-partial",
+  "recorded_at": "2026-08-12T05:50:00Z",
+  "scope": "SOTA model-route selection for DROID first-person-to-third-person generation",
+  "status": "PARTIAL",
+  "summary": "The newer Cosmos-Predict2.5 route could not be made reproducible because its required official weights were gated, so it was not used; the campaign moved to the public 14B GR00T-Dreams-DROID checkpoint whose native four-tile layout directly matches the task.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/external/cosmos-predict2.5",
+  "evidence": [
+    "The official Cosmos-Predict2.5 repository and CUDA 12.8 environment were installed and passed a CUDA compatibility check.",
+    "The required official Predict2.5 checkpoint download remained access-gated, so no generated result was claimed from this route.",
+    "The public Cosmos-Predict2 14B GR00T-Dreams-DROID model documents a native top-left exterior, top-right exterior, bottom-left wrist/ego, bottom-right inactive layout matching the requested viewpoint transfer."
+  ],
+  "lessons": [
+    "A nominally newer model is not a stronger reproducible route when its exact checkpoint cannot be acquired and pinned.",
+    "Task-specific multiview pretraining is more relevant here than substituting an accessible generic image-to-video checkpoint."
+  ],
+  "limitations": [
+    "This record concludes model-route availability only; it contains no video-quality result for either route."
+  ],
+  "next_actions": [
+    "Pin and hash the public DROID checkpoint, run a real baseline, then adapt it with leakage-safe multiview LoRA training."
+  ],
+  "tags": [
+    "cosmos-predict2.5",
+    "cosmos-predict2",
+    "droid",
+    "model-route",
+    "partial"
+  ],
+  "supersedes": []
+}

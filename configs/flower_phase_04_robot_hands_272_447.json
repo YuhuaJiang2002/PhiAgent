@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [272, 448, 1],
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-04",
+      "object_id": 101,
+      "anchor_source_frame": 296,
+      "box_xyxy": [470, 245, 535, 305],
+      "positive_points_xy": [[487, 266], [501, 274], [514, 282]],
+      "negative_points_xy": [[468, 282], [458, 302], [532, 248], [526, 302]],
+      "minimum_area_pixels": 120,
+      "maximum_area_pixels": 7000,
+      "role": "phase-04 upper mechanical hand at active-stem contact"
+    },
+    {
+      "instance_id": "robot-hand-lower-04",
+      "object_id": 102,
+      "anchor_source_frame": 296,
+      "box_xyxy": [438, 296, 505, 370],
+      "positive_points_xy": [[463, 326], [474, 337], [482, 348]],
+      "negative_points_xy": [[462, 306], [446, 292], [501, 366], [511, 331]],
+      "minimum_area_pixels": 100,
+      "maximum_area_pixels": 7000,
+      "role": "phase-04 lower mechanical hand supporting the bouquet"
+    }
+  ],
+  "notes": "The accepted frame-296 prompted hands are propagated through every H3 frame in the full 272--447 contact interval."
+}

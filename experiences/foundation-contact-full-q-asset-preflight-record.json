@@ -1,0 +1,30 @@
+{
+  "record_id": "2026-08-12.foundation-contact-full-q-asset-preflight",
+  "recorded_at": "2026-08-12T10:12:00Z",
+  "status": "PARTIAL",
+  "scope": "Remote full-q trajectory export preflight with exact G1 and bilateral Sharpa assets",
+  "summary": "The first 660-frame full-q run stopped before inference because the left Sharpa MJCF asset was absent on the remote host; the entry point correctly refused a partial or substituted embodiment.",
+  "evidence": [
+    "The remote runtime verified OpenCV 4.11.0, MediaPipe 0.10.21, MuJoCo 3.3.7, NumPy 1.26.4, SciPy 1.15.3, the 660-frame source, and available A800 capacity.",
+    "The preflight raised ValueError: sharpa_left_model does not exist before processing a frame or writing a trajectory manifest.",
+    "The exact left model registry hash is 3cbeb46259d4ba63cbdb83085255d1a8f8031c51e0101a6622f6e7e81a64dc11; no right-hand or simplified substitute was accepted."
+  ],
+  "lessons": [
+    "Asset completeness and hash lineage must be checked before pose inference, even when the missing component is visually symmetric.",
+    "A failed remote asset transfer is infrastructure evidence, not a partial robot trajectory."
+  ],
+  "limitations": [
+    "No generalized-coordinate estimate was produced by this attempt.",
+    "The remote asset checkout still needed a complete pinned left-hand mesh set."
+  ],
+  "next_actions": [
+    "Complete the pinned SSH checkout, verify both Sharpa hashes, and rerun the immutable full-q experiment in a new directory."
+  ],
+  "tags": [
+    "robot-trajectory",
+    "asset-preflight",
+    "exact-asset",
+    "failure-preserved",
+    "partial"
+  ]
+}

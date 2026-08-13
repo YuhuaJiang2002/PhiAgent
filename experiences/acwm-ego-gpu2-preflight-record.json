@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-gpu2-preflight",
+  "recorded_at": "2026-08-11T05:43:00Z",
+  "status": "WORKING",
+  "scope": "Corrected H3 experiment physical-GPU selection",
+  "summary": "The unchanged preflight passed after physical GPU 2 became eligible, and the experiment recorded CUDA_VISIBLE_DEVICES plus the physical device before loading MiniMax-H3.",
+  "evidence": [
+    "preflight-window-00-v2 selected physical GPU 2 with at least 60000 MiB free.",
+    "The run uses seed 20260811, 20 steps, 832x480, 124 frames, and the ego_bottle scene domain."
+  ],
+  "lessons": ["Waiting for capacity preserves both reproducibility and co-tenant safety without weakening the experiment contract."],
+  "limitations": [],
+  "next_actions": [],
+  "run_dir": "outputs/minimax-h3-long-ego-action-control/20260811T053700Z-epic-blue-bottle-v2",
+  "supersedes": ["2026-08-11.acwm-ego-gpu-capacity-preflight"],
+  "tags": ["acwm", "gpu", "preflight", "cuda-visible-devices", "working"]
+}

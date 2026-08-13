@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-metric-camera-bridge-v1-partial",
+  "recorded_at": "2026-08-12T11:54:10Z",
+  "scope": "First real 27.5-second sparse metric-camera bridge execution",
+  "status": "PARTIAL",
+  "summary": "The source-video binding passed, but zero independent metric observations were available; the bridge emitted no calibrated sample and retained the learned camera proposal.",
+  "run_dir": "outputs/foundation-contact/20260812T115500Z-metric-camera-bridge-real-v1",
+  "evidence": [
+    "Source SHA-256 binding passed for bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91.",
+    "anchors_total=0, anchors_admissible=0, and reason=missing_independent_metric_observations.",
+    "Calibration wall time was 0.004468 seconds and outputs.calibrated_samples is null.",
+    "The first bridge compiler retained all 0/4 physical gates false."
+  ],
+  "lessons": [
+    "Temporal agreement and correct-looking robot size cannot close monocular common-mode scale ambiguity."
+  ],
+  "limitations": [
+    "This revision required complete q and reprojection for exact-asset anchors but did not yet freeze the asset SHA allowlist inside the calibration contract."
+  ],
+  "next_actions": [
+    "Freeze exact-asset hashes in the calibration contract and rerun the unchanged real input."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "metric-camera", "calibration", "partial"]
+}

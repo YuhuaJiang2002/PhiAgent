@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-multitask-wan-direct-empty-mask",
+  "recorded_at": "2026-08-11T10:22:00Z",
+  "status": "PARTIAL",
+  "scope": "Direct deterministic-control to Wan robot-factored pilot for unscrewing",
+  "summary": "The 125-frame direct-control pilot failed closed during Wan preprocessing because SAM2 produced an empty subject mask on a line-art control frame; no generative candidate was produced or promoted.",
+  "evidence": [
+    "The metadata records failed status and the exact zero-size mask traceback from Wan preprocessing.",
+    "The driver preprocessing log completes propagation and then fails in get_mask_boxes before generation."
+  ],
+  "lessons": [
+    "Explicit line-art controls are adequate for H3 conditioning but are not guaranteed to satisfy Wan's realistic-subject segmentation precondition."
+  ],
+  "limitations": [
+    "This negative probe does not evaluate video quality because generation never started."
+  ],
+  "next_actions": [
+    "Generate realistic H3 robot-action drivers first, then reuse the previously accepted Wan robot-factored route."
+  ],
+  "run_dir": "outputs/acwm-ego-multitask/20260811T101400Z-epic-p03_28-v4/pilot-unscrew/20260811T101126Z-30fff33f",
+  "supersedes": [],
+  "tags": ["acwm", "wan2.2-animate", "sam2", "empty-mask", "fail-closed", "partial"]
+}

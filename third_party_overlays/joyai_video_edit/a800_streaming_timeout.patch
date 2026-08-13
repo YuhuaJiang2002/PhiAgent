@@ -1,0 +1,22 @@
+diff --git a/deploy/xvideo/serving/serve_joyomni_streaming.py b/deploy/xvideo/serving/serve_joyomni_streaming.py
+index 4b3ac22..76f4b9a 100644
+--- a/deploy/xvideo/serving/serve_joyomni_streaming.py
++++ b/deploy/xvideo/serving/serve_joyomni_streaming.py
+@@ -1196,7 +1196,7 @@ async def websocket_endpoint(websocket: WebSocket):
+ 
+             app.state.ws_debug = ws_debug
+ 
+-            HOLDER_IDLE_TIMEOUT_S = 10.0
++            HOLDER_IDLE_TIMEOUT_S = max(10.0, float(args.holder_idle_timeout_s))
+             last_activity = time.monotonic()
+             last_frames_out = frames_out
+             while True:
+@@ -1889,6 +1889,8 @@ def parse_args() -> argparse.Namespace:
+     parser.add_argument("--freeze-kv-on-static", action=argparse.BooleanOptionalAction, default=True)
+     parser.add_argument("--static-diff-thresh", type=float, default=0.5)
+     parser.add_argument("--preload", action=argparse.BooleanOptionalAction, default=True)
++    parser.add_argument("--holder-idle-timeout-s", type=float, default=10.0,
++                        help="Release an idle WebSocket holder after this many seconds (minimum 10).")
+     parser.add_argument("--push-frame-timeout-s", type=float, default=15.0, help="Max seconds a single frame submission may block before releasing the WS session gate.")
+     parser.add_argument("--session-close-timeout-s", type=float, default=5.0, help="Best-effort session cleanup timeout during WS teardown.")
+     parser.add_argument("--inference-lock-timeout-s", type=float, default=5.0, help="Max seconds to wait for the process-wide inference lock.")

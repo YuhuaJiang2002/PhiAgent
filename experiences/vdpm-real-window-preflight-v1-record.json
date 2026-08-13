@@ -1,0 +1,33 @@
+{
+  "record_id": "2026-08-13.vdpm-real-window-preflight-v1-blocked",
+  "recorded_at": "2026-08-13T03:20:00Z",
+  "status": "BLOCKED",
+  "scope": "Pinned V-DPM environment and checkpoint preflight for the real flower clip",
+  "summary": "Official V-DPM source and a CUDA-compatible smoke environment are ready, but real inference is blocked because the 6.65 GB public checkpoint cannot be reached or found in authorized caches.",
+  "evidence": [
+    "Official source is pinned at commit 5e2a57cf6007dfb0511a8b396a0805089b9edcc4 and VGGT at 44b3afbd1869d8bde4894dd8ea1e293112dd5eba.",
+    "A virtualenv reusing torch 2.6.0+cu124 and torchvision 0.21.0+cu124 imports VDPM and executes a finite CUDA tensor smoke on physical A800 GPU 1.",
+    "Two failed uv environments are retained as negative evidence: dependency resolution installed Torch 2.13/CUDA13 and caused a torchvision ABI mismatch.",
+    "The upstream exact Torch 2.5.1 wheel download did not complete and was stopped; this compatibility environment is not claimed as the matched baseline.",
+    "HF CLI, official Hugging Face range GET and hf-mirror range GET all fail or time out, and no authorized host cache contains model.pt."
+  ],
+  "lessons": [
+    "Dependency resolvers must not silently upgrade the core CUDA framework for a pinned model.",
+    "A successful code/CUDA import is not model evidence without the exact checkpoint."
+  ],
+  "limitations": [
+    "No V-DPM model inference or point-map artifact exists.",
+    "The current smoke environment differs from upstream Torch 2.5.1."
+  ],
+  "next_actions": [
+    "Obtain model.pt through an authorized reachable mirror or pre-populated cache, verify its hash, then run one-window inference before the full clip."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/external/vdpm-5e2a57c",
+  "tags": [
+    "flower",
+    "v-dpm",
+    "checkpoint",
+    "gpu-preflight",
+    "blocked"
+  ]
+}

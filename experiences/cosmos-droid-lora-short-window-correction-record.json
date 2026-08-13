@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-short-window-evidence-correction-partial",
+  "recorded_at": "2026-08-12T08:01:00Z",
+  "scope": "Correction of three purported 49-frame LoRA smoke conclusions",
+  "status": "PARTIAL",
+  "summary": "The 185000Z, 190000Z, and 191500Z runs were configured by their launchers as 49-frame attempts, but recursive overlay registration selected an older experiment definition; their official saved configs prove the effective dataloader remained 93 frames and state_t remained 24.",
+  "evidence": [
+    "The 185000Z official config.yaml and printed config both record dataloader_train.dataset.num_frames=93 and pipe_config.state_t=24.",
+    "Multiple PhiAgent overlay modules registered the same Hydra experiment name during recursive import, so import order selected the older definition.",
+    "Their OOM observations remain valid for the effective 93-frame workloads, but they are not evidence about 49-frame memory use."
+  ],
+  "lessons": [
+    "Always verify the framework-saved effective config rather than relying only on launcher intent.",
+    "Exactly one active overlay must be present in the recursively imported experiment directory."
+  ],
+  "limitations": [
+    "No valid 49-frame optimizer-step evidence exists yet."
+  ],
+  "next_actions": [
+    "Use archived overlay staging and synchronize pipe_config.state_t with the actual short-window pixel-frame count."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "correction",
+    "effective-config",
+    "temporal-window",
+    "partial"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-attention-r16-49f-oom-partial",
+    "2026-08-12.cosmos-droid-lora-attention-r8-49f-fragmentation-partial",
+    "2026-08-12.cosmos-droid-lora-r16-49f-split128-partial"
+  ]
+}

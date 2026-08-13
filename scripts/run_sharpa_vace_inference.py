@@ -43,6 +43,8 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--num-frames", type=int, default=17)
     parser.add_argument("--fps", type=int, default=8)
     parser.add_argument("--steps", type=int, default=20)
+    parser.add_argument("--source-git-head")
+    parser.add_argument("--source-git-status-sha256")
     return parser
 
 
@@ -82,8 +84,33 @@ def _video_frame_count(path: Path) -> int:
         raise ValueError(f"ffprobe did not report a frame count for {path}") from exc
 
 
+def _git_state(root: Path) -> dict[str, object]:
+    result = {}
+    for name, command in (
+        ("head", ("git", "rev-parse", "HEAD")),
+        ("status", ("git", "status", "--short")),
+    ):
+        completed = subprocess.run(
+            command,
+            cwd=root,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        result[name] = {
+            "returncode": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+        }
+    return result
+
+
 def main() -> int:
     args = _parser().parse_args()
+    if bool(args.source_git_head) != bool(args.source_git_status_sha256):
+        raise ValueError(
+            "source Git head and status SHA-256 must be supplied together"
+        )
     if min(
         args.minimum_free_gpu_mib,
         args.height,
@@ -162,6 +189,13 @@ def main() -> int:
         "hostname": socket.gethostname(),
         "platform": platform.platform(),
         "python": sys.version,
+        "git": {
+            "execution_workspace": _git_state(
+                Path(__file__).resolve().parents[1]
+            ),
+            "source_git_head": args.source_git_head,
+            "source_git_status_sha256": args.source_git_status_sha256,
+        },
         "packages": {
             name: importlib.metadata.version(name)
             for name in ("torch", "diffsynth", "peft", "transformers")

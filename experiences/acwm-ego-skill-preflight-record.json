@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-ego-skill-pyyaml-preflight",
+  "recorded_at": "2026-08-11T05:20:00Z",
+  "status": "PARTIAL",
+  "scope": "Agentic skill metadata generation and validation entrypoint",
+  "summary": "Both the system Python and project virtualenv entrypoints failed before skill validation because PyYAML was intentionally absent from the lightweight project dependencies.",
+  "evidence": [
+    "The first generator attempt with system Python failed on the missing yaml module.",
+    "The second generator attempt with .venv Python failed on the same missing yaml module; no repository dependency was added."
+  ],
+  "lessons": ["Skill tooling dependencies must stay outside PhiAgent's lightweight runtime contract and be provisioned in an isolated tool environment."],
+  "limitations": ["These two entrypoints did not validate the updated skill."],
+  "next_actions": ["Install PyYAML into a temporary isolated path and rerun the official generator, quick validator, and SkillHone static check."],
+  "run_dir": "agentic_skills/acwm-long-action-control",
+  "supersedes": [],
+  "tags": ["acwm", "agentic-skill", "preflight", "optional-dependency", "negative-result"]
+}

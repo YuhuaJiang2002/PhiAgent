@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 398,
+  "instances": [
+    {
+      "instance_id": "cream-flower-upper-01",
+      "object_id": 1,
+      "anchor_source_frame": 44,
+      "box_xyxy": [495, 297, 555, 355],
+      "positive_points_xy": [[528, 326], [520, 318], [538, 335]],
+      "negative_points_xy": [[480, 350], [465, 320], [565, 320], [530, 280]],
+      "minimum_area_pixels": 80,
+      "maximum_area_pixels": 3200,
+      "role": "cream-yellow blossom manipulated during stem trimming",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [500, 300, 555, 360],
+          "positive_points_xy": [[528, 333], [520, 322], [540, 345]],
+          "negative_points_xy": [[475, 350], [560, 330], [530, 285], [505, 380]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [500, 250, 555, 315],
+          "positive_points_xy": [[528, 282], [520, 272], [538, 294]],
+          "negative_points_xy": [[495, 320], [560, 285], [530, 335], [485, 280]]
+        }
+      ]
+    },
+    {
+      "instance_id": "pink-flower-lower-02",
+      "object_id": 2,
+      "anchor_source_frame": 44,
+      "box_xyxy": [450, 315, 505, 390],
+      "positive_points_xy": [[480, 350], [472, 340], [487, 366]],
+      "negative_points_xy": [[528, 326], [515, 300], [445, 350], [500, 405]],
+      "minimum_area_pixels": 90,
+      "maximum_area_pixels": 3600,
+      "role": "pink blossom below the cream flower during stem trimming",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [440, 315, 500, 390],
+          "positive_points_xy": [[475, 352], [465, 340], [483, 367]],
+          "negative_points_xy": [[528, 333], [510, 310], [435, 350], [500, 400]]
+        },
+        {
+          "anchor_source_frame": 88,
+          "box_xyxy": [475, 260, 525, 330],
+          "positive_points_xy": [[500, 295], [492, 285], [508, 310]],
+          "negative_points_xy": [[528, 282], [465, 295], [530, 325], [500, 345]]
+        }
+      ]
+    }
+  ],
+  "notes": "Frames 398-486 contain a new trimming action, so two unambiguous manipulated blossoms are explicitly anchored at start, midpoint, and end. Promotion still requires dense review of the produced masks."
+}

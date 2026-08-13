@@ -1,0 +1,37 @@
+{
+  "evidence": [
+    "outputs/agentic-workflow-benchmark/20260811T041800Z-evidence-v3/benchmark.json hashes the six immutable metric sources and hashes only the canonical MiniMax-H3 user-rejection ledger record rather than the mutable ledger file",
+    "outputs/agentic-workflow-benchmark/20260811T041800Z-evidence-v3/tables.md reproduces the robot replacement and AC-WM comparison tables",
+    "docs/AGENTIC_WORKFLOW_BENCHMARKS.md and README.md expose the same values and PARTIAL scope boundaries"
+  ],
+  "lessons": [
+    "A report that cites an append-only ledger should hash the exact evidence record, not the entire ledger whose digest changes after every valid append.",
+    "Stable evidence binding can be added without changing any measured benchmark conclusion."
+  ],
+  "limitations": [
+    "This correction improves provenance stability but does not add held-out scenes, actions, calibrated 3-D control, or physical execution evidence.",
+    "The benchmark conclusions remain limited to the sample sizes and evaluator scopes declared in the v1 record."
+  ],
+  "next_actions": [
+    "Repeat the frozen protocols on multiple held-out scenes, robot identities, and action types with confidence intervals.",
+    "Add calibrated robot-base trajectories and physical execution gates before claiming embodiment-independent control."
+  ],
+  "record_id": "2026-08-11.agentic-workflow-quantitative-benchmark-v2",
+  "recorded_at": "2026-08-11T04:18:30Z",
+  "run_dir": "outputs/agentic-workflow-benchmark/20260811T041800Z-evidence-v3",
+  "schema_version": "1.0.0",
+  "scope": "stable evidence binding for the robot replacement and AC-WM quantitative benchmark",
+  "status": "PARTIAL",
+  "summary": "The benchmark conclusions are unchanged, while the final v3 aggregation now binds the exact immutable metric files and canonical user-rejection ledger record without depending on the changing whole-ledger hash.",
+  "supersedes": [
+    "2026-08-11.agentic-workflow-quantitative-benchmark-v1"
+  ],
+  "tags": [
+    "agentic-workflow",
+    "benchmark",
+    "provenance",
+    "robot-replacement",
+    "acwm",
+    "partial"
+  ]
+}

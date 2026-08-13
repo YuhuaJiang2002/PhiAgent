@@ -1,0 +1,71 @@
+{
+  "schema_version": "1.0.0",
+  "fps": 15.0,
+  "dataset": {
+    "name": "LeRobot DROID-100",
+    "source_dataset": "DROID",
+    "dataset_card": "https://huggingface.co/datasets/lerobot/droid_100",
+    "official_documentation": "https://droid-dataset.github.io/droid/the-droid-dataset",
+    "revision": "main",
+    "license_as_listed_by_dataset_card": "MIT",
+    "role": "synchronized real multi-camera paired target data"
+  },
+  "streams": {
+    "first_person": {
+      "path": "outputs/droid-ego-third-person/20260811T135000Z/source/videos/observation.images.wrist_image_left/chunk-000/file-000.mp4",
+      "feature": "observation.images.wrist_image_left",
+      "coordinate_frame": "camera:wrist_image_left_pixels",
+      "source_url": "https://huggingface.co/datasets/lerobot/droid_100/resolve/main/videos/observation.images.wrist_image_left/chunk-000/file-000.mp4"
+    },
+    "third_person_a": {
+      "path": "outputs/droid-ego-third-person/20260811T135000Z/source/videos/observation.images.exterior_image_1_left/chunk-000/file-000.mp4",
+      "feature": "observation.images.exterior_image_1_left",
+      "coordinate_frame": "camera:exterior_image_1_left_pixels",
+      "source_url": "https://huggingface.co/datasets/lerobot/droid_100/resolve/main/videos/observation.images.exterior_image_1_left/chunk-000/file-000.mp4"
+    },
+    "third_person_b": {
+      "path": "outputs/droid-ego-third-person/20260811T135000Z/source/videos/observation.images.exterior_image_2_left/chunk-000/file-000.mp4",
+      "feature": "observation.images.exterior_image_2_left",
+      "coordinate_frame": "camera:exterior_image_2_left_pixels",
+      "source_url": "https://huggingface.co/datasets/lerobot/droid_100/resolve/main/videos/observation.images.exterior_image_2_left/chunk-000/file-000.mp4"
+    }
+  },
+  "episodes": [
+    {
+      "episode_index": 21,
+      "label": "duck-to-pot",
+      "task": "Put the orange rubber duck into the pot",
+      "start_frame": 5046,
+      "frame_count": 92,
+      "timestamps": {
+        "first_person": {"from_seconds": 336.4000020000001, "to_seconds": 342.5333350000001},
+        "third_person_a": {"from_seconds": 336.4000020000001, "to_seconds": 342.5333350000001},
+        "third_person_b": {"from_seconds": 336.4000020000001, "to_seconds": 342.5333350000001}
+      }
+    },
+    {
+      "episode_index": 60,
+      "label": "block-to-bowl",
+      "task": "Put the green block in the bowl",
+      "start_frame": 18538,
+      "frame_count": 144,
+      "timestamps": {
+        "first_person": {"from_seconds": 1235.8666670000002, "to_seconds": 1245.4666670000001},
+        "third_person_a": {"from_seconds": 1235.8666670000002, "to_seconds": 1245.4666670000001},
+        "third_person_b": {"from_seconds": 1235.8666670000002, "to_seconds": 1245.4666670000001}
+      }
+    },
+    {
+      "episode_index": 77,
+      "label": "close-drawer",
+      "task": "Close the drawer",
+      "start_frame": 23123,
+      "frame_count": 100,
+      "timestamps": {
+        "first_person": {"from_seconds": 1541.5333330000003, "to_seconds": 1548.2000000000003},
+        "third_person_a": {"from_seconds": 1541.5333330000003, "to_seconds": 1548.2000000000003},
+        "third_person_b": {"from_seconds": 1541.5333330000003, "to_seconds": 1548.2000000000003}
+      }
+    }
+  ]
+}

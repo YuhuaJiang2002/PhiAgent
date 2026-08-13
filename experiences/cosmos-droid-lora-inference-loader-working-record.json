@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.cosmos-droid-lora-inference-loader-working",
+  "recorded_at": "2026-08-12T08:18:00Z",
+  "scope": "Full 93-frame deployment of the step-2 rank-16 attention LoRA adapter",
+  "status": "WORKING",
+  "summary": "The adapter-only checkpoint loaded into the 14B DROID model and completed a full-resolution 93-frame inference, establishing the training-to-deployment path.",
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-cosmos-baseline/20260812T203500Z-ep060-smoke-lora-iter2",
+  "evidence": [
+    "The inference worker reports loading all 576 LoRA adapter tensors from iter_000000002.pt.",
+    "Pinned positive and negative T5 embeddings were used, so no per-rank T5 checkpoint load confounds the deployment test.",
+    "The generated H.264 video is 768x432, 16 fps, and 93 decoded frames with SHA-256 d1fd01fce306702845a5062e208018f766ae38f7ca061727dc18dbd7c10958c9.",
+    "The distributed process returned code 0 and result.json records status WORKING."
+  ],
+  "lessons": [
+    "Adapter-only checkpoints with net-prefixed LoRA keys are compatible with the 93-frame inference injection path."
+  ],
+  "limitations": [
+    "The adapter has only two optimizer steps, so this is deployment evidence and not evidence of quality improvement.",
+    "The development episode is not used for final held-out claims."
+  ],
+  "next_actions": [
+    "Run formal 45-frame random-crop training and select periodic checkpoints only on the isolated validation episodes."
+  ],
+  "tags": [
+    "cosmos-predict2",
+    "droid",
+    "lora",
+    "deployment",
+    "93-frames",
+    "working"
+  ],
+  "supersedes": [
+    "2026-08-12.cosmos-droid-lora-inference-embedding-path-partial"
+  ]
+}

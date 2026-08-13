@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-view-dataset-iterations",
+  "recorded_at": "2026-08-11T16:35:00Z",
+  "scope": "Leakage-safe DROID wrist-to-exterior LoRA dataset build iterations v1-v9",
+  "status": "PARTIAL",
+  "summary": "Nine immutable dataset iterations exposed blocked Git reads, absolute-path portability, missing holdouts, a too-short episode, an incorrect heldout count, and an unnecessarily large encoding before the accepted v10/v11 contracts were produced.",
+  "run_dir": "outputs/droid-view-lora",
+  "evidence": [
+    "v1 stopped on a blocked Git subprocess; v5 stopped on a blocked .git/HEAD read.",
+    "v2 completed with absolute asset paths and v3 used relative paths but omitted heldout assets, so neither was accepted for remote training and evaluation.",
+    "v6 rejected episode 79 because it is too short for the fixed 17-frame, 8 FPS contract after earlier clips had already been emitted.",
+    "v7 built the full 91-episode joint target-A/target-B dataset but was larger than required for the requested target-A specialization.",
+    "v8 exposed an incorrect heldout-example count; v9 corrected the count but used CRF 16 and was superseded by the smaller CRF 24 contract.",
+    "Every failed or superseded directory is preserved; no earlier attempt was rewritten as successful."
+  ],
+  "lessons": [
+    "Episode duration must be filtered before clip extraction begins.",
+    "Portable manifests require paths relative to the manifest directory and an explicit heldout asset contract.",
+    "Dataset specialization by target camera avoids doubling storage and optimizer steps when only one exterior view is being trained."
+  ],
+  "limitations": [
+    "These iterations are engineering evidence, not model-quality evidence."
+  ],
+  "next_actions": [
+    "Use only the accepted v10 or v11 contract for training and heldout evaluation."
+  ],
+  "supersedes": [],
+  "tags": ["droid", "view-generalization", "dataset", "leakage-guard", "partial"]
+}

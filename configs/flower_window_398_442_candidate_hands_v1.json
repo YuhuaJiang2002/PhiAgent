@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "source_frame_range": [0, 45, 1],
+  "global_source_frame_offset": 398,
+  "instances": [
+    {
+      "instance_id": "robot-hand-upper-diagonal-01",
+      "object_id": 101,
+      "anchor_source_frame": 22,
+      "box_xyxy": [468, 295, 528, 352],
+      "positive_points_xy": [[490, 315], [505, 323], [480, 335]],
+      "negative_points_xy": [[530, 357], [463, 320], [550, 330], [485, 375]],
+      "minimum_area_pixels": 140,
+      "maximum_area_pixels": 6000,
+      "role": "articulated dark fingers of the image-upper diagonal robot hand",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [482, 302, 550, 360],
+          "positive_points_xy": [[510, 323], [525, 332], [500, 342]],
+          "negative_points_xy": [[530, 365], [465, 343], [560, 340], [490, 288]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [463, 298, 528, 354],
+          "positive_points_xy": [[486, 318], [505, 327], [476, 338]],
+          "negative_points_xy": [[528, 360], [462, 315], [548, 335], [485, 372]]
+        }
+      ]
+    },
+    {
+      "instance_id": "robot-hand-lower-horizontal-02",
+      "object_id": 102,
+      "anchor_source_frame": 22,
+      "box_xyxy": [475, 330, 542, 380],
+      "positive_points_xy": [[500, 352], [520, 347], [490, 363]],
+      "negative_points_xy": [[505, 320], [465, 343], [558, 350], [480, 390]],
+      "minimum_area_pixels": 140,
+      "maximum_area_pixels": 6000,
+      "role": "articulated dark fingers at the end of the image-lower horizontal lavender forearm",
+      "correction_prompts": [
+        {
+          "anchor_source_frame": 0,
+          "box_xyxy": [472, 332, 540, 382],
+          "positive_points_xy": [[500, 358], [518, 350], [488, 366]],
+          "negative_points_xy": [[510, 323], [465, 343], [555, 350], [480, 392]]
+        },
+        {
+          "anchor_source_frame": 44,
+          "box_xyxy": [475, 327, 548, 380],
+          "positive_points_xy": [[503, 352], [525, 348], [490, 363]],
+          "negative_points_xy": [[486, 318], [462, 340], [560, 350], [485, 390]]
+        }
+      ]
+    }
+  ],
+  "notes": "Finger-level prompts exclude the two forearms and the restored blooms. Dense review must confirm that the two tracks remain independent rather than collapsing onto the same gripper."
+}

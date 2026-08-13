@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.acwm-sota-bwm-video-shape-training-failure",
+  "recorded_at": "2026-08-11T09:58:00Z",
+  "status": "PARTIAL",
+  "scope": "Third pinned BWM action-adapter GPU training attempt",
+  "summary": "The public training module accessed tensor.size as if the loader returned a PIL image list, although the documented loader returns V,C,T,H,W tensors.",
+  "evidence": [
+    "The attempt reached model, checkpoint, dataset, and runner initialization, then raised TypeError while subscripting data[video][0].size.",
+    "The previously verified loader output uses a five-dimensional video tensor."
+  ],
+  "lessons": [
+    "Training dimension extraction must use explicit tensor axes and validate the V,C,T,H,W contract."
+  ],
+  "limitations": [
+    "No loss or optimizer step occurred."
+  ],
+  "next_actions": [
+    "Add a strict video tensor shape check and derive T, H, and W from the final three axes."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/acwm-sota-training/20260811T095703.794645Z-action-adapter-seed20260811",
+  "supersedes": [],
+  "tags": ["acwm", "bwm", "gpu-training", "negative-result", "tensor-shape"]
+}

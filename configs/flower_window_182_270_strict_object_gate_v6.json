@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:source_video_pixels",
+  "window_local_frame_range": [0, 89, 1],
+  "global_source_frame_offset": 182,
+  "candidate_sha256": "1ff0da6efa99a587c4c258e5f546aa5b53e3709e55d4b1e4562dfa826270c9e9",
+  "flower_instances": [
+    {
+      "instance_id": "cream-flower-left-01",
+      "source_track_run": "source-head-tracks-v2",
+      "candidate_track_run": "temporal-repair-v4-contact48/candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    },
+    {
+      "instance_id": "lime-flower-middle-02",
+      "source_track_run": "source-head-tracks-v2",
+      "candidate_track_run": "temporal-repair-v4-contact48/candidate-head-tracks-v1",
+      "maximum_occlusion_gap_frames": 0
+    }
+  ],
+  "robot_hand_track_run": "temporal-repair-v4-contact48/candidate-hand-tracks-v1",
+  "robot_hands": [
+    "robot-hand-upper-left-01",
+    "robot-hand-lower-right-02"
+  ],
+  "contact_segments": [
+    {
+      "hand_id": "robot-hand-upper-left-01",
+      "flower_instance_id": "cream-flower-left-01",
+      "local_frame_start": 23,
+      "local_frame_end_exclusive": 50,
+      "role": "upper hand is visibly adjacent to the cream stem/head during the mid-window bouquet rotation"
+    },
+    {
+      "hand_id": "robot-hand-lower-right-02",
+      "flower_instance_id": "lime-flower-middle-02",
+      "local_frame_start": 5,
+      "local_frame_end_exclusive": 55,
+      "role": "lower hand supports the lime stem and bouquet base before the lift"
+    }
+  ],
+  "thresholds": {
+    "minimum_candidate_visible_fraction": 1.0,
+    "maximum_flower_centroid_step_pixels": 40.0,
+    "minimum_flower_adjacent_iou_mean": 0.68,
+    "maximum_adjacent_area_ratio": 2.0,
+    "minimum_pairwise_horizontal_order_agreement": 0.98,
+    "maximum_offset_centered_trajectory_p90_pixels": 8.0,
+    "minimum_positive_velocity_cosine_fraction": 0.8,
+    "minimum_median_hs_histogram_cosine": 0.8,
+    "maximum_hand_centroid_step_pixels": 20.0,
+    "minimum_hand_adjacent_iou_mean": 0.88,
+    "minimum_contact_visible_fraction": 1.0,
+    "maximum_contact_distance_p90_pixels": 8.0,
+    "maximum_contact_distance_pixels": 15.0,
+    "minimum_aligned_identity_score": 0.97,
+    "minimum_aligned_motion_score": 0.82,
+    "minimum_aligned_temporal_score": 0.75
+  },
+  "semantic_review": {
+    "reviewer_type": "codex_dense_and_consecutive_crop_visual_review",
+    "reviewed_local_frames": [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88],
+    "complete_human_removal": true,
+    "two_mechanical_hands_visible": true,
+    "named_flower_identity_order_preserved": true,
+    "contact_pairs_visually_plausible": true,
+    "notes": "The contact-locked lossless temporal-repair candidate was reviewed densely across the full window and consecutively on local frames 34--63. No visible crossfade double edge was accepted. The ambiguous third pink identity remains excluded exactly as in V2."
+  },
+  "notes": "V6 evaluates the remotely reproduced lossless strong round with a 48-pixel flower-to-hand contact protection band. All V2 thresholds remain unchanged."
+}

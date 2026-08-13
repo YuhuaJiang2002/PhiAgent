@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-critical-stem-sam2-v1",
+  "recorded_at": "2026-08-10T20:30:41Z",
+  "status": "WORKING",
+  "scope": "Persistent single-flower SAM2 identity on the real 17-frame critical window",
+  "summary": "The prompted pink-carnation instance remains nonempty and temporally continuous across all 17 sampled source frames and is accepted as the critical-window flower identity signal.",
+  "evidence": ["All 17 masks are nonempty.", "Adjacent IoU minimum is 0.665217 and maximum centroid step is 5.657 pixels.", "Uniform storyboard review keeps the mask on the same pink carnation."],
+  "lessons": ["A named stem instance is auditable in a way that a bouquet union is not."],
+  "limitations": ["The claim covers only the declared critical window and is visual identity evidence, not physical tagging."],
+  "next_actions": ["Use the exact instance in contact-pair composition and flower-preservation gates."],
+  "run_dir": "outputs/flower-contact-supervision/20260811T031000Z-active-stem-sam2-v1",
+  "supersedes": [],
+  "tags": ["flower", "sam2", "single-instance", "critical-window", "working"]
+}

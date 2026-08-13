@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-skillhone-v7-infra-failures",
+  "recorded_at": "2026-08-12T12:40:00Z",
+  "scope": "First SkillHone exact-asset adversarial refresh attempt",
+  "status": "PARTIAL",
+  "summary": "Three infrastructure paths failed before the successful rerun: the generic project environment lacked requests for Forgejo status, the first non-interactive push lacked credentials, and the Codex-bundled old evaluation harness produced no answer artifact or score.",
+  "run_dir": "outputs/foundation-contact/20260812T123000Z-skillhone-exact-asset-adversarial-v7",
+  "evidence": [
+    "The first status.py invocation raised ModuleNotFoundError: requests before any Forgejo API request.",
+    "The first git push preserved local commit 6e18538 but failed with could not read Username; a later process-local token header pushed the same commit without writing credentials to disk or output.",
+    "The old harness retained one partial-finger-q trajectory whose Qwen session emitted pseudo-tool text but never wrote answer.txt; the run stopped without score.json.",
+    "The experiment directory and failing trajectory remain preserved and were not overwritten."
+  ],
+  "lessons": [
+    "SkillHone status and evaluation must use its dedicated virtual environment and the validated provider-aware Ollama direct-JSON router.",
+    "A failed harness run is infrastructure evidence, not a skill-quality score."
+  ],
+  "limitations": [
+    "This attempt produced no complete adversarial score and cannot be compared numerically with the champion."
+  ],
+  "next_actions": [
+    "Use ~/.skillhone/venv for Forgejo tools, ~/.skillhone/skills/skillhone for the provider router, and a new output directory for the complete seven-item rerun."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "skillhone", "forgejo", "infrastructure", "partial"]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.foundation-contact-da3-offset-rgbd-v4-working",
+  "recorded_at": "2026-08-12T12:57:00Z",
+  "scope": "Pinned DA3 generation of a new offset RGB-D/camera observation lattice for the real 27.5-second candidate",
+  "status": "WORKING",
+  "summary": "DA3 generated 55 previously unseen source-aligned RGB-D and camera samples on physical A800 GPU 0 with complete model, checkpoint, GPU, source, timing, and output provenance.",
+  "run_dir": "outputs/foundation-contact/20260812T130000Z-da3-offset-full27p5s-2hz-v4",
+  "evidence": [
+    "The new frames are 6,18,...,654 and are disjoint from the prior 0,12,...,648 lattice while binding source SHA bf15763ff5ceeb26bd2a744045d76579bad2b758ffa787176e4e8693d5a5ff91.",
+    "The pinned DA3 revision is 41736238f5bced4debf3f2a12375d2466874866d and checkpoint SHA is 8ebe871a022ed58d2fc8fdfb2ebdb31d57b60fe39611c849095851a7b7c6020c.",
+    "Inference takes 3.607129140291363 seconds at 15.247582734328558 sampled FPS and 7.4967281777115415 source-video realtime; model load takes 13.699455932714045 seconds.",
+    "GPU preflight selected physical A800 GPU 0 with 81,228 MiB free and persisted a 13,537 MiB peak allocation; output SHA is 744028b153a9fd1a9c01e1d69c38a2c4d3e85ce320997e555224a6b35d89d50d."
+  ],
+  "lessons": [
+    "An offset temporal lattice cheaply doubles proposal sampling density without rerunning already sampled frames."
+  ],
+  "limitations": [
+    "The observation is a foundation-model estimate from the same monocular video, not an independent calibrated sensor or force source.",
+    "Learned metric scale uncertainty remains unbounded by an external observation."
+  ],
+  "next_actions": [
+    "Interleave the two model runs without mixing their world gauges and render explicit virtual-view diagnostics."
+  ],
+  "supersedes": [],
+  "tags": ["foundation-contact", "da3", "rgbd", "a800", "observation", "working"]
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.metadata
 import json
 import math
 import platform
@@ -356,13 +357,12 @@ class AgenticVisualTransferController:
 
     @staticmethod
     def _package_versions() -> list[str]:
-        completed = subprocess.run(
-            [sys.executable, "-m", "pip", "freeze"],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        return sorted(line for line in completed.stdout.splitlines() if line.strip())
+        packages: set[str] = set()
+        for distribution in importlib.metadata.distributions():
+            name = distribution.metadata.get("Name")
+            if name:
+                packages.add(f"{name}=={distribution.version}")
+        return sorted(packages, key=str.casefold)
 
     def _new_experiment(self, root: Path) -> Path:
         root.mkdir(parents=True, exist_ok=True)

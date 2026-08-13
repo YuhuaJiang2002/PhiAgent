@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.skillhone-ollama-agent-write-protocol-partial",
+  "recorded_at": "2026-08-12T11:38:30Z",
+  "status": "PARTIAL",
+  "scope": "Initial local SkillHone evaluation through the Claude-Agent/Ollama bridge",
+  "summary": "The model completed reasoning but never emitted the required Write-tool call, so two exact promotion probes correctly scored 0/2 rather than being inferred from hidden reasoning.",
+  "evidence": [
+    "outputs/foundation-contact/20260812T191500Z-skillhone-baseline-v1/score.json records 0/2, two no-answer errors, and 44.07 seconds recorded mean item latency.",
+    "Both persisted trajectories end with an empty result and no answer.txt despite non-empty model thinking blocks.",
+    "The failure reproduced with qwen3:4b-instruct-2507-q4_K_M before provider-aware routing."
+  ],
+  "lessons": [
+    "Decision quality and agent tool-protocol compliance are separate capabilities and must be measured separately.",
+    "A provider with a native constrained-JSON endpoint should not first pay for a known-incompatible Anthropic Write-tool path."
+  ],
+  "limitations": [
+    "This run does not measure the model's promotion judgment because no verifiable answer artifact was produced."
+  ],
+  "next_actions": [
+    "Route ollama/* profiles through native JSON mode while retaining exact verification and full skill context."
+  ],
+  "run_dir": "outputs/foundation-contact/20260812T191500Z-skillhone-baseline-v1",
+  "supersedes": [],
+  "tags": ["skillhone", "ollama", "adapter", "no-answer", "partial"]
+}

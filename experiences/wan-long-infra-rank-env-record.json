@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.wan-long-infra-rank-env-preflight",
+  "recorded_at": "2026-08-12T05:12:55Z",
+  "status": "PARTIAL",
+  "scope": "First full-length launch on the historical a800-4 benchmark host",
+  "summary": "Both persistent workers stopped before model allocation because setting an explicit rendezvous address disabled the upstream fallback while RANK and WORLD_SIZE were absent.",
+  "evidence": [
+    "Both disjoint GPU-pair workers exited with KeyError: RANK in the pinned upstream Wan-Animate-2 pipeline.",
+    "The experiment ran from 2026-08-12T04:45:34Z to 04:46:47Z and produced no generated window."
+  ],
+  "lessons": [
+    "Distributed subprocesses must receive a complete explicit MASTER_ADDR, MASTER_PORT, RANK, and WORLD_SIZE contract rather than a partial environment."
+  ],
+  "limitations": [
+    "This attempt contains no generation throughput or visual-quality evidence."
+  ],
+  "next_actions": [
+    "Set RANK=0 and WORLD_SIZE=1 for each independent two-GPU pipeline controller and rerun in a fresh directory."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-2pair-rolling-v1",
+  "supersedes": [],
+  "tags": [
+    "wan-animate2",
+    "long-video",
+    "distributed",
+    "environment",
+    "failure"
+  ]
+}

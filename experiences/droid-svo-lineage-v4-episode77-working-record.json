@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-svo-lineage-v4-episode77-working",
+  "recorded_at": "2026-08-12T21:22:41Z",
+  "status": "WORKING",
+  "scope": "Held-out DROID episode 77 ZED calibration with frozen C locale",
+  "summary": "With LC_ALL=C, episode 77 completed calibration and metric-depth sampling for all three lineage-mapped cameras on physical GPU 5.",
+  "evidence": [
+    "The run completed in 6.16 seconds with return code 0.",
+    "Serials 14436910, 23748752, and 25455306 each report 100 frames at 1280x720.",
+    "Sampled depth finite fractions span 0.4789 to 0.7539."
+  ],
+  "lessons": [
+    "The prior invalid-calibration result was a locale/runtime issue, not corrupt SVO evidence."
+  ],
+  "limitations": [
+    "This run covers episode 77 only.",
+    "Raw rights and raw-HDF5 timestamp alignment remain unresolved."
+  ],
+  "next_actions": [
+    "Run one unified 21/77 acceptance attempt with the frozen runtime."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T214000Z-episode77-v4",
+  "supersedes": [
+    "2026-08-12.droid-svo-lineage-v3-episode77-locale-partial"
+  ],
+  "tags": ["droid", "real-world", "calibration", "depth", "working"]
+}

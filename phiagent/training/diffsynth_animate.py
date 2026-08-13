@@ -208,18 +208,24 @@ def gpu_record(selected: Sequence[GPUInfo]) -> list[dict[str, int | str]]:
 
 
 def load_frozen_manifest(path: Path) -> AdaptationManifest:
-    payload = json.loads(path.expanduser().resolve().read_text())
+    resolved_manifest = path.expanduser().resolve()
+    payload = json.loads(resolved_manifest.read_text())
     if not isinstance(payload, dict):
         raise ValueError("frozen adaptation manifest must contain one JSON object")
     assets = payload.get("assets")
     if not isinstance(assets, list):
         raise ValueError("frozen adaptation manifest assets must be a list")
     for asset in assets:
-        asset_path = Path(str(asset["path"]))
+        configured_path = Path(str(asset["path"])).expanduser()
+        asset_path = (
+            configured_path
+            if configured_path.is_absolute()
+            else resolved_manifest.parent / configured_path
+        ).resolve()
         if not asset_path.is_file():
             raise ValueError(f"frozen adaptation asset is missing: {asset_path}")
         from phiagent.data.adaptation import file_sha256
 
         if file_sha256(asset_path) != asset["sha256"]:
             raise ValueError(f"frozen adaptation asset hash changed: {asset_path}")
-    return AdaptationManifest.from_spec(payload, path.parent)
+    return AdaptationManifest.from_spec(payload, resolved_manifest.parent)

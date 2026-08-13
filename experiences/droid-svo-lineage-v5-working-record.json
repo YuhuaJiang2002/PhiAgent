@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-12.droid-svo-lineage-v5-working",
+  "recorded_at": "2026-08-12T21:23:43Z",
+  "status": "WORKING",
+  "scope": "Unified held-out DROID episodes 21/77 SVO calibration and depth lineage",
+  "summary": "A single frozen-runtime acceptance run completed all six real cameras for lineage-mapped episodes 21 and 77 with sensor-derived metric depth and exact artifact provenance.",
+  "evidence": [
+    "The unified run completed on physical GPU 5 in 8.54 seconds with both episode return codes equal to zero.",
+    "Episode 21 has three 1280x720 cameras with 92 frames; episode 77 has three 1280x720 cameras with 100 frames.",
+    "All reported camera serials match the raw DROID metadata.",
+    "Episode-21 depth finite fractions span 0.1420 to 0.6837; episode-77 fractions span 0.4789 to 0.7539.",
+    "Every calibration.json records lineage_mapped_to_lerobot=true, explicit episode index, raw prefix, exterior assignment, SVO hashes, intrinsics, distortion, timestamps, and depth-artifact hashes."
+  ],
+  "lessons": [
+    "The reproducible runtime is RLinf Python/NumPy plus the isolated ZED 5.1 site-packages with LC_ALL=C.",
+    "Lineage, calibration, rights, and timestamp alignment remain separate gates."
+  ],
+  "limitations": [
+    "Episode 60 has no public raw tree and remains blocked.",
+    "Official raw DROID rights and raw-HDF5-to-LeRobot video/action timestamp offset remain unresolved.",
+    "Calibration does not establish novel-view generation quality."
+  ],
+  "next_actions": [
+    "Audit raw HDF5/image timestamp alignment for episodes 21 and 77.",
+    "Use explicit episode-local exterior assignments in depth-warp and geometry-conditioned validation."
+  ],
+  "run_dir": "/data0/jiangyuhua/PhiAgent-0/outputs/droid-svo-lineage-calibration/20260812T215000Z-episodes21-77-v5",
+  "supersedes": [
+    "2026-08-12.droid-svo-lineage-v4-episode77-working"
+  ],
+  "tags": ["droid", "real-world", "calibration", "depth", "lineage", "working"]
+}

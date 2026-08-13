@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-11.flower-full-delivery-shadow-epl-temporal-v1",
+  "recorded_at": "2026-08-11T03:25:00Z",
+  "status": "WORKING",
+  "scope": "Full 660-frame 2-D flower-arranging delivery with accepted shadow cleanup, EPL background lock, bounded LoRA luminance, and learned-policy temporal routing",
+  "summary": "The complete 27.5-second candidate inherits the accepted v71 shadow/background cleanup, applies the already accepted phase-04A LoRA luminance residual only inside its safe robot mask, and uses the trained repair policy's EPL-local crossfade recipe to reduce six source-unsupported generated-window jumps while exactly protecting flowers, critical contact, and outside-safety pixels.",
+  "evidence": [
+    "The compatibility and comparison videos decode 660/660 frames at 24 FPS; the candidate SHA-256 is 29d07167d45df13ffa20cd6a22acd52610bb3e747fbbc1f67d1052fbbc704969.",
+    "The trained non-regression policy ranks epl-local-crossfade at 240.7984, epl-local-flow at 216.5801, no repair at 72.7996, and global noise smoothing at 0.1449.",
+    "Transitions 97, 193, 294, 405, 507, and 562 all improve; their ROI energies fall from 9.0889/6.1782/11.2966/8.5869/9.0828/9.4107 to 4.6692/3.9459/6.4931/5.0373/5.0905/4.8179.",
+    "Maximum ROI transition energy falls from 11.2966 to 7.5638.",
+    "Outside-safety pixels, all 660 flower masks, and the accepted phase-04A flower-stem/two-hand contact masks have exact preencode preservation of 1.0.",
+    "Mean modified fraction is 0.0103165; dense full-timeline and all six consecutive-transition reviews find no new ghost, lost flower, returning human forearm, or visible repaired-window jump.",
+    "The newly trained topology LoRA is excluded from pixels because its assessment failed identity, topology, and motion non-regression gates."
+  ],
+  "lessons": [
+    "A learned policy is useful as a non-regression route selector, while deterministic local synthesis keeps pixel changes auditable.",
+    "Source-supported action motion and source-unsupported generator jumps must be separated before smoothing.",
+    "Relighting residuals can extend within an already accepted phase without authorizing unverified contact identities in later phases."
+  ],
+  "limitations": [
+    "WORKING is a full-length 2-D video claim, not physical robot execution.",
+    "Persistent single-flower identity and explicit hand contact remain accepted only on source frames [272,378).",
+    "The trained repair policy does not synthesize pixels; bounded local cosine bridges perform the actual temporal repair."
+  ],
+  "next_actions": ["Acquire correct scissors/two-gripper supervision before promoting full-film contact geometry beyond the accepted phase-04A window."],
+  "run_dir": "outputs/flower-full-delivery/20260812T001000Z-shadow-epl-temporal-v1",
+  "supersedes": ["2026-08-11.flower-full-delivery-preflight-corrections-v1"],
+  "tags": ["flower", "full-660", "shadow", "epl", "relighting", "temporal", "working"]
+}

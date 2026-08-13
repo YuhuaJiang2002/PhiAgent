@@ -493,6 +493,78 @@ def evaluate_local_videos(
     )
 
 
+def evaluate_decoded_core_proxy(
+    source: DecodedFrames,
+    reference: DecodedFrames,
+    target_image: DecodedFrames,
+    candidate: DecodedFrames,
+) -> dict[str, float]:
+    """Evaluate non-object proxy dimensions without inventing object evidence."""
+
+    unresolved = ObjectInstanceMetrics(
+        contour_similarity=0.0,
+        color_similarity=0.0,
+        temporal_deformation=0.0,
+        tracking_coverage=0.0,
+        trajectory_similarity=0.0,
+        lift_recall=0.0,
+        object_consistency=0.0,
+    )
+    metrics = evaluate_decoded_proxy(
+        source,
+        reference,
+        target_image,
+        candidate,
+        unresolved,
+    )
+    return {
+        name: float(getattr(metrics, name))
+        for name in (
+            "motion_preservation",
+            "target_identity",
+            "temporal_consistency",
+            "motion_cosine",
+            "motion_energy_ratio",
+            "first_frame_anchor",
+            "reference_structure",
+            "candidate_temporal_jerk",
+            "reference_temporal_jerk",
+            "candidate_late_temporal_jerk",
+            "reference_late_temporal_jerk",
+            "global_temporal_consistency",
+            "late_temporal_consistency",
+            "regional_temporal_consistency",
+        )
+    }
+
+
+def evaluate_local_core_videos(
+    *,
+    source: Path,
+    reference: Path,
+    target_image: Path,
+    candidate: Path,
+    ffmpeg: Path,
+    width: int = 64,
+    height: int = 64,
+    sample_fps: float = 8.0,
+    maximum_seconds: float = 4.0,
+) -> dict[str, float]:
+    decode_options = {
+        "ffmpeg": ffmpeg,
+        "width": width,
+        "height": height,
+        "sample_fps": sample_fps,
+        "maximum_seconds": maximum_seconds,
+    }
+    return evaluate_decoded_core_proxy(
+        decode_grayscale(source, **decode_options),
+        decode_grayscale(reference, **decode_options),
+        decode_grayscale(target_image, **decode_options, image=True),
+        decode_grayscale(candidate, **decode_options),
+    )
+
+
 def write_evaluation_evidence(
     path: Path,
     *,

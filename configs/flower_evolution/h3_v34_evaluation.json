@@ -1,0 +1,98 @@
+{
+  "candidate_id": "20260810T201500Z-layered-v34-pending",
+  "coordinate_frame": "camera:source_pixels",
+  "evaluated_frames": 660,
+  "expected_frames": 660,
+  "measurements": [
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/manifest.json",
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/dense-layer-review.jpg"
+      ],
+      "name": "background_lock",
+      "notes": "The clean plate is plausible but is not an exact lock of every source-background pixel.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/manifest.json"
+      ],
+      "name": "human_residual_absence",
+      "notes": "The persisted all-frame automated human-skin removal gate passed.",
+      "score": 1.0,
+      "verdict": "PASS"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/dense-layer-review.jpg",
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/interaction-crop-review.jpg"
+      ],
+      "name": "robot_morphology",
+      "notes": "Dense review shows missing, shortened, or detached arm/hand geometry at multiple times.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/dense-layer-review.jpg"
+      ],
+      "name": "robot_identity",
+      "notes": "Torso identity is recognizable, but limb identity and topology are not persistent.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/minimax-h3-epl-full-27s-layered-v34.mp4"
+      ],
+      "name": "embodied_motion",
+      "notes": "The generated arms do not reproduce the complete source flower-arranging trajectory.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/interaction-crop-review.jpg"
+      ],
+      "name": "flower_integrity",
+      "notes": "Flowers are restored as pixels but held-flower continuity and ownership are not preserved.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/interaction-crop-review.jpg"
+      ],
+      "name": "hand_flower_contact",
+      "notes": "No explicit contact state exists and visible grasps/releases do not remain attached to robot hands.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [
+        "outputs/minimax-h3-shadow-removal/20260810T201500Z-layered-v34-pending/review/interaction-crop-review.jpg"
+      ],
+      "name": "occlusion_order",
+      "notes": "Whole flower masks are restored in a fixed layer, so front/back hand-flower order is not contact-aware.",
+      "score": null,
+      "verdict": "FAIL"
+    },
+    {
+      "evidence": [],
+      "name": "temporal_consistency",
+      "notes": "No acceptance-eligible semantic temporal score was measured for all robot limbs and flower contacts.",
+      "score": null,
+      "verdict": "UNKNOWN"
+    },
+    {
+      "evidence": [
+        "user-review:2026-08-10:flower-transfer-quality-rejected"
+      ],
+      "name": "full_video_human_preference",
+      "notes": "The user explicitly reported that the flower-arranging result is poor.",
+      "score": null,
+      "verdict": "FAIL"
+    }
+  ]
+}
