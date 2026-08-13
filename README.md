@@ -1,5 +1,8 @@
 # PhiAgent-0
 
+> **Play every video directly on the
+> [web demo](https://yuhuajiang2002.github.io/PhiAgent/).**
+
 PhiAgent-0 is an open research system for translating human manipulation
 demonstrations into embodiment-invariant physical state, robot motion, verified
 simulation, and robot video:
@@ -46,9 +49,7 @@ attempt to train a unified foundation model.
 
 ## Demos
 
-Play every video directly on the
-[web demo](https://yuhuajiang2002.github.io/PhiAgent/), or click a preview below
-to open its MP4.
+Click a preview below to open its MP4.
 
 ### Supplemental real-scene action-conditioned comparison
 
