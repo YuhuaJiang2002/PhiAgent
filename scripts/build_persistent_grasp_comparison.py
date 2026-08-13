@@ -129,7 +129,9 @@ def main() -> int:
     candidates = audit.get("candidates", [])
     if len(candidates) != 1:
         raise ValueError("audit report must contain exactly one comparison candidate")
-    persistent = candidates[0]["summary"].get("persistent_grasp")
+    candidate_audit = candidates[0]
+    summary = candidate_audit["summary"]
+    persistent = summary.get("persistent_grasp")
     if not persistent:
         raise ValueError("audit report has no persistent-grasp result")
 
@@ -170,8 +172,9 @@ def main() -> int:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "status": "PARTIAL",
         "honest_status": (
-            "PARTIAL: source-visible object trajectory and the 2-D occlusion-aware "
-            "persistent-grasp contract pass; no metric depth or force-closure claim."
+            "PARTIAL: the 2-D occlusion-aware persistent-grasp contract passes, "
+            "but independent late hand-sharpness and structure-ghost adversarial "
+            "gates fail; no metric depth or force-closure claim."
         ),
         "inputs": {
             "source": {"path": _display_path(source), "sha256": _sha256(source), "video": source_info},
@@ -179,6 +182,14 @@ def main() -> int:
             "audit": {"path": _display_path(audit_path), "sha256": _sha256(audit_path)},
         },
         "persistent_grasp": persistent,
+        "audit_summary": {
+            "full_report_sha256": _sha256(audit_path),
+            "full_report_wall_seconds": audit["wall_seconds"],
+            "candidate_audit_fps": candidate_audit["audit_fps"],
+            "image_space_contract_pass": summary["image_space_contract_pass"],
+            "gates": summary["gates"],
+            "adversarial": candidate_audit["adversarial"],
+        },
         "commands": {"encode": encode_command, "poster": poster_command},
         "outputs": {
             "video": {"path": _display_path(video), "sha256": _sha256(video), "video": video_info},
@@ -189,6 +200,8 @@ def main() -> int:
         "python": sys.version,
         "limitations": [
             "The grasp gate is a camera-frame visual invariant, not 3-D contact evidence.",
+            "Late hand edge energy violates its frozen lower gate in 22 of 180 frames.",
+            "The structure-ghost adversarial detector remains below its frozen sensitivity gate.",
             "The robot remains a generated visual replacement rather than a verified real-robot execution.",
         ],
     }
