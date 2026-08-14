@@ -36,6 +36,7 @@ jobs:
       - name: Prepare demo site
         run: |
           rsync -a \
+            --exclude "showcase/*flower*" \
             --exclude "showcase/flower-insertion-physics.jpg" \
             --exclude "showcase/flower-insertion-physics.mp4" \
             demo/ _site/

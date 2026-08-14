@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-hand-and-approved-short-demo-release",
+  "recorded_at": "2026-08-14T23:45:28Z",
+  "scope": "Public demo replacement with the approved short flower anchor, official-model Wuji Hand retargeting, and verified repository QR",
+  "status": "PARTIAL",
+  "summary": "The public bundle replaces the 27.5-second flower card with the exact previously accepted 3.708-second seed-42 anchor, adds a complete official-model Wuji Hand comparison and q/qdot trajectory, and adds a decode-verified GitHub QR; the Wuji video remains PARTIAL because it is simulation rather than physical-hardware footage.",
+  "run_dir": "demo/showcase",
+  "evidence": [
+    "approved-short-arranging-anchor-3p7s.mp4 is the exact 89-frame, 24 FPS file with SHA-256 2afd1238a976b3b87b10ebbcbccb83ac3d5e3ca630af184738bb8bb2df00f255 that previously passed 56/56 named-flower, two-hand, projected-contact, human-removal, and temporal gates.",
+    "human-to-wuji-hand-official-model-comparison-20p7s.mp4 decodes to 621/621 frames at 2560x768 and has SHA-256 742aea8554d49fcd55967e18b1ad20af2ef4f51bb6957077a8786f6e7c441ab2.",
+    "The Wuji run pins wuji-retargeting commit 2918c60643cca3482ffa2d14d1f7fece1d9d7db9 and wuji-description commit 7d547ad50ca8cff92d999ae2cc01fc69bcb7c2b6; exact config, URDF, and MJCF hashes are recorded in the manifest.",
+    "MediaPipe directly detects 621/621 frames; the complete 621x20 q/qdot trajectory has zero held observations, zero frozen transitions, zero joint-position violations, zero URDF velocity-limit violations, and a maximum velocity/limit ratio of 0.59535.",
+    "The Wuji offscreen render takes 17.8757 seconds at 34.7399 FPS; total detection, IK, render, encode, and decode audit takes 30.5977 seconds.",
+    "github-repository-wechat-qr.png independently decodes to https://github.com/YuhuaJiang2002/PhiAgent at native resolution and the 270-pixel page presentation size."
+  ],
+  "lessons": [
+    "A user-approved visual anchor should be recovered by immutable content hash rather than approximated from a filename or regenerated.",
+    "Exact upstream asset identity plus complete q/qdot and hard joint gates distinguishes an official-model simulation from an untraceable appearance proxy.",
+    "QR presentation size is part of the acceptance surface; a native-decodable image can fail after aggressive browser downscaling."
+  ],
+  "limitations": [
+    "The short flower anchor covers one 89-frame window and its contact evidence remains 2-D.",
+    "The Wuji comparison uses an official simulation model and retargeter but is not footage or telemetry from physical Wuji hardware.",
+    "Monocular MediaPipe landmarks do not establish metric camera scale, 3-D contact, force closure, tactile sensing, or real execution.",
+    "This record captures the local release bundle; production GitHub Pages deployment is verified separately."
+  ],
+  "next_actions": [
+    "Deploy the existing branch, verify both videos and the QR on the production page, and append a deployment record without changing acceptance gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "wuji-hand",
+    "official-model",
+    "retargeting",
+    "short-flower-anchor",
+    "github-pages",
+    "qr",
+    "partial"
+  ]
+}

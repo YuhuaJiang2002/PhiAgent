@@ -1,0 +1,9 @@
+{
+  "border_modules": 4,
+  "decode_verified": true,
+  "decoded_target": "https://github.com/YuhuaJiang2002/PhiAgent",
+  "error_correction": "H",
+  "schema_version": "1.0.0",
+  "sha256": "c92cde3fc4607c5ffc7d054ec2948d9a92a710d8fe178bcac77169c4053cfc71",
+  "target": "https://github.com/YuhuaJiang2002/PhiAgent"
+}

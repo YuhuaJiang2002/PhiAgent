@@ -51,44 +51,29 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 27.5-second flower arranging: self-evolved long-video contact state
+### 20.7-second human hand to Wuji Hand official-model retargeting
 
-[![Real human reference versus self-evolved PhiAgent long-video flower-arranging result](demo/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
+[![Human source compared frame-for-frame with the official Wuji Hand simulation model](demo/showcase/human-to-wuji-hand-official-model-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-official-model-comparison-20p7s.mp4)
 
-[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
-or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-right-arm-zorder-stable-27p5s.mp4).
+[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-official-model-comparison-20p7s.mp4).
+The right panel uses Wuji Technology's official Wuji Hand MJCF/URDF assets and
+official retargeter: MediaPipe-21 observations are mapped to a complete
+621x20 `q` trajectory plus synchronized `qdot`. Direct hand detection succeeds
+on **621/621** frames, no observation is held, all 620 frame transitions move,
+and the trajectory has zero joint-position or URDF velocity-limit violations.
+The final offscreen render runs at **34.740 FPS** and decodes back to exactly
+621 frames. Detection, retargeting, rendering, encoding, and verification take
+30.598 seconds end to end (**20.296 effective FPS**).
 
-The complete 660-frame, 1280x720, 24 FPS result is the first challenger selected
-by the unattended fail-closed evolution harness after 44 rejected attempts. It
-combines a pinned SAM2 Hiera-L flower observation, evidence-ordered flower/robot
-z-order, a source-owned reconstruction footprint, an immutable projected
-contact corridor, and a single-roundtrip masked chroma-state projection. No
-frozen threshold was relaxed. Against its incumbent, right-arm self-flow MAE
-falls **3.751%** (2.2175 to 2.1344) and p95 falls **5.259%**; source-flow
-residual MAE falls **3.088%**. Wrong flower occlusion falls from 0.1575 mean /
-0.7825 p95 to **0.0020 / 0.0**, while flower-owner flips fall from 0.0645 mean /
-0.3967 p95 to **0.0 / 0.0**.
+Status is **PARTIAL**: this is a vision-driven official-model simulation, not
+footage of physical Wuji hardware, and monocular landmarks do not establish
+metric depth, contact force, or real execution. See the
+[evidence manifest](demo/showcase/human-to-wuji-hand-official-model-manifest.json)
+and [complete q/qdot artifact](demo/showcase/wuji-hand-official-model-retarget-q.npz).
 
-The corrected native-resolution observer now sends source and candidate through
-the same camera and RGB decode path. All **14/14** frozen image/contact gates
-pass, including 20-second-and-later projected contact recall **138/138** and
-persistent visual grasp **147/147**. Grasp erasure is rejected on **147/147**
-frames, and color, topology, contact-removal, and structure-ghost attacks are
-all detected. A native-resolution timeline review and a continuous browser
-playback from 0 to 27.5 seconds also pass the human veto for right-arm flicker,
-flower motion, z-order, and visible contact.
+Scan this QR code in WeChat to open the GitHub repository:
 
-The accepted repair generation takes **68.105 seconds (9.691 FPS)** on CPU,
-**3.264x** the rejected v6 baseline and 22.67% faster than the previously
-published 7.900 FPS guard. The one-time SAM2 observation is measured separately
-at 199.027 seconds (**3.316 FPS**) on physical A800 GPU 4; a fresh observation
-plus repair is 267.132 seconds (**2.471 effective FPS**). A 14.428-second dense
-contact preflight rejects bad challengers before the 993.069-second full audit.
-
-Status remains **PARTIAL** for the displayed video: this is one-scene 2-D visual
-evidence, not metric depth, force closure, cross-scene generalization, or real
-robot execution, and inherited grey torso texture remains visible. See the
-[evidence manifest](demo/showcase/joyai-flower-right-arm-zorder-manifest.json).
+<a href="https://github.com/YuhuaJiang2002/PhiAgent"><img src="demo/showcase/github-repository-wechat-qr.png" alt="QR code for the PhiAgent GitHub repository" width="270"></a>
 
 ### Supplemental real-scene action-conditioned comparison
 

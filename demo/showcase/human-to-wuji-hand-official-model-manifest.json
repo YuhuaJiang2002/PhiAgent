@@ -1,0 +1,86 @@
+{
+  "claim": "Vision-derived human motion retargeted to an official Wuji Hand simulation model.",
+  "non_claims": [
+    "This is not footage of physical Wuji hardware.",
+    "Monocular MediaPipe landmarks do not establish metric depth, contact force, or real execution."
+  ],
+  "output": {
+    "decoded_frames": 621,
+    "end_to_end_fps": 20.29561917467057,
+    "poster": "human-to-wuji-hand-official-model-comparison-poster.jpg",
+    "poster_sha256": "d5f8c4ed13ff0ebaafb5a8dbc87aca4af8bec016b243838b4f79572d6bfa1f71",
+    "probe": {
+      "format": {
+        "duration": "20.700000",
+        "size": "3669708"
+      },
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "duration": "20.700000",
+          "height": 768,
+          "nb_read_frames": "621",
+          "r_frame_rate": "30/1",
+          "width": 2560
+        }
+      ]
+    },
+    "render_fps": 34.73994226754641,
+    "render_seconds": 17.875677374977386,
+    "total_seconds": 30.597736124997027,
+    "video": "human-to-wuji-hand-official-model-comparison-20p7s.mp4",
+    "video_sha256": "742aea8554d49fcd55967e18b1ad20af2ef4f51bb6957077a8786f6e7c441ab2"
+  },
+  "runtime": {
+    "mediapipe": "0.10.21",
+    "mujoco": "3.6.0",
+    "numpy": "1.26.4",
+    "opencv": "5.0.0",
+    "python": "3.12.13"
+  },
+  "schema_version": "1.0.0",
+  "source": {
+    "fps": 30.0,
+    "frames": 621,
+    "path": "human-hand-20p7s.mp4",
+    "sha256": "9ad115983e33465e1396013de8e7a1ba13b069d73df3f86b37177fbcccb3ea20"
+  },
+  "status": "PARTIAL",
+  "trajectory": {
+    "artifact": "wuji-hand-official-model-retarget-q.npz",
+    "artifact_sha256": "ec54a0567746dfc14b46de80ce50baaafdd589e3bb9c046c591066e717d4acb3",
+    "direct_detection_frames": 621,
+    "frozen_transition_count_at_1e_4_rad": 0,
+    "held_observation_frames": 0,
+    "joint_limit_violations": 0,
+    "max_velocity_limit_ratio": 0.5953498482704163,
+    "optimizer_cost_max": 26.479061847735558,
+    "optimizer_cost_mean": 2.33929509138023,
+    "optimizer_cost_p95": 5.5777231799821205,
+    "q_delta_norm_mean_rad": 0.10215064883232117,
+    "q_delta_norm_p95_rad": 0.27243593037128444,
+    "q_shape": [
+      621,
+      20
+    ],
+    "qddot_abs_max_rad_s2": 121.93582153320312,
+    "qddot_abs_p95_rad_s2": 15.45946044921875,
+    "qdot_abs_max_rad_s": 8.083660125732422,
+    "qdot_shape": [
+      621,
+      20
+    ],
+    "velocity_limit_violations": 0
+  },
+  "upstream": {
+    "commit": "2918c60643cca3482ffa2d14d1f7fece1d9d7db9",
+    "config_sha256": "d8ec43b73a5b9c1d95dba2a5291693b2af75292466c360027ef490cbcde088a8",
+    "description_commit": "7d547ad50ca8cff92d999ae2cc01fc69bcb7c2b6",
+    "mjcf_sha256": "534de028fe93968bcbc8e59ee85eadb1a22c04717efb433221deff3273cd46a6",
+    "model": "Wuji Hand (right/left selected by hand_side; not Wuji Hand 2 Beta)",
+    "repository": "https://github.com/wuji-technology/wuji-retargeting",
+    "urdf_sha256": "47aa811f1657ad236a1e22f009128d58a7e38045eca59fce0cca08c65a949b74"
+  }
+}

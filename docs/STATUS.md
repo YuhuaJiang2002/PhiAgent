@@ -6,6 +6,22 @@ locations are recorded per experiment below.
 
 ## WORKING
 
+- Official-model Wuji Hand video-retargeting and release audit infrastructure:
+  `scripts/build_wuji_hand_comparison.py` consumes an MP4 through the pinned
+  official Wuji retargeter at commit
+  `2918c60643cca3482ffa2d14d1f7fece1d9d7db9` and the official Wuji description
+  submodule at `7d547ad50ca8cff92d999ae2cc01fc69bcb7c2b6`. The retained 20.7-second run
+  produces a complete 621x20 `q`/`qdot` artifact from 621/621 direct MediaPipe
+  detections with no held observations, no frozen frame transitions, zero joint
+  position violations, and zero URDF velocity-limit violations; the largest
+  velocity is 59.535% of its joint limit. The 2560x768 offscreen render takes
+  17.8757 seconds (**34.7399 FPS**) and the encoded result decodes to exactly
+  621 frames. The complete detect/retarget/render/encode/decode audit takes
+  30.5977 seconds (**20.2956 effective FPS**). Exact source, config, URDF,
+  MJCF, trajectory, video, and poster hashes are recorded. The builder and
+  identity/trajectory/decode gates are WORKING. The displayed result remains PARTIAL because it is monocular,
+  vision-derived official-model simulation—not footage of physical Wuji
+  hardware, metric depth/contact evidence, or real execution.
 - Fail-closed long-video self-evolution and SAM2-observed flower/contact state:
   the v45 challenger at
   `outputs/joyai-self-evolution/20260814T201500Z-flower-harness-v45` is the first
