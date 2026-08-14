@@ -51,38 +51,40 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 27.5-second flower arranging: dual-observer stabilized comparison
+### 27.5-second flower arranging: right-arm and flower z-order stabilized
 
-[![Real human reference versus dual-observer stabilized PhiAgent robot result](demo/showcase/joyai-flower-real-vs-robot-dual-observer-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-dual-observer-27p5s.mp4)
+[![Real human reference versus right-arm and flower z-order stabilized PhiAgent robot result](demo/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
 
-[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-dual-observer-27p5s.mp4)
-or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-dual-observer-stable-27p5s.mp4).
+[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
+or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-right-arm-zorder-stable-27p5s.mp4).
 
-The complete 660-frame, 1280x720, 24 FPS result adds an offline
-past/current/future residual consensus in the candidate's own motion frame and
-a causal appearance-state update in the source motion frame. Hand, flower,
-projected-contact, window-endpoint, and non-editable locks remain exact.
-Against the previously published result, source-motion jitter mean falls
-**7.269%** (6.5195 to 6.0456), p95 falls 19.1597 to 16.6831, and transitions
-above the frozen 20 threshold fall **7 to 4**. An independent candidate-motion
-observer also improves mean **4.611%**, p95 5.7342 to 5.1806, and frozen
-high-jitter count 8 to 7 across the same 161 transitions.
+The complete 660-frame, 1280x720, 24 FPS result extends the dual-observer
+candidate with an anatomical-right-arm state, explicit source-grounded flower
+ownership, reconstruction-footprint-safe z-order, and an immutable projected
+contact-evidence layer. Against the previously published result, right-arm
+self-flow MAE falls **1.642%** (2.2175 to 2.1811), p95 falls **5.261%**, and
+high-flicker transitions fall **29 to 18**. Wrong flower occlusion falls from
+0.7914 mean / 1.0 p95 to **0.0044 / 0.0**; flower-owner flips fall from 0.0824
+mean / 0.5 p95 to **0.0067 / 0.0**. All 14 frozen right-arm and flower gates
+pass without relaxing a threshold.
 
-The clean-runtime native-resolution audit keeps late projected contact at
-**11/11**, persistent visual grasp at **147/147**, grasp-erasure rejection at
-**147/147**, and detects color, topology, contact-removal, and structure-ghost
-attacks. It also corrects an earlier non-reproducible claim: both the published
-incumbent and this challenger fail the unchanged spatial-chroma-TV limit
-(9.7942 and 9.7462 versus 5.9816), so the image-space contract is **13/14**, not
-fully passing. No threshold was relaxed.
+The two original risk-window observers also remain improved: source-motion
+jitter mean falls **7.269%**, p95 falls **12.873%**, and high-jitter transitions
+fall **7 to 4**; the candidate-motion observer improves mean **4.548%**, p95
+**10.282%**, and count 8 to 7. The native-resolution audit retains anchor
+contact **16/16**, pre-20-second contact **33/35** (the same two failures as the
+incumbent), late contact **11/11**, persistent visual grasp **147/147**, and
+grasp-erasure rejection **147/147**. Color, topology, contact-removal, and
+structure-ghost attacks are all detected.
 
-The added dual-observer pass takes 116.14 seconds for 660 frames (**5.68 FPS**).
-The full historical quality stack takes 555.51 seconds (**1.19 effective FPS**),
-while the JoyAI full-stream base remains 665 frames in 105.69 seconds on two
-A800 GPUs (**6.29 FPS**). Status is **PARTIAL**: this is a single-scene 2-D
-visual improvement, not metric depth, force closure, cross-scene
-generalization, or real-robot evidence. See the
-[evidence manifest](demo/showcase/joyai-flower-dual-observer-manifest.json).
+The final flower ownership/contact guard takes 83.54 seconds (**7.90 FPS**).
+Together with the dual-flow right-arm pass, the added pipeline takes 452.90
+seconds (**1.46 effective FPS**); the JoyAI full-stream base remains 665 frames
+in 105.69 seconds on two A800 GPUs (**6.29 FPS**). Status is **PARTIAL**: the
+unchanged spatial-chroma-TV gate still leaves the image contract at **13/14**,
+and this is single-scene 2-D evidence rather than metric depth, force closure,
+cross-scene generalization, or real-robot execution. See the
+[evidence manifest](demo/showcase/joyai-flower-right-arm-zorder-manifest.json).
 
 ### Supplemental real-scene action-conditioned comparison
 

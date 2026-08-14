@@ -6,6 +6,25 @@ locations are recorded per experiment below.
 
 ## WORKING
 
+- Right-arm / flower ownership audit and repair infrastructure: the final
+  660-frame challenger at
+  `outputs/joyai-temporal-state/20260814T120000Z-right-arm-contact-lock-v61`
+  combines dual-flow anatomical-right-arm state, source-grounded flower
+  ownership over each complete reconstruction footprint, and an immutable
+  projected-contact evidence layer. The independent v62 audit passes all 14
+  frozen gates: right-arm self-flow mean improves 2.21746 to 2.18105, p95
+  improves 4.43694 to 4.20351, and high-flicker count falls 29 to 18; wrong
+  flower occlusion improves from 0.791397 mean / 1.0 p95 to 0.004413 / 0.0,
+  while flower-owner flips improve from 0.082400 mean / 0.5 p95 to 0.006728 /
+  0.0. The v63/v64 source- and candidate-motion audits both pass. The v65
+  full native audit retains anchor contact 16/16, pre-20-second contact 33/35,
+  late contact 11/11, persistent grasp 147/147, erasure rejection 147/147, and
+  all four adversarial detectors. The ownership/contact guard runs at 7.9002
+  FPS; with its dual-flow arm intermediate the added pipeline runs at 1.4573
+  effective FPS. This audit and repair infrastructure is WORKING. The display
+  candidate remains PARTIAL because the unchanged spatial-chroma-TV gate keeps
+  the image-space result at 13/14, and all contact evidence remains 2-D rather
+  than metric depth or force evidence.
 - Dual-observer temporal audit infrastructure: source-motion and candidate-self
   optical-flow observers independently evaluate the same 161 frozen risk
   transitions and require strict reductions in mean, p95, and frozen

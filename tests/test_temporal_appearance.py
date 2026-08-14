@@ -15,6 +15,153 @@ from phiagent.rendering.temporal_masks import (
     apply_temporal_lock_envelope,
     build_torso_head_whitelist,
 )
+from phiagent.rendering.temporal_occlusion import (
+    projected_contact_evidence_lock,
+    right_arm_flower_partition,
+    source_owned_flower_restore_mask,
+    source_motion_residual_median_update,
+)
+
+
+def test_right_arm_flower_partition_has_explicit_disjoint_owners() -> None:
+    arm = np.zeros((25, 25), dtype=bool)
+    arm[6:20, 5:21] = True
+    flower = np.zeros_like(arm)
+    flower[9:14, 15:23] = True
+    hand = np.zeros_like(arm)
+    hand[14:20, 5:10] = True
+
+    editable, flower_owner, protected_hand = right_arm_flower_partition(
+        cv2,
+        np,
+        right_arm=arm,
+        flower_visible=flower,
+        hand_support=hand,
+        corridor_dilation_pixels=3,
+        hand_dilation_pixels=3,
+    )
+
+    assert np.any(flower_owner)
+    assert not np.any(editable & flower_owner)
+    assert not np.any(editable & protected_hand)
+    assert np.all(flower_owner <= flower)
+
+
+def test_flower_restore_owns_sampling_footprint_before_person_exclusion() -> None:
+    owner = np.zeros((17, 17), dtype=bool)
+    owner[8, 8] = True
+    person = np.ones_like(owner)
+    protected_hand = np.ones_like(owner)
+
+    restored = source_owned_flower_restore_mask(
+        cv2,
+        np,
+        flower_owner=owner,
+        person=person,
+        hand_core=np.zeros_like(owner),
+        protected_hand=protected_hand,
+        clean_plate_padding_pixels=9,
+        sample_footprint_pixels=7,
+    )
+
+    assert np.all(restored[5:12, 5:12])
+    assert not restored[4, 4]
+
+
+def test_flower_restore_wider_padding_respects_protected_regions() -> None:
+    owner = np.zeros((21, 21), dtype=bool)
+    owner[10, 10] = True
+    person = np.zeros_like(owner)
+    person[:, 14:] = True
+    protected_hand = np.zeros_like(owner)
+    protected_hand[:7, :] = True
+
+    restored = source_owned_flower_restore_mask(
+        cv2,
+        np,
+        flower_owner=owner,
+        person=person,
+        hand_core=np.zeros_like(owner),
+        protected_hand=protected_hand,
+        clean_plate_padding_pixels=17,
+        sample_footprint_pixels=3,
+    )
+
+    assert restored[10, 5]
+    assert not restored[10, 15]
+    assert not restored[5, 10]
+
+
+def test_flower_sampling_footprint_preserves_hand_core_except_true_owner() -> None:
+    owner = np.zeros((15, 15), dtype=bool)
+    owner[7, 7] = True
+    hand_core = np.zeros_like(owner)
+    hand_core[7, 6:9] = True
+
+    restored = source_owned_flower_restore_mask(
+        cv2,
+        np,
+        flower_owner=owner,
+        person=np.zeros_like(owner),
+        hand_core=hand_core,
+        protected_hand=hand_core,
+        clean_plate_padding_pixels=7,
+        sample_footprint_pixels=7,
+    )
+
+    assert restored[7, 7]
+    assert not restored[7, 6]
+    assert not restored[7, 8]
+
+
+def test_projected_contact_lock_preserves_only_generated_corridor_evidence() -> None:
+    source = np.full((17, 17, 3), 100, dtype=np.uint8)
+    candidate = source.copy()
+    candidate[8, 8] = 140
+    candidate[2, 2] = 140
+    hand = np.zeros((17, 17), dtype=bool)
+    hand[8, 6] = True
+    flower = np.zeros_like(hand)
+    flower[8, 10] = True
+
+    locked = projected_contact_evidence_lock(
+        cv2,
+        np,
+        candidate=candidate,
+        source=source,
+        hand_core=hand,
+        flower_owner=flower,
+        replacement_threshold=12.0,
+        contact_dilation_pixels=7,
+    )
+
+    assert locked[8, 8]
+    assert not locked[2, 2]
+    assert not locked[8, 10]
+
+
+def test_source_motion_residual_median_removes_part_local_extremum() -> None:
+    candidate = np.full((3, 4, 3), 140, dtype=np.uint8)
+    current = np.full((3, 4, 3), 40.0, dtype=np.float32)
+    previous = np.full((3, 4, 3), 10.0, dtype=np.float32)
+    following = np.full((3, 4, 3), 12.0, dtype=np.float32)
+    reliable = np.zeros((3, 4), dtype=bool)
+    reliable[:, 1:3] = True
+
+    repaired, metrics = source_motion_residual_median_update(
+        np,
+        current_candidate=candidate,
+        current_residual=current,
+        warped_previous_residual=previous,
+        warped_next_residual=following,
+        reliable=reliable,
+        maximum_residual_delta=24.0,
+    )
+
+    assert np.all(repaired[reliable] == 116)
+    assert np.array_equal(repaired[~reliable], candidate[~reliable])
+    assert metrics["baseline_temporal_extremum_mae"] == pytest.approx(28.0)
+    assert metrics["repaired_temporal_extremum_mae"] == pytest.approx(4.0)
 
 
 def test_temporal_whitelist_excludes_limb_flower_and_adjacent_locks() -> None:
