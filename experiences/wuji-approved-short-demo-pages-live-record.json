@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-approved-short-demo-pages-live",
+  "recorded_at": "2026-08-14T23:56:31Z",
+  "scope": "Production GitHub Pages verification for the approved short flower anchor, Wuji official-model comparison, and repository QR",
+  "status": "WORKING",
+  "summary": "GitHub Pages run 31851848517 deployed commit 89ee18f83d7f6806ae2bd50bf27123b5022a756f successfully; production media hashes, browser decode/playback, responsive layout, QR decode, and long-flower removal all pass.",
+  "run_dir": "demo/showcase",
+  "evidence": [
+    "GitHub Actions workflow run 31851848517 completed successfully in 21 seconds with checkout, Pages configuration, site preparation, artifact upload, and deployment all passing.",
+    "The production 3.708333-second flower video is H.264 896x512 at 24 FPS, decodes to 89 frames, and matches SHA-256 2afd1238a976b3b87b10ebbcbccb83ac3d5e3ca630af184738bb8bb2df00f255.",
+    "The production 20.7-second Wuji comparison is H.264 2560x768 at 30 FPS, decodes to 621 frames, and matches SHA-256 742aea8554d49fcd55967e18b1ad20af2ef4f51bb6957077a8786f6e7c441ab2.",
+    "The Wuji render is 34.7399 FPS; the measured detect, retarget, render, encode, and decode path takes 30.5977 seconds at 20.2956 effective FPS.",
+    "In Edge, both production videos reach HTMLMediaElement readyState 4 with no media error and exact durations/resolutions; the short clip autoplays and the Wuji clip advances after an explicit play action.",
+    "The production QR matches SHA-256 c92cde3fc4607c5ffc7d054ec2948d9a92a710d8fe178bcac77169c4053cfc71 and independently decodes to https://github.com/YuhuaJiang2002/PhiAgent at native 720 pixels and displayed 270 pixels.",
+    "The responsive audit at a 375-pixel content viewport has no horizontal overflow; the QR remains 270x270 pixels and the card stacks to one column.",
+    "The prior 27.5-second flower title is absent and its former production asset URL returns HTTP 404."
+  ],
+  "lessons": [
+    "A Pages release is not concluded by workflow success alone; production bytes, browser media state, playback progression, and QR behavior must be independently verified.",
+    "The earlier failed Pages run 31819491727 ended before runner allocation with zero steps, so it was not a media upload or codec failure; a later same-revision deployment succeeded after the Pages environment branch policy was corrected.",
+    "A lazy-loaded QR can appear blank in a full-page capture until scrolled into view; acceptance must inspect the actual viewport after intersection, natural dimensions, and decoded target."
+  ],
+  "limitations": [
+    "The flower demo is intentionally the previously accepted 3.708333-second visual anchor, not evidence that the 27.5-second long-video problem is solved.",
+    "The Wuji comparison remains an official-model simulation rather than footage or telemetry from physical Wuji hardware.",
+    "The Pages workflow still reports a non-blocking GitHub Actions annotation that Node.js 20 actions are being forced to Node.js 24."
+  ],
+  "next_actions": [
+    "Keep the production page pinned to the accepted short anchor until a long-video challenger passes the unchanged adversarial gates.",
+    "Upgrade GitHub Actions revisions when their maintainers publish native Node.js 24 releases."
+  ],
+  "supersedes": [],
+  "tags": [
+    "github-pages",
+    "production",
+    "browser-audit",
+    "wuji-hand",
+    "short-flower-anchor",
+    "qr",
+    "working"
+  ]
+}
