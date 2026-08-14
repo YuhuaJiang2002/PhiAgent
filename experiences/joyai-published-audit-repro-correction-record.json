@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-14.joyai-published-audit-repro-correction-v35",
+  "recorded_at": "2026-08-14T06:15:00Z",
+  "scope": "Clean-runtime recheck of the previously published JoyAI jitter-stable incumbent",
+  "status": "PARTIAL",
+  "summary": "A fresh CPython 3.13 audit of the byte-identical published incumbent does not reproduce the earlier all-gates-pass conclusion; the unchanged spatial-chroma-TV gate fails, so the previous evidence statement is corrected rather than hidden.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T191000Z-risk165-published-recheck-v35",
+  "evidence": [
+    "The rechecked MP4 has the same SHA-256 a63237403e2b010444ad885277dd5b06f75370f9c4dcbde418732b641b3099a8 recorded by the earlier report.",
+    "The clean-runtime late spatial-chroma-TV mean is 9.794221, not the earlier saved 3.211909, against the same 5.981568 limit.",
+    "All other frozen image gates, late contact 11/11, persistent grasp 147/147, erasure rejection 147/147, and all four adversarial attacks pass in the recheck.",
+    "The challenger improves the same clean-runtime chroma diagnostic slightly to 9.746221 but does not pass it."
+  ],
+  "lessons": [
+    "Saved metrics must be reproducible from a clean interpreter and fresh bytecode cache before being described as a passing promotion contract.",
+    "A correcting ledger record must supersede a previously optimistic conclusion when later evidence disagrees."
+  ],
+  "limitations": [
+    "The exact historical source of the stale 3.211909 value is not proven; iCloud-dataless runtime and stale-cache behavior are the leading infrastructure explanation, not an established causal fact."
+  ],
+  "next_actions": [
+    "Hash the executed audit modules and record interpreter/cache provenance in every future report.",
+    "Add a clean-runtime reproduction gate before demo promotion."
+  ],
+  "supersedes": ["2026-08-13.joyai-recursive-appearance-state-final-v25"],
+  "tags": ["joyai", "reproducibility", "audit-correction", "partial", "supersedes"]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-14.joyai-dual-observer-final-partial-v34",
+  "recorded_at": "2026-08-14T06:10:00Z",
+  "scope": "Dual-observer stabilization of the 27.5-second JoyAI flower-arranging robot layer",
+  "status": "PARTIAL",
+  "summary": "The v30 composition passes both frozen temporal observers and preserves contact/grasp safety, but it remains PARTIAL because the clean-runtime long-video audit passes 13/14 image gates rather than all gates.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T182000Z-risk165-dual-observer-v30",
+  "evidence": [
+    "Across 161 risk transitions, source-motion mean falls 7.269%, p95 falls 12.927%, maximum falls 26.6538 to 23.6002, and count-above-20 falls 7 to 4.",
+    "The independent candidate-self observer reduces mean 4.611%, p95 9.655%, maximum 11.6883 to 11.0219, and count above the frozen 5.875135 threshold from 8 to 7.",
+    "The native-resolution v34 audit retains late projected contact 11/11, persistent visual grasp 147/147, erasure-attack rejection 147/147, and detects color, topology, contact-removal, and structure-ghost attacks.",
+    "The unchanged spatial-chroma-TV gate fails at 9.746221 against a 5.981568 limit; the threshold was not relaxed.",
+    "The incremental bidirectional plus causal passes take 116.1404 seconds for 660 frames, or 5.6828 FPS."
+  ],
+  "lessons": [
+    "Past/future candidate correspondence and source-motion causal state encode complementary temporal evidence; strict agreement across both reduces score gaming.",
+    "Visual promotion must remain separate from image-space contact, physical contact, and generalization claims."
+  ],
+  "limitations": [
+    "The candidate fails one frozen appearance gate and is validated on only one scene.",
+    "Projected overlap and occlusion bridging do not establish 3-D depth, contact force, force closure, or executable robot motion."
+  ],
+  "next_actions": [
+    "Replace the coarse person-envelope chroma diagnostic with an additional replacement-grounded diagnostic without deleting or relaxing the frozen legacy gate.",
+    "Replicate both temporal observers on independent flower-arranging scenes."
+  ],
+  "supersedes": ["2026-08-14.joyai-dual-observer-rejected-challengers-v29"],
+  "tags": ["joyai", "long-video", "dual-observer", "jitter", "adversarial-audit", "partial"]
+}

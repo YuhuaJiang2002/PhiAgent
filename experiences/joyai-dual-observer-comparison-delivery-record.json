@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-14.joyai-dual-observer-comparison-delivery-v37",
+  "recorded_at": "2026-08-14T06:20:00Z",
+  "scope": "Synchronized real-versus-robot dual-observer demo delivery",
+  "status": "PARTIAL",
+  "summary": "The first v36 comparison build failed closed on missing Pillow; after pinning Pillow 12.3.0, v37 produced the 660-frame comparison, poster, and manifest for the PARTIAL web demo.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T201000Z-real-vs-dual-observer-v37",
+  "evidence": [
+    "v36 stopped before rendering with ModuleNotFoundError: PIL and was not reused.",
+    "v37 emits a 27.5-second synchronized comparison with SHA-256 1f0a9bd7f91c871b38c189dc51e51cea920d2ec8a737dbe154f8df87f465d7ff.",
+    "The robot-only public artifact has SHA-256 44b10a8a3eeb6b3aaabfaf0fbde77818f5959873768ad86c30777213c61b5c90."
+  ],
+  "lessons": [
+    "Media builders need a declared Pillow preflight in addition to ffmpeg and ffprobe."
+  ],
+  "limitations": [
+    "Publishing the comparison does not promote the underlying 13/14 visual contract to WORKING."
+  ],
+  "next_actions": [
+    "Verify the deployed asset hashes and content types after GitHub Pages completes."
+  ],
+  "supersedes": [],
+  "tags": ["joyai", "demo", "comparison", "dependency-preflight", "partial"]
+}

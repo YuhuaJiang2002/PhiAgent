@@ -20,18 +20,21 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from compose_joyai_flower_repairs import (  # noqa: E402
+from scripts.compose_joyai_flower_repairs import (  # noqa: E402
     _load_packed,
     _mask_to_native,
     _unpack,
-    apply_temporal_lock_envelope,
-    build_limb_contact_locks,
-    build_torso_head_whitelist,
 )
 from phiagent.rendering.temporal_appearance import (  # noqa: E402
     bidirectional_flow_state,
+    flow_reference_frames,
     residual_state_update,
     warp_with_flow,
+)
+from phiagent.rendering.temporal_masks import (  # noqa: E402
+    apply_temporal_lock_envelope,
+    build_limb_contact_locks,
+    build_torso_head_whitelist,
 )
 
 
@@ -77,6 +80,16 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--contact-dilation-pixels", type=int, default=21)
     parser.add_argument("--state-boundary-erosion-pixels", type=int, default=7)
     parser.add_argument("--flow-scale", type=float, default=0.5)
+    parser.add_argument(
+        "--flow-reference",
+        choices=("incumbent", "candidate"),
+        default="incumbent",
+        help=(
+            "Image stream used to estimate temporal correspondence. Use "
+            "candidate for generated-robot motion; the incumbent remains "
+            "the appearance-residual reference."
+        ),
+    )
     parser.add_argument("--minimum-confidence", type=float, default=0.20)
     parser.add_argument("--minimum-state-age", type=float, default=1.0)
     parser.add_argument("--strength", type=float, default=0.65)
@@ -461,11 +474,18 @@ def main() -> int:
             and previous_editable is not None
             and previous_age is not None
         ):
+            flow_previous, flow_current = flow_reference_frames(
+                args.flow_reference,
+                previous_candidate=previous_candidate,
+                candidate=candidate,
+                previous_incumbent=previous_incumbent,
+                incumbent=incumbent,
+            )
             flow = bidirectional_flow_state(
                 cv2,
                 np,
-                previous_incumbent,
-                incumbent,
+                flow_previous,
+                flow_current,
                 scale=args.flow_scale,
             )
             warped_previous_candidate = warp_with_flow(
@@ -753,7 +773,10 @@ def main() -> int:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "status": "PARTIAL",
         "decision": "AWAITING_MATCHED_ABLATION_AND_NATIVE_REVIEW",
-        "method": "confidence_gated_low_frequency_appearance_residual_state",
+        "method": (
+            "confidence_gated_low_frequency_appearance_residual_state_"
+            f"{args.flow_reference}_correspondence"
+        ),
         "mode": args.mode,
         "physical_evidence": False,
         "command": [sys.executable, *sys.argv],
@@ -775,6 +798,7 @@ def main() -> int:
             "contact_dilation_pixels": args.contact_dilation_pixels,
             "state_boundary_erosion_pixels": args.state_boundary_erosion_pixels,
             "flow_scale": args.flow_scale,
+            "flow_reference": args.flow_reference,
             "minimum_confidence": args.minimum_confidence,
             "minimum_state_age": args.minimum_state_age,
             "strength": args.strength,

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-14.joyai-dual-observer-rejected-challengers-v29",
+  "recorded_at": "2026-08-14T05:10:00Z",
+  "scope": "Candidate-self causal and bidirectional temporal stabilization challengers",
+  "status": "PARTIAL",
+  "summary": "Candidate-self causal v26 and bidirectional-consensus v28 were retained as negative evidence because neither strictly reduced the frozen source-motion high-jitter count, despite improving their internal objectives.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T181000Z-risk165-bidirectional-jitter-audit-v29",
+  "evidence": [
+    "v26 reduced its internal layer-warp objective 6.401%, but external mean improved only 1.205%, p95 regressed 19.1597 to 19.1644, and count-above-20 remained 7.",
+    "v28 reduced candidate-self bidirectional consensus MAE 41.959%, but the source-motion v29 audit improved mean only 0.507%, left count-above-20 at 7, and slightly regressed maximum jitter.",
+    "Both candidates preserved declared hand, flower, projected-contact, endpoint, and outside-window locks exactly."
+  ],
+  "lessons": [
+    "An estimator can optimize its own correspondence residual while failing an independent motion observer; both observers are required to prevent objective gaming.",
+    "The remaining source-aligned spikes are dominated by rapid lower-torso structure, so candidate-only motion is necessary but not sufficient."
+  ],
+  "limitations": [
+    "These rejections cover one scene and 161 declared transitions, not a general temporal benchmark."
+  ],
+  "next_actions": [
+    "Compose candidate-self bidirectional consensus with a separate source-motion causal state pass, then require strict improvement under both observers."
+  ],
+  "supersedes": [],
+  "tags": ["joyai", "long-video", "jitter", "rejected", "dual-observer"]
+}

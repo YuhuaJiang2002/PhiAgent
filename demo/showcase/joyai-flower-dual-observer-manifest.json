@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-08-14T06:20:00Z",
+  "status": "PARTIAL",
+  "method": "multi_anchor_consensus_plus_recursive_state_plus_bounded_hand_projection_plus_bidirectional_candidate_consensus_plus_source_motion_state",
+  "video": {
+    "duration_seconds": 27.5,
+    "fps": 24.0,
+    "frames": 660,
+    "width": 1280,
+    "height": 720,
+    "robot_only_path": "joyai-flower-dual-observer-stable-27p5s.mp4",
+    "robot_only_sha256": "44b10a8a3eeb6b3aaabfaf0fbde77818f5959873768ad86c30777213c61b5c90",
+    "comparison_path": "joyai-flower-real-vs-robot-dual-observer-27p5s.mp4",
+    "comparison_sha256": "1f0a9bd7f91c871b38c189dc51e51cea920d2ec8a737dbe154f8df87f465d7ff",
+    "poster_path": "joyai-flower-real-vs-robot-dual-observer-poster.jpg",
+    "poster_sha256": "1cd5638ad4f9fb21d6c06ccd0f1200a71ba3a1037810737466e6af653323c052"
+  },
+  "temporal_jitter_audits": {
+    "risk_windows_inclusive": [[463, 520], [543, 625], [637, 659]],
+    "evaluated_transitions": 161,
+    "source_motion_observer": {
+      "coordinate_frame": "camera:source_downsampled_320x180",
+      "incumbent_mean": 6.519466454938332,
+      "challenger_mean": 6.045572992437375,
+      "relative_mean_reduction": 0.07268899468636647,
+      "incumbent_p95": 19.159698486328125,
+      "challenger_p95": 16.683107376098633,
+      "high_jitter_threshold": 20.0,
+      "incumbent_high_jitter_transitions": 7,
+      "challenger_high_jitter_transitions": 4,
+      "all_frozen_gates_pass": true,
+      "report_sha256": "2528bb88beb4e75b9db35a0d46c09ed7402b261bace0e5170f633b628ef19872"
+    },
+    "candidate_self_motion_observer": {
+      "coordinate_frame": "camera:candidate_downsampled_320x180",
+      "incumbent_mean": 3.237469061561253,
+      "challenger_mean": 3.088187715281611,
+      "relative_mean_reduction": 0.04611050899360625,
+      "incumbent_p95": 5.734168529510498,
+      "challenger_p95": 5.180564880371094,
+      "frozen_high_jitter_threshold": 5.87513542175293,
+      "incumbent_high_jitter_transitions": 8,
+      "challenger_high_jitter_transitions": 7,
+      "all_frozen_gates_pass": true,
+      "report_sha256": "865d1cb1b0f2a332b958c28b43a9345a91afbeff1e93ffe6a8ef805e4cfaacd4"
+    }
+  },
+  "frozen_visual_audit": {
+    "image_space_contract_pass": false,
+    "passing_gates": 13,
+    "total_gates": 14,
+    "failed_gate": "late_spatial_chroma_tv",
+    "frozen_spatial_chroma_tv_limit": 5.981567978858948,
+    "published_incumbent_recheck_mean": 9.794220516416761,
+    "challenger_mean": 9.746221288045247,
+    "late_start_frame": 480,
+    "late_projected_contact_recall": "11/11",
+    "persistent_grasp_interval": "frames 497-643",
+    "persistent_visual_grasp_recall": "147/147",
+    "grasp_erasure_attack_rejection": "147/147",
+    "all_adversarial_attacks_detected": true,
+    "attacks": ["color", "topology", "contact_removal", "structure_ghost"],
+    "challenger_audit_seconds": 160.4984311250155,
+    "challenger_audit_fps": 4.113225040675214,
+    "challenger_audit_report_sha256": "832c39d9ee7690bea0cd0820524ce8b9f75e5334bfc67a682cd76f54cf72f489",
+    "published_incumbent_recheck_report_sha256": "93503dbc928a3a8c6dc6245e3d6eb4630e983fbf9242e6cf21da011d37168519",
+    "reproducibility_correction": "A clean-runtime recheck does not reproduce the earlier saved incumbent value 3.211909 or its all-gates-pass conclusion. The frozen limit was not changed; both incumbent and challenger now fail only the same chroma-TV gate."
+  },
+  "pipeline_timing": {
+    "joyai_full_stream_generation": {
+      "generated_frames": 665,
+      "seconds": 105.692,
+      "fps": 6.292,
+      "hardware": "2x NVIDIA A800"
+    },
+    "previous_quality_postprocessing": {
+      "seconds": 439.3664297089854,
+      "effective_fps": 1.5021630133124904
+    },
+    "dual_observer_increment": {
+      "bidirectional_candidate_consensus_seconds": 64.16751570798806,
+      "source_motion_state_seconds": 51.972908667026786,
+      "total_seconds": 116.14042437501485,
+      "effective_fps": 5.682775859926899
+    },
+    "complete_quality_postprocessing": {
+      "seconds": 555.5068540840002,
+      "effective_fps": 1.1881041523570455
+    }
+  },
+  "provenance": {
+    "candidate_manifest_sha256": "f9fd90d925862756a91757f9d8fa6e4cddad83fb8744733cfdb765b36635f696",
+    "comparison_manifest_sha256": "7fc9066126dbf6df4f5e16c742b942552ed0580b27e65161f5ef2a316c0d797b",
+    "runtime": "isolated CPython 3.13, NumPy 2.2.6, OpenCV 4.12.0.88, Pillow 12.3.0",
+    "pycache_policy": "fresh PYTHONPYCACHEPREFIX outside the iCloud-backed worktree"
+  },
+  "honest_scope": {
+    "accepted": "Two independent temporal observers improve all frozen jitter statistics on one camera-frame scene.",
+    "not_claimed": [
+      "complete frozen image-space contract",
+      "metric 3-D hand-stem depth",
+      "contact force",
+      "force closure",
+      "real robot execution",
+      "cross-scene generalization"
+    ]
+  }
+}

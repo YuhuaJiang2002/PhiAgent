@@ -1,25 +1,21 @@
 # Status
 
-Evidence date: 2026-08-13. Status labels describe acceptance evidence, not code
+Evidence date: 2026-08-14. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
 ## WORKING
 
-- JoyAI recursive appearance-state visual contract: the accepted 27.5-second,
-  660-frame candidate at
-  `outputs/joyai-temporal-state/20260813T184000Z-risk165-recursive-hand-v22`
-  applies multi-anchor consensus, a causal recursive state estimator, and a
-  bounded 24-frame hand-detail projection. Against the prior published
-  incumbent, source-motion-aligned robot-layer jitter mean falls 8.216%, p95
-  falls 7.542%, and transitions above a residual of 20 fall from 10 to 7 across
-  all 161 declared risk transitions. The unchanged v5 limits pass every
-  image-space gate: late hand-edge failures are 0/180, late projected contact
-  is 11/11, persistent visual grasp and grasp-erasure rejection are 147/147,
-  and all four adversarial attacks are detected. This is WORKING for the frozen
-  single-scene visual contract only. Overall video status remains PARTIAL: no
-  metric depth, force closure, independent-scene replication, or real robot
-  execution is established.
+- Dual-observer temporal audit infrastructure: source-motion and candidate-self
+  optical-flow observers independently evaluate the same 161 frozen risk
+  transitions and require strict reductions in mean, p95, and frozen
+  high-jitter counts. The 27.5-second challenger at
+  `outputs/joyai-temporal-state/20260813T182000Z-risk165-dual-observer-v30`
+  passes both temporal contracts: source-motion mean falls 7.269%, p95 falls
+  12.927%, and count-above-20 falls 7 to 4; candidate-self mean falls 4.611%,
+  p95 falls 9.655%, and count-above-5.875135 falls 8 to 7. Exact endpoint,
+  hand, flower, contact, and outside-window locks are recorded. This audit
+  infrastructure is WORKING; the candidate itself remains PARTIAL below.
 - Persistent workflow framework and flower long-video reference graph: the
   standard-library `phiagent.workflows` runtime provides named nodes,
   conditional edges, JSON-hashed thread checkpoints, streamed events,
@@ -445,6 +441,21 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- JoyAI dual-observer stabilized flower demo: the published 660-frame candidate
+  at `outputs/joyai-temporal-state/20260813T182000Z-risk165-dual-observer-v30`
+  adds a candidate-self bidirectional residual consensus followed by a
+  source-motion causal state pass. Both independent jitter audits improve as
+  reported above, while late projected contact remains 11/11, the
+  source-observed hold interval passes 147/147 visual-grasp frames and 147/147
+  grasp-erasure attacks, and all four adversarial attacks are detected. A fresh
+  isolated-runtime audit exposes a non-reproducible earlier claim: the unchanged
+  5.981568 spatial-chroma-TV limit is failed by both the published incumbent
+  (9.794221) and challenger (9.746221). The challenger therefore passes 13/14
+  frozen image gates, not all gates; no threshold was relaxed. The incremental
+  dual-observer stage runs in 116.1404 seconds (5.6828 FPS), while the complete
+  historical quality stack is 555.5069 seconds (1.1881 effective FPS). This is
+  single-scene 2-D visual evidence without metric depth, force closure,
+  cross-scene replication, or real-robot execution.
 - Geometry-grounded AC-WM redesign: a primary-source review of 2025--2026
   releases identifies FlowWAM robot flow, Kinema4D pointmaps, and OSCAR
   skeletons as the strongest executable spatial controls; vector-only BWM

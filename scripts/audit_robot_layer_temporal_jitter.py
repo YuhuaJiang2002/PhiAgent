@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 import time
 from datetime import datetime, timezone
@@ -22,7 +23,6 @@ from phiagent.rendering.temporal_appearance import (  # noqa: E402
 from scripts.compose_joyai_flower_repairs import (  # noqa: E402
     _load_packed,
     _unpack,
-    build_torso_head_whitelist,
 )
 from scripts.stabilize_joyai_appearance_state import (  # noqa: E402
     _git_state,
@@ -30,6 +30,7 @@ from scripts.stabilize_joyai_appearance_state import (  # noqa: E402
     _probe,
     _sha256,
 )
+from phiagent.rendering.temporal_masks import build_torso_head_whitelist  # noqa: E402
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -47,10 +48,25 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--evaluation-width", type=int, default=320)
     parser.add_argument("--evaluation-height", type=int, default=180)
     parser.add_argument("--flow-scale", type=float, default=0.5)
+    parser.add_argument(
+        "--flow-reference",
+        choices=("source", "candidate"),
+        default="source",
+        help=(
+            "Use one source-motion field for action-following residuals or "
+            "one self-motion field per generated candidate for visual flicker."
+        ),
+    )
     parser.add_argument("--minimum-confidence", type=float, default=0.2)
     parser.add_argument("--limb-dilation-pixels", type=int, default=5)
     parser.add_argument("--torso-erosion-pixels", type=int, default=3)
     parser.add_argument("--contact-dilation-pixels", type=int, default=7)
+    parser.add_argument(
+        "--high-jitter-threshold",
+        type=float,
+        default=20.0,
+        help="Frozen layer-warp MAE threshold used to count visible jitter spikes.",
+    )
     return parser
 
 
@@ -70,6 +86,12 @@ def _summary(np: Any, values: list[float]) -> dict[str, float]:
         "p95": float(np.quantile(array, 0.95)),
         "maximum": float(array.max()),
     }
+
+
+def _high_jitter_count(values: list[float], threshold: float) -> int:
+    if not math.isfinite(threshold) or threshold <= 0:
+        raise ValueError("high-jitter threshold must be finite and positive")
+    return sum(value > threshold for value in values)
 
 
 def main() -> int:
@@ -97,6 +119,8 @@ def main() -> int:
         raise ValueError("risk windows must be valid inclusive intervals")
     if any(left[1] >= right[0] for left, right in zip(windows, windows[1:])):
         raise ValueError("risk windows must not overlap")
+    if not math.isfinite(args.high_jitter_threshold) or args.high_jitter_threshold <= 0:
+        raise ValueError("high-jitter threshold must be finite and positive")
     active = {frame for start, end in windows for frame in range(start, end + 1)}
 
     probes = {name: _probe(cv2, paths[name]) for name in ("source", "incumbent", "challenger")}
@@ -152,19 +176,37 @@ def main() -> int:
         )
         same_window = any(start < index <= end for start, end in windows)
         if index in active and same_window and previous is not None:
-            flow = bidirectional_flow_state(
-                cv2,
-                np,
-                previous["source"],
-                frames["source"],
-                scale=args.flow_scale,
-            )
-            warped_editable = warp_with_flow(
-                cv2, previous["editable"].astype(np.uint8), flow, nearest=True
-            ) > 0
-            support = editable & warped_editable & (
-                flow.confidence >= args.minimum_confidence
-            )
+            if args.flow_reference == "source":
+                shared_flow = bidirectional_flow_state(
+                    cv2,
+                    np,
+                    previous["source"],
+                    frames["source"],
+                    scale=args.flow_scale,
+                )
+                flows = {name: shared_flow for name in ("incumbent", "challenger")}
+            else:
+                flows = {
+                    name: bidirectional_flow_state(
+                        cv2,
+                        np,
+                        previous[name],
+                        frames[name],
+                        scale=args.flow_scale,
+                    )
+                    for name in ("incumbent", "challenger")
+                }
+            support = editable.copy()
+            for flow in flows.values():
+                warped_editable = warp_with_flow(
+                    cv2,
+                    previous["editable"].astype(np.uint8),
+                    flow,
+                    nearest=True,
+                ) > 0
+                support &= warped_editable & (
+                    flow.confidence >= args.minimum_confidence
+                )
             row: dict[str, Any] = {
                 "frame": index,
                 "support_pixels": int(np.count_nonzero(support)),
@@ -180,7 +222,9 @@ def main() -> int:
                     previous[name].astype(np.float32)
                     - previous["source"].astype(np.float32)
                 )
-                warped_residual = warp_with_flow(cv2, previous_residual, flow)
+                warped_residual = warp_with_flow(
+                    cv2, previous_residual, flows[name]
+                )
                 mae = float(np.abs(current_residual - warped_residual)[support].mean())
                 row[f"{name}_layer_warp_mae"] = mae
                 values[name].append(mae)
@@ -193,11 +237,20 @@ def main() -> int:
     incumbent = _summary(np, values["incumbent"])
     challenger = _summary(np, values["challenger"])
     relative = 1.0 - challenger["mean"] / incumbent["mean"]
+    incumbent_high_jitter = _high_jitter_count(
+        values["incumbent"], args.high_jitter_threshold
+    )
+    challenger_high_jitter = _high_jitter_count(
+        values["challenger"], args.high_jitter_threshold
+    )
     metrics = {
         "evaluated_transitions": len(per_frame),
         "incumbent_layer_warp_mae": incumbent,
         "challenger_layer_warp_mae": challenger,
         "relative_mean_layer_warp_reduction": relative,
+        "high_jitter_threshold": args.high_jitter_threshold,
+        "incumbent_high_jitter_transitions": incumbent_high_jitter,
+        "challenger_high_jitter_transitions": challenger_high_jitter,
         "wall_seconds": wall_seconds,
         "full_timeline_processing_fps": args.expected_frames / wall_seconds,
         "evaluated_transition_fps": len(per_frame) / wall_seconds,
@@ -206,7 +259,10 @@ def main() -> int:
         "schema_version": "1.0.0",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "status": "PARTIAL",
-        "scope": "source-motion-aligned robot head/torso residual jitter diagnostic",
+        "scope": (
+            f"{args.flow_reference}-motion-aligned robot head/torso residual "
+            "jitter diagnostic"
+        ),
         "physical_evidence": False,
         "command": [sys.executable, *sys.argv],
         "inputs": {
@@ -220,10 +276,19 @@ def main() -> int:
             "timeline": "absolute_frame_index:full_source_660",
         },
         "windows_inclusive": [list(window) for window in windows],
+        "config": {
+            "high_jitter_threshold": args.high_jitter_threshold,
+            "minimum_confidence": args.minimum_confidence,
+            "flow_scale": args.flow_scale,
+            "flow_reference": args.flow_reference,
+        },
         "metrics": metrics,
         "gates": {
             "challenger_mean_jitter_lower": challenger["mean"] < incumbent["mean"],
             "challenger_p95_jitter_lower": challenger["p95"] < incumbent["p95"],
+            "challenger_high_jitter_count_lower": (
+                challenger_high_jitter < incumbent_high_jitter
+            ),
             "complete_risk_transition_coverage": len(per_frame)
             == sum(end - start for start, end in windows),
         },

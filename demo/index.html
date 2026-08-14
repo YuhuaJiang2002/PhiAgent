@@ -265,22 +265,23 @@
       <section class="grid" aria-label="Demo videos">
         <article class="featured">
           <video controls muted autoplay loop playsinline preload="metadata"
-            poster="showcase/joyai-flower-real-vs-robot-jitter-stable-poster.jpg">
-            <source src="showcase/joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4" type="video/mp4">
+            poster="showcase/joyai-flower-real-vs-robot-dual-observer-poster.jpg">
+            <source src="showcase/joyai-flower-real-vs-robot-dual-observer-27p5s.mp4" type="video/mp4">
             Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
-            <h2>27.5 s flower arranging: jitter-stabilized robot</h2>
+            <h2>27.5 s flower arranging: dual-observer stabilized</h2>
             <p>
-              Synchronized 660-frame comparison. Robot-layer jitter mean falls
-              8.216%; late hand sharpness is 180/180, projected contact is
-              11/11, persistent grasp is 147/147, and all four adversarial
-              attacks are detected under unchanged limits. PARTIAL still means
-              visual single-scene evidence, not metric force closure.
+              Synchronized 660-frame comparison. Source-motion jitter mean falls
+              7.269%, p95 falls 12.927%, and high-jitter transitions fall 7 to 4;
+              a candidate-motion observer independently improves too. Projected
+              contact is 11/11, persistent grasp is 147/147, and all four attacks
+              are detected. Honest status is PARTIAL: 13/14 frozen image gates
+              pass because the unchanged chroma-TV gate remains failed.
             </p>
-            <a class="video-link" href="showcase/joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4">Open comparison MP4</a>
-            <a class="video-link" href="showcase/joyai-flower-jitter-stable-persistent-grasp-27p5s.mp4">Open robot-only MP4</a>
-            <a class="video-link" href="showcase/joyai-flower-jitter-stable-manifest.json">Open evidence manifest</a>
+            <a class="video-link" href="showcase/joyai-flower-real-vs-robot-dual-observer-27p5s.mp4">Open comparison MP4</a>
+            <a class="video-link" href="showcase/joyai-flower-dual-observer-stable-27p5s.mp4">Open robot-only MP4</a>
+            <a class="video-link" href="showcase/joyai-flower-dual-observer-manifest.json">Open evidence manifest</a>
           </div>
         </article>
 

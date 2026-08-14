@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-14.joyai-dataless-runtime-failures-v27",
+  "recorded_at": "2026-08-14T04:00:00Z",
+  "scope": "Local clean-runtime recovery for native-resolution JoyAI temporal audits",
+  "status": "PARTIAL",
+  "summary": "Two temporal-audit attempts stalled because iCloud-backed Python and Git metadata were dataless; a first Python 3.14 environment also lacked a compatible pinned NumPy wheel. Work resumed in a fresh CPython 3.13 environment outside the synchronized worktree.",
+  "run_dir": "outputs/joyai-temporal-state/20260813T175000Z-risk165-candidate-flow-jitter-audit-v27c",
+  "evidence": [
+    "The v27 and v27b processes slept in read syscalls before emitting reports; their new output directories remain empty negative evidence.",
+    "Filesystem flags identified .venv/pyvenv.cfg, .git/info/exclude, and Python cache/module paths as compressed,dataless.",
+    "The replacement runtime pins CPython 3.13, NumPy 2.2.6, OpenCV 4.12.0.88, pytest 8.3.5, and Pillow 12.3.0, with a fresh PYTHONPYCACHEPREFIX outside the worktree."
+  ],
+  "lessons": [
+    "Experiment runners must fail preflight on dataless interpreter, Git-metadata, and cache paths instead of hanging after output-directory creation.",
+    "A clean runtime and fresh bytecode cache are part of audit provenance, not incidental infrastructure."
+  ],
+  "limitations": [
+    "The recovery prevents the local stall but does not repair the underlying iCloud eviction policy."
+  ],
+  "next_actions": [
+    "Add a dataless-file preflight to local experiment launchers and keep reproducible runtimes outside synchronized folders."
+  ],
+  "supersedes": [],
+  "tags": ["joyai", "infra", "dataless", "runtime", "failed-audit"]
+}

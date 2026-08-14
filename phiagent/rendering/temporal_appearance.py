@@ -25,6 +25,97 @@ class ResidualConsensus:
     maximum_channel_mad: Any
 
 
+def flow_reference_frames(
+    reference: str,
+    *,
+    previous_candidate: Any,
+    candidate: Any,
+    previous_incumbent: Any,
+    incumbent: Any,
+) -> tuple[Any, Any]:
+    """Select a named observation stream for temporal correspondence."""
+
+    if reference == "candidate":
+        return previous_candidate, candidate
+    if reference == "incumbent":
+        return previous_incumbent, incumbent
+    raise ValueError(f"unsupported flow reference: {reference}")
+
+
+def bidirectional_residual_consensus_update(
+    np: Any,
+    *,
+    current_candidate: Any,
+    current_residual: Any,
+    warped_previous_residual: Any,
+    warped_next_residual: Any,
+    previous_confidence: Any,
+    next_confidence: Any,
+    reliable: Any,
+    strength: float,
+    maximum_residual_delta: float,
+) -> tuple[Any, dict[str, float]]:
+    """Suppress a one-frame residual outlier when past and future agree."""
+
+    expected = current_candidate.shape
+    for name, value in (
+        ("current residual", current_residual),
+        ("warped previous residual", warped_previous_residual),
+        ("warped next residual", warped_next_residual),
+    ):
+        if value.shape != expected:
+            raise ValueError(f"{name} must match the candidate HxWx3 shape")
+    if reliable.shape != expected[:2]:
+        raise ValueError("reliable mask must match the candidate image plane")
+    for name, value in (
+        ("previous confidence", previous_confidence),
+        ("next confidence", next_confidence),
+    ):
+        if value.shape != expected[:2]:
+            raise ValueError(f"{name} must match the candidate image plane")
+    if not isfinite(strength) or not 0.0 <= strength <= 1.0:
+        raise ValueError("strength must be finite and lie in [0, 1]")
+    if not isfinite(maximum_residual_delta) or maximum_residual_delta <= 0:
+        raise ValueError("maximum residual delta must be finite and positive")
+
+    current = current_residual.astype(np.float32)
+    previous = warped_previous_residual.astype(np.float32)
+    following = warped_next_residual.astype(np.float32)
+    target = np.median(np.stack((previous, current, following), axis=0), axis=0)
+    delta = np.clip(
+        target - current,
+        -maximum_residual_delta,
+        maximum_residual_delta,
+    )
+    confidence = np.minimum(
+        np.clip(previous_confidence.astype(np.float32), 0.0, 1.0),
+        np.clip(next_confidence.astype(np.float32), 0.0, 1.0),
+    )
+    active = np.asarray(reliable, dtype=np.bool_)
+    applied = delta * (strength * confidence * active.astype(np.float32))[..., None]
+    repaired = np.clip(
+        np.rint(current_candidate.astype(np.float32) + applied), 0, 255
+    ).astype(np.uint8)
+    repaired[np.logical_not(active)] = current_candidate[np.logical_not(active)]
+    active_values = np.abs(applied)[active]
+    neighbor_disagreement = np.abs(previous - following)[active]
+    metrics = {
+        "active_fraction": float(np.mean(active)),
+        "mean_abs_applied_correction": (
+            float(np.mean(active_values)) if active_values.size else 0.0
+        ),
+        "maximum_abs_applied_correction": (
+            float(np.max(active_values)) if active_values.size else 0.0
+        ),
+        "mean_neighbor_residual_disagreement": (
+            float(np.mean(neighbor_disagreement))
+            if neighbor_disagreement.size
+            else 0.0
+        ),
+    }
+    return repaired, metrics
+
+
 def bidirectional_flow_state(
     cv2: Any,
     np: Any,

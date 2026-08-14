@@ -51,34 +51,38 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 27.5-second flower arranging: jitter-stabilized real/robot comparison
+### 27.5-second flower arranging: dual-observer stabilized comparison
 
-[![Real human reference versus jitter-stabilized PhiAgent robot result](demo/showcase/joyai-flower-real-vs-robot-jitter-stable-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4)
+[![Real human reference versus dual-observer stabilized PhiAgent robot result](demo/showcase/joyai-flower-real-vs-robot-dual-observer-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-dual-observer-27p5s.mp4)
 
-[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-jitter-stable-27p5s.mp4)
-or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-jitter-stable-persistent-grasp-27p5s.mp4).
+[Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-dual-observer-27p5s.mp4)
+or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-dual-observer-stable-27p5s.mp4).
 
-The complete 660-frame, 1280x720, 24 FPS result treats late flicker as a
-persistent robot-appearance state error. Multi-anchor consensus is followed by
-a causal recursive state update and a bounded 24-frame hand-detail projection;
-flower, background, window endpoints, and non-editable pixels remain locked.
-Across 161 frozen risk transitions, source-motion-aligned robot-layer jitter
-falls **8.216%** in the mean (7.0756 to 6.4943), p95 falls from 20.7247 to
-19.1617, and high-jitter transitions above 20 fall from 10 to 7.
+The complete 660-frame, 1280x720, 24 FPS result adds an offline
+past/current/future residual consensus in the candidate's own motion frame and
+a causal appearance-state update in the source motion frame. Hand, flower,
+projected-contact, window-endpoint, and non-editable locks remain exact.
+Against the previously published result, source-motion jitter mean falls
+**7.269%** (6.5195 to 6.0456), p95 falls 19.1597 to 16.6831, and transitions
+above the frozen 20 threshold fall **7 to 4**. An independent candidate-motion
+observer also improves mean **4.611%**, p95 5.7342 to 5.1806, and frozen
+high-jitter count 8 to 7 across the same 161 transitions.
 
-The unchanged v5 audit limits now pass every image-space gate: late hand-edge
-failures fall from **22/180 to 0/180**, late projected contact is **11/11**, and
-the source-observed persistent hold plus grasp-erasure attack are both
-**147/147**. Color, topology, contact-removal, and structure-ghost attacks are
-all detected. The JoyAI full-stream base generated 665 frames in 105.69 seconds
-on two A800 GPUs (**6.29 FPS**). The three quality post-processing stages take
-268.15, 108.84, and 62.39 seconds (439.37 seconds total; **1.50 effective FPS**);
-the independent native-resolution audit takes 270.92 seconds (**2.44 FPS**).
+The clean-runtime native-resolution audit keeps late projected contact at
+**11/11**, persistent visual grasp at **147/147**, grasp-erasure rejection at
+**147/147**, and detects color, topology, contact-removal, and structure-ghost
+attacks. It also corrects an earlier non-reproducible claim: both the published
+incumbent and this challenger fail the unchanged spatial-chroma-TV limit
+(9.7942 and 9.7462 versus 5.9816), so the image-space contract is **13/14**, not
+fully passing. No threshold was relaxed.
 
-Status remains **PARTIAL**: this is a frozen single-scene camera-frame visual
-contract, not metric depth, contact force, force closure, cross-scene
+The added dual-observer pass takes 116.14 seconds for 660 frames (**5.68 FPS**).
+The full historical quality stack takes 555.51 seconds (**1.19 effective FPS**),
+while the JoyAI full-stream base remains 665 frames in 105.69 seconds on two
+A800 GPUs (**6.29 FPS**). Status is **PARTIAL**: this is a single-scene 2-D
+visual improvement, not metric depth, force closure, cross-scene
 generalization, or real-robot evidence. See the
-[evidence manifest](demo/showcase/joyai-flower-jitter-stable-manifest.json).
+[evidence manifest](demo/showcase/joyai-flower-dual-observer-manifest.json).
 
 ### Supplemental real-scene action-conditioned comparison
 
