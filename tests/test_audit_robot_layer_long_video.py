@@ -4,7 +4,35 @@ from types import SimpleNamespace
 
 import pytest
 
-from scripts.audit_robot_layer_long_video import LOWER_METRICS, UPPER_METRICS, _summary
+from phiagent.rendering.object_factored_long_video import SourceResizeCrop
+from scripts.audit_robot_layer_long_video import (
+    LOWER_METRICS,
+    UPPER_METRICS,
+    _decoder_command,
+    _summary,
+)
+
+
+def test_source_and_candidate_share_the_same_camera_filter() -> None:
+    target = SourceResizeCrop(
+        name="camera:test",
+        source_width=1280,
+        source_height=720,
+        scaled_width=1280,
+        scaled_height=720,
+        crop_left=0,
+        crop_top=0,
+        output_width=1280,
+        output_height=720,
+    )
+    source = _decoder_command(
+        "ffmpeg", "source.mp4", source=True, target_frame=target
+    )
+    candidate = _decoder_command(
+        "ffmpeg", "candidate.mp4", source=False, target_frame=target
+    )
+
+    assert source[source.index("-vf") + 1] == candidate[candidate.index("-vf") + 1]
 
 
 def test_summary_reuses_frozen_limits_verbatim() -> None:

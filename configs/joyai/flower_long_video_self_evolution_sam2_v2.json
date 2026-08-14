@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "seed": 20260814,
+  "expected_frames": 660,
+  "fps": 24.0,
+  "workers": 8,
+  "review_encoder": {
+    "preset": "veryfast",
+    "crf": 2,
+    "chroma_qp_offset": -12,
+    "pixel_format": "yuv444p"
+  },
+  "incumbent_video": "demo/showcase/joyai-flower-right-arm-zorder-stable-27p5s.mp4",
+  "source_video": "outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
+  "robot_limb_masks": "outputs/minimax-h3-shadow-removal/20260810T193000Z-independent-limbs-v33/assets/sam2-robot-limb-masks-packed.npz",
+  "person_masks": "outputs/minimax-h3-shadow-removal/20260810T143000Z-safety-union-no-hand-v25-accepted/assets/sam2-source-person-masks-packed.npz",
+  "flower_masks": "outputs/joyai-self-evolution/20260814T171000Z-sam2-flower-observation-v5/assets/sam2-refined-flower-masks-packed.npz",
+  "flower_observation_manifest": "outputs/joyai-self-evolution/20260814T171000Z-sam2-flower-observation-v5/manifest.json",
+  "flower_mask_contract": "foundation_refined_front_layer",
+  "specialty_flower_masks": "outputs/minimax-h3-shadow-removal/20260810T161500Z-source-flower-instances-v28/assets/source-flower-instance-masks-packed.npz",
+  "pose_limb_masks": "outputs/minimax-h3-shadow-removal/20260810T155500Z-source-pose-limbs-v27/assets/source-pose-limb-masks-packed.npz",
+  "reference_image": "outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/robot-reference-frame-0276.png",
+  "frozen_limits_report": "outputs/joyai-flower-edit/20260813T154500Z-persistent-grasp-final-audit-v5/audit-report.json",
+  "frozen_limits_candidate": "persistent-grasp-final",
+  "frozen_contract": {
+    "maximum_stage_wall_seconds": 91.89650680762425,
+    "maximum_self_flow_mean": 2.1910524752858196,
+    "maximum_self_flow_p95": 4.223505086898803,
+    "maximum_self_flow_high_count": 18,
+    "maximum_source_flow_mean": 3.8872236631057695,
+    "maximum_source_flow_p95": 8.026600265502931,
+    "maximum_source_flow_high_count": 178,
+    "maximum_wrong_occlusion_mean": 0.004412793428518499,
+    "maximum_wrong_occlusion_p95": 0.0,
+    "maximum_owner_flip_mean": 0.006727932834127524,
+    "maximum_owner_flip_p95": 0.0
+  },
+  "strategies": [
+    {
+      "id": "sam2_observed_canonical_silver_projection",
+      "kernel_sizes": "7",
+      "strength": 1.0,
+      "maximum_chroma_delta": 255.0,
+      "saturation_scale": 0.0,
+      "minimum_chroma_tv_reduction": 0.70
+    },
+    {
+      "id": "sam2_observed_achromatic_projection",
+      "kernel_sizes": "7",
+      "strength": 1.0,
+      "maximum_chroma_delta": 255.0,
+      "saturation_scale": 0.0,
+      "minimum_chroma_tv_reduction": 0.85
+    }
+  ],
+  "immutable_rules": {
+    "threshold_relaxation": false,
+    "mean_score_override": false,
+    "flower_and_background_edit": false,
+    "automatic_physical_claim": false,
+    "high_resolution_review_required": true,
+    "foundation_observation_required": true
+  }
+}

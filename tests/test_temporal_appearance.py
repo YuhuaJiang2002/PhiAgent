@@ -16,11 +16,46 @@ from phiagent.rendering.temporal_masks import (
     build_torso_head_whitelist,
 )
 from phiagent.rendering.temporal_occlusion import (
+    evidence_ordered_flower_front,
+    projected_contact_corridor,
     projected_contact_evidence_lock,
+    propagate_robot_material_residual,
+    reinforce_projected_contact_evidence,
     right_arm_flower_partition,
-    source_owned_flower_restore_mask,
     source_motion_residual_median_update,
+    source_owned_flower_restore_mask,
 )
+
+
+def test_evidence_ordered_flower_front_does_not_pull_track_through_robot() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((3, 4, 3), dtype=np.uint8)
+    candidate = source.copy()
+    candidate[1, 0] = 80
+    candidate[1, 1] = 80
+    candidate[1, 2] = 80
+    tracked = np.zeros((3, 4), dtype=bool)
+    tracked[1, 0:3] = True
+    resolved = np.zeros_like(tracked)
+    resolved[1, 2] = True
+    contested = np.zeros_like(tracked)
+    contested[1, 1:3] = True
+
+    front, source_retained = evidence_ordered_flower_front(
+        np,
+        candidate=candidate,
+        source=source,
+        resolved_flower=resolved,
+        tracked_flower=tracked,
+        contested_support=contested,
+        replacement_threshold=12.0,
+    )
+
+    assert front[1, 0]
+    assert not source_retained[1, 0]
+    assert not front[1, 1]
+    assert front[1, 2]
+    assert not source_retained[1, 1]
 
 
 def test_right_arm_flower_partition_has_explicit_disjoint_owners() -> None:
@@ -117,6 +152,7 @@ def test_flower_sampling_footprint_preserves_hand_core_except_true_owner() -> No
 def test_projected_contact_lock_preserves_only_generated_corridor_evidence() -> None:
     source = np.full((17, 17, 3), 100, dtype=np.uint8)
     candidate = source.copy()
+    candidate[8, 6] = 140
     candidate[8, 8] = 140
     candidate[2, 2] = 140
     hand = np.zeros((17, 17), dtype=bool)
@@ -130,14 +166,85 @@ def test_projected_contact_lock_preserves_only_generated_corridor_evidence() -> 
         candidate=candidate,
         source=source,
         hand_core=hand,
-        flower_owner=flower,
+        tracked_object=flower,
         replacement_threshold=12.0,
-        contact_dilation_pixels=7,
+        contact_radius=3,
+        maximum_source_occlusion_gap=6,
     )
 
-    assert locked[8, 8]
+    assert locked[8, 6]
+    assert not locked[8, 8]
     assert not locked[2, 2]
     assert not locked[8, 10]
+
+
+def test_projected_contact_corridor_matches_occluded_hand_object_gap() -> None:
+    hand = np.zeros((17, 17), dtype=bool)
+    flower = np.zeros_like(hand)
+    hand[8, 4:7] = True
+    flower[8, 12] = True
+
+    corridor = projected_contact_corridor(
+        np,
+        hand_core=hand,
+        tracked_object=flower,
+        contact_radius=3,
+        maximum_source_occlusion_gap=8,
+    )
+
+    assert np.all(corridor[8, 4:7])
+    assert np.count_nonzero(corridor) == 3
+
+
+def test_robot_material_residual_completes_contact_without_fixed_colour() -> None:
+    source = np.full((5, 7, 3), 100, dtype=np.uint8)
+    candidate = source.copy()
+    candidate[2, 1] = (124, 92, 108)
+    projected = source.copy()
+    projected[2, 1] = candidate[2, 1]
+    corridor = np.zeros((5, 7), dtype=bool)
+    corridor[2, 1:5] = True
+    seeds = np.zeros_like(corridor)
+    seeds[2, 1] = True
+
+    completed, metrics = propagate_robot_material_residual(
+        np,
+        projected=projected,
+        candidate=candidate,
+        source=source,
+        corridor=corridor,
+        seed_mask=seeds,
+        replacement_threshold=12.0,
+    )
+
+    assert np.all(completed[2, 1:5] == np.asarray([124, 92, 108]))
+    assert np.all(completed[0, 0] == source[0, 0])
+    assert metrics["propagated_pixels"] == 3.0
+    assert metrics["unresolved_source_like_pixels"] == 0.0
+
+
+def test_contact_evidence_reinforcement_uses_incumbent_residual_direction() -> None:
+    source = np.full((2, 2, 3), 100, dtype=np.uint8)
+    candidate = source.copy()
+    candidate[0, 0] = (118, 114, 110)
+    projected = source.copy()
+    evidence = np.zeros((2, 2), dtype=bool)
+    evidence[0, 0] = True
+
+    reinforced, metrics = reinforce_projected_contact_evidence(
+        np,
+        projected=projected,
+        candidate=candidate,
+        source=source,
+        evidence_mask=evidence,
+        replacement_threshold=12.0,
+        codec_error_margin=8.0,
+    )
+
+    assert tuple(reinforced[0, 0]) == (126, 120, 114)
+    assert np.all(reinforced[1, 1] == projected[1, 1])
+    assert metrics["eligible_pixels"] == 1.0
+    assert metrics["reinforced_pixels"] == 1.0
 
 
 def test_source_motion_residual_median_removes_part_local_extremum() -> None:

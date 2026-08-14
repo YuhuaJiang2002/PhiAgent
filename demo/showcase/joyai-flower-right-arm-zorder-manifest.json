@@ -2,25 +2,25 @@
   "audit_summary": {
     "adversarial": {
       "all_attacks_detected": true,
-      "baseline_contact_positive_frames": 44,
-      "color_attack_high_chroma_delta_p05": 0.8873850690954518,
-      "color_attack_palette_delta_p05": 7.554392606364761,
-      "contact_attack_rejected_frames": 44,
+      "baseline_contact_positive_frames": 539,
+      "color_attack_high_chroma_delta_p05": 0.9851592567485243,
+      "color_attack_palette_delta_p05": 9.331570523324082,
+      "contact_attack_rejected_frames": 539,
       "gates": {
         "color_attack_detected": true,
         "contact_attack_detected": true,
         "structure_ghost_attack_detected": true,
         "topology_attack_detected": true
       },
-      "sampled_frames": 97,
-      "structure_ghost_attack_edge_delta_p05": 0.6963539123535156,
-      "structure_ghost_attack_sobel_delta_p05": 5.538889312744141,
-      "topology_attack_arm_coverage_drop_p05": 0.8434349801715006,
-      "topology_attack_sampled_frames": 97
+      "sampled_frames": 551,
+      "structure_ghost_attack_edge_delta_p05": 0.665459156036377,
+      "structure_ghost_attack_sobel_delta_p05": 5.611894607543945,
+      "topology_attack_arm_coverage_drop_p05": 0.8228973011090455,
+      "topology_attack_sampled_frames": 551
     },
-    "candidate_audit_fps": 2.961198815188997,
-    "full_report_sha256": "db49833be641cfb0b9cf71b960c45131b8763a1553021d1910b880c07371bf0e",
-    "full_report_wall_seconds": 222.93100937499548,
+    "candidate_audit_fps": 0.6646280325651381,
+    "full_report_sha256": "6515aef44268ab99172208a27f80084129c438d65db46c317fbdacb2bf254559",
+    "full_report_wall_seconds": 993.069164999295,
     "gates": {
       "late_arm_replacement_coverage": true,
       "late_grid_topology_coverage": true,
@@ -32,63 +32,73 @@
       "late_projected_contact_recall": true,
       "late_replacement_coverage": true,
       "late_skin_like_fraction": true,
-      "late_spatial_chroma_tv": false,
+      "late_spatial_chroma_tv": true,
       "persistent_grasp_erasure_attack_detected_all_frames": true,
       "persistent_persistent_visual_grasp_recall": true,
       "persistent_source_hold_observable_all_frames": true
     },
-    "image_space_contract_pass": false
+    "image_space_contract_pass": true
   },
-  "right_arm_and_flower_audit": {
-    "all_14_frozen_gates_pass": true,
-    "report_sha256": "da35644ab5127da44cba2bd3c15534eda92130dbe2b318c587f29356888c83c8",
-    "self_flow_arm_mae": {
-      "incumbent_mean": 2.2174642807690987,
-      "challenger_mean": 2.1810524752858194,
-      "incumbent_p95": 4.436937713623047,
-      "challenger_p95": 4.2035050868988035,
-      "high_flicker_count_incumbent": 29,
-      "high_flicker_count_challenger": 18
+  "evolution": {
+    "automatic_gate_decision": {
+      "all_adversarial_attacks_detected": true,
+      "all_full_video_gates": true,
+      "automatic_pass": true,
+      "failed_checks": [],
+      "repair_internal_gates": true,
+      "specialty_frozen_contract": true,
+      "stage_cost_bound": true,
+      "status_before_human_review": "AWAITING_HIGH_RESOLUTION_REVIEW"
     },
-    "wrong_flower_occlusion_fraction": {
-      "incumbent_mean": 0.7913968132301161,
-      "challenger_mean": 0.004412793428518499,
-      "incumbent_p95": 1.0,
-      "challenger_p95": 0.0
+    "baseline": {
+      "generation_fps": 2.9687,
+      "generation_wall_seconds": 222.3178,
+      "run_scope": "rejected v6 repair baseline"
     },
-    "flower_owner_flip_fraction": {
-      "incumbent_mean": 0.08239982017636885,
-      "challenger_mean": 0.006727932834127524,
-      "incumbent_p95": 0.5,
-      "challenger_p95": 0.0
-    }
+    "candidate": {
+      "generation_fps": 9.690943628219536,
+      "generation_wall_seconds": 68.10482294810936,
+      "mean_spatial_chroma_tv_reduction": 0.8765725413425678,
+      "speedup_over_v6": 3.264347374772402
+    },
+    "foundation_observation": {
+      "checkpoint_sha256": "7442e4e9b732a508f80e141e7c2913437a3610ee0c77381a66658c3a445df87b",
+      "manifest_sha256": "b4f00d6e925d7aa2b1e00f7954ef88cd25093c8e70a0101d1459392328854c08",
+      "model": "SAM2 Hiera Large",
+      "physical_gpu": 4,
+      "pinned_commit": "0e78a118995e66bb27d78518c4bd9a3e95b4e266",
+      "processing_fps": 3.316130621981944,
+      "wall_seconds": 199.02714194217697
+    },
+    "observer_contract": "Source and candidate share the same scale/crop and RGB conversion path; thresholds remain frozen.",
+    "preflight": {
+      "failed_frames": [],
+      "full_audit_speedup": 68.82757434629667,
+      "manifest_sha256": "04f17c29b001da22ec11fdc3af4f4222602e05f78c882f0440302465c533e124",
+      "persistent_grasp_frames": 147,
+      "persistent_grasp_passes": 147,
+      "wall_seconds": 14.428362098056823
+    },
+    "repair_manifest_sha256": "1cf2f703ddf9175112270dc7a530e3649049060cfaafb722aef1703213bfb829",
+    "run_dir": "outputs/joyai-self-evolution/20260814T201500Z-flower-harness-v45",
+    "specialty_report_sha256": "008c5850b0f3f2cc70b710204991253996fed6d28f9fc077193c173e2b86fb35",
+    "thresholds_frozen": true
   },
-  "temporal_audits": {
-    "source_motion": {
-      "all_gates_pass": true,
-      "report_sha256": "b5898d58578ab94791392d80c75b69c2b583ff62f9017cd6cf64d9fbd1974ee9",
-      "relative_mean_reduction": 0.07269072246076269,
-      "p95_incumbent": 19.159698486328125,
-      "p95_challenger": 16.693222045898438,
-      "high_jitter_count_incumbent": 7,
-      "high_jitter_count_challenger": 4
+  "high_resolution_review": {
+    "browser_continuous_playback": {
+      "duration": 27.5,
+      "ended": true,
+      "error": null,
+      "height": 720,
+      "ready_state": 4,
+      "width": 1280
     },
-    "candidate_motion": {
-      "all_gates_pass": true,
-      "report_sha256": "753d74a125736a388fcd4508a60ef547fc1c2f554a0d621c4a7a23466d62d3d3",
-      "relative_mean_reduction": 0.045483530789119486,
-      "p95_incumbent": 5.733627796173096,
-      "p95_challenger": 5.144108772277832,
-      "high_jitter_count_incumbent": 8,
-      "high_jitter_count_challenger": 7
-    }
-  },
-  "ownership_guard": {
-    "manifest_sha256": "a6fc221ddbe257d1f68d3b3c792fb017d284dafefc2a679be585bb9ef9306b4b",
-    "processing_fps": 7.900191478657674,
-    "wall_seconds": 83.54227891602204,
-    "postdecode_outside_mutable_exact_fraction": 1.0,
-    "postdecode_flower_owner_source_exact_fraction": 1.0
+    "decision": "PASS_WITH_PARTIAL_SCOPE",
+    "native_contact_risk_montage_sha256": "71f8ca52c352cafe635dd4034932387ec29e11f210def26f6103df1b84f6acdf",
+    "native_full_timeline_sheet_sha256": "2166bbafd75f6c1127e990ccb9dfadf7aa76b2765d1a1c675dbe9afdc0690626",
+    "native_late_right_arm_sheet_sha256": "b9fb73cd265a7a9e308461f53a66f42a1ad9ca1e317a0fc3dc6056c364dfac36",
+    "reviewed_at": "2026-08-15T00:18:00+08:00",
+    "vetoes": []
   },
   "commands": {
     "encode": [
@@ -99,13 +109,13 @@
       "-i",
       "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
       "-i",
-      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T120000Z-right-arm-contact-lock-v61/right-arm-flower-zorder.mp4",
+      "/private/tmp/phiagent-v45-candidate.mp4",
       "-loop",
       "1",
       "-framerate",
       "24.00000000",
       "-i",
-      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T131000Z-real-vs-right-arm-stable-v66/comparison-header.png",
+      "/private/tmp/phiagent-v45-release.3QbDzO/out/comparison-header.png",
       "-filter_complex",
       "[0:v]scale=640:360:flags=lanczos,setsar=1[left];[1:v]scale=640:360:flags=lanczos,setsar=1[right];[left][right]hstack=inputs=2[body];[2:v][body]vstack=inputs=2[out]",
       "-map",
@@ -125,7 +135,7 @@
       "yuv420p",
       "-movflags",
       "+faststart",
-      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T131000Z-real-vs-right-arm-stable-v66/real-vs-robot-persistent-grasp-27p5s.mp4"
+      "/private/tmp/phiagent-v45-release.3QbDzO/out/real-vs-robot-persistent-grasp-27p5s.mp4"
     ],
     "poster": [
       "/opt/homebrew/bin/ffmpeg",
@@ -133,27 +143,27 @@
       "-v",
       "error",
       "-ss",
-      "18.08333333",
+      "23.83333333",
       "-i",
-      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T131000Z-real-vs-right-arm-stable-v66/real-vs-robot-persistent-grasp-27p5s.mp4",
+      "/private/tmp/phiagent-v45-release.3QbDzO/out/real-vs-robot-persistent-grasp-27p5s.mp4",
       "-frames:v",
       "1",
       "-q:v",
       "2",
-      "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T131000Z-real-vs-right-arm-stable-v66/real-vs-robot-persistent-grasp-poster.jpg"
+      "/private/tmp/phiagent-v45-release.3QbDzO/out/real-vs-robot-persistent-grasp-poster.jpg"
     ]
   },
-  "created_at": "2026-08-14T09:05:47.330069+00:00",
-  "honest_status": "PARTIAL: the 2-D occlusion-aware persistent-grasp contract passes; failed image gates=['late_spatial_chroma_tv'], failed adversarial gates=none; no metric depth or force-closure claim.",
+  "created_at": "2026-08-14T16:21:59.513397+00:00",
+  "honest_status": "PARTIAL: the 2-D occlusion-aware persistent-grasp contract passes; failed image gates=none, failed adversarial gates=none; no metric depth or force-closure claim.",
   "hostname": "snap-jumpbox1.redmond.corp.microsoft.com",
   "inputs": {
     "audit": {
-      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T124000Z-right-arm-full-audit-v65/audit-report.json",
-      "sha256": "db49833be641cfb0b9cf71b960c45131b8763a1553021d1910b880c07371bf0e"
+      "path": "outputs/joyai-self-evolution/20260814T201500Z-flower-harness-v45/full-audit/audit-report.json",
+      "sha256": "6515aef44268ab99172208a27f80084129c438d65db46c317fbdacb2bf254559"
     },
     "robot": {
-      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T120000Z-right-arm-contact-lock-v61/right-arm-flower-zorder.mp4",
-      "sha256": "147021f2525ebcb0236cb5322049cedfd43752ae4c8f3c754e5cec32170a08eb",
+      "path": "outputs/joyai-self-evolution/20260814T201500Z-flower-harness-v45/repair/robot-chroma-state.mp4",
+      "sha256": "a9506ff57b79e4b23a8a4075815d69e17b9738fc85ac1eb63fc1166dec6c6991",
       "video": {
         "duration": 27.5,
         "fps": 24.0,
@@ -163,7 +173,7 @@
       }
     },
     "source": {
-      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
+      "path": "outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
       "sha256": "f12ef50ca6050df10990cc759dd74ffc772eca8d927c9c4d1845e9fa1aafe065",
       "video": {
         "duration": 27.5,
@@ -176,21 +186,35 @@
   },
   "limitations": [
     "The grasp gate is a camera-frame visual invariant, not 3-D contact evidence.",
+    "The result is one source scene; cross-scene and cross-identity generalization remain unverified.",
+    "Residual grey floral/structural texture inherited from the generated base remains visible on the robot torso.",
+    "Hands, scissors, stems, and force closure have not been verified by metric depth, telemetry, or tactile sensing.",
     "The robot remains a generated visual replacement rather than a verified real-robot execution."
   ],
   "outputs": {
     "poster": {
-      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T131000Z-real-vs-right-arm-stable-v66/real-vs-robot-persistent-grasp-poster.jpg",
-      "sha256": "4a97d4283a5f35773b2468372d746d6b869dcb9549bd7358d687503417bfa8b8"
+      "path": "demo/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-poster.jpg",
+      "sha256": "d169f861279eabd9f122e2a32801fe060eae10aea972a80c03329376097ab115"
     },
     "video": {
-      "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/joyai-temporal-state/20260814T131000Z-real-vs-right-arm-stable-v66/real-vs-robot-persistent-grasp-27p5s.mp4",
-      "sha256": "6e48a99d5eb886eb6909014319868b24d13dd66e2e8c04ba5e597ce606aaac07",
+      "path": "demo/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4",
+      "sha256": "fbac1ca91303a5c0be7b92a549462a955b6f43709b171fc9aaf275263b39c991",
       "video": {
         "duration": 27.5,
         "fps": 24.0,
         "frames": 660,
         "height": 408,
+        "width": 1280
+      }
+    },
+    "robot_video": {
+      "path": "demo/showcase/joyai-flower-right-arm-zorder-stable-27p5s.mp4",
+      "sha256": "a9506ff57b79e4b23a8a4075815d69e17b9738fc85ac1eb63fc1166dec6c6991",
+      "video": {
+        "duration": 27.5,
+        "fps": 24.0,
+        "frames": 660,
+        "height": 720,
         "width": 1280
       }
     }
@@ -214,6 +238,6 @@
   },
   "platform": "macOS-26.6.1-arm64-arm-64bit-Mach-O",
   "python": "3.13.15 (main, Aug  5 2026, 12:25:43) [Clang 21.0.0 (clang-2100.1.1.101)]",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "status": "PARTIAL"
 }

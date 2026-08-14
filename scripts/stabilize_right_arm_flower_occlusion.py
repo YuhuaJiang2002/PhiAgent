@@ -205,9 +205,10 @@ def _read_record(
         candidate=candidate,
         source=source,
         hand_core=hands,
-        flower_owner=flower_owner,
+        tracked_object=tracked_flower,
         replacement_threshold=args.contact_evidence_threshold,
-        contact_dilation_pixels=args.contact_evidence_dilation_pixels,
+        contact_radius=(args.contact_evidence_dilation_pixels - 1) // 2,
+        maximum_source_occlusion_gap=(args.contact_evidence_dilation_pixels - 1) // 2,
     )
     flower_restore = np.logical_and(
         flower_restore,

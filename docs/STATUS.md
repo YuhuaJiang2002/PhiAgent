@@ -1,11 +1,29 @@
 # Status
 
-Evidence date: 2026-08-14. Status labels describe acceptance evidence, not code
+Evidence date: 2026-08-15. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
 ## WORKING
 
+- Fail-closed long-video self-evolution and SAM2-observed flower/contact state:
+  the v45 challenger at
+  `outputs/joyai-self-evolution/20260814T201500Z-flower-harness-v45` is the first
+  candidate promoted after v1-v44 were retained as rejected evidence. The loop
+  keeps specialty limits immutable, runs a 14.4284-second dense grasp preflight
+  before the 993.0692-second native audit, and requires a separate
+  high-resolution human veto. The accepted repair takes 68.1048 seconds for 660
+  frames (9.6909 FPS), 3.264x the rejected v6 baseline; its separately measured
+  pinned SAM2 Hiera-L observation takes 199.0271 seconds (3.3161 FPS) on physical
+  A800 GPU 4. The corrected symmetric decoder passes all 14 frozen full-video
+  gates, including 138/138 projected-contact frames at or after 20 seconds and
+  147/147 persistent-grasp frames; it rejects 147/147 grasp-erasure attacks and
+  detects color, topology, contact-removal, and structure-ghost attacks. The
+  harness, observation adapter, repair path, early-rejection gate, and audit
+  infrastructure are WORKING. The displayed one-scene video remains PARTIAL:
+  its contact is 2-D visual evidence, inherited grey torso texture remains, and
+  metric depth, force closure, cross-scene generalization, and real execution
+  are not established.
 - Right-arm / flower ownership audit and repair infrastructure: the final
   660-frame challenger at
   `outputs/joyai-temporal-state/20260814T120000Z-right-arm-contact-lock-v61`

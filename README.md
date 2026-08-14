@@ -51,39 +51,43 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 27.5-second flower arranging: right-arm and flower z-order stabilized
+### 27.5-second flower arranging: self-evolved long-video contact state
 
-[![Real human reference versus right-arm and flower z-order stabilized PhiAgent robot result](demo/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
+[![Real human reference versus self-evolved PhiAgent long-video flower-arranging result](demo/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
 
 [Play the synchronized real/robot comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-real-vs-robot-right-arm-zorder-stable-27p5s.mp4)
 or [open the robot result alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-flower-right-arm-zorder-stable-27p5s.mp4).
 
-The complete 660-frame, 1280x720, 24 FPS result extends the dual-observer
-candidate with an anatomical-right-arm state, explicit source-grounded flower
-ownership, reconstruction-footprint-safe z-order, and an immutable projected
-contact-evidence layer. Against the previously published result, right-arm
-self-flow MAE falls **1.642%** (2.2175 to 2.1811), p95 falls **5.261%**, and
-high-flicker transitions fall **29 to 18**. Wrong flower occlusion falls from
-0.7914 mean / 1.0 p95 to **0.0044 / 0.0**; flower-owner flips fall from 0.0824
-mean / 0.5 p95 to **0.0067 / 0.0**. All 14 frozen right-arm and flower gates
-pass without relaxing a threshold.
+The complete 660-frame, 1280x720, 24 FPS result is the first challenger selected
+by the unattended fail-closed evolution harness after 44 rejected attempts. It
+combines a pinned SAM2 Hiera-L flower observation, evidence-ordered flower/robot
+z-order, a source-owned reconstruction footprint, an immutable projected
+contact corridor, and a single-roundtrip masked chroma-state projection. No
+frozen threshold was relaxed. Against its incumbent, right-arm self-flow MAE
+falls **3.751%** (2.2175 to 2.1344) and p95 falls **5.259%**; source-flow
+residual MAE falls **3.088%**. Wrong flower occlusion falls from 0.1575 mean /
+0.7825 p95 to **0.0020 / 0.0**, while flower-owner flips fall from 0.0645 mean /
+0.3967 p95 to **0.0 / 0.0**.
 
-The two original risk-window observers also remain improved: source-motion
-jitter mean falls **7.269%**, p95 falls **12.873%**, and high-jitter transitions
-fall **7 to 4**; the candidate-motion observer improves mean **4.548%**, p95
-**10.282%**, and count 8 to 7. The native-resolution audit retains anchor
-contact **16/16**, pre-20-second contact **33/35** (the same two failures as the
-incumbent), late contact **11/11**, persistent visual grasp **147/147**, and
-grasp-erasure rejection **147/147**. Color, topology, contact-removal, and
-structure-ghost attacks are all detected.
+The corrected native-resolution observer now sends source and candidate through
+the same camera and RGB decode path. All **14/14** frozen image/contact gates
+pass, including 20-second-and-later projected contact recall **138/138** and
+persistent visual grasp **147/147**. Grasp erasure is rejected on **147/147**
+frames, and color, topology, contact-removal, and structure-ghost attacks are
+all detected. A native-resolution timeline review and a continuous browser
+playback from 0 to 27.5 seconds also pass the human veto for right-arm flicker,
+flower motion, z-order, and visible contact.
 
-The final flower ownership/contact guard takes 83.54 seconds (**7.90 FPS**).
-Together with the dual-flow right-arm pass, the added pipeline takes 452.90
-seconds (**1.46 effective FPS**); the JoyAI full-stream base remains 665 frames
-in 105.69 seconds on two A800 GPUs (**6.29 FPS**). Status is **PARTIAL**: the
-unchanged spatial-chroma-TV gate still leaves the image contract at **13/14**,
-and this is single-scene 2-D evidence rather than metric depth, force closure,
-cross-scene generalization, or real-robot execution. See the
+The accepted repair generation takes **68.105 seconds (9.691 FPS)** on CPU,
+**3.264x** the rejected v6 baseline and 22.67% faster than the previously
+published 7.900 FPS guard. The one-time SAM2 observation is measured separately
+at 199.027 seconds (**3.316 FPS**) on physical A800 GPU 4; a fresh observation
+plus repair is 267.132 seconds (**2.471 effective FPS**). A 14.428-second dense
+contact preflight rejects bad challengers before the 993.069-second full audit.
+
+Status remains **PARTIAL** for the displayed video: this is one-scene 2-D visual
+evidence, not metric depth, force closure, cross-scene generalization, or real
+robot execution, and inherited grey torso texture remains visible. See the
 [evidence manifest](demo/showcase/joyai-flower-right-arm-zorder-manifest.json).
 
 ### Supplemental real-scene action-conditioned comparison

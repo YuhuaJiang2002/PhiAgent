@@ -30,7 +30,7 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from phiagent.rendering.object_factored_long_video import (  # noqa: E402
+from phiagent.rendering.object_factored_long_video import (
     SourceResizeCrop,
     binary_dilate_square,
     remap_boolean_mask,
@@ -38,14 +38,13 @@ from phiagent.rendering.object_factored_long_video import (  # noqa: E402
     source_skin_like,
     strict_flower_seed,
 )
-from phiagent.rendering.robot_layer_contract import (  # noqa: E402
+from phiagent.rendering.robot_layer_contract import (
     RobotLayerContract,
     canonical_palette_histogram,
     frame_contract_metrics,
     occlusion_aware_grasp_metrics,
     robust_limit,
 )
-
 
 UPPER_METRICS = {
     "palette_surprisal": 0.40,
@@ -77,11 +76,20 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--flower-masks", type=Path, required=True)
     parser.add_argument(
         "--flower-mask-contract",
-        choices=("resolved_visibility", "exact_tracked"),
+        choices=(
+            "resolved_visibility",
+            "exact_tracked",
+            "tracked_front_layer_with_human_negatives",
+            "foundation_refined_front_layer",
+        ),
         default="resolved_visibility",
         help=(
             "Use exact_tracked when the candidate compositor locked the supplied "
-            "flower track byte-for-byte; otherwise use conservative z-order resolution."
+            "flower track byte-for-byte. Use tracked_front_layer_with_human_negatives "
+            "when a persistent instance track owns visible petals over the person "
+            "but source-hand pixels must remain available to the robot replacement. "
+            "Use foundation_refined_front_layer only for a track independently "
+            "refined per frame by an object foundation model."
         ),
     )
     parser.add_argument("--limb-masks", type=Path, required=True)
@@ -203,7 +211,7 @@ def _load_packed(np: Any, path: Path, key: str) -> tuple[Any, dict[str, Any]]:
         "path": str(path.resolve()),
         "sha256": _sha256(path),
         "key": key,
-        "frames": int(len(payload[key])),
+        "frames": len(payload[key]),
         "height": int(payload["height"]),
         "width": int(payload["width"]),
         "bitorder": str(payload["bitorder"]),
@@ -226,18 +234,21 @@ def _decoder_command(
     target_frame: SourceResizeCrop,
 ) -> list[str]:
     command = [str(ffmpeg), "-v", "error", "-i", str(path)]
-    if source:
-        command.extend(
-            [
-                "-vf",
-                (
-                    f"scale={target_frame.scaled_width}:{target_frame.scaled_height}:"
-                    "flags=area,"
-                    f"crop={target_frame.output_width}:{target_frame.output_height}:"
-                    f"{target_frame.crop_left}:{target_frame.crop_top}"
-                ),
-            ]
-        )
+    # Source and candidate must traverse the exact same camera transform and
+    # colour-conversion path.  A no-op-sized scale can still change decoded
+    # RGB rounding; applying it to only one side creates false sparse contact
+    # failures at otherwise identical image coordinates.
+    command.extend(
+        [
+            "-vf",
+            (
+                f"scale={target_frame.scaled_width}:{target_frame.scaled_height}:"
+                "flags=area,"
+                f"crop={target_frame.output_width}:{target_frame.output_height}:"
+                f"{target_frame.crop_left}:{target_frame.crop_top}"
+            ),
+        ]
+    )
     command.extend(["-an", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"])
     return command
 
@@ -347,6 +358,81 @@ def _resolve_frame_masks(
     )
     if flower_mask_contract == "exact_tracked":
         flower = np.asarray(tracked_flower, dtype=np.bool_).copy()
+    elif flower_mask_contract == "foundation_refined_front_layer":
+        person_value = np.asarray(person, dtype=np.bool_)
+        tracked_value = np.asarray(tracked_flower, dtype=np.bool_)
+        unsupported_face_track = np.zeros_like(person_value)
+        person_y, _ = np.nonzero(person_value)
+        if person_y.size:
+            face_bottom = int(
+                person_y.min() + 0.50 * (person_y.max() - person_y.min() + 1)
+            )
+            row_index = np.arange(person_value.shape[0])[:, None]
+            face_zone = np.logical_and(person_value, row_index <= face_bottom)
+            face_object_support = binary_dilate_square(
+                np, np.logical_and(tracked_value, np.logical_not(face_zone)), 12
+            )
+            unsupported_face_track = np.logical_and.reduce(
+                (tracked_value, face_zone, np.logical_not(face_object_support))
+            )
+        flower = np.logical_and.reduce(
+            (
+                tracked_value,
+                np.logical_not(np.asarray(hands, dtype=np.bool_)),
+                np.logical_not(unsupported_face_track),
+            )
+        )
+    elif flower_mask_contract == "tracked_front_layer_with_human_negatives":
+        # The instance tracker is an independent object observation.  Removing
+        # it through the coarse person core turns genuinely foreground petals
+        # grey after robot-material projection.  Only the separately tracked
+        # source hand has higher z-order for the replacement interaction.
+        person_value = np.asarray(person, dtype=np.bool_)
+        tracked_value = np.asarray(tracked_flower, dtype=np.bool_)
+        # SAM2 supplies persistent object identity, but its union track can
+        # absorb neutral apron/forearm polygons where flowers cross a person.
+        # Inside person support, require independent source-appearance evidence
+        # within the same 7x7 reconstruction footprint used by the compositor.
+        appearance_core = np.logical_and(
+            tracked_value, strict_flower_seed(np, source_rgb)
+        )
+        appearance_support = binary_dilate_square(np, appearance_core, 3)
+        unsupported_person_track = np.logical_and.reduce(
+            (
+                tracked_value,
+                person_value,
+                np.logical_not(appearance_support),
+            )
+        )
+        unsupported_face_track = np.zeros_like(person_value)
+        person_y, _ = np.nonzero(person_value)
+        if person_y.size:
+            face_bottom = int(
+                person_y.min() + 0.50 * (person_y.max() - person_y.min() + 1)
+            )
+            row_index = np.arange(person_value.shape[0])[:, None]
+            face_zone = np.logical_and(person_value, row_index <= face_bottom)
+            outside_face_track = np.logical_and(
+                tracked_value, np.logical_not(face_zone)
+            )
+            face_object_support = binary_dilate_square(
+                np, outside_face_track, 12
+            )
+            unsupported_face_track = np.logical_and.reduce(
+                (
+                    tracked_value,
+                    face_zone,
+                    np.logical_not(face_object_support),
+                )
+            )
+        flower = np.logical_and.reduce(
+            (
+                np.asarray(tracked_flower, dtype=np.bool_),
+                np.logical_not(np.asarray(hands, dtype=np.bool_)),
+                np.logical_not(unsupported_person_track),
+                np.logical_not(unsupported_face_track),
+            )
+        )
     else:
         flower = resolve_flower_visibility(
             np,
@@ -880,7 +966,7 @@ def main() -> int:
         hand_meta,
     )
     reference = _decode_reference(np, args.ffmpeg, args.reference_image, target_frame)
-    reference_person, reference_flower, _, reference_hands = _mapped_masks(
+    reference_person, reference_flower, _, _reference_hands = _mapped_masks(
         np,
         index=args.reference_frame,
         mask_frame=mask_frame,
@@ -977,6 +1063,9 @@ def main() -> int:
         ),
         "contract": contract.to_dict(),
         "method": {
+            "decoder_contract": (
+                "source and candidate share one scale/crop and RGB conversion path"
+            ),
             "identity": "canonical reference RGB palette within tracked person support",
             "topology": "source-track-grounded replacement coverage on body, arms, and hands",
             "contact": "dilated 2D robot-hand support intersects visible source flower support",

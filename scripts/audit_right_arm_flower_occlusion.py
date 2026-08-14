@@ -44,6 +44,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--robot-limb-masks", type=Path, required=True)
     parser.add_argument("--person-masks", type=Path, required=True)
     parser.add_argument("--flower-masks", type=Path, required=True)
+    parser.add_argument(
+        "--flower-mask-contract",
+        choices=("resolved_visibility", "tracked_front_layer_with_human_negatives"),
+        default="resolved_visibility",
+    )
     parser.add_argument("--pose-limb-masks", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--expected-frames", type=int, default=660)
@@ -196,7 +201,7 @@ def main() -> int:
             person_dilation=args.person_dilation,
             skin_negative_dilation=args.skin_negative_dilation,
             person_core_negative_erosion=args.person_core_negative_erosion,
-            flower_mask_contract="resolved_visibility",
+            flower_mask_contract=args.flower_mask_contract,
         )
         arm_editable, flower_owner, _ = right_arm_flower_partition(
             cv2,
