@@ -308,27 +308,20 @@
       <section class="grid" aria-label="Demo videos">
         <article class="featured">
           <video controls muted loop playsinline preload="metadata"
-            poster="showcase/human-to-wuji-hand-source-scene-locked-poster.jpg">
-            <source src="showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4" type="video/mp4">
+            poster="showcase/five-finger-shadow-arm-background-locked.jpg">
+            <source src="showcase/five-finger-shadow-arm-background-locked.mp4" type="video/mp4">
             Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
-            <h2>20.7 s human hand → Wuji Hand, source-scene locked</h2>
+            <h2>Shadow hand and forearm replacement</h2>
             <p>
-              The left panel is the complete human source; the right panel keeps
-              that camera view and scene, then replaces only the declared hand-and-
-              arm region using Wuji Technology's official MJCF/URDF and retargeter.
-              All 621 frames have synchronized 621x20 q/qdot with no held frames,
-              frozen transitions, or joint/velocity-limit violations. Before
-              H.264 encoding, pixels outside the replacement mask are bit-exact;
-              a fixed render scale prevents hand-size breathing. Status remains
-              PARTIAL because this is official-model simulation with a procedural
-              forearm, not physical Wuji hardware or force evidence.
+              All 621 frames of the continuous source gesture are retargeted to
+              a five-finger, 24-DOF Shadow Dexterous Hand. The fixed screen-space
+              hand scale, segmented wrist, and narrow rigid forearm keep the
+              connection stable through the fast fist gesture while the source
+              scene remains locked outside the replacement mask.
             </p>
-            <a class="video-link" href="showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4">Open comparison MP4</a>
-            <a class="video-link" href="showcase/human-to-wuji-hand-source-scene-locked-manifest.json">Open evidence manifest</a>
-            <a class="video-link" href="showcase/wuji-source-scene-replacement-mask.mkv">Download audit mask</a>
-            <a class="video-link" href="showcase/wuji-hand-official-model-retarget-q.npz">Download q/qdot</a>
+            <a class="video-link" href="showcase/five-finger-shadow-arm-background-locked.mp4">Open MP4</a>
           </div>
         </article>
 
@@ -375,14 +368,29 @@
         </article>
 
         <article>
-          <video controls playsinline preload="metadata"
-            poster="showcase/five-finger-shadow-arm-background-locked.jpg">
-            <source src="showcase/five-finger-shadow-arm-background-locked.mp4" type="video/mp4">
+          <video controls muted loop playsinline preload="metadata"
+            poster="showcase/human-to-wuji-hand-shadow-style-scene-locked-poster.jpg">
+            <source src="showcase/human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4" type="video/mp4">
+            Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
-            <h2>Shadow hand and forearm replacement</h2>
-            <p>All 621 frames of a continuous human-hand gesture retargeted to a 24-DOF hand.</p>
-            <a class="video-link" href="showcase/five-finger-shadow-arm-background-locked.mp4">Open MP4</a>
+            <h2>20.7 s human hand → Wuji Hand, Shadow-style scene lock</h2>
+            <p>
+              The revised Wuji replacement uses a mask-excluded temporal scene
+              mosaic, a fixed 47–55 px-wide rigid forearm, and an explicit wrist
+              connector with at least 64 overlapping pixels on every frame.
+              Background side-band second-difference falls 62.8% versus the prior
+              public version; pixels outside the declared mask remain bit-exact
+              before H.264 encoding. The complete 621x20 q/qdot trajectory still
+              has no held frames or joint/velocity-limit violations. Status is
+              PARTIAL: the hand uses official Wuji assets, but the forearm remains
+              procedural and this is not physical-hardware footage.
+            </p>
+            <a class="video-link" href="showcase/human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4">Open comparison MP4</a>
+            <a class="video-link" href="showcase/human-to-wuji-hand-shadow-style-scene-locked-manifest.json">Open evidence manifest</a>
+            <a class="video-link" href="showcase/wuji-shadow-style-background-adversarial-audit.json">Open background audit</a>
+            <a class="video-link" href="showcase/wuji-shadow-style-source-scene-replacement-mask.mkv">Download audit mask</a>
+            <a class="video-link" href="showcase/wuji-hand-official-model-retarget-q.npz">Download q/qdot</a>
           </div>
         </article>
 

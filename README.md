@@ -51,27 +51,36 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 20.7-second human hand to Wuji Hand, source-scene locked
+### 20.7-second human hand to Wuji Hand, Shadow-style scene lock
 
-[![Human source compared frame-for-frame with the source-scene-locked Wuji Hand replacement](demo/showcase/human-to-wuji-hand-source-scene-locked-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4)
+[![Human source compared frame-for-frame with the Shadow-style source-scene-locked Wuji Hand replacement](demo/showcase/human-to-wuji-hand-shadow-style-scene-locked-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4)
 
-[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4).
+[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4).
 The left panel is the complete human source. The right panel retains the same
 camera view and source scene while replacing only a declared hand-and-arm mask.
-Wuji Technology's official MJCF/URDF and retargeter map MediaPipe-21 observations
-to complete 621x20 `q` and synchronized `qdot` trajectories. Direct detection
-succeeds on **621/621** frames, no observation is held, all 620 transitions move,
-and there are zero joint-position or URDF velocity-limit violations. Before lossy
-encoding, the maximum RGB difference outside the declared mask is exactly zero;
-the fixed render scale has zero frame-to-frame scale change. Rendering runs at
-**5.374 FPS**, while compositing, encoding, and the full audit take 148.194 seconds
-end to end (**4.190 effective FPS**).
+The revised background is a mask-excluded temporal mosaic: 92.323% of pixels
+come from directly observed background samples, and only the region never exposed
+in any sample receives fixed spatial reconstruction. The narrow rigid forearm is
+47.378 pixels wide at the wrist and 55.275 pixels at the frame exit with zero
+frame-to-frame width change; its explicit wrist connector overlaps the official
+Wuji hand by at least 64 pixels on every frame. Encoded side-band background
+second-difference falls **62.8%** relative to the prior public version. Before
+lossy encoding, the maximum RGB difference outside the declared mask is exactly
+zero and the static clean-plate interior differs by at most one channel value.
+
+Wuji Technology's official MJCF/URDF and retargeter still produce complete 621x20
+`q` and synchronized `qdot` trajectories: direct detection succeeds on **621/621**
+frames, no observation is held, all 620 transitions move, and there are zero
+joint-position or URDF velocity-limit violations. The final reproducibility run
+renders at **5.349 FPS** and completes the full composite, encode, and audit path
+at **3.419 effective FPS**.
 
 Status is **PARTIAL**: this is a vision-driven official-model simulation with a
 procedural forearm, not footage of physical Wuji hardware. Monocular landmarks
 also do not establish metric depth, contact force, or real execution. See the
-[evidence manifest](demo/showcase/human-to-wuji-hand-source-scene-locked-manifest.json),
-[lossless edit-mask audit](demo/showcase/wuji-source-scene-replacement-mask.mkv),
+[evidence manifest](demo/showcase/human-to-wuji-hand-shadow-style-scene-locked-manifest.json),
+[background adversarial audit](demo/showcase/wuji-shadow-style-background-adversarial-audit.json),
+[lossless edit-mask audit](demo/showcase/wuji-shadow-style-source-scene-replacement-mask.mkv),
 and [complete q/qdot artifact](demo/showcase/wuji-hand-official-model-retarget-q.npz).
 
 Scan this QR code in WeChat to open the GitHub repository:

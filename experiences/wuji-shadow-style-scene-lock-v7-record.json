@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-shadow-style-scene-lock-v7",
+  "recorded_at": "2026-08-15T03:05:00Z",
+  "status": "PARTIAL",
+  "scope": "Adversarial evolution of the 20.7-second Wuji Hand scene-lock background and wrist-to-forearm connection",
+  "run_dir": "/tmp/phiagent-wuji.JEvI8V/run-20260815T-shadow-style-scene-locked-v7",
+  "summary": "The retained v7 replaces the broad trapezoidal forearm with a fixed-width rigid Shadow-style link and reconstructs the occluded scene from mask-excluded observations. Full-resolution review and all scoped visual gates pass, but the output remains official-hand simulation with a procedural forearm rather than physical Wuji hardware.",
+  "evidence": [
+    "The retained video decodes to 621 frames at 2560x768 and has SHA-256 757e97941d3379dbc41150146d0b7595f0314561c867928aeb7d19ac4cbb4c71.",
+    "The clean plate obtains direct background observations for 92.322917% of pixels and applies fixed row-context reconstruction only to the 8.196506% never observed in the 21 sampled masks.",
+    "The static clean-plate interior has mean MAE 0.001503, p95 MAE 0.002834, and maximum absolute RGB deviation 1 before robot layers are applied.",
+    "The visible forearm half-width is fixed at 23.689233 pixels at the wrist and 27.637439 pixels at the frame exit, with zero frame-to-frame width step.",
+    "The explicit wrist connector overlaps the official Wuji hand render by at least 64 pixels on every frame and by at least 182 pixels at the fifth percentile.",
+    "Pixels outside the declared replacement mask have maximum pre-encode RGB difference zero; the H.264 exterior audit has mean MAE 0.480125 and p95 MAE 0.544059 under the six-pixel codec guard.",
+    "In fixed side bands previously occupied by the broad v4 forearm and reconstruction, mean first difference falls from 0.409875 to 0.151670 and mean second difference falls from 0.723264 to 0.269264, reductions of 63.0% and 62.8%.",
+    "The complete 621x20 q/qdot trajectory remains 621/621 direct detections with no held observations, joint-position violations, or velocity-limit violations.",
+    "The exact final reproducibility run renders at 5.348741 FPS and completes the full composite, encode, and audit path at 3.418596 effective FPS."
+  ],
+  "lessons": [
+    "Forearm stability is a topology and state-representation problem: fixed rigid width and a measured wrist-overlap gate outperform framewise width estimation.",
+    "A temporal median that includes the moving human is not a clean plate; background samples must exclude the tracked foreground before aggregation.",
+    "Background stability requires both an exact outside-mask lock and a fixed reconstruction for pixels occluded by the source actor."
+  ],
+  "limitations": [
+    "The thin forearm and wrist connector are procedural because the official Wuji release contains a hand model rather than a matching forearm asset.",
+    "The result is monocular official-model simulation, not footage, telemetry, tactile sensing, force evidence, or execution from physical Wuji hardware.",
+    "H.264 edge propagation remains measurable near the replacement boundary.",
+    "The side-band flicker audit is scoped to the former broad-forearm region and is not a whole-frame perceptual score."
+  ],
+  "next_actions": [
+    "Publish v7 in place of v4 and swap the Wuji and Shadow card positions on the demo page.",
+    "Verify the production bytes, playback progression, card order, and evidence links after GitHub Pages deployment."
+  ],
+  "supersedes": [],
+  "tags": [
+    "wuji-hand",
+    "shadow-style",
+    "scene-lock",
+    "clean-plate",
+    "wrist-continuity",
+    "adversarial-audit",
+    "partial"
+  ]
+}

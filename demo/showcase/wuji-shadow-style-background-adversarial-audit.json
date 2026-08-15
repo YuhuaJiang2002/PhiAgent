@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "status": "WORKING",
+  "scope": "Encoded full-video background-flicker comparison between public Wuji v4 and retained Shadow-style v7",
+  "coordinate_frame": "right-panel camera pixels after removing the 48-pixel comparison header",
+  "probe_regions": [
+    {"x_min": 520, "x_max_exclusive": 680, "y_min": 350, "y_max_exclusive": 650},
+    {"x_min": 830, "x_max_exclusive": 990, "y_min": 350, "y_max_exclusive": 650}
+  ],
+  "frames": 621,
+  "incumbent_v4": {
+    "video_sha256": "e923a904efd430ea3fcae054b260ea2ee46eb20310632092d9fee270d871cb68",
+    "first_difference_mean": 0.4098748664,
+    "first_difference_p95": 1.1150499642,
+    "second_difference_mean": 0.7232640365,
+    "second_difference_p95": 1.7335760474
+  },
+  "retained_v7": {
+    "video_sha256": "757e97941d3379dbc41150146d0b7595f0314561c867928aeb7d19ac4cbb4c71",
+    "first_difference_mean": 0.1516700604,
+    "first_difference_p95": 0.3512468696,
+    "second_difference_mean": 0.2692641356,
+    "second_difference_p95": 0.5708885252
+  },
+  "relative_reduction": {
+    "first_difference_mean": 0.6299612935,
+    "first_difference_p95": 0.6849971855,
+    "second_difference_mean": 0.6277084572,
+    "second_difference_p95": 0.6706919952
+  },
+  "hard_gates": {
+    "pre_encode_max_abs_rgb_outside_declared_mask": 0,
+    "static_clean_plate_interior_max_abs_rgb": 1,
+    "forearm_width_frame_step_pixels": 0.0,
+    "wrist_link_overlap_pixels_min": 64,
+    "decoded_frames": 621
+  },
+  "limitations": [
+    "The side-band probe measures the regions affected by the former broad forearm and background reconstruction; it is not a whole-frame perceptual quality score.",
+    "H.264 compression remains visible near replacement boundaries.",
+    "The procedural forearm is a visual connector, not an official Wuji forearm asset or physical-hardware evidence."
+  ]
+}

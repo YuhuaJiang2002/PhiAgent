@@ -1,0 +1,150 @@
+{
+  "claim": "Official Wuji Hand model with a thin rigid wrist link composited into a static reconstruction of the occluded source scene under a declared edit mask.",
+  "command": [
+    "scripts/build_wuji_scene_locked_comparison.py",
+    "--source-video",
+    "/tmp/phiagent-wuji.JEvI8V/source/human-hand-20p7s.mp4",
+    "--trajectory",
+    "demo/showcase/wuji-hand-official-model-retarget-q.npz",
+    "--wuji-retargeting-root",
+    "/tmp/phiagent-wuji.JEvI8V/wuji-retargeting",
+    "--output-dir",
+    "/tmp/phiagent-wuji.JEvI8V/run-20260815T-shadow-style-scene-locked-v7"
+  ],
+  "experiment": {
+    "builder_sha256": "fea9af12bf9d8bd32eda66a849b30fd7d8c36301daa96fe10ef129dda0b998b7",
+    "configuration": {
+      "camera_azimuth": 180.0,
+      "camera_distance": 0.48,
+      "camera_elevation": -20.0,
+      "clean_plate_method": "21-sample mask-excluded temporal mosaic plus fixed row-context fill only where never observed",
+      "crf": 18,
+      "forearm_style": "thin rigid Shadow-style link with explicit overlapping wrist connector",
+      "hand_side": "right",
+      "landmark_sigma": 2.0
+    },
+    "randomness_used": false,
+    "workspace_git": {
+      "branch": "codex/joyai-scissors-contact-pr2",
+      "dirty": true,
+      "head": "6851394e6df539999ceb2fb1c7e5acea92aeeb5d",
+      "status": [
+        " M scripts/build_wuji_scene_locked_comparison.py",
+        " M tests/test_build_wuji_scene_locked_comparison.py"
+      ]
+    }
+  },
+  "non_claims": [
+    "This is not footage of physical Wuji hardware.",
+    "The thin metallic forearm and wrist connector are procedural because the official Wuji asset is a hand model.",
+    "Monocular image landmarks do not establish metric depth, contact force, or real execution."
+  ],
+  "output": {
+    "decoded_frames": 621,
+    "end_to_end_fps": 3.418595713835591,
+    "poster": "human-to-wuji-hand-shadow-style-scene-locked-poster.jpg",
+    "poster_sha256": "a7d6bbc1bb2f77ebc55c05fecbe95119bca54ce4e3ea889724540bbafbe75697",
+    "probe": {
+      "format": {
+        "duration": "20.700000",
+        "size": "4739032"
+      },
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "height": 768,
+          "nb_read_frames": "621",
+          "r_frame_rate": "30/1",
+          "width": 2560
+        }
+      ]
+    },
+    "render_fps": 5.348740531162436,
+    "render_seconds": 116.10209850000683,
+    "total_seconds": 181.65353612499894,
+    "video": "human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4",
+    "video_sha256": "757e97941d3379dbc41150146d0b7595f0314561c867928aeb7d19ac4cbb4c71"
+  },
+  "runtime": {
+    "hostname": "snap-jumpbox1.redmond.corp.microsoft.com",
+    "mediapipe": "0.10.21",
+    "mujoco": "3.6.0",
+    "numpy": "1.26.4",
+    "opencv": "5.0.0",
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.12.13",
+    "scipy": "1.14.1"
+  },
+  "scene_lock": {
+    "clean_plate_artifact": "wuji-source-scene-static-clean-plate.png",
+    "clean_plate_interior_mae_mean": 0.0015030691573434344,
+    "clean_plate_interior_mae_p95": 0.002833585067006697,
+    "clean_plate_interior_max_abs_rgb": 1,
+    "clean_plate_observed_background_fraction": 0.9232291666666667,
+    "clean_plate_reused_without_framewise_reestimation": true,
+    "clean_plate_sha256": "f6854af16c34b6118b768670c0b1c4215166b2d7f1ede8d74825a0dc7617e0fc",
+    "clean_plate_temporal_samples": 21,
+    "clean_plate_union_fraction": 0.2779763454861111,
+    "clean_plate_unobserved_fill_fraction": 0.08196506076388889,
+    "coordinate_frame": "camera:source_video_pixels",
+    "edit_fraction_mean": 0.16362588972199854,
+    "edit_fraction_p95": 0.2266937934027778,
+    "forearm_half_width_at_frame_exit_pixels": 27.637438964843753,
+    "forearm_half_width_at_wrist_pixels": 23.689233398437498,
+    "forearm_width_frame_step_pixels": 0.0,
+    "landmark_smoothing": {
+      "method": "zero-phase Gaussian",
+      "sigma_frames": 2.0
+    },
+    "mask_artifact": "wuji-shadow-style-source-scene-replacement-mask.mkv",
+    "mask_sha256": "a44187fd3c6ff13ea20d9b368dfb2cb1e113d3d9eb35c8e0f3d20a32b961e0ea",
+    "post_decode_exterior_mae_mean": 0.4801252550277762,
+    "post_decode_exterior_mae_p95": 0.5440592040036759,
+    "post_decode_exterior_max_abs_rgb": 146,
+    "post_decode_guard_dilation_pixels": 6,
+    "pre_encode_max_abs_rgb_outside_declared_mask": 0,
+    "render_scale_max": 0.8198790677739771,
+    "render_scale_max_frame_step": 0.0,
+    "render_scale_min": 0.8198790677739771,
+    "wrist_link_overlap_pixels_min": 64,
+    "wrist_link_overlap_pixels_p05": 182.0
+  },
+  "schema_version": "1.0.0",
+  "source": {
+    "fps": 30.0,
+    "frames": 621,
+    "height": 720,
+    "path": "human-hand-20p7s.mp4",
+    "sha256": "9ad115983e33465e1396013de8e7a1ba13b069d73df3f86b37177fbcccb3ea20",
+    "width": 1280
+  },
+  "status": "PARTIAL",
+  "trajectory": {
+    "artifact": "wuji-hand-official-model-retarget-q.npz",
+    "artifact_sha256": "ec54a0567746dfc14b46de80ce50baaafdd589e3bb9c046c591066e717d4acb3",
+    "direct_detection_frames": 621,
+    "held_observation_frames": 0,
+    "joint_limit_violations": 0,
+    "max_velocity_limit_ratio": 0.5953498482704163,
+    "q_shape": [
+      621,
+      20
+    ],
+    "qdot_shape": [
+      621,
+      20
+    ],
+    "velocity_limit_violations": 0
+  },
+  "upstream": {
+    "commit": "2918c60643cca3482ffa2d14d1f7fece1d9d7db9",
+    "config_sha256": "d8ec43b73a5b9c1d95dba2a5291693b2af75292466c360027ef490cbcde088a8",
+    "description_commit": "7d547ad50ca8cff92d999ae2cc01fc69bcb7c2b6",
+    "mjcf_sha256": "534de028fe93968bcbc8e59ee85eadb1a22c04717efb433221deff3273cd46a6",
+    "model": "Wuji Hand official MJCF/URDF",
+    "repository": "https://github.com/wuji-technology/wuji-retargeting",
+    "urdf_sha256": "47aa811f1657ad236a1e22f009128d58a7e38045eca59fce0cca08c65a949b74"
+  }
+}

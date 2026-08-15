@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-shadow-style-clean-plate-v5-rejected",
+  "recorded_at": "2026-08-15T02:35:00Z",
+  "status": "PARTIAL",
+  "scope": "Rejected first Shadow-style Wuji background reconstruction",
+  "run_dir": "/tmp/phiagent-wuji.JEvI8V/run-20260815T-shadow-style-scene-locked-v5",
+  "summary": "v5 successfully introduced the thin stable forearm and wrist-overlap gate but was rejected by high-resolution review because its foreground-inclusive temporal median and broad row fill left rectangular clean-plate boundaries on the gray wall.",
+  "evidence": [
+    "v5 forearm half-widths were fixed at 23.689233 and 27.637439 pixels with zero width step, and the wrist overlap minimum was 64 pixels.",
+    "v5 decoded to all 621 frames and reached 5.395365 effective FPS, but its static clean plate SHA-256 0c53bdb14dd2405e13fd445714a68e7c195c0210673820da661c50bb89530408 visibly contained a broad blockwise reconstruction.",
+    "Dense one-second review exposed the rectangular boundary behind and beside the thin forearm, so numerical outside-mask exactness did not override the human veto."
+  ],
+  "lessons": [
+    "Temporal aggregation must exclude source-actor masks; otherwise a median can retain the actor and force an unnecessarily broad spatial fill.",
+    "Outside-mask exactness does not certify the visual quality of pixels inside the declared edit region."
+  ],
+  "limitations": [
+    "This rejected artifact is retained only as failure evidence and must not be published as the demo result."
+  ],
+  "next_actions": [
+    "Use a mask-excluded temporal mosaic and rerun the same frozen forearm and wrist gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "wuji-hand",
+    "clean-plate",
+    "high-resolution-veto",
+    "rejected",
+    "partial"
+  ]
+}

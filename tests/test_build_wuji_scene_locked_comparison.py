@@ -54,3 +54,13 @@ def test_urdf_velocity_limits_follow_requested_order(tmp_path: Path) -> None:
         "</robot>"
     )
     assert module.urdf_velocity_limits(urdf, ["a", "b"]) == [1.5, 2.5]
+
+
+def test_stable_forearm_widths_are_thin_bounded_and_deterministic() -> None:
+    module = load_module()
+    assert tuple(round(value, 6) for value in module.stable_forearm_half_widths(100.0)) == (
+        24.0,
+        28.0,
+    )
+    assert module.stable_forearm_half_widths(10.0) == (21.0, 24.0)
+    assert module.stable_forearm_half_widths(1000.0) == (30.0, 34.0)

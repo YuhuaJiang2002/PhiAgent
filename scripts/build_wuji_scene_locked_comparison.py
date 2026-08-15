@@ -15,6 +15,7 @@ import platform
 import subprocess
 import sys
 import time
+import warnings
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -148,6 +149,89 @@ def fill_from_row_context(frame, mask, np):
         values = left_color[None, :] * (1.0 - mix) + right_color[None, :] * mix
         output[row, left : right + 1] = np.clip(values, 0, 255).astype(np.uint8)
     return output
+
+
+def stable_forearm_half_widths(palm_width: float) -> tuple[float, float]:
+    """Return fixed Shadow-style link widths derived once per full video."""
+    wrist_half = min(30.0, max(21.0, 0.24 * palm_width))
+    end_half = min(34.0, max(24.0, 0.28 * palm_width))
+    return wrist_half, end_half
+
+
+def build_static_clean_plate(
+    cv2,
+    np,
+    source: Path,
+    smoothed_points,
+    width: int,
+    height: int,
+    frame_count: int,
+):
+    """Build one immutable background reconstruction for every output frame."""
+    capture = cv2.VideoCapture(str(source))
+    union_mask = np.zeros((height, width), dtype=np.uint8)
+    samples = []
+    sample_masks = []
+    sample_stride = max(1, frame_count // 20)
+    fixed_end_x = None
+    try:
+        for index in range(frame_count):
+            ok, frame = capture.read()
+            if not ok:
+                raise RuntimeError(f"clean-plate decode stopped at frame {index}")
+            mask, _wrist, end, _normal, _wrist_half, _end_half = human_replacement_mask(
+                cv2,
+                np,
+                frame,
+                smoothed_points[index],
+                width,
+                height,
+                fixed_end_x,
+            )
+            if fixed_end_x is None:
+                fixed_end_x = float(end[0])
+            union_mask = np.maximum(union_mask, mask)
+            if index % sample_stride == 0 or index == frame_count - 1:
+                samples.append(frame)
+                sample_masks.append(mask > 0)
+    finally:
+        capture.release()
+    if fixed_end_x is None or not samples:
+        raise RuntimeError("could not construct a static source-scene clean plate")
+    sample_stack = np.stack(samples, axis=0)
+    sample_mask_stack = np.stack(sample_masks, axis=0)
+    valid_counts = np.sum(~sample_mask_stack, axis=0)
+    masked_samples = np.where(
+        sample_mask_stack[:, :, :, None],
+        np.nan,
+        sample_stack.astype(np.float32),
+    )
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="All-NaN slice encountered")
+        with np.errstate(invalid="ignore"):
+            clean_float = np.nanmedian(masked_samples, axis=0)
+    temporal_median = np.median(sample_stack, axis=0).astype(np.uint8)
+    observed = valid_counts > 0
+    clean_seed = temporal_median.copy()
+    clean_seed[observed] = np.clip(clean_float[observed], 0, 255).astype(np.uint8)
+    unobserved_mask = (~observed).astype(np.uint8) * 255
+    unobserved_mask = cv2.dilate(
+        unobserved_mask,
+        cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)),
+    )
+    union_mask = cv2.dilate(
+        union_mask,
+        cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9)),
+    )
+    clean_plate = fill_from_row_context(clean_seed, unobserved_mask, np)
+    return (
+        clean_plate,
+        union_mask,
+        fixed_end_x,
+        len(samples),
+        float(np.mean(observed)),
+        float(np.mean(unobserved_mask > 0)),
+    )
 
 
 def human_replacement_mask(
@@ -302,45 +386,91 @@ def draw_robot_forearm(
     wrist_half: float,
     end_half: float,
 ):
+    """Draw a thin, rigid wrist link modeled after the accepted Shadow demo."""
     height, width = frame.shape[:2]
     alpha = np.zeros((height, width), dtype=np.uint8)
-    forearm_half_wrist = wrist_half * 1.04
-    forearm_half_end = end_half * 1.04
-    polygon = np.rint(
-        np.stack(
-            [
-                wrist - normal * forearm_half_wrist,
-                wrist + normal * forearm_half_wrist,
-                end + normal * forearm_half_end,
-                end - normal * forearm_half_end,
-            ]
-        )
-    ).astype(np.int32)
-    cv2.fillConvexPoly(alpha, polygon, 255, lineType=cv2.LINE_AA)
-    metal = np.zeros_like(frame)
     axis = end - wrist
     axis_norm = max(float(np.linalg.norm(axis)), 1.0)
     axis /= axis_norm
+    arm_top = wrist + axis * 28.0
+    connector_top = wrist - axis * 5.0
+    connector_half = 0.68 * wrist_half
+    main_polygon = np.rint(
+        np.stack(
+            [
+                arm_top - normal * wrist_half,
+                arm_top + normal * wrist_half,
+                end + normal * end_half,
+                end - normal * end_half,
+            ]
+        )
+    ).astype(np.int32)
+    connector_polygon = np.rint(
+        np.stack(
+            [
+                connector_top - normal * connector_half,
+                connector_top + normal * connector_half,
+                arm_top + normal * wrist_half * 0.88,
+                arm_top - normal * wrist_half * 0.88,
+            ]
+        )
+    ).astype(np.int32)
+    cv2.fillConvexPoly(alpha, main_polygon, 255, lineType=cv2.LINE_AA)
+    cv2.fillConvexPoly(alpha, connector_polygon, 255, lineType=cv2.LINE_AA)
+    metal = np.zeros_like(frame)
     yy, xx = np.mgrid[0:height, 0:width]
     lateral = (xx - wrist[0]) * normal[0] + (yy - wrist[1]) * normal[1]
     longitudinal = (xx - wrist[0]) * axis[0] + (yy - wrist[1]) * axis[1]
-    highlight = np.exp(-((lateral + wrist_half * 0.20) / max(wrist_half * 0.48, 1.0)) ** 2)
+    highlight = np.exp(
+        -((lateral + wrist_half * 0.18) / max(wrist_half * 0.62, 1.0)) ** 2
+    )
     length_shade = np.clip(longitudinal / max(axis_norm, 1.0), 0.0, 1.0)
-    base = 94.0 + 62.0 * highlight - 22.0 * length_shade
-    metal[:, :, 0] = np.clip(base * 1.02, 0, 255)
-    metal[:, :, 1] = np.clip(base * 1.04, 0, 255)
-    metal[:, :, 2] = np.clip(base * 1.06, 0, 255)
+    base = 44.0 + 55.0 * highlight - 8.0 * length_shade
+    metal[:, :, 0] = np.clip(base * 1.18, 0, 255)
+    metal[:, :, 1] = np.clip(base * 1.10, 0, 255)
+    metal[:, :, 2] = np.clip(base * 0.98, 0, 255)
     edge = cv2.Canny(alpha, 30, 90)
-    metal[edge > 0] = (42, 47, 53)
-    blend = cv2.GaussianBlur(alpha, (0, 0), 0.65).astype(np.float32)[:, :, None] / 255.0
+    metal[edge > 0] = (26, 34, 39)
+    blend = (
+        cv2.GaussianBlur(alpha, (0, 0), 0.55).astype(np.float32)[:, :, None]
+        / 255.0
+    )
     output = np.clip(frame.astype(np.float32) * (1.0 - blend) + metal * blend, 0, 255).astype(
         np.uint8
     )
-    collar_center = tuple(np.rint(wrist + (end - wrist) * 0.035).astype(int))
-    collar_axes = (int(round(wrist_half * 1.02)), max(10, int(round(wrist_half * 0.20))))
-    angle = float(np.degrees(np.arctan2((end - wrist)[1], (end - wrist)[0])) - 90.0)
-    cv2.ellipse(output, collar_center, collar_axes, angle, 0, 360, (55, 62, 70), -1, cv2.LINE_AA)
-    cv2.ellipse(output, collar_center, collar_axes, angle, 0, 360, (175, 187, 197), 2, cv2.LINE_AA)
+    angle = float(np.degrees(np.arctan2(axis[1], axis[0])))
+    joint_center = wrist + axis * 13.0
+    joint_axes = (max(7, int(round(connector_half))), max(5, int(round(wrist_half * 0.34))))
+    cv2.ellipse(
+        output,
+        tuple(np.rint(joint_center).astype(int)),
+        joint_axes,
+        angle,
+        0,
+        360,
+        (37, 50, 58),
+        -1,
+        cv2.LINE_AA,
+    )
+    cv2.ellipse(
+        output,
+        tuple(np.rint(joint_center).astype(int)),
+        joint_axes,
+        angle,
+        0,
+        360,
+        (121, 151, 162),
+        2,
+        cv2.LINE_AA,
+    )
+    collar_a = np.rint(arm_top - normal * wrist_half).astype(int)
+    collar_b = np.rint(arm_top + normal * wrist_half).astype(int)
+    cv2.line(output, tuple(collar_a), tuple(collar_b), (137, 161, 170), 4, cv2.LINE_AA)
+    for sign in (-1.0, 1.0):
+        bolt = joint_center + normal * connector_half * 0.55
+        if sign < 0:
+            bolt = joint_center - normal * connector_half * 0.55
+        cv2.circle(output, tuple(np.rint(bolt).astype(int)), 3, (190, 160, 83), -1, cv2.LINE_AA)
     return output, alpha
 
 
@@ -416,7 +546,7 @@ def label_comparison(cv2, frame, frame_index: int, total_frames: int):
     )
     cv2.putText(
         frame,
-        "WUJI HAND  |  SOURCE-SCENE LOCKED REPLACEMENT",
+        "WUJI HAND  |  SHADOW-STYLE SOURCE-SCENE LOCK",
         (width + 24, 32),
         cv2.FONT_HERSHEY_SIMPLEX,
         0.68,
@@ -535,6 +665,37 @@ def main() -> int:
     frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
     if frame_count != q.shape[0]:
         raise RuntimeError(f"source/trajectory frame mismatch: {frame_count} != {q.shape[0]}")
+    capture.release()
+
+    (
+        clean_plate,
+        clean_plate_union,
+        calibrated_end_x,
+        clean_plate_samples,
+        clean_plate_observed_fraction,
+        clean_plate_unobserved_fill_fraction,
+    ) = build_static_clean_plate(
+        cv2,
+        np,
+        source,
+        smoothed_points,
+        width,
+        height,
+        frame_count,
+    )
+    clean_plate_path = output_dir / "wuji-source-scene-static-clean-plate.png"
+    if not cv2.imwrite(str(clean_plate_path), clean_plate):
+        raise RuntimeError(f"could not write clean plate: {clean_plate_path}")
+    palm_widths = np.linalg.norm(
+        (smoothed_points[:, 5, :2] - smoothed_points[:, 17, :2])
+        * np.asarray([width, height], dtype=np.float32)[None, :],
+        axis=1,
+    )
+    median_palm_width = float(np.median(palm_widths))
+    forearm_half_wrist, forearm_half_end = stable_forearm_half_widths(
+        median_palm_width
+    )
+    capture = cv2.VideoCapture(str(source))
 
     render_size = 720
     model.vis.global_.offwidth = render_size
@@ -550,7 +711,10 @@ def main() -> int:
     render_options.geomgroup[:] = 0
     render_options.geomgroup[1] = 1
 
-    video_path = output_dir / "human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4"
+    video_path = (
+        output_dir
+        / "human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4"
+    )
     mask_path = output_dir / "source-scene-replacement-mask.mkv"
     video_command = [
         "ffmpeg",
@@ -606,15 +770,17 @@ def main() -> int:
     poster = None
     edit_fractions = []
     scales = []
+    wrist_overlap_pixels = []
+    static_plate_interior_mae = []
+    static_plate_interior_max = 0
     calibrated_scale = None
-    calibrated_end_x = None
     outside_max = 0
     try:
         for index in range(frame_count):
             ok, source_bgr = capture.read()
             if not ok:
                 raise RuntimeError(f"source decode stopped at frame {index}")
-            human_mask, wrist, end, normal, wrist_half, end_half = human_replacement_mask(
+            human_mask, wrist, end, normal, _wrist_half, _end_half = human_replacement_mask(
                 cv2,
                 np,
                 source_bgr,
@@ -623,11 +789,31 @@ def main() -> int:
                 height,
                 calibrated_end_x,
             )
-            if calibrated_end_x is None:
-                calibrated_end_x = float(end[0])
-            candidate = fill_from_row_context(source_bgr, human_mask, np)
+            erase_alpha = cv2.GaussianBlur(human_mask, (0, 0), 1.15)
+            erase_blend = erase_alpha.astype(np.float32)[:, :, None] / 255.0
+            candidate = np.clip(
+                source_bgr.astype(np.float32) * (1.0 - erase_blend)
+                + clean_plate.astype(np.float32) * erase_blend,
+                0,
+                255,
+            ).astype(np.uint8)
+            plate_interior = erase_alpha >= 254
+            plate_residual = np.abs(
+                candidate.astype(np.int16) - clean_plate.astype(np.int16)
+            )[plate_interior]
+            static_plate_interior_mae.append(float(np.mean(plate_residual)))
+            static_plate_interior_max = max(
+                static_plate_interior_max, int(plate_residual.max(initial=0))
+            )
             candidate, forearm_alpha = draw_robot_forearm(
-                cv2, np, candidate, wrist, end, normal, wrist_half, end_half
+                cv2,
+                np,
+                candidate,
+                wrist,
+                end,
+                normal,
+                forearm_half_wrist,
+                forearm_half_end,
             )
 
             data.qpos[:] = q[index]
@@ -655,7 +841,13 @@ def main() -> int:
             candidate = np.clip(
                 candidate.astype(np.float32) * (1.0 - blend) + warped_bgr * blend, 0, 255
             ).astype(np.uint8)
-            edit_mask = np.maximum(human_mask, np.maximum(forearm_alpha, robot_alpha))
+            wrist_overlap_pixels.append(
+                int(np.count_nonzero((forearm_alpha > 0) & (robot_alpha > 16)))
+            )
+            erase_support = (erase_alpha > 0).astype(np.uint8) * 255
+            edit_mask = np.maximum(
+                erase_support, np.maximum(forearm_alpha, robot_alpha)
+            )
             candidate[edit_mask == 0] = source_bgr[edit_mask == 0]
             outside = np.abs(candidate.astype(np.int16) - source_bgr.astype(np.int16))[
                 edit_mask == 0
@@ -686,10 +878,20 @@ def main() -> int:
     if video_return or mask_return:
         raise RuntimeError(f"encoder failure: video={video_return}, mask={mask_return}")
     render_seconds = time.perf_counter() - render_started
+    if min(wrist_overlap_pixels) < 20:
+        raise RuntimeError(
+            "wrist-link continuity gate failed: "
+            f"minimum overlap={min(wrist_overlap_pixels)} pixels"
+        )
+    if static_plate_interior_max > 1:
+        raise RuntimeError(
+            "static clean-plate gate failed: "
+            f"maximum interior deviation={static_plate_interior_max}"
+        )
 
     if poster is None:
         raise RuntimeError("poster frame was not captured")
-    poster_path = output_dir / "human-to-wuji-hand-source-scene-locked-poster.jpg"
+    poster_path = output_dir / "human-to-wuji-hand-shadow-style-scene-locked-poster.jpg"
     cv2.imwrite(str(poster_path), poster, [cv2.IMWRITE_JPEG_QUALITY, 92])
 
     probe = ffprobe_video(video_path)
@@ -726,10 +928,10 @@ def main() -> int:
     manifest = {
         "schema_version": "1.0.0",
         "status": "PARTIAL",
-        "claim": "Official Wuji Hand model composited into the unchanged source scene under a declared edit mask.",
+        "claim": "Official Wuji Hand model with a thin rigid wrist link composited into a static reconstruction of the occluded source scene under a declared edit mask.",
         "non_claims": [
             "This is not footage of physical Wuji hardware.",
-            "The metallic forearm is procedural because the official Wuji asset is a hand model.",
+            "The thin metallic forearm and wrist connector are procedural because the official Wuji asset is a hand model.",
             "Monocular image landmarks do not establish metric depth, contact force, or real execution.",
         ],
         "source": {
@@ -770,12 +972,33 @@ def main() -> int:
             },
             "mask_artifact": mask_path.name,
             "mask_sha256": sha256_file(mask_path),
+            "clean_plate_artifact": clean_plate_path.name,
+            "clean_plate_sha256": sha256_file(clean_plate_path),
+            "clean_plate_temporal_samples": clean_plate_samples,
+            "clean_plate_observed_background_fraction": clean_plate_observed_fraction,
+            "clean_plate_unobserved_fill_fraction": clean_plate_unobserved_fill_fraction,
+            "clean_plate_union_fraction": float(np.mean(clean_plate_union > 0)),
+            "clean_plate_reused_without_framewise_reestimation": True,
+            "clean_plate_interior_mae_mean": float(
+                np.mean(static_plate_interior_mae)
+            ),
+            "clean_plate_interior_mae_p95": float(
+                np.percentile(static_plate_interior_mae, 95)
+            ),
+            "clean_plate_interior_max_abs_rgb": static_plate_interior_max,
             "pre_encode_max_abs_rgb_outside_declared_mask": outside_max,
             "edit_fraction_mean": float(np.mean(edit_fractions)),
             "edit_fraction_p95": float(np.percentile(edit_fractions, 95)),
             "render_scale_min": float(np.min(scales)),
             "render_scale_max": float(np.max(scales)),
             "render_scale_max_frame_step": float(np.max(np.abs(np.diff(scales)))),
+            "forearm_half_width_at_wrist_pixels": forearm_half_wrist,
+            "forearm_half_width_at_frame_exit_pixels": forearm_half_end,
+            "forearm_width_frame_step_pixels": 0.0,
+            "wrist_link_overlap_pixels_min": int(np.min(wrist_overlap_pixels)),
+            "wrist_link_overlap_pixels_p05": float(
+                np.percentile(wrist_overlap_pixels, 5)
+            ),
             "post_decode_exterior_mae_mean": float(np.mean(background_mae)),
             "post_decode_exterior_mae_p95": float(np.percentile(background_mae, 95)),
             "post_decode_exterior_max_abs_rgb": background_max,
@@ -814,11 +1037,15 @@ def main() -> int:
                 "camera_azimuth": args.camera_azimuth,
                 "camera_elevation": args.camera_elevation,
                 "camera_distance": args.camera_distance,
+                "clean_plate_method": "21-sample mask-excluded temporal mosaic plus fixed row-context fill only where never observed",
+                "forearm_style": "thin rigid Shadow-style link with explicit overlapping wrist connector",
             },
         },
         "command": sys.argv,
     }
-    manifest_path = output_dir / "human-to-wuji-hand-source-scene-locked-manifest.json"
+    manifest_path = (
+        output_dir / "human-to-wuji-hand-shadow-style-scene-locked-manifest.json"
+    )
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
     print(json.dumps({"manifest": str(manifest_path), **manifest["output"]}, indent=2))
     return 0

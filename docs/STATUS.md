@@ -18,14 +18,21 @@ locations are recorded per experiment below.
   velocity is 59.535% of its joint limit. The 2560x768 offscreen render takes
   17.8757 seconds (**34.7399 FPS**) and the encoded result decodes to exactly
   621 frames. The original standalone simulation builder completes the full
-  audit in 30.5977 seconds (**20.2956 effective FPS**). The retained v4
-  same-scene compositor processes the full 621-frame source in 148.1936 seconds
-  (**4.1905 effective FPS**, 5.3739 render FPS), preserves every pixel outside
-  its declared hand-and-arm mask exactly before H.264 encoding, fixes the render
-  scale at 0.819879, and publishes its lossless per-frame audit mask. Earlier
-  v1-v3 candidates were rejected for forearm-axis error, scene-mask leakage, or
-  residual source-skin triangles. Exact source, config, URDF, MJCF, trajectory,
-  video, mask, and poster hashes are recorded. The builder and
+  audit in 30.5977 seconds (**20.2956 effective FPS**). The retained v7
+  Shadow-style same-scene compositor uses a mask-excluded 21-sample temporal
+  mosaic for the occluded background, obtains 92.323% direct background
+  coverage, and spatially fills only the 8.197% never observed. Its 47.378--55.275
+  pixel rigid forearm has zero width step, and the explicit wrist connector has
+  at least 64 overlap pixels in every frame. Encoded replacement-side background
+  second-difference falls 62.8% relative to v4. The compositor preserves every
+  pixel outside its declared mask exactly before H.264 encoding; the static
+  clean-plate interior deviates by at most one channel value, and the fixed hand
+  scale remains 0.819879. The exact final reproducibility run takes 181.6535
+  seconds (**3.4186 effective FPS**, 5.3487 render FPS). Earlier v1-v3 candidates
+  were rejected for forearm-axis error, scene-mask leakage, or residual source-
+  skin triangles; v5 was rejected by high-resolution review for visible blockwise
+  clean-plate boundaries. Exact source, config, URDF, MJCF, trajectory, video,
+  clean plate, mask, and poster hashes are recorded. The builder and
   identity/trajectory/scene-lock/decode gates are WORKING. The displayed result
   remains PARTIAL because it is monocular, vision-derived official-model
   simulation with a procedural forearm—not footage of physical Wuji hardware,
