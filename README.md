@@ -51,35 +51,33 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 20.7-second human hand to Wuji Hand, Shadow-style scene lock
+### 20.7-second human hand to real Wuji hardware appearance
 
-[![Human source compared frame-for-frame with the Shadow-style source-scene-locked Wuji Hand replacement](demo/showcase/human-to-wuji-hand-shadow-style-scene-locked-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4)
+[![Human source compared frame-for-frame with the real-Wuji-appearance replacement](demo/showcase/human-to-wuji-real-hardware-appearance-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-real-hardware-appearance-comparison-20p7s.mp4)
 
-[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-shadow-style-scene-locked-comparison-20p7s.mp4).
-The left panel is the complete human source. The right panel retains the same
-camera view and source scene while replacing only a declared hand-and-arm mask.
-The revised background is a mask-excluded temporal mosaic: 92.323% of pixels
-come from directly observed background samples, and only the region never exposed
-in any sample receives fixed spatial reconstruction. The narrow rigid forearm is
-47.378 pixels wide at the wrist and 55.275 pixels at the frame exit with zero
-frame-to-frame width change; its explicit wrist connector overlaps the official
-Wuji hand by at least 64 pixels on every frame. Encoded side-band background
-second-difference falls **62.8%** relative to the prior public version. Before
-lossy encoding, the maximum RGB difference outside the declared mask is exactly
-zero and the static clean-plate interior differs by at most one channel value.
+[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-real-hardware-appearance-comparison-20p7s.mp4).
+The left panel is the complete human source. The right panel no longer renders
+the blue MJCF hand: a frame from Wuji Technology's MIT-licensed physical-hardware
+teleoperation recording supplies the black compliant-cover pixels and material
+statistics. Complete image-plane landmarks drive one filled five-finger layer;
+the black wrist bearing and a fixed **50-pixel** white robot forearm are separate
+layers, so no exposed simulation links or generated wrist fragments are present.
 
-Wuji Technology's official MJCF/URDF and retargeter still produce complete 621x20
-`q` and synchronized `qdot` trajectories: direct detection succeeds on **621/621**
-frames, no observation is held, all 620 transitions move, and there are zero
-joint-position or URDF velocity-limit violations. The final reproducibility run
-renders at **5.349 FPS** and completes the full composite, encode, and audit path
-at **3.419 effective FPS**.
+The source camera is locked to one immutable clean plate. Before encoding, the
+maximum RGB difference outside the declared 621-frame edit mask is exactly zero.
+The retained H.264 decodes to all **621 frames / 20.7 seconds**; its six-pixel
+guarded exterior audit has no missing frames and the complete hand centroid moves
+on every gesture rather than leaving a stationary reference hand. The complete
+621x20 `q` and synchronized `qdot` artifact remains available as validation
+evidence. The exact reviewed run completes material transfer, composition, both
+encodes, and the post-decode audit in **78.974 seconds (7.863 FPS)**.
 
-Status is **PARTIAL**: this is a vision-driven official-model simulation with a
-procedural forearm, not footage of physical Wuji hardware. Monocular landmarks
-also do not establish metric depth, contact force, or real execution. See the
-[evidence manifest](demo/showcase/human-to-wuji-hand-shadow-style-scene-locked-manifest.json),
-[background adversarial audit](demo/showcase/wuji-shadow-style-background-adversarial-audit.json),
+Status is **PARTIAL physical evidence / accepted visual demo**: real physical
+Wuji imagery supplies the appearance, but the motion is synthesized from the
+human observation; this is not footage or telemetry of a Wuji hand executing the
+gesture and it does not establish metric depth, force closure, or tactile
+contact. See the [appearance and audit manifest](demo/showcase/human-to-wuji-real-hardware-appearance-manifest.json),
+[licensed reference manifest](demo/showcase/wuji-real-hardware-reference-manifest.json),
 [lossless edit-mask audit](demo/showcase/wuji-shadow-style-source-scene-replacement-mask.mkv),
 and [complete q/qdot artifact](demo/showcase/wuji-hand-official-model-retarget-q.npz).
 

@@ -1,0 +1,142 @@
+{
+  "appearance": {
+    "exposed_simulation_mesh": false,
+    "filled_fingers": 5,
+    "forearm_width_pixels_maximum": 50.0,
+    "forearm_width_pixels_minimum": 50.0,
+    "maximum_hand_area_relative_step": 0.19125725328922272,
+    "real_photo_texture_fraction_maximum": 0.7416316712194724,
+    "real_photo_texture_fraction_median": 0.6672286940527283,
+    "real_photo_texture_fraction_minimum": 0.030912008931686552,
+    "source_human_rgb_copied_into_hand": false
+  },
+  "claim": "Official physical-Wuji pixels and material statistics supply the black compliant-hand appearance; complete image landmarks drive synthetic motion inside a declared source-camera edit mask.",
+  "created_at": "2026-08-15T05:34:14.120834+00:00",
+  "hardware_source": {
+    "clean_plate": "/private/tmp/phiagent-publish-parent.zC3Urt/repo/demo/showcase/wuji-source-scene-static-clean-plate.png",
+    "clean_plate_sha256": "f6854af16c34b6118b768670c0b1c4215166b2d7f1ede8d74825a0dc7617e0fc",
+    "crop_xywh": null,
+    "frame_index": 30,
+    "license": "MIT",
+    "local_path": "/private/tmp/phiagent-wuji-real.20260815/teleop-demo.mp4",
+    "path": "docs/teleop-demo.mp4",
+    "permalink": "https://github.com/wuji-technology/wuji-hand-teleop/blob/647801345a6a27dec5cbf56280ce63bb8b2f6a32/docs/teleop-demo.mp4",
+    "pixel_operation": "fixed silhouette matte, connected-component selection, 180-degree rotation, deterministic resize, and alpha composite; no generated pixels",
+    "reference_mode": "source_scene",
+    "repository": "https://github.com/wuji-technology/wuji-hand-teleop",
+    "revision": "647801345a6a27dec5cbf56280ce63bb8b2f6a32",
+    "sha256": "425b8b8a135e545a7781730283ef63be34acf0858e4e655be1e2bda025b831f6",
+    "source_camera_alignment": {
+      "box_iou": 0.8880087331355315,
+      "coordinate_frame": "source_camera_frame_0_pixels",
+      "detected_hand_envelope_ltrb": [
+        605,
+        153,
+        891,
+        400
+      ],
+      "reference_placement_xywh": [
+        610,
+        150,
+        270,
+        238
+      ],
+      "required_box_iou": 0.75
+    }
+  },
+  "honest_status": "PARTIAL",
+  "human_review": "passed",
+  "inputs": {
+    "clean_plate": {
+      "path": "/private/tmp/phiagent-publish-parent.zC3Urt/repo/demo/showcase/wuji-source-scene-static-clean-plate.png",
+      "sha256": "f6854af16c34b6118b768670c0b1c4215166b2d7f1ede8d74825a0dc7617e0fc"
+    },
+    "edit_mask": {
+      "path": "/private/tmp/phiagent-publish-parent.zC3Urt/repo/demo/showcase/wuji-shadow-style-source-scene-replacement-mask.mkv",
+      "sha256": "a44187fd3c6ff13ea20d9b368dfb2cb1e113d3d9eb35c8e0f3d20a32b961e0ea"
+    },
+    "reference": {
+      "path": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/real-wuji-reference.png",
+      "sha256": "d0567428f660b1773e4f9e2858c1fa0f6c65cc3131d3d56069d6eb2a359582fa"
+    },
+    "reference_alpha": {
+      "path": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/real-wuji-reference-alpha.png",
+      "sha256": "8be2086a01e407931d6d4c7339cadb2cc6a790834fcb7b0f90171794d8c12d15"
+    },
+    "reference_manifest": {
+      "path": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/manifest.json",
+      "sha256": "0ff10838e2ab431b56f8ada2cc1908056b0f37e7cc5542c18dbdd5b15cf0ddb0"
+    },
+    "source": {
+      "path": "/private/tmp/phiagent-wuji.JEvI8V/source/human-hand-20p7s.mp4",
+      "sha256": "9ad115983e33465e1396013de8e7a1ba13b069d73df3f86b37177fbcccb3ea20"
+    },
+    "trajectory": {
+      "path": "/private/tmp/phiagent-publish-parent.zC3Urt/repo/demo/showcase/wuji-hand-official-model-retarget-q.npz",
+      "sha256": "ec54a0567746dfc14b46de80ce50baaafdd589e3bb9c046c591066e717d4acb3"
+    }
+  },
+  "motion": {
+    "direct_image_landmark_frames": 621,
+    "hand_area_maximum_pixels": 38696,
+    "hand_area_minimum_pixels": 13678,
+    "hand_centroid_step_maximum_pixels": 8.535083770751953,
+    "hand_centroid_step_median_pixels": 0.6947239637374878,
+    "q_shape": [
+      621,
+      20
+    ],
+    "qdot_shape": [
+      621,
+      20
+    ]
+  },
+  "not_claimed": [
+    "This is not footage of physical Wuji hardware executing the gesture.",
+    "The source human skeleton supplies motion; q/qdot are validation evidence rather than robot telemetry for these pixels.",
+    "The comparison does not establish metric depth, force closure, or tactile contact."
+  ],
+  "outputs": {
+    "comparison": "/private/tmp/phiagent-wuji-real.20260815/run-20260815T-real-texture-v3-reviewed/human-to-wuji-real-hardware-appearance-comparison-20p7s.mp4",
+    "comparison_sha256": "8dffb9199b5f97a832b337ba56b3f2aa15c7b8a94185c5c53b667f163c087841",
+    "duration_seconds": 20.7,
+    "fps": 30.0,
+    "frames": 621,
+    "height": 720,
+    "poster": "/private/tmp/phiagent-wuji-real.20260815/run-20260815T-real-texture-v3-reviewed/human-to-wuji-real-hardware-appearance-poster.jpg",
+    "poster_sha256": "7090b95d8be378cdd0f4a514938a47c9fc47b8ad1d6b99d1e81f4d68aaa4e4e4",
+    "replacement": "/private/tmp/phiagent-wuji-real.20260815/run-20260815T-real-texture-v3-reviewed/wuji-real-hardware-appearance-replacement-20p7s.mp4",
+    "replacement_sha256": "183a5fc8b97f42581a95dc3e807475226285b2aa7432aa5bd40746c0947fa0ce",
+    "width": 1280
+  },
+  "runtime": {
+    "host": "snap-jumpbox1.redmond.corp.microsoft.com",
+    "platform": "macOS-26.6.1-arm64-arm-64bit",
+    "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]"
+  },
+  "scene_lock": {
+    "clean_plate_is_identical_for_every_frame": true,
+    "encoded_exterior_audit": {
+      "decoded_frames": 621,
+      "guard_dilation_pixels": 6,
+      "maximum_channel_difference": 18,
+      "mean_frame_mae": 2.4649573485725425,
+      "p95_frame_mae": 2.469931487705471
+    },
+    "mask_info": {
+      "decoded_frames": 621,
+      "fps": 30.0,
+      "height": 720,
+      "reported_frames": 621,
+      "width": 1280
+    },
+    "preencode_outside_edit_mask_max_rgb_difference": 0
+  },
+  "schema_version": "1.0.0",
+  "status": "accepted_visual_demo",
+  "throughput": {
+    "effective_fps": 7.863382943770584,
+    "realtime_factor": 3.815151851884076,
+    "wall_seconds": 78.97364333400037
+  }
+}

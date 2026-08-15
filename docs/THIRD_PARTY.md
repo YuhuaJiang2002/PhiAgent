@@ -60,6 +60,13 @@ License review date: 2026-08-13.
 - HaMeR: MIT. Suitable for an optional hand-reconstruction adapter, subject to
   the licenses of its detector/checkpoint dependencies.
 - dex-retargeting: MIT. Preferred permissive retargeting baseline.
+- Wuji Hand teleoperation: MIT at commit
+  `647801345a6a27dec5cbf56280ce63bb8b2f6a32`. The physical-hardware appearance
+  reference is extracted from `docs/teleop-demo.mp4` (SHA-256
+  `425b8b8a135e545a7781730283ef63be34acf0858e4e655be1e2bda025b831f6`).
+  The repository URL and exact media lineage are retained in the published
+  reference manifest. The resulting demo is synthetic motion conditioned on
+  real hardware imagery, not a claim of physical execution.
 - MuJoCo: Apache-2.0. Selected first physics backend.
 - Pexels flower-arranging video 5893642 by Anna Shvets: used under the Pexels
   License as the single continuous 27.5-second source for the README full-robot

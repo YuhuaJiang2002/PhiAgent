@@ -6,6 +6,28 @@ locations are recorded per experiment below.
 
 ## WORKING
 
+- Real-Wuji-hardware appearance replacement and source-lock infrastructure:
+  `scripts/prepare_wuji_real_hardware_reference.py` binds the official
+  MIT-licensed physical-hardware recording at Wuji teleoperation commit
+  `647801345a6a27dec5cbf56280ce63bb8b2f6a32` by media SHA-256, extracts only
+  the black compliant hand/wrist pixels, and rejects a source-camera reference
+  unless its frame-zero support IoU exceeds 0.75 (observed 0.888009).
+  `scripts/build_wuji_real_hardware_appearance_comparison.py` then uses 621/621
+  direct image landmarks to drive one filled five-finger material layer; there
+  is no exposed simulation mesh, no source-human RGB in the hand, and the
+  official real-photo texture supplies a median 66.723% of visible hand pixels.
+  The black wrist bearing and white forearm are separate layers; forearm width
+  is fixed at 50 pixels over all 621 frames. The complete hand remains visible
+  (13,678--38,696 pixels), with 0.694724-pixel median and 8.535084-pixel maximum
+  centroid steps. Pre-encode RGB difference outside the declared edit mask is
+  exactly zero; the decoded six-pixel-guard exterior audit covers all 621 frames
+  with 2.464957 mean frame MAE, 2.469931 p95, and 18 maximum channel difference.
+  The reviewed 20.7-second CRF-16 run completes material transfer, composition,
+  both encodes, and the post-decode audit in 78.9736 seconds (**7.8634 FPS**).
+  Full-resolution all-seconds and dense 7.5--9.5-second review pass. The
+  infrastructure and visual demo are WORKING; physical evidence remains PARTIAL
+  because motion is synthesized from human observation rather than Wuji
+  telemetry, tactile sensing, or real hardware execution.
 - Official-model Wuji Hand video-retargeting and source-scene-lock audit
   infrastructure: `scripts/build_wuji_hand_comparison.py` and
   `scripts/build_wuji_scene_locked_comparison.py` consume an MP4 through the pinned

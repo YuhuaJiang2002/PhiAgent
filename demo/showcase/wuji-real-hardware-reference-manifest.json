@@ -1,0 +1,89 @@
+{
+  "claim": "Real physical Wuji hardware footage supplies the appearance reference; downstream motion remains model-generated visual synthesis.",
+  "commands": [
+    "/opt/homebrew/Cellar/ffmpeg/8.1.2_1/bin/ffmpeg -y -v error -i /private/tmp/phiagent-wuji.JEvI8V/source/human-hand-20p7s.mp4 -vf fps=24 -an -c:v libx264 -preset medium -crf 10 -pix_fmt yuv420p -movflags +faststart /private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/source-24fps.mp4",
+    "/opt/homebrew/Cellar/ffmpeg/8.1.2_1/bin/ffmpeg -y -v error -i /private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/source-24fps.mp4 -vf trim=end_frame=80,setpts=PTS-STARTPTS -frames:v 80 -an -c:v libx264 -preset medium -crf 10 -pix_fmt yuv420p /private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/source-first80-placeholder.mp4"
+  ],
+  "created_at": "2026-08-15T05:26:36.643552+00:00",
+  "git": {
+    "head": "a0df63aaa794fa598a60a0693b84c6bccd195d29",
+    "status": [
+      "?? scripts/build_wuji_real_hardware_appearance_comparison.py",
+      "?? scripts/prepare_wuji_real_hardware_reference.py",
+      "?? scripts/stitch_wuji_real_hardware_video.py",
+      "?? tests/test_wuji_real_hardware_video.py"
+    ]
+  },
+  "hardware_appearance_source": {
+    "clean_plate": "/private/tmp/phiagent-publish-parent.zC3Urt/repo/demo/showcase/wuji-source-scene-static-clean-plate.png",
+    "clean_plate_sha256": "f6854af16c34b6118b768670c0b1c4215166b2d7f1ede8d74825a0dc7617e0fc",
+    "crop_xywh": null,
+    "frame_index": 30,
+    "license": "MIT",
+    "local_path": "/private/tmp/phiagent-wuji-real.20260815/teleop-demo.mp4",
+    "path": "docs/teleop-demo.mp4",
+    "permalink": "https://github.com/wuji-technology/wuji-hand-teleop/blob/647801345a6a27dec5cbf56280ce63bb8b2f6a32/docs/teleop-demo.mp4",
+    "pixel_operation": "fixed silhouette matte, connected-component selection, 180-degree rotation, deterministic resize, and alpha composite; no generated pixels",
+    "reference_mode": "source_scene",
+    "repository": "https://github.com/wuji-technology/wuji-hand-teleop",
+    "revision": "647801345a6a27dec5cbf56280ce63bb8b2f6a32",
+    "sha256": "425b8b8a135e545a7781730283ef63be34acf0858e4e655be1e2bda025b831f6",
+    "source_camera_alignment": {
+      "box_iou": 0.8880087331355315,
+      "coordinate_frame": "source_camera_frame_0_pixels",
+      "detected_hand_envelope_ltrb": [
+        605,
+        153,
+        891,
+        400
+      ],
+      "reference_placement_xywh": [
+        610,
+        150,
+        270,
+        238
+      ],
+      "required_box_iou": 0.75
+    }
+  },
+  "host": "snap-jumpbox1.redmond.corp.microsoft.com",
+  "limitations": [
+    "The reference is genuine hardware footage, but the replacement video is synthetic.",
+    "The upstream hand wears its real black compliant cover; this is not an exposed-skeleton appearance.",
+    "A real appearance reference does not establish hardware execution, contact force, or metric depth."
+  ],
+  "outputs": {
+    "prompt": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/prompt.txt",
+    "prompt_sha256": "200123b1bf674b6051c84cdd7baa8380ca1b577b17db008c42f3e7b7fcbe7767",
+    "quality_anchor_placeholder": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/source-first80-placeholder.mp4",
+    "quality_anchor_placeholder_sha256": "8a435d0840fefd697efb1bcf4149133df328176c5050206dfb92bcda1c0ea3ff",
+    "reference": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/real-wuji-reference.png",
+    "reference_alpha": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/real-wuji-reference-alpha.png",
+    "reference_alpha_sha256": "8be2086a01e407931d6d4c7339cadb2cc6a790834fcb7b0f90171794d8c12d15",
+    "reference_sha256": "d0567428f660b1773e4f9e2858c1fa0f6c65cc3131d3d56069d6eb2a359582fa"
+  },
+  "platform": "macOS-26.6.1-arm64-arm-64bit",
+  "python": "3.12.13 (main, Aug  7 2026, 02:15:23) [Clang 22.1.3 ]",
+  "schema_version": "1.0.0",
+  "source": {
+    "info": {
+      "format": {
+        "duration": "20.708333"
+      },
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "height": 720,
+          "nb_frames": "497",
+          "r_frame_rate": "24/1",
+          "width": 1280
+        }
+      ]
+    },
+    "path": "/private/tmp/phiagent-wuji.JEvI8V/source/human-hand-20p7s.mp4",
+    "prepared_path": "/private/tmp/phiagent-wuji-real.20260815/prepared-source-scene-v7/source-24fps.mp4",
+    "prepared_sha256": "019cc0fe9921d230df40954128df44a28675978572242bfe61513fa97831a951",
+    "sha256": "9ad115983e33465e1396013de8e7a1ba13b069d73df3f86b37177fbcccb3ea20"
+  }
+}
