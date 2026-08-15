@@ -307,45 +307,27 @@
 
       <section class="grid" aria-label="Demo videos">
         <article class="featured">
-          <video controls muted autoplay loop playsinline preload="metadata"
-            poster="showcase/approved-short-arranging-anchor-3p7s-poster.jpg">
-            <source src="showcase/approved-short-arranging-anchor-3p7s.mp4" type="video/mp4">
-            Your browser does not support embedded MP4 video.
-          </video>
-          <div class="copy">
-            <h2>3.7 s flower arranging: previously accepted quality anchor</h2>
-            <p>
-              The exact user-approved seed-42 clip, restored by immutable
-              SHA-256 rather than regenerated. Its 89 frames pass all 56 frozen
-              named-flower, two-hand, projected-contact, human-removal, and
-              temporal gates. This is the short visual anchor only; 2-D contact
-              does not establish force or real-robot execution.
-            </p>
-            <a class="video-link" href="showcase/approved-short-arranging-anchor-3p7s.mp4">Open approved MP4</a>
-            <a class="video-link" href="showcase/approved-short-arranging-anchor-3p7s-manifest.json">Open evidence manifest</a>
-          </div>
-        </article>
-
-        <article class="featured">
           <video controls muted loop playsinline preload="metadata"
-            poster="showcase/human-to-wuji-hand-official-model-comparison-poster.jpg">
-            <source src="showcase/human-to-wuji-hand-official-model-comparison-20p7s.mp4" type="video/mp4">
+            poster="showcase/human-to-wuji-hand-source-scene-locked-poster.jpg">
+            <source src="showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4" type="video/mp4">
             Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
-            <h2>20.7 s human hand → Wuji Hand official-model retargeting</h2>
+            <h2>20.7 s human hand → Wuji Hand, source-scene locked</h2>
             <p>
-              Frame-synchronized comparison using Wuji Technology's official
-              Wuji Hand MJCF/URDF and official retargeter. MediaPipe-21 produces
-              complete 621x20 q and qdot trajectories: 621/621 direct detections,
-              no held frames, no frozen transitions, and zero joint or URDF
-              velocity-limit violations. Render throughput is 34.740 FPS; the
-              full observed pipeline runs at 20.296 effective FPS. Honest status
-              remains PARTIAL: this is official-model simulation, not physical-
-              hardware footage or evidence of metric depth or force.
+              The left panel is the complete human source; the right panel keeps
+              that camera view and scene, then replaces only the declared hand-and-
+              arm region using Wuji Technology's official MJCF/URDF and retargeter.
+              All 621 frames have synchronized 621x20 q/qdot with no held frames,
+              frozen transitions, or joint/velocity-limit violations. Before
+              H.264 encoding, pixels outside the replacement mask are bit-exact;
+              a fixed render scale prevents hand-size breathing. Status remains
+              PARTIAL because this is official-model simulation with a procedural
+              forearm, not physical Wuji hardware or force evidence.
             </p>
-            <a class="video-link" href="showcase/human-to-wuji-hand-official-model-comparison-20p7s.mp4">Open comparison MP4</a>
-            <a class="video-link" href="showcase/human-to-wuji-hand-official-model-manifest.json">Open evidence manifest</a>
+            <a class="video-link" href="showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4">Open comparison MP4</a>
+            <a class="video-link" href="showcase/human-to-wuji-hand-source-scene-locked-manifest.json">Open evidence manifest</a>
+            <a class="video-link" href="showcase/wuji-source-scene-replacement-mask.mkv">Download audit mask</a>
             <a class="video-link" href="showcase/wuji-hand-official-model-retarget-q.npz">Download q/qdot</a>
           </div>
         </article>
@@ -401,6 +383,28 @@
             <h2>Shadow hand and forearm replacement</h2>
             <p>All 621 frames of a continuous human-hand gesture retargeted to a 24-DOF hand.</p>
             <a class="video-link" href="showcase/five-finger-shadow-arm-background-locked.mp4">Open MP4</a>
+          </div>
+        </article>
+
+        <article>
+          <video controls muted loop playsinline preload="metadata"
+            poster="showcase/approved-short-arranging-human-vs-robot-3p7s-poster.jpg">
+            <source src="showcase/approved-short-arranging-human-vs-robot-3p7s.mp4" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <h2>3.7 s flower arranging: human source vs. robot replacement</h2>
+            <p>
+              The original human florist is shown on the left and the exact
+              previously accepted seed-42 robot replacement on the right,
+              synchronized over all 89 frames. The accepted clip passes 56/56
+              frozen named-flower, two-hand, projected-contact, human-removal,
+              and temporal gates. This remains a short visual anchor: projected
+              2-D contact does not establish metric depth, force, or execution
+              by a physical robot.
+            </p>
+            <a class="video-link" href="showcase/approved-short-arranging-human-vs-robot-3p7s.mp4">Open synchronized comparison</a>
+            <a class="video-link" href="showcase/approved-short-arranging-human-vs-robot-3p7s-manifest.json">Open evidence manifest</a>
           </div>
         </article>
 

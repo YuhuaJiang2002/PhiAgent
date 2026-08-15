@@ -51,24 +51,27 @@ attempt to train a unified foundation model.
 
 Click a preview below to open its MP4.
 
-### 20.7-second human hand to Wuji Hand official-model retargeting
+### 20.7-second human hand to Wuji Hand, source-scene locked
 
-[![Human source compared frame-for-frame with the official Wuji Hand simulation model](demo/showcase/human-to-wuji-hand-official-model-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-official-model-comparison-20p7s.mp4)
+[![Human source compared frame-for-frame with the source-scene-locked Wuji Hand replacement](demo/showcase/human-to-wuji-hand-source-scene-locked-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4)
 
-[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-official-model-comparison-20p7s.mp4).
-The right panel uses Wuji Technology's official Wuji Hand MJCF/URDF assets and
-official retargeter: MediaPipe-21 observations are mapped to a complete
-621x20 `q` trajectory plus synchronized `qdot`. Direct hand detection succeeds
-on **621/621** frames, no observation is held, all 620 frame transitions move,
-and the trajectory has zero joint-position or URDF velocity-limit violations.
-The final offscreen render runs at **34.740 FPS** and decodes back to exactly
-621 frames. Detection, retargeting, rendering, encoding, and verification take
-30.598 seconds end to end (**20.296 effective FPS**).
+[Play the 621-frame synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/human-to-wuji-hand-source-scene-locked-comparison-20p7s.mp4).
+The left panel is the complete human source. The right panel retains the same
+camera view and source scene while replacing only a declared hand-and-arm mask.
+Wuji Technology's official MJCF/URDF and retargeter map MediaPipe-21 observations
+to complete 621x20 `q` and synchronized `qdot` trajectories. Direct detection
+succeeds on **621/621** frames, no observation is held, all 620 transitions move,
+and there are zero joint-position or URDF velocity-limit violations. Before lossy
+encoding, the maximum RGB difference outside the declared mask is exactly zero;
+the fixed render scale has zero frame-to-frame scale change. Rendering runs at
+**5.374 FPS**, while compositing, encoding, and the full audit take 148.194 seconds
+end to end (**4.190 effective FPS**).
 
-Status is **PARTIAL**: this is a vision-driven official-model simulation, not
-footage of physical Wuji hardware, and monocular landmarks do not establish
-metric depth, contact force, or real execution. See the
-[evidence manifest](demo/showcase/human-to-wuji-hand-official-model-manifest.json)
+Status is **PARTIAL**: this is a vision-driven official-model simulation with a
+procedural forearm, not footage of physical Wuji hardware. Monocular landmarks
+also do not establish metric depth, contact force, or real execution. See the
+[evidence manifest](demo/showcase/human-to-wuji-hand-source-scene-locked-manifest.json),
+[lossless edit-mask audit](demo/showcase/wuji-source-scene-replacement-mask.mkv),
 and [complete q/qdot artifact](demo/showcase/wuji-hand-official-model-retarget-q.npz).
 
 Scan this QR code in WeChat to open the GitHub repository:
@@ -195,6 +198,19 @@ trajectory and fixes the screen-space hand scale, removing the apparent
 morphology/size jump during the fast fist gesture around 8-9 seconds. This is a
 geometric gesture-retargeting visualization without object manipulation, not
 official PhiZero inference.
+
+### 3.7-second flower arranging: human source vs. accepted robot replacement
+
+[![Human florist compared frame-for-frame with the accepted robot replacement](demo/showcase/approved-short-arranging-human-vs-robot-3p7s-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/approved-short-arranging-human-vs-robot-3p7s.mp4)
+
+[Play the synchronized comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/approved-short-arranging-human-vs-robot-3p7s.mp4).
+The original human florist appears on the left and the exact previously accepted
+seed-42 robot replacement appears on the right, synchronized over all 89 frames.
+The retained replacement passes **56/56** frozen named-flower, two-hand,
+projected-contact, human-removal, and temporal gates. It remains a short visual
+anchor rather than evidence for the complete 27.5-second sequence; projected 2-D
+contact does not prove metric depth, force closure, or physical robot execution.
+See the [evidence manifest](demo/showcase/approved-short-arranging-human-vs-robot-3p7s-manifest.json).
 
 ### Confidence-routed three-hand comparison
 

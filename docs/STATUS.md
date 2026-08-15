@@ -6,8 +6,9 @@ locations are recorded per experiment below.
 
 ## WORKING
 
-- Official-model Wuji Hand video-retargeting and release audit infrastructure:
-  `scripts/build_wuji_hand_comparison.py` consumes an MP4 through the pinned
+- Official-model Wuji Hand video-retargeting and source-scene-lock audit
+  infrastructure: `scripts/build_wuji_hand_comparison.py` and
+  `scripts/build_wuji_scene_locked_comparison.py` consume an MP4 through the pinned
   official Wuji retargeter at commit
   `2918c60643cca3482ffa2d14d1f7fece1d9d7db9` and the official Wuji description
   submodule at `7d547ad50ca8cff92d999ae2cc01fc69bcb7c2b6`. The retained 20.7-second run
@@ -16,12 +17,19 @@ locations are recorded per experiment below.
   position violations, and zero URDF velocity-limit violations; the largest
   velocity is 59.535% of its joint limit. The 2560x768 offscreen render takes
   17.8757 seconds (**34.7399 FPS**) and the encoded result decodes to exactly
-  621 frames. The complete detect/retarget/render/encode/decode audit takes
-  30.5977 seconds (**20.2956 effective FPS**). Exact source, config, URDF,
-  MJCF, trajectory, video, and poster hashes are recorded. The builder and
-  identity/trajectory/decode gates are WORKING. The displayed result remains PARTIAL because it is monocular,
-  vision-derived official-model simulation—not footage of physical Wuji
-  hardware, metric depth/contact evidence, or real execution.
+  621 frames. The original standalone simulation builder completes the full
+  audit in 30.5977 seconds (**20.2956 effective FPS**). The retained v4
+  same-scene compositor processes the full 621-frame source in 148.1936 seconds
+  (**4.1905 effective FPS**, 5.3739 render FPS), preserves every pixel outside
+  its declared hand-and-arm mask exactly before H.264 encoding, fixes the render
+  scale at 0.819879, and publishes its lossless per-frame audit mask. Earlier
+  v1-v3 candidates were rejected for forearm-axis error, scene-mask leakage, or
+  residual source-skin triangles. Exact source, config, URDF, MJCF, trajectory,
+  video, mask, and poster hashes are recorded. The builder and
+  identity/trajectory/scene-lock/decode gates are WORKING. The displayed result
+  remains PARTIAL because it is monocular, vision-derived official-model
+  simulation with a procedural forearm—not footage of physical Wuji hardware,
+  metric depth/contact evidence, or real execution.
 - Fail-closed long-video self-evolution and SAM2-observed flower/contact state:
   the v45 challenger at
   `outputs/joyai-self-evolution/20260814T201500Z-flower-harness-v45` is the first

@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "status": "WORKING",
+  "scope": "Synchronized human-source versus previously accepted short flower-arranging visual anchor",
+  "comparison": {
+    "file": "approved-short-arranging-human-vs-robot-3p7s.mp4",
+    "sha256": "ebc9e9f6096b658d545ebd2fe7cd113ff3dc2ae6df0a7c68ed23636af7cfce92",
+    "width": 1792,
+    "height": 512,
+    "fps": 24,
+    "frames": 89,
+    "duration_seconds": 3.708333,
+    "layout": "human source on the left; accepted robot replacement on the right"
+  },
+  "poster": {
+    "file": "approved-short-arranging-human-vs-robot-3p7s-poster.jpg",
+    "sha256": "de529324abb3d21ba703b7742da9f5dbf9c4c9979b223db77b9554a2b7b7334d"
+  },
+  "accepted_replacement": {
+    "file": "approved-short-arranging-anchor-3p7s.mp4",
+    "sha256": "2afd1238a976b3b87b10ebbcbccb83ac3d5e3ca630af184738bb8bb2df00f255",
+    "seed": 42,
+    "source_frame_range_inclusive": [110, 198],
+    "route": "Wan2.2-Animate replacement with SAM2 and relighting LoRA",
+    "strict_gate_result": "56/56",
+    "strict_gate_decision": "ALLOW_FULL_FILM_EXPANSION",
+    "motion_score": 0.841772,
+    "target_identity_score": 0.981864,
+    "temporal_consistency": 0.758863
+  },
+  "evidence": {
+    "experience_record": "experiences/gpu-flower-window110-real-instance-gate-v2-record.json",
+    "gate_config": "configs/flower_window_110_198_strict_object_gate_v1.json"
+  },
+  "limitations": [
+    "The result covers one 89-frame window, not the complete 27.5-second scene.",
+    "Contact is a 2-D camera-pixel relation, not metric depth, force, or real-robot execution."
+  ]
+}

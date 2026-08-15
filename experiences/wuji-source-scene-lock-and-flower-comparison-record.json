@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-source-scene-lock-and-flower-comparison-v4",
+  "recorded_at": "2026-08-15T09:10:00Z",
+  "status": "PARTIAL",
+  "scope": "Source-scene-locked Wuji Hand replacement and synchronized short flower-arranging comparison",
+  "run_dir": "/tmp/phiagent-wuji.JEvI8V/run-20260815T-source-scene-locked-v4",
+  "summary": "The retained v4 Wuji comparison keeps the source camera and scene unchanged outside a declared hand-and-arm mask, while the flower card now compares the exact previously accepted 89-frame robot replacement with its synchronized human source. The rendering infrastructure is WORKING, but both outputs remain PARTIAL physical evidence.",
+  "evidence": [
+    "Wuji v4 decodes to 621 frames at 30 FPS and has SHA-256 e923a904efd430ea3fcae054b260ea2ee46eb20310632092d9fee270d871cb68.",
+    "The compositor has zero maximum RGB difference outside the declared camera-pixel mask before H.264 encoding; the lossless mask SHA-256 is 686d839a24be1e31ed3e4ce3918e3210086f406e237a6c7db8109a9a74dfebfe.",
+    "The post-decode exterior audit with a 6-pixel guard has mean MAE 0.494549, p95 MAE 0.555237, and maximum channel difference 146, attributable to lossy-codec edge propagation rather than pre-encode scene edits.",
+    "The render scale is fixed at 0.8198790678 with zero maximum frame step; the complete 621x20 q/qdot trajectory has 621 direct detections, no held observations, and zero joint-position or velocity-limit violations.",
+    "The Wuji scene-locked render takes 115.5583 seconds at 5.3739 FPS; the complete composite, encode, and audit path takes 148.1936 seconds at 4.1905 effective FPS.",
+    "Wuji v1 was rejected for an incorrect forearm axis and visible source arm; v2 was rejected because the skin component merged with the gray board and edited a large background region; v3 was rejected for residual source-skin triangles.",
+    "The synchronized flower comparison is 89 frames at 24 FPS with SHA-256 ebc9e9f6096b658d545ebd2fe7cd113ff3dc2ae6df0a7c68ed23636af7cfce92; its right panel is the immutable accepted replacement SHA-256 2afd1238a976b3b87b10ebbcbccb83ac3d5e3ca630af184738bb8bb2df00f255 that passed 56/56 frozen gates."
+  ],
+  "lessons": [
+    "Same-scene replacement must be accepted on pixels outside a declared edit mask, not on visual similarity alone.",
+    "A fixed screen-space render scale prevents geometry-size breathing that joint smoothing cannot address.",
+    "Public comparison videos should place the source and candidate on a common frame clock and preserve the exact accepted candidate by hash."
+  ],
+  "limitations": [
+    "The Wuji hand is an official-model simulation with a procedural forearm, not footage or telemetry from physical Wuji hardware.",
+    "Monocular observations do not prove metric depth, contact force, tactile closure, or physical execution.",
+    "The flower comparison covers only the previously accepted 3.708-second window, not the complete 27.5-second video.",
+    "The flower contact gates are projected 2-D relations and do not establish 3-D force closure."
+  ],
+  "next_actions": [
+    "Deploy the comparison bundle, then verify production media hashes, HTMLMediaElement playback, page order, and QR behavior independently.",
+    "Keep the long flower demo hidden until a full-length challenger passes the unchanged adversarial gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "wuji-hand",
+    "scene-lock",
+    "official-model",
+    "flower-arranging",
+    "comparison",
+    "adversarial-audit",
+    "partial"
+  ]
+}
