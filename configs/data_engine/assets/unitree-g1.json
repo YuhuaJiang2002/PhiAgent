@@ -1,0 +1,8 @@
+{
+  "asset_id": "unitree-g1",
+  "asset_kind": "full_robot_lock",
+  "coordinate_frame": "robot_base:unitree_g1",
+  "license": "Apache-2.0",
+  "source_revision": "mujoco-menagerie-lock-required-before-execution",
+  "source_uri": "https://github.com/google-deepmind/mujoco_menagerie/tree/main/unitree_g1"
+}

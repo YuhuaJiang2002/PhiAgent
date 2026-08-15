@@ -1,0 +1,9 @@
+{
+  "asset_id": "sharpa-wave-right",
+  "asset_kind": "robot_hand_lock",
+  "coordinate_frame": "robot_base:sharpa_wave_right",
+  "degrees_of_freedom": 20,
+  "license": "Apache-2.0",
+  "source_revision": "6eea427eb24189519f32b9f21674cd534d3f973c",
+  "source_uri": "https://github.com/SharpaWave/sharpa-wave"
+}

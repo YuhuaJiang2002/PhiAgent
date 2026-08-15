@@ -1,10 +1,21 @@
 # Status
 
-Evidence date: 2026-08-13. Status labels describe acceptance evidence, not code
+Evidence date: 2026-08-16. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
 ## WORKING
+
+- Embodied Data Engine control plane: standard-library-only typed source,
+  target, pipeline, plan, state, audit, provenance, and capacity contracts are
+  implemented under `phiagent/data_engine`. The pilot manifest deterministically
+  compiles one source, four targets, and two seeds into eight jobs with plan
+  SHA-256
+  `4b58accdbdaf83e7699fc573c0c23de0ebae93c9ae876731ea602c343a1a2664`.
+  Fifteen focused CPU tests pass, including explicit camera/robot-base frames,
+  generator and retargeter capability checks, independent audit enforcement,
+  hard-gate non-override, plan-tamper rejection, and a recoverable
+  claim-submit-audit lifecycle.
 
 - Persistent workflow framework and flower long-video reference graph: the
   standard-library `phiagent.workflows` runtime provides named nodes,
@@ -430,6 +441,28 @@ locations are recorded per experiment below.
   transitions; this acceptance is explicitly limited to early continuity.
 
 ## PARTIAL
+
+- Embodied Data Engine 100-accepted-hour campaign: the conservative Wan
+  projection is tied to a measured 27.5-second, two-A800 persistent
+  rolling-window benchmark (822.755 seconds wall time; 59.837 A800-seconds per
+  output second). At 80% first-pass yield, 85% utilization, and 15%
+  non-generation overhead it estimates 13.2 days on 32 A800s or 6.6 days on 64
+  A800s, 8,602 total A800-hours, 45,000 raw ten-second candidates, and 1.44 TB
+  working storage. This is not a completed production run. Exact Shadow,
+  Allegro, and Unitree production assets, source-corpus training rights,
+  executor adapters, measured acceptance yield, and a one-hour multi-target
+  scale pilot remain outstanding.
+
+- JoyAI 100-hour replacement capacity: the measured 665-frame A800 run and
+  660-frame final-union run imply 384.33 ideal A800-hours for 100 source hours
+  split into tested 27.5-second clips, including 0.758% causal tail padding.
+  The bounded-memory client path replaces all-frame input retention and millions
+  of JPEG files with streaming decode, eight-frame ACK windows, sampled logs,
+  and one removable MJPEG spool; 20 targeted CPU tests and Ruff pass. At 85%
+  utilization the analytic critical path is 56.52 hours on eight A800s plus one
+  postprocess worker. Multi-GPU scaling, session overhead, bitrate, failure rate,
+  and visual-quality non-regression have not run on the A800 pool, so the
+  optimized campaign remains `PARTIAL`.
 
 - Geometry-grounded AC-WM redesign: a primary-source review of 2025--2026
   releases identifies FlowWAM robot flow, Kinema4D pointmaps, and OSCAR

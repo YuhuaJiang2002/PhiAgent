@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "data-engine-control-plane-20260816-v1",
+  "recorded_at": "2026-08-15T16:26:37Z",
+  "status": "PARTIAL",
+  "scope": "Plugin-based, independently audited cross-embodiment video Data Engine control plane and 100-accepted-hour capacity projection",
+  "summary": "The CPU control plane, deterministic pilot planning, evidence-bound hard-gate audit state machine, capacity estimator, and responsive Data Engine demo work. A measured Wan infrastructure profile projects 13.2 days on 32 A800s for 100 accepted hours under explicit yield/utilization/overhead assumptions, but no 100-hour production campaign or one-hour multi-target scale pilot has run.",
+  "evidence": [
+    "PYTHONPATH=/tmp/phiagent-test-deps:. python -m pytest -q tests/test_data_engine.py: 12 passed.",
+    "PYTHONPATH=/tmp/phiagent-test-deps:. python -m ruff check phiagent/data_engine tests/test_data_engine.py: passed.",
+    "The remainder of the available CPU suite passed 286 tests when the pre-existing missing phiagent.rendering.minimax_h3 collection target was excluded; one optional MuJoCo module skipped and one Wan-Animate-2 test remained blocked by its absent external checkout.",
+    "configs/data_engine/pilot-100h.json compiles to eight jobs with plan SHA-256 4b58accdbdaf83e7699fc573c0c23de0ebae93c9ae876731ea602c343a1a2664.",
+    "outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-1pair-rolling-adopted-v6/benchmark-report.json records 822.754838 wall seconds for 27.5 output seconds and 59.836715490909086 A800-seconds per output second.",
+    "Desktop and 390x844 in-app browser checks loaded the dashboard data, exercised GPU/yield controls, found no horizontal overflow, and reported no console errors."
+  ],
+  "lessons": [
+    "A reusable data factory needs immutable campaign state and typed plugin capabilities in addition to model adapters.",
+    "Independent hard-gate conjunction prevents attractive aggregate scores from admitting candidates that lose objects, motion, identity, or physical evidence.",
+    "Accepted-output estimates must model yield, utilization, non-generation overhead, audit labor, and storage; source-hour service throughput is a separate number."
+  ],
+  "limitations": [
+    "The source manifest is an evaluation fixture whose training authorization must be confirmed before production use.",
+    "Shadow, Allegro, and Unitree files are lock descriptors; exact production asset bytes/revisions and the associated executor adapters are not yet resolved end to end.",
+    "The acceptance yield and multi-host scaling assumptions are not yet measured, and the 100-hour dataset has not been generated.",
+    "The current pilot claim scope is visual training data, not metric robot trajectories, persistent 3-D geometry, force/contact, or real-robot execution."
+  ],
+  "next_actions": [
+    "Resolve authorized source splits and exact target asset revisions, then implement the source, retarget, generator, and auditor executor adapters behind the plugin ABI.",
+    "Run a one-hour multi-target A800 pilot and replace assumed yield, utilization, retry-tail, review, and storage values with measured distributions.",
+    "Promote only after independent gates pass across at least two scene/task groups; keep rejected morphology cases in the public benchmark."
+  ],
+  "run_dir": "configs/data_engine",
+  "supersedes": [],
+  "tags": [
+    "data-engine",
+    "harness",
+    "cross-embodiment",
+    "capacity",
+    "independent-audit",
+    "partial"
+  ]
+}

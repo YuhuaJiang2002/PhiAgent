@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "profiles": [
+    {
+      "accelerator": "NVIDIA A800 80GB",
+      "accelerator_seconds_per_output_second": 59.836715490909086,
+      "accelerators_per_worker": 2,
+      "benchmark_sha256": "778ee914ef68d1c22e1f329e49d1af4b5b69bf459d3c669a83a0aa1959b3e8fd",
+      "benchmark_uri": "outputs/wan-long-infra/20260812T-full27p5s-a8004-persistent-1pair-rolling-adopted-v6/benchmark-report.json",
+      "claim_boundary": "One measured 27.5-second rolling-window infrastructure run; visual and physical acceptance yield is modeled separately.",
+      "evidence_status": "WORKING",
+      "profile_id": "wan-a800-persistent-rolling-v6",
+      "wall_seconds_per_output_second": 29.918357745454543
+    },
+    {
+      "accelerator": "NVIDIA A800 80GB",
+      "accelerator_seconds_per_output_second": 16.448609410147917,
+      "accelerators_per_worker": 1,
+      "benchmark_sha256": "a5914b928ec4b6b9320406f4f31a2fb1b60c898569b222eaf56f27ad45dad76f",
+      "benchmark_uri": "outputs/bwm-action-guidance/20260813T030154.862129Z-scale1-patched-seed20260813/result.json",
+      "claim_boundary": "Held-out 2.375-second BWM action-guidance smoke; not yet a validated embodiment-replacement production profile.",
+      "evidence_status": "PARTIAL",
+      "profile_id": "bwm-a800-smoke-projection",
+      "wall_seconds_per_output_second": 16.448609410147917
+    }
+  ]
+}

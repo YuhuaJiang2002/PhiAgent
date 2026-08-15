@@ -1,0 +1,37 @@
+{
+  "evidence": [
+    "The six dependency-free evaluation modules and their integration passed 107 targeted and existing evaluation regression tests.",
+    "Ruff lint and format checks passed for all new evaluation modules and tests.",
+    "An independent code-review pass found four acceptance, articulation-window, small-image, and time-normalization defects; all four were fixed, covered by regressions, and confirmed resolved in a second review.",
+    "The full repository test suite remains blocked during collection by the pre-existing missing module phiagent.rendering.minimax_h3 in tests/test_acwm_hand_structure.py."
+  ],
+  "lessons": [
+    "A fail-closed metric stack also requires the experiment summary to preserve the exact contract used for each per-unit decision.",
+    "Motion smoothness must declare both timestamp units and a dimensionally compatible jerk normalization.",
+    "Synthetic negative controls are useful engineering evidence but do not establish real-scene physical-transfer validity."
+  ],
+  "limitations": [
+    "The complete contract has not been run on frozen real evaluation units with robot masks, landmarks, calibrated object tracks, EPL phases, and contact evidence.",
+    "The deterministic sharpness and pixel-temporal diagnostics are proxies, not perceptual-realism or physical-execution metrics."
+  ],
+  "next_actions": [
+    "Freeze independent real scene-action-object-embodiment-seed units, generate the required structured observations with pinned perception adapters, and report VTR with Wilson intervals and worst-group rates.",
+    "Resolve the unrelated phiagent.rendering.minimax_h3 collection blocker before claiming a clean full-repository test run."
+  ],
+  "record_id": "2026-08-16.physical-transfer-evaluation-contract-v1",
+  "recorded_at": "2026-08-15T16:25:00Z",
+  "run_dir": null,
+  "schema_version": "1.0.0",
+  "scope": "Strict physical-transfer evaluation contract and synthetic CPU validation",
+  "status": "PARTIAL",
+  "summary": "Implemented and regression-tested strict action, EPL, embodiment, interaction, temporal, background, and experiment-level VTR evaluation, but complete real-input acceptance remains not run.",
+  "supersedes": [],
+  "tags": [
+    "evaluation",
+    "physical-transfer",
+    "vtr",
+    "fail-closed",
+    "cpu",
+    "partial"
+  ]
+}

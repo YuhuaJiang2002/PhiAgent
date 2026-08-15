@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "data-engine-control-plane-20260816-v2",
+  "recorded_at": "2026-08-15T16:32:51Z",
+  "status": "PARTIAL",
+  "scope": "Recoverable plugin-based cross-embodiment video Data Engine and 100-accepted-hour capacity projection",
+  "summary": "The Data Engine now includes deterministic plan locking, file-locked job claim, SHA-bound submit, explicit reasoned requeue, independent hard-gate audit, capacity estimation, and a responsive production dashboard. The manager lifecycle works on CPU, while model executor adapters and the measured 100-hour campaign remain incomplete.",
+  "evidence": [
+    "PYTHONPATH=/tmp/phiagent-test-deps:. python -m pytest -q tests/test_data_engine.py: 15 passed.",
+    "PYTHONPATH=/tmp/phiagent-test-deps:. python -m ruff check phiagent/data_engine tests/test_data_engine.py: passed.",
+    "The available CPU regression suite passed 289 tests with one optional MuJoCo skip after excluding the pre-existing missing phiagent.rendering.minimax_h3 collection target and deselecting one test that requires the absent external/Wan-Animate-2 checkout.",
+    "A CLI smoke created a fresh eight-job run, reported revision 0, atomically claimed one job, bound its artifact manifest SHA-256, and reported revision 2 with one audit-pending job.",
+    "The pilot plan remains hash-bound at 4b58accdbdaf83e7699fc573c0c23de0ebae93c9ae876731ea602c343a1a2664, and all source, asset-descriptor, and benchmark hashes match their manifest entries.",
+    "The final local server reload returned every automatically requested resource without 404; desktop and 390x844 browser checks had zero horizontal overflow and no warning/error console logs."
+  ],
+  "lessons": [
+    "A harness needs atomic externally callable transitions, not only in-memory state types; job claim, manifest submission, recovery, and audit now share one persisted revision history.",
+    "Every candidate handoff must bind the artifact manifest by hash before audit, and every stranded-job recovery must retain a reason and increment the attempt count.",
+    "Accepted-output capacity must remain separate from source-hour service throughput and must expose yield, utilization, review, overhead, and storage assumptions."
+  ],
+  "limitations": [
+    "The plugin descriptors and manager are working contracts, but end-to-end source, retarget, generation, and auditor executor adapters are not implemented behind this ABI yet.",
+    "Source training authorization and exact production bytes/revisions for Shadow, Allegro, and Unitree remain unresolved.",
+    "The first-pass yield, multi-host scaling, retry-tail distribution, and review assumptions are modeled rather than measured in a one-hour production pilot.",
+    "The current claim scope is visual training data; metric camera, exact robot trajectory, persistent geometry, force/contact, and real-robot gates have not passed."
+  ],
+  "next_actions": [
+    "Implement GPU-preflighted executor adapters and a worker heartbeat that can propose, but not silently perform, stale-lease recovery.",
+    "Run an authorized one-hour source-by-target pilot on the A800 pool and replace capacity assumptions with measured distributions and confidence intervals.",
+    "Publish a compact benchmark with at least two independent scene/task groups, accepted and rejected evidence, a cost card, and a plugin authoring guide before the 100-hour run."
+  ],
+  "run_dir": "configs/data_engine",
+  "supersedes": [
+    "data-engine-control-plane-20260816-v1"
+  ],
+  "tags": [
+    "data-engine",
+    "harness",
+    "recoverable-state",
+    "cross-embodiment",
+    "capacity",
+    "independent-audit",
+    "partial"
+  ]
+}

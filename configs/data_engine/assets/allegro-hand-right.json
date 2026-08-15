@@ -1,0 +1,9 @@
+{
+  "asset_id": "allegro-hand-right",
+  "asset_kind": "robot_hand_lock",
+  "coordinate_frame": "robot_base:allegro_hand_right",
+  "degrees_of_freedom": 16,
+  "license": "Apache-2.0",
+  "source_revision": "mujoco-menagerie-lock-required-before-execution",
+  "source_uri": "https://github.com/google-deepmind/mujoco_menagerie/tree/main/wonik_allegro"
+}

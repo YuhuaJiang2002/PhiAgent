@@ -206,6 +206,225 @@
         color: #7ee7c8;
       }
 
+      .data-engine {
+        margin: 0 0 32px;
+        overflow: hidden;
+        border: 1px solid rgba(126, 231, 200, 0.24);
+        border-radius: 18px;
+        background: linear-gradient(145deg, rgba(18, 35, 35, 0.96), rgba(11, 17, 29, 0.96));
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+      }
+
+      .engine-header,
+      .engine-proof {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 24px;
+      }
+
+      .engine-header {
+        border-bottom: 1px solid rgba(174, 184, 208, 0.14);
+      }
+
+      .engine-header h2,
+      .engine-header p,
+      .engine-proof p {
+        margin: 0;
+      }
+
+      .engine-status {
+        color: #7ee7c8;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.09em;
+        text-align: right;
+      }
+
+      .engine-status small {
+        display: block;
+        margin-top: 5px;
+        color: #aeb8d0;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .engine-console {
+        display: grid;
+        grid-template-columns: minmax(230px, 0.72fr) minmax(0, 1.5fr);
+      }
+
+      .engine-controls {
+        padding: 24px;
+        border-right: 1px solid rgba(174, 184, 208, 0.14);
+      }
+
+      .engine-target {
+        margin-bottom: 24px;
+      }
+
+      .engine-target span,
+      .range-control > span,
+      .engine-metrics dt,
+      .fleet-row span,
+      .engine-proof span {
+        color: #aeb8d0;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .engine-target strong {
+        display: block;
+        margin-top: 7px;
+        color: #eef2ff;
+        font-size: 2rem;
+      }
+
+      .engine-target strong small {
+        color: #aeb8d0;
+        font-size: 0.72rem;
+        font-weight: 500;
+      }
+
+      .range-control {
+        display: block;
+        margin-top: 22px;
+      }
+
+      .range-control > span {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .range-control b {
+        color: #7ee7c8;
+      }
+
+      .range-control input {
+        width: 100%;
+        margin-top: 12px;
+        accent-color: #7ee7c8;
+      }
+
+      .engine-assumptions {
+        margin: 24px 0 0;
+        color: #aeb8d0;
+        font-size: 0.74rem;
+      }
+
+      .engine-output {
+        min-width: 0;
+      }
+
+      .capacity-summary {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        border-bottom: 1px solid rgba(174, 184, 208, 0.14);
+      }
+
+      .capacity-primary {
+        padding: 24px;
+        border-right: 1px solid rgba(174, 184, 208, 0.14);
+      }
+
+      .capacity-primary > span {
+        color: #aeb8d0;
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+      }
+
+      .capacity-primary strong {
+        display: block;
+        margin-top: 8px;
+        color: #7ee7c8;
+        font-size: clamp(2.8rem, 6vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+      }
+
+      .capacity-primary strong small {
+        font-size: 1rem;
+        letter-spacing: 0;
+      }
+
+      .capacity-primary p {
+        margin-bottom: 0;
+        font-size: 0.76rem;
+      }
+
+      .engine-metrics {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin: 0;
+      }
+
+      .engine-metrics div {
+        padding: 20px;
+        border-right: 1px solid rgba(174, 184, 208, 0.12);
+        border-bottom: 1px solid rgba(174, 184, 208, 0.12);
+      }
+
+      .engine-metrics div:nth-child(2n) {
+        border-right: 0;
+      }
+
+      .engine-metrics div:nth-last-child(-n + 2) {
+        border-bottom: 0;
+      }
+
+      .engine-metrics dd {
+        margin: 8px 0 0;
+        color: #eef2ff;
+        font-size: 0.9rem;
+      }
+
+      .fleet-bars {
+        padding: 20px 24px;
+      }
+
+      .fleet-row {
+        display: grid;
+        grid-template-columns: 82px minmax(0, 1fr) 58px;
+        gap: 12px;
+        align-items: center;
+        min-height: 32px;
+      }
+
+      .fleet-track {
+        height: 6px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(174, 184, 208, 0.11);
+      }
+
+      .fleet-track b {
+        display: block;
+        width: 25%;
+        height: 100%;
+        background: linear-gradient(90deg, #7ee7c8, #9db2ff);
+        transition: width 160ms ease;
+      }
+
+      .fleet-row strong {
+        font-size: 0.72rem;
+        text-align: right;
+      }
+
+      .engine-proof {
+        border-top: 1px solid rgba(174, 184, 208, 0.14);
+        color: #aeb8d0;
+        font-size: 0.72rem;
+      }
+
+      .engine-proof b {
+        display: block;
+        margin-top: 4px;
+        color: #eef2ff;
+        font-weight: 600;
+      }
+
       @media (max-width: 720px) {
         main {
           width: min(100% - 20px, 1120px);
@@ -229,6 +448,27 @@
         .support-status {
           grid-column: 1;
           margin: -8px 0 0;
+        }
+
+        .engine-header,
+        .engine-proof {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .engine-status {
+          text-align: left;
+        }
+
+        .engine-console,
+        .capacity-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .engine-controls,
+        .capacity-primary {
+          border-right: 0;
+          border-bottom: 1px solid rgba(174, 184, 208, 0.14);
         }
       }
     </style>
@@ -260,6 +500,67 @@
           <span class="star-count" aria-label="GitHub Star count"><span aria-hidden="true">★</span><span id="githubStarCount">—</span></span>
         </a>
         <p id="githubLikeStatus" class="support-status" aria-live="polite">Opens the matching GitHub repository in a new tab.</p>
+      </section>
+
+      <section class="data-engine" id="data-engine" aria-labelledby="dataEngineTitle">
+        <div class="engine-header">
+          <div>
+            <p class="eyebrow">Reproducible capacity control plane</p>
+            <h2 id="dataEngineTitle">Embodied Data Engine</h2>
+          </div>
+          <div class="engine-status">
+            CONTROL PLANE · WORKING
+            <small>Production executors and 100-hour campaign · PARTIAL</small>
+          </div>
+        </div>
+
+        <div class="engine-console">
+          <div class="engine-controls">
+            <div class="engine-target">
+              <span>Delivery target</span>
+              <strong>100 <small>accepted video hours</small></strong>
+              <p>Rejected candidates retain evidence and never enter the accepted shard.</p>
+            </div>
+            <label class="range-control" for="gpuCount">
+              <span>Accelerators <b id="gpuValue">32 × A800</b></span>
+              <input id="gpuCount" type="range" min="2" max="64" step="2" value="32">
+            </label>
+            <label class="range-control" for="yieldRate">
+              <span>First-pass yield <b id="yieldValue">80%</b></span>
+              <input id="yieldRate" type="range" min="60" max="90" step="5" value="80">
+            </label>
+            <p class="engine-assumptions">
+              Fixed assumptions: 85% utilization and 15% ingest, audit, and export overhead.
+            </p>
+          </div>
+
+          <div class="engine-output">
+            <div class="capacity-summary">
+              <div class="capacity-primary">
+                <span>Estimated wall time</span>
+                <strong id="etaDays">13.2<small> days</small></strong>
+                <p id="etaDetail">16 parallel workers · measured rolling-window profile</p>
+              </div>
+              <dl class="engine-metrics">
+                <div><dt>A800 compute</dt><dd id="gpuHours">8,602 GPU·h</dd></div>
+                <div><dt>Raw candidates</dt><dd id="rawClips">45,000 clips</dd></div>
+                <div><dt>Accepted / day</dt><dd id="dailyHours">7.59 video h</dd></div>
+                <div><dt>Working set</dt><dd id="storageValue">1.44 TB</dd></div>
+              </dl>
+            </div>
+            <div class="fleet-bars" aria-label="Capacity estimates by accelerator count">
+              <div class="fleet-row"><span>8 × A800</span><i class="fleet-track"><b id="bar8"></b></i><strong id="days8">52.7 D</strong></div>
+              <div class="fleet-row"><span>32 × A800</span><i class="fleet-track"><b id="bar32"></b></i><strong id="days32">13.2 D</strong></div>
+              <div class="fleet-row"><span>64 × A800</span><i class="fleet-track"><b id="bar64"></b></i><strong id="days64">6.6 D</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="engine-proof">
+          <div><span>Measured baseline</span><b><span id="rtfValue">29.918×</span> wall RTF · persistent rolling windows</b></div>
+          <div><span>Plan hash</span><b id="planHash">4b58accdbdaf…</b></div>
+          <p>This is a measured-rate capacity model, not a completed 100-hour production run.</p>
+        </div>
       </section>
 
       <section class="grid" aria-label="Demo videos">
@@ -399,6 +700,61 @@
       const githubLikeLabel = document.querySelector("#githubLikeLabel");
       const githubLikeStatus = document.querySelector("#githubLikeStatus");
       const githubStarCount = document.querySelector("#githubStarCount");
+      const gpuCount = document.querySelector("#gpuCount");
+      const yieldRate = document.querySelector("#yieldRate");
+
+      let engineBenchmark = {
+        targetHours: 100,
+        acceleratorsPerWorker: 2,
+        wallRtf: 29.918357745454543,
+        acceleratorSecondsPerOutputSecond: 59.836715490909086,
+        planHash: "4b58accdbdaf83e7699fc573c0c23de0ebae93c9ae876731ea602c343a1a2664",
+      };
+
+      function engineEstimate(accelerators, yieldPercent) {
+        const workers = Math.max(1, Math.floor(accelerators / engineBenchmark.acceleratorsPerWorker));
+        const acceptedYield = yieldPercent / 100;
+        const overhead = 1.15;
+        const utilization = 0.85;
+        const calendarHours = engineBenchmark.targetHours * engineBenchmark.wallRtf * overhead
+          / acceptedYield / workers / utilization;
+        return {
+          days: calendarHours / 24,
+          workers,
+          gpuHours: engineBenchmark.targetHours
+            * engineBenchmark.acceleratorSecondsPerOutputSecond * overhead / acceptedYield,
+          rawClips: Math.ceil(engineBenchmark.targetHours * 3600 / 10 / acceptedYield),
+          dailyHours: engineBenchmark.targetHours / (calendarHours / 24),
+          storageTb: engineBenchmark.targetHours * 3600 * 8 / 8 / 1000 * 4 / 1000,
+        };
+      }
+
+      function updateCapacityConsole() {
+        const accelerators = Number(gpuCount.value);
+        const yieldPercent = Number(yieldRate.value);
+        const estimate = engineEstimate(accelerators, yieldPercent);
+        document.querySelector("#gpuValue").textContent = `${accelerators} × A800`;
+        document.querySelector("#yieldValue").textContent = `${yieldPercent}%`;
+        document.querySelector("#etaDays").innerHTML = `${estimate.days.toFixed(1)}<small> days</small>`;
+        document.querySelector("#etaDetail").textContent =
+          `${estimate.workers} parallel workers · measured rolling-window profile`;
+        document.querySelector("#gpuHours").textContent =
+          `${Math.round(estimate.gpuHours).toLocaleString()} GPU·h`;
+        document.querySelector("#rawClips").textContent =
+          `${estimate.rawClips.toLocaleString()} clips`;
+        document.querySelector("#dailyHours").textContent =
+          `${estimate.dailyHours.toFixed(2)} video h`;
+        document.querySelector("#storageValue").textContent = `${estimate.storageTb.toFixed(2)} TB`;
+
+        const fleetEstimates = [8, 32, 64].map((count) => engineEstimate(count, yieldPercent));
+        const fastestThroughput = Math.max(...fleetEstimates.map((item) => 1 / item.days));
+        [8, 32, 64].forEach((count, index) => {
+          const item = fleetEstimates[index];
+          document.querySelector(`#days${count}`).textContent = `${item.days.toFixed(1)} D`;
+          document.querySelector(`#bar${count}`).style.width =
+            `${Math.max(8, (1 / item.days) / fastestThroughput * 100)}%`;
+        });
+      }
 
       videos.forEach((video) => {
         video.addEventListener("play", () => {
@@ -415,6 +771,33 @@
         githubLikeLabel.textContent = "GitHub opened";
         githubLikeStatus.textContent = "On the repository page, click Star in the upper-right to complete your like.";
       });
+
+      gpuCount.addEventListener("input", updateCapacityConsole);
+      yieldRate.addEventListener("input", updateCapacityConsole);
+      updateCapacityConsole();
+
+      fetch("data-engine-benchmark.json?v=1")
+        .then((response) => response.ok
+          ? response.json()
+          : Promise.reject(new Error("capacity benchmark unavailable")))
+        .then((payload) => {
+          engineBenchmark = {
+            targetHours: payload.campaign.target_output_hours,
+            acceleratorsPerWorker: payload.profile.accelerators_per_worker,
+            wallRtf: payload.profile.wall_seconds_per_output_second,
+            acceleratorSecondsPerOutputSecond:
+              payload.profile.accelerator_seconds_per_output_second,
+            planHash: payload.campaign.plan_sha256,
+          };
+          document.querySelector("#rtfValue").textContent =
+            `${engineBenchmark.wallRtf.toFixed(3)}×`;
+          document.querySelector("#planHash").textContent =
+            `${engineBenchmark.planHash.slice(0, 12)}…`;
+          updateCapacityConsole();
+        })
+        .catch(() => {
+          document.querySelector("#planHash").textContent = "LOCAL FALLBACK";
+        });
 
       fetch("https://api.github.com/repos/YuhuaJiang2002/PhiAgent", {
         headers: { Accept: "application/vnd.github+json" },

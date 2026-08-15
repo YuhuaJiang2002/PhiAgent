@@ -1,0 +1,71 @@
+{
+  "campaign_id": "phi-data-engine-pilot-100h",
+  "candidate_seeds": [42, 314159],
+  "pipeline": {
+    "auditor_plugins": ["local-video-auditor"],
+    "claim_scope": "visual_training_data",
+    "generator_plugin": "wan-animate2",
+    "overlap_seconds": 1.0,
+    "required_gates": [
+      "source_lineage",
+      "exact_asset_identity",
+      "human_removal",
+      "motion_preservation",
+      "object_preservation",
+      "temporal_continuity",
+      "background_preservation"
+    ],
+    "source_plugin": "local-video-source",
+    "window_seconds": 5.0
+  },
+  "schema_version": "1.0.0",
+  "seed": 20260816,
+  "sources": [
+    {
+      "coordinate_frame": "camera:hand2dex2_real_scene",
+      "duration_seconds": 5.166667,
+      "fps": 24.0,
+      "rights_basis": "Repository-held Hand2Dex-2 evaluation asset; confirm training authorization before production use.",
+      "scene_group": "hand2dex2-bowl",
+      "sha256": "6c0805f6d54020e592790d749433d49106bb203393ea44e7ea74e985937badd9",
+      "source_id": "hand2dex2-bowl-0001",
+      "tasks": ["grasp", "lift", "carry"],
+      "uri": "demo/showcase/oscar-acwm-real-source.mp4"
+    }
+  ],
+  "target_output_hours": 100.0,
+  "targets": [
+    {
+      "asset_sha256": "ddd38c4a087151b1e8c3d4f926c25cb97bef3a2828a5fed8e93fdcde4f956f80",
+      "asset_uri": "configs/data_engine/assets/sharpa-wave-right.json",
+      "coordinate_frame": "robot_base:sharpa_wave_right",
+      "replacement_scope": "hand",
+      "retarget_plugin": "dex-retarget",
+      "target_id": "sharpa-wave-right"
+    },
+    {
+      "asset_sha256": "975824ba113ab24c280a20bebfadf18c0988bf128a53c50800cc1ef6ae876346",
+      "asset_uri": "configs/data_engine/assets/shadow-hand-right.json",
+      "coordinate_frame": "robot_base:shadow_hand_right",
+      "replacement_scope": "hand",
+      "retarget_plugin": "dex-retarget",
+      "target_id": "shadow-hand-right"
+    },
+    {
+      "asset_sha256": "e97f2b54dd0e8c8159d94d8912dd3163d9b5aa9085c7391cabe284e2a49fdce6",
+      "asset_uri": "configs/data_engine/assets/allegro-hand-right.json",
+      "coordinate_frame": "robot_base:allegro_hand_right",
+      "replacement_scope": "hand",
+      "retarget_plugin": "dex-retarget",
+      "target_id": "allegro-hand-right"
+    },
+    {
+      "asset_sha256": "373f045bdb004ffaae6e07b7932796f72317c5fbf1eb5b2eb535018ca7ae3920",
+      "asset_uri": "configs/data_engine/assets/unitree-g1.json",
+      "coordinate_frame": "robot_base:unitree_g1",
+      "replacement_scope": "full_embodiment",
+      "retarget_plugin": "epl-retarget",
+      "target_id": "unitree-g1"
+    }
+  ]
+}

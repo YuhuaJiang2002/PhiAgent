@@ -12,6 +12,38 @@ simulation, and robot video:
 The project is being built as measured teacher-pipeline milestones before any
 attempt to train a unified foundation model.
 
+## Embodied Data Engine
+
+PhiAgent includes a lightweight, reproducible control plane for bulk hand and
+full-embodiment video replacement. Inspired by DeepSeek Harness's plugin surface
+and LongHorizon-Harness's Manage-Execute-Audit separation, it compiles
+`source × target × seed × window` into immutable jobs, keeps explicit recoverable
+state, and allows only an independent evidence-bound auditor to accept output.
+File-locked `claim`, hash-bound `submit`, and independent `audit` commands let
+many workers share a persisted campaign without editing JSON by hand. A high
+average score cannot hide one failed hard gate.
+
+```bash
+PYTHONPATH=. python -m phiagent.data_engine.cli plugins
+PYTHONPATH=. python -m phiagent.data_engine.cli plan \
+  configs/data_engine/pilot-100h.json
+PYTHONPATH=. python -m phiagent.data_engine.cli estimate \
+  configs/data_engine/benchmarks.json \
+  --profile wan-a800-persistent-rolling-v6 \
+  --target-hours 100 --accelerators 32 --yield 0.8
+```
+
+Under the measured rolling-window Wan profile and explicit assumptions of 80%
+first-pass yield, 85% utilization, and 15% non-generation overhead, producing
+100 accepted hours is projected at **13.2 days on 32 A800s** or **6.6 days on
+64 A800s**. This is a capacity model—not a completed 100-hour production run.
+The control plane is `WORKING`; production executors, source authorization,
+exact asset resolution, and a multi-target one-hour pilot remain `PARTIAL` or
+`NOT STARTED`.
+
+See the [architecture, assumptions, and rollout plan](docs/DATA_ENGINE.md), or
+open the [interactive capacity console](https://yuhuajiang2002.github.io/PhiAgent/#data-engine).
+
 ## Key concepts
 
 - **EPL (Embodied Physical Language)** is PhiAgent's typed, interpretable
@@ -74,6 +106,22 @@ Status remains **PARTIAL**: late hand sharpness misses its frozen lower gate in
 camera-frame visual checks, not metric depth, contact-force, force-closure, or
 real-robot evidence. See the
 [comparison manifest](demo/showcase/joyai-flower-persistent-grasp-manifest.json).
+
+### 100-hour replacement-data capacity
+
+The measured JoyAI full-stream baseline generates 665 frames in 105.692 seconds
+on one A800. For 100 hours at 24 fps, split into the tested 27.5-second clips,
+causal padding raises 8.64 million source frames to 8.705 million generated
+frames. This requires 384.33 ideal A800-hours. At 85% utilization, the estimated
+critical path is 18.84 days on one A800, 2.35 days on eight A800s, or 1.18 days
+on sixteen A800s with two postprocess workers. These are capacity estimates, not
+measured multi-GPU results.
+
+`scripts/run_joyai_video_edit_client.py --throughput-mode` uses bounded
+streaming input, eight-frame ACK windows, sampled protocol logs, a single MJPEG
+spool, and review-only output with successful-spool cleanup. This removes the
+all-frames-in-memory path and avoids retaining 8.7 million JPEG files. See the
+[full assumptions, storage estimate, and acceptance boundary](docs/JOYAI_SCISSORS_CONTACT.md#100-hour-capacity-estimate).
 
 ### Supplemental real-scene action-conditioned comparison
 

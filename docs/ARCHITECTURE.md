@@ -1,5 +1,35 @@
 # Architecture
 
+## Embodied Data Engine control plane
+
+The Data Engine wraps PhiAgent's heterogeneous research routes in a small,
+standard-library-only orchestration contract:
+
+    authorized sources + pinned target assets + campaign contract
+      -> manager: deterministic source x target x seed jobs and rolling windows
+      -> executor plugin: retarget and generate one bounded job
+      -> hash-bound artifact manifest
+      -> independent read-only auditor: all required hard gates
+      -> accepted shard or retained rejection evidence
+
+Source frames must be named `camera:*`; target assets must be named
+`robot_base:*`. Generator capability and per-target retargeter capability are
+validated before a plan is admitted. Visual-training-data and
+physically-grounded claims are separate contracts: the latter cannot omit
+metric camera, exact trajectory, persistent geometry, or contact-force gates.
+
+The manager owns immutable campaign state. Its file-backed controller atomically
+leases jobs, binds submissions to artifact-manifest SHA-256, revalidates the
+plan hash on every load, increments state revisions, and appends transition
+events under a POSIX file lock. Stranded jobs require an explicit reasoned
+requeue before a new worker can claim them. Executors cannot accept their own
+work, auditors cannot replace hard-gate conjunction with a mean score, and a
+rejected job can be reclaimed without deleting its audit history. Heavyweight
+adapters are discovered only through the `phiagent.data_engine.plugins` entry
+point so importing the package remains CPU-only. See
+[`docs/DATA_ENGINE.md`](DATA_ENGINE.md) for the schema, CLI, evidence boundaries,
+and measured capacity projection.
+
 ## PhiZero reproduction mainline
 
 The target is Figure 8(b), Human Hand to Sharpa Dexterous Hand Transfer. It uses
