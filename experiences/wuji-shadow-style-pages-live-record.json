@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-shadow-style-pages-live",
+  "recorded_at": "2026-08-15T03:15:00Z",
+  "status": "WORKING",
+  "scope": "Production deployment verification for the Shadow-style Wuji replacement and Shadow/Wuji card swap",
+  "run_dir": "https://github.com/YuhuaJiang2002/PhiAgent/actions/runs/31860217745",
+  "summary": "GitHub Pages deployed commit 9c26d6f3b72214271e2a10576b42af67b17e9499 successfully; production bytes, video decode and playback, evidence files, and the requested Shadow-first/Wuji-fifth page order all pass.",
+  "evidence": [
+    "Workflow run 31860217745 completed successfully in 31 seconds with site preparation, artifact upload, and deployment all passing.",
+    "The production Wuji v7 MP4 matches SHA-256 757e97941d3379dbc41150146d0b7595f0314561c867928aeb7d19ac4cbb4c71 and probes as H.264 2560x768, 30 FPS, 621 frames, and 20.7 seconds.",
+    "Production manifest and background-adversarial-audit JSON files match the committed bytes exactly.",
+    "Production HTML places the Shadow MP4 first and the new Shadow-style Wuji MP4 fifth; the old broad-forearm Wuji source is absent.",
+    "In Edge, both Shadow and Wuji reach HTMLMediaElement readyState 4 with no error and exact 20.7-second 2560x768 metadata.",
+    "After explicit play actions, Shadow advances to 1.356486 seconds and Wuji advances to 1.239277 seconds.",
+    "Visual production review confirms the first card displays Shadow and the fifth card displays the thin-forearm Wuji v7 poster and evidence links."
+  ],
+  "lessons": [
+    "A requested card-order change should be guarded in source tests and independently checked in the production DOM.",
+    "Production acceptance requires byte identity, media state, playback progression, and visible page placement rather than workflow success alone."
+  ],
+  "limitations": [
+    "The published Wuji output remains official-hand simulation with a procedural forearm, not physical Wuji hardware evidence.",
+    "The GitHub Pages workflow emits a non-blocking annotation because GitHub forces current Node.js 20 actions onto Node.js 24."
+  ],
+  "next_actions": [
+    "Keep v7 pinned until a challenger passes the same fixed background, wrist-overlap, full-decode, and high-resolution review gates."
+  ],
+  "supersedes": [],
+  "tags": [
+    "github-pages",
+    "production",
+    "browser-audit",
+    "wuji-hand",
+    "shadow-hand",
+    "page-order",
+    "working"
+  ]
+}
