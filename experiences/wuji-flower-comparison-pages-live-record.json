@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-15.wuji-flower-comparison-pages-live",
+  "recorded_at": "2026-08-15T00:47:00Z",
+  "status": "WORKING",
+  "scope": "Production GitHub Pages verification for source-scene-locked Wuji and synchronized short flower comparisons",
+  "run_dir": "https://github.com/YuhuaJiang2002/PhiAgent/actions/runs/31854486347",
+  "summary": "GitHub Pages deployed commit 9c5abb0466be817bd9f5661d75b3e7af5282b4b3 successfully; production media hashes, browser decode and playback, page order, and the repository QR all pass.",
+  "evidence": [
+    "Workflow run 31854486347 completed successfully in 26 seconds with checkout, Pages configuration, site preparation, upload, and deployment all passing.",
+    "The production 20.7-second Wuji comparison matches local SHA-256 e923a904efd430ea3fcae054b260ea2ee46eb20310632092d9fee270d871cb68 and probes as H.264 2560x768 at 30 FPS.",
+    "The production 3.708008-second flower comparison matches local SHA-256 ebc9e9f6096b658d545ebd2fe7cd113ff3dc2ae6df0a7c68ed23636af7cfce92 and probes as H.264 1792x512 at 24 FPS.",
+    "The production QR matches SHA-256 c92cde3fc4607c5ffc7d054ec2948d9a92a710d8fe178bcac77169c4053cfc71 and links to https://github.com/YuhuaJiang2002/PhiAgent.",
+    "In Edge, the Wuji and flower videos both reach HTMLMediaElement readyState 4 with no error, exact durations and dimensions, and advance to 1.425551 and 0.671104 seconds after explicit play actions.",
+    "The production card order places Shadow hand and forearm replacement fifth and the flower human-source comparison sixth.",
+    "At the bottom of the production page the QR is complete, visible, 720x720 native pixels, and displayed at 270x270 pixels."
+  ],
+  "lessons": [
+    "A green Pages job is insufficient by itself; production bytes and browser playback must be independently verified.",
+    "Deployment filters must be checked against every newly referenced media filename before publishing.",
+    "Page-order requirements are acceptance criteria and should be tested from the rendered DOM."
+  ],
+  "limitations": [
+    "The flower comparison remains the accepted 89-frame window rather than a solved full-length flower-arranging sequence.",
+    "The Wuji output remains official-model simulation with a procedural forearm rather than physical-hardware footage.",
+    "The Pages workflow emits a non-blocking annotation because GitHub currently forces Node.js 20 actions onto Node.js 24."
+  ],
+  "next_actions": [
+    "Keep the complete long flower video hidden until a challenger passes the unchanged adversarial gates.",
+    "Upgrade GitHub Actions revisions when native Node.js 24 releases become available."
+  ],
+  "supersedes": [],
+  "tags": [
+    "github-pages",
+    "production",
+    "browser-audit",
+    "wuji-hand",
+    "flower-comparison",
+    "qr",
+    "working"
+  ]
+}
