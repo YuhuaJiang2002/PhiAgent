@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-18.github-pages-joyai-late-contact-demo-working",
+  "recorded_at": "2026-08-18T05:23:38Z",
+  "status": "WORKING",
+  "scope": "GitHub and GitHub Pages publication of the JoyAI late flower-contact case and reproducible harness",
+  "summary": "PR 12 published the 27.5-second source-versus-JoyAI comparison, frozen prompt and seed protocol, full-stream generation harness, audits, tests, and reproducibility document. The Pages workflow completed successfully, every new public asset returned HTTP 200, and a production browser decoded the MP4 at readyState 4 with the expected 27.5-second duration and no media error. The underlying contact result remains explicitly PARTIAL.",
+  "evidence": [
+    "https://github.com/YuhuaJiang2002/PhiAgent/pull/12",
+    "GitHub main merge commit fb0e794e01cb22c90461424af4d77f11ceca44a1",
+    "https://github.com/YuhuaJiang2002/PhiAgent/actions/runs/32102536261",
+    "https://yuhuajiang2002.github.io/PhiAgent/#joyai-late-contact",
+    "https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-late-flower-contact-seed17-v1.mp4",
+    "Published MP4 sha256=f8e9b0424403847f70f1331ff09fdebb280069996392b7d7796698a199386cff; 660 frames; 24 FPS; 27.5 seconds; 1280x408; H.264 yuv420p",
+    "Production browser observed readyState=4, duration=27.5, videoWidth=1280, videoHeight=408, media error=null, and no console warnings or errors"
+  ],
+  "lessons": [
+    "A clean SSH clone is a safe publication surface when the research checkout contains unrelated changes and damaged historical references.",
+    "The public card, audit JSON, and reproduction document must carry the authoritative FFV1 contact result even though the streamed demo uses a smaller H.264 derivative.",
+    "GitHub Pages deployment is not complete until the workflow succeeds, direct assets return HTTP 200, and a production browser confirms media decoding."
+  ],
+  "limitations": [
+    "Successful publication does not promote the research result: the authoritative lossless audit remains 9/11 late projected contact and 145/147 persistent visual grasp.",
+    "The public H.264 video is a presentation derivative; the local FFV1 artifact remains the audit authority.",
+    "The case contains only 2-D image-space evidence and no metric-depth, force-closure, sensor-contact, or real-robot validation."
+  ],
+  "next_actions": [],
+  "run_dir": "outputs/joyai-video-edit-v2/20260818T073000Z-real-vs-seed17-late-contact-v1",
+  "supersedes": [],
+  "tags": [
+    "github",
+    "github-pages",
+    "demo",
+    "joyai",
+    "video",
+    "publication",
+    "playback"
+  ]
+}
