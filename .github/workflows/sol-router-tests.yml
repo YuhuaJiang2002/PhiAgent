@@ -1,0 +1,49 @@
+name: Sol-Engine and PhiRouter tests
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/sol-router-tests.yml"
+      - "docs/SOL_ENGINE_LLMROUTER_INTEGRATION.md"
+      - "phiagent/acceleration/**"
+      - "phiagent/routing/**"
+      - "scripts/assess_sol_engine_h3_ab.py"
+      - "scripts/evaluate_and_assess_sol_engine_h3_pair.py"
+      - "scripts/evaluate_sol_engine_h3_video_pair.py"
+      - "scripts/plan_sol_engine_h3_ab.py"
+      - "tests/test_sol_engine_router.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/sol-router-tests.yml"
+      - "phiagent/acceleration/**"
+      - "phiagent/routing/**"
+      - "scripts/assess_sol_engine_h3_ab.py"
+      - "scripts/evaluate_and_assess_sol_engine_h3_pair.py"
+      - "scripts/evaluate_sol_engine_h3_video_pair.py"
+      - "scripts/plan_sol_engine_h3_ab.py"
+      - "tests/test_sol_engine_router.py"
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m pytest tests/test_sol_engine_router.py -q
+      - run: >-
+          ruff check phiagent/acceleration phiagent/routing
+          scripts/plan_sol_engine_h3_ab.py
+          scripts/assess_sol_engine_h3_ab.py
+          scripts/evaluate_sol_engine_h3_video_pair.py
+          scripts/evaluate_and_assess_sol_engine_h3_pair.py
+          tests/test_sol_engine_router.py
