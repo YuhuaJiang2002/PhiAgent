@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-18.joyai-late-contact-prompt-seed-sweep-v1-partial",
+  "recorded_at": "2026-08-18T04:05:19Z",
+  "status": "PARTIAL",
+  "scope": "JoyAI direct RV2V late flower-contact prompt enhancement and full-timeline Best-of-4 noise selection",
+  "summary": "A frozen persistent-contact prompt and full-stream seeds 17, 42, 73, and 101 improved late projected contact from the prior direct JoyAI result's 5/11 to 9/11 for every candidate. Seeds 17 and 42 tied at 146/147 persistent-grasp frames on H.264 screening; independent self-flow jitter selected seed 17. Its authoritative FFV1 audit measured 9/11 late contact and 145/147 persistent-grasp frames, so the result and side-by-side comparison remain PARTIAL rather than promoted.",
+  "evidence": [
+    "configs/joyai/late_flower_contact_prompt_v1.txt",
+    "configs/joyai/late_flower_contact_seed_sweep_v1.json",
+    "outputs/joyai-video-edit-v2/20260818T060000Z-late-contact-seed-screen-audit-v1/audit-report.json",
+    "outputs/joyai-video-edit-v2/20260818T060000Z-late-contact-seed-screen-audit-v1/selection-report.json",
+    "outputs/joyai-video-edit-v2/20260818T064000Z-seed17-self-temporal-audit-v1/audit-report.json",
+    "outputs/joyai-video-edit-v2/20260818T064000Z-seed42-self-temporal-audit-v1/audit-report.json",
+    "outputs/joyai-video-edit-v2/20260818T070000Z-seed17-lossless-contact-audit-v1/audit-report.json",
+    "outputs/joyai-video-edit-v2/20260818T073000Z-real-vs-seed17-late-contact-v1/manifest.json"
+  ],
+  "lessons": [
+    "Explicit prompt constraints materially improved late image-space contact, but all four noise seeds shared the same two late misses, indicating a systematic model or conditioning limitation rather than a seed-only failure.",
+    "H.264 screening can fill single-pixel contact gaps; the FFV1 audit is authoritative and must be retained even when its persistent-grasp recall is lower.",
+    "Temporal tie-breaking must use independent self-flow measurements for each candidate; cross-seed optical-flow comparison confounds appearance differences with jitter."
+  ],
+  "limitations": [
+    "No candidate reached the frozen 1.0 late-contact and persistent-grasp hard gates; seed 17 failed late frames 627-628 and persistent-grasp frames 574 and 637 in the lossless audit.",
+    "The remaining late spatial-chroma gate also failed under historical frozen limits.",
+    "All measurements are 2-D image-space diagnostics on one scene, with no metric depth, force closure, sensor contact, or real-robot evidence."
+  ],
+  "next_actions": [
+    "Run a new predeclared experiment that targets the systematic final-release/contact interval rather than expanding the current seed pool after observing results.",
+    "Require the new challenger to pass 11/11 late projected contact and 147/147 lossless persistent grasp without regressing flower identity, robot topology, temporal jitter, or adversarial detection."
+  ],
+  "run_dir": "outputs/joyai-video-edit-v2/20260818T050000Z-late-contact-prompt-seed-sweep-v2",
+  "supersedes": [],
+  "tags": [
+    "joyai",
+    "video-to-video",
+    "flower-contact",
+    "prompt-engineering",
+    "noise-seed-selection",
+    "persistent-grasp",
+    "partial"
+  ]
+}

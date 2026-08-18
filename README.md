@@ -60,6 +60,21 @@ The same real Hand2Dex-2 first frame, seed, and OSCAR-2B settings produce two
 distinct 81-frame futures: lift then carry right (left) and lift up (right).
 This is a camera-skeleton-conditioned video result, not physical robot execution.
 
+### JoyAI late flower-contact prompt and Best-of-4 noise
+
+[![JoyAI flower-arranging comparison: real human source versus robot result](demo/showcase/joyai-late-flower-contact-seed17-v1.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#joyai-late-contact)
+
+[Play the 27.5-second comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-late-flower-contact-seed17-v1.mp4)
+or read the [reproduction protocol](docs/JOYAI_LATE_FLOWER_CONTACT.md).
+The source is on the left and the selected direct JoyAI-Video-Edit 0811 result
+is on the right. A frozen persistent-contact prompt and full-timeline seeds 17,
+42, 73, and 101 improve late projected contact from 5/11 to 9/11. Seed 17 wins
+the declared independent temporal-jitter tie-break, but its authoritative
+lossless audit still passes only 145/147 persistent-grasp frames. The result is
+therefore `PARTIAL`; remaining failed frames are disclosed and no 3-D contact,
+force closure, or real-robot execution is claimed. SAM masks were used for
+offline measurement only, not to composite the published robot pixels.
+
 ### Does the current web demo use EPL?
 
 **No—not as an input or conditioning signal for the currently published

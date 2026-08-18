@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "status": "PARTIAL",
+  "case": "JoyAI direct RV2V late flower-contact prompt enhancement and Best-of-4 seed selection",
+  "presentation": {
+    "layout": "left=real human source; right=JoyAI robot result",
+    "video": "joyai-late-flower-contact-seed17-v1.mp4",
+    "video_sha256": "f8e9b0424403847f70f1331ff09fdebb280069996392b7d7796698a199386cff",
+    "poster": "joyai-late-flower-contact-seed17-v1.jpg",
+    "poster_sha256": "fc2dc44df78da0dc43ac731c0a56e10f782716ad70813c4cfa2382186b4c052e",
+    "frames": 660,
+    "fps": 24,
+    "duration_seconds": 27.5,
+    "width": 1280,
+    "height": 408,
+    "codec": "h264",
+    "pixel_format": "yuv420p"
+  },
+  "generation": {
+    "model": "jdopensource/JoyAI-Video-Edit",
+    "repository_revision": "3478e4b8c9a79fe935157d1d477cd3e57bb41f1f",
+    "weights_revision": "e14d9ac50d4ad8e9f91b655bfab270c02a43923b",
+    "dit_sha256": "b3904b6fda53d13b230918bb616f322d12cfb2337b0e8d9dc203cdabc36605ba",
+    "num_inference_steps": 2,
+    "seeds": [17, 42, 73, 101],
+    "selected_seed": 17,
+    "sam_pixel_compositing": false,
+    "prompt_path": "configs/joyai/late_flower_contact_prompt_v1.txt",
+    "prompt_sha256": "93e75e546d522a1e03aa1ca5897befdfb5c5a9200db8d15be0ad9756c77a26b1",
+    "protocol_path": "configs/joyai/late_flower_contact_seed_sweep_v1.json",
+    "protocol_sha256": "04868efcfa85b62c1b0aaaa6afe8fa6d7687d1f7e333188db45d9c2117f85937"
+  },
+  "selection": {
+    "passing_seeds": [],
+    "best_contact_seeds": [17, 42],
+    "tie_break": "lowest independent self-flow-aligned robot jitter p95, then mean",
+    "seed17_jitter": {"p95": 6.070348501205449, "mean": 2.3448260630928015},
+    "seed42_jitter": {"p95": 6.278535938262941, "mean": 2.3937869450339613},
+    "per_frame_seed_mixing": false,
+    "threshold_relaxation": false,
+    "mean_override": false
+  },
+  "authoritative_lossless_audit": {
+    "late_projected_contact": {"passes": 9, "required": 11, "recall": 0.8181818181818182},
+    "persistent_visual_grasp": {"passes": 145, "required": 147, "recall": 0.9863945578231292},
+    "late_contact_failure_frames": [627, 628],
+    "persistent_grasp_failure_frames": [574, 637],
+    "all_adversarial_attacks_detected": true,
+    "failed_frozen_gates": [
+      "late_projected_contact_recall",
+      "late_spatial_chroma_tv",
+      "persistent_grasp_erasure_attack_detected_all_frames",
+      "persistent_persistent_visual_grasp_recall"
+    ]
+  },
+  "comparison_to_prior_direct_result": {
+    "prior_late_projected_contact_passes": 5,
+    "current_late_projected_contact_passes": 9,
+    "required": 11
+  },
+  "limitations": [
+    "No candidate passed the frozen 1.0 late-contact and persistent-grasp gates.",
+    "The metrics are 2-D camera-frame diagnostics on one scene.",
+    "There is no metric-depth, force-closure, sensor-contact, or real-robot evidence."
+  ]
+}
