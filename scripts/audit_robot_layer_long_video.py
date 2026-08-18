@@ -42,6 +42,7 @@ from phiagent.rendering.robot_layer_contract import (  # noqa: E402
     RobotLayerContract,
     canonical_palette_histogram,
     frame_contract_metrics,
+    occlusion_aware_grasp_metrics,
     robust_limit,
 )
 
@@ -100,7 +101,34 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--contact-radius", type=int, default=3)
     parser.add_argument("--allowed-late-violation-fraction", type=float, default=0.10)
     parser.add_argument("--required-contact-recall", type=float, default=0.95)
+    parser.add_argument(
+        "--persistent-grasp-start",
+        type=int,
+        default=-1,
+        help="Inclusive source-observed hold frame; negative disables the dense gate.",
+    )
+    parser.add_argument(
+        "--persistent-grasp-end-exclusive",
+        type=int,
+        default=-1,
+        help="Exclusive source-observed hold frame.",
+    )
+    parser.add_argument("--maximum-source-occlusion-gap", type=int, default=24)
+    parser.add_argument("--minimum-occlusion-bridge-coverage", type=float, default=0.80)
+    parser.add_argument("--required-persistent-grasp-recall", type=float, default=1.0)
     parser.add_argument("--adversarial-stride", type=int, default=12)
+    parser.add_argument(
+        "--frozen-limits-report",
+        type=Path,
+        help=(
+            "Prior immutable audit report whose anchor-fitted metric limits "
+            "must be reused verbatim for every challenger."
+        ),
+    )
+    parser.add_argument(
+        "--frozen-limits-candidate",
+        help="Candidate name inside --frozen-limits-report; defaults to its recommendation.",
+    )
     parser.add_argument("--seed", type=int, default=20260812)
     parser.add_argument("--mask-frame-name", required=True)
     parser.add_argument("--mask-source-width", type=int, required=True)
@@ -331,7 +359,13 @@ def _resolve_frame_masks(
     return support, flower
 
 
-def _summary(np: Any, rows: list[dict[str, Any]], args: argparse.Namespace) -> dict[str, Any]:
+def _summary(
+    np: Any,
+    rows: list[dict[str, Any]],
+    args: argparse.Namespace,
+    *,
+    frozen_limits: dict[str, float] | None = None,
+) -> dict[str, Any]:
     anchor = [
         row
         for row in rows
@@ -340,21 +374,32 @@ def _summary(np: Any, rows: list[dict[str, Any]], args: argparse.Namespace) -> d
     late = [row for row in rows if row["frame"] >= args.late_start]
     if not anchor or not late:
         raise ValueError("anchor and late intervals must both contain frames")
-    limits: dict[str, float] = {}
-    for metric, margin in UPPER_METRICS.items():
-        limits[metric] = robust_limit(
-            np,
-            [row[metric] for row in anchor],
-            direction="upper",
-            minimum_margin=margin,
-        )
-    for metric, margin in LOWER_METRICS.items():
-        limits[metric] = robust_limit(
-            np,
-            [row[metric] for row in anchor],
-            direction="lower",
-            minimum_margin=margin,
-        )
+    required_limit_keys = set(UPPER_METRICS) | set(LOWER_METRICS)
+    if frozen_limits is None:
+        limits: dict[str, float] = {}
+        for metric, margin in UPPER_METRICS.items():
+            limits[metric] = robust_limit(
+                np,
+                [row[metric] for row in anchor],
+                direction="upper",
+                minimum_margin=margin,
+            )
+        for metric, margin in LOWER_METRICS.items():
+            limits[metric] = robust_limit(
+                np,
+                [row[metric] for row in anchor],
+                direction="lower",
+                minimum_margin=margin,
+            )
+    else:
+        missing = required_limit_keys - set(frozen_limits)
+        if missing:
+            raise ValueError(f"frozen limits omit metrics: {sorted(missing)}")
+        limits = {
+            metric: float(frozen_limits[metric]) for metric in required_limit_keys
+        }
+        if not all(np.isfinite(value) for value in limits.values()):
+            raise ValueError("frozen limits must be finite")
     sections = {}
     for section_name, selected in {
         "anchor": anchor,
@@ -396,9 +441,64 @@ def _summary(np: Any, rows: list[dict[str, Any]], args: argparse.Namespace) -> d
     gate_results["late_projected_contact_recall"] = (
         late_section["projected_contact_recall"] >= args.required_contact_recall
     )
+    persistent: dict[str, Any] | None = None
+    if args.persistent_grasp_start >= 0:
+        selected = [
+            row
+            for row in rows
+            if args.persistent_grasp_start
+            <= row["frame"]
+            < args.persistent_grasp_end_exclusive
+        ]
+        expected = args.persistent_grasp_end_exclusive - args.persistent_grasp_start
+        if len(selected) != expected:
+            raise ValueError("persistent grasp interval is not fully represented")
+        source_observable = sum(bool(row["source_hold_observable"]) for row in selected)
+        visual_passes = sum(bool(row["visual_grasp_pass"]) for row in selected)
+        baseline_positive = [row for row in selected if row["visual_grasp_pass"]]
+        attack_rejections = sum(
+            not bool(row["grasp_erasure_attack_pass"]) for row in baseline_positive
+        )
+        gaps = [
+            int(row["source_hand_object_gap_pixels"])
+            for row in selected
+            if row["source_hand_object_gap_pixels"] is not None
+        ]
+        persistent = {
+            "start_frame_inclusive": args.persistent_grasp_start,
+            "end_frame_exclusive": args.persistent_grasp_end_exclusive,
+            "frames": len(selected),
+            "maximum_source_occlusion_gap_pixels": args.maximum_source_occlusion_gap,
+            "minimum_occlusion_bridge_coverage": args.minimum_occlusion_bridge_coverage,
+            "source_hold_observable_recall": source_observable / max(1, len(selected)),
+            "visual_grasp_recall": visual_passes / max(1, len(selected)),
+            "maximum_observed_source_gap_pixels": max(gaps) if gaps else None,
+            "grasp_erasure_attack_positive_frames": len(baseline_positive),
+            "grasp_erasure_attack_rejection_recall": (
+                attack_rejections / len(baseline_positive) if baseline_positive else 0.0
+            ),
+        }
+        persistent["gates"] = {
+            "source_hold_observable_all_frames": source_observable == len(selected),
+            "persistent_visual_grasp_recall": (
+                persistent["visual_grasp_recall"]
+                >= args.required_persistent_grasp_recall
+            ),
+            "grasp_erasure_attack_detected_all_frames": (
+                len(baseline_positive) == len(selected)
+                and attack_rejections == len(baseline_positive)
+            ),
+        }
+        gate_results.update(
+            {
+                f"persistent_{name}": bool(value)
+                for name, value in persistent["gates"].items()
+            }
+        )
     return {
         "limits_fit_only_on_anchor_frames": limits,
         "sections": sections,
+        "persistent_grasp": persistent,
         "gates": gate_results,
         "image_space_contract_pass": all(gate_results.values()),
     }
@@ -469,6 +569,7 @@ def _audit_candidate(
     target_frame: SourceResizeCrop,
     packed_masks: tuple[Any, dict[str, Any], Any, dict[str, Any], Any, dict[str, Any], Any, dict[str, Any]],
     palette: Any,
+    frozen_limits: dict[str, float] | None,
 ) -> dict[str, Any]:
     packed_person, person_meta, packed_flower, flower_meta, packed_arms, arm_meta, packed_hands, hand_meta = packed_masks
     source_command = _decoder_command(
@@ -531,7 +632,54 @@ def _audit_candidate(
             replacement_threshold=args.replacement_threshold,
             contact_radius=args.contact_radius,
         )
-        rows.append({"frame": index, "seconds": index / args.fps, **metrics})
+        in_persistent_interval = (
+            args.persistent_grasp_start >= 0
+            and args.persistent_grasp_start
+            <= index
+            < args.persistent_grasp_end_exclusive
+        )
+        if in_persistent_interval:
+            grasp = occlusion_aware_grasp_metrics(
+                np,
+                candidate_rgb=candidate,
+                source_rgb=source,
+                hand_support=hands,
+                # Persistent interaction state must survive occlusion.  The
+                # resolved ``flower`` mask is correct for z-order/rendering
+                # but deliberately removes source-person-core pixels; using
+                # it here would erase the very stem segment that is held under
+                # the hand.  The tracked object occupancy is the independent
+                # state channel for this gate.
+                object_mask=tracked_flower,
+                replacement_threshold=args.replacement_threshold,
+                contact_radius=args.contact_radius,
+                maximum_source_occlusion_gap=args.maximum_source_occlusion_gap,
+                minimum_bridge_coverage=args.minimum_occlusion_bridge_coverage,
+            )
+            # The adversary restores every tracked hand pixel to the source,
+            # so the generated-hand support and bridge coverage are exactly
+            # zero by construction.  Recomputing the same source mask distance
+            # on an identical mask pair is unnecessary.
+            grasp_erasure_attack_pass = False
+        else:
+            grasp = {
+                "source_hand_object_gap_pixels": None,
+                "source_hold_observable": False,
+                "robot_direct_contact": False,
+                "occlusion_corridor_pixels": 0,
+                "occlusion_bridge_coverage": 0.0,
+                "visual_grasp_pass": False,
+            }
+            grasp_erasure_attack_pass = False
+        rows.append(
+            {
+                "frame": index,
+                "seconds": index / args.fps,
+                **metrics,
+                **grasp,
+                "grasp_erasure_attack_pass": grasp_erasure_attack_pass,
+            }
+        )
         if index % args.adversarial_stride == 0 or bool(metrics["contact_required"]):
             baseline, color, topology, contact, structure = _attack_metrics(
                 np,
@@ -564,7 +712,7 @@ def _audit_candidate(
         returncode = process.wait()
         if returncode:
             raise RuntimeError(f"{label} decoder failed with {returncode}: {stderr[-2000:]}")
-    summary = _summary(np, rows, args)
+    summary = _summary(np, rows, args, frozen_limits=frozen_limits)
     color_palette_delta = np.asarray(
         [
             row["color_attack"]["palette_surprisal"]
@@ -607,6 +755,13 @@ def _audit_candidate(
             for row in attacks
         ]
     )
+    structure_sobel_delta = np.asarray(
+        [
+            row["baseline"]["hand_structure_sobel_energy"]
+            - row["structure_ghost_attack"]["hand_structure_sobel_energy"]
+            for row in attacks
+        ]
+    )
     adversarial = {
         "sampled_frames": len(attacks),
         "color_attack_palette_delta_p05": float(np.quantile(color_palette_delta, 0.05)),
@@ -620,6 +775,9 @@ def _audit_candidate(
         "structure_ghost_attack_edge_delta_p05": float(
             np.quantile(structure_delta, 0.05)
         ),
+        "structure_ghost_attack_sobel_delta_p05": float(
+            np.quantile(structure_sobel_delta, 0.05)
+        ),
         "gates": {
             "color_attack_detected": bool(
                 np.quantile(color_palette_delta, 0.05) >= 0.35
@@ -632,7 +790,7 @@ def _audit_candidate(
                 len(detachable) >= 3 and contact_rejections == len(detachable)
             ),
             "structure_ghost_attack_detected": bool(
-                np.quantile(structure_delta, 0.05) >= 0.75
+                np.quantile(structure_sobel_delta, 0.05) >= 3.0
             ),
         },
     }
@@ -659,6 +817,19 @@ def main() -> int:
         raise SystemExit("allowed violation fraction must be in [0, 1]")
     if not 0 <= args.required_contact_recall <= 1:
         raise SystemExit("required contact recall must be in [0, 1]")
+    if not 0 <= args.required_persistent_grasp_recall <= 1:
+        raise SystemExit("required persistent grasp recall must be in [0, 1]")
+    persistent_disabled = (
+        args.persistent_grasp_start < 0 and args.persistent_grasp_end_exclusive < 0
+    )
+    persistent_valid = (
+        0 <= args.persistent_grasp_start < args.persistent_grasp_end_exclusive
+        <= args.expected_frames
+    )
+    if not persistent_disabled and not persistent_valid:
+        raise SystemExit("persistent grasp interval must be disabled or a valid half-open interval")
+    if args.frozen_limits_candidate and not args.frozen_limits_report:
+        raise SystemExit("--frozen-limits-candidate requires --frozen-limits-report")
     output_dir = args.output_dir.expanduser().resolve()
     output_dir.mkdir(parents=True, exist_ok=False)
     candidates = _parse_candidates(args.candidate)
@@ -725,6 +896,39 @@ def main() -> int:
     )
     palette_mask = np.logical_and(reference_person, np.logical_not(reference_flower))
     palette = canonical_palette_histogram(np, reference, palette_mask, bins=8)
+    frozen_limits: dict[str, float] | None = None
+    frozen_limits_source: dict[str, Any] | None = None
+    if args.frozen_limits_report is not None:
+        frozen_path = args.frozen_limits_report.expanduser().resolve()
+        frozen_report = json.loads(frozen_path.read_text())
+        frozen_name = (
+            args.frozen_limits_candidate
+            or frozen_report.get("recommended_candidate")
+        )
+        frozen_candidate = next(
+            (
+                row
+                for row in frozen_report.get("candidates", [])
+                if row.get("name") == frozen_name
+            ),
+            None,
+        )
+        if frozen_candidate is None:
+            raise ValueError(
+                f"frozen report has no candidate {frozen_name!r}"
+            )
+        frozen_limits = {
+            key: float(value)
+            for key, value in frozen_candidate["summary"][
+                "limits_fit_only_on_anchor_frames"
+            ].items()
+        }
+        frozen_limits_source = {
+            "path": str(frozen_path),
+            "sha256": _sha256(frozen_path),
+            "candidate": frozen_name,
+            "limits": frozen_limits,
+        }
     started = time.perf_counter()
     results = []
     for name, path in candidates:
@@ -737,6 +941,7 @@ def main() -> int:
             target_frame=target_frame,
             packed_masks=packed_masks,
             palette=palette,
+            frozen_limits=frozen_limits,
         )
         frame_path = output_dir / f"{name}-frame-metrics.json"
         frame_path.write_text(
@@ -775,9 +980,18 @@ def main() -> int:
             "identity": "canonical reference RGB palette within tracked person support",
             "topology": "source-track-grounded replacement coverage on body, arms, and hands",
             "contact": "dilated 2D robot-hand support intersects visible source flower support",
+            "persistent_grasp": (
+                "tracked source-object occupancy survives source-hand occlusion; "
+                "rendering and ordinary projected contact retain the resolved-visible mask"
+            ),
             "threshold_fit": (
-                f"anchor [{args.anchor_start}, {args.anchor_end_exclusive}) only; "
-                "late frames never fit their own thresholds"
+                (
+                    "reused verbatim from immutable prior audit "
+                    f"candidate {frozen_limits_source['candidate']}"
+                    if frozen_limits_source is not None
+                    else f"anchor [{args.anchor_start}, {args.anchor_end_exclusive}) only"
+                )
+                + "; late frames never fit their own thresholds"
             ),
         },
         "config": {
@@ -798,6 +1012,7 @@ def main() -> int:
                 "frame": args.reference_frame,
             },
             "masks": [person_meta, flower_meta, arm_meta, hand_meta],
+            "frozen_limits_source": frozen_limits_source,
         },
         "candidates": results,
         "ranking": [item["name"] for item in ranking],

@@ -251,6 +251,30 @@ def resolve_flower_visibility(
     )
 
 
+def validate_visibility_partition(
+    np: Any,
+    *,
+    edit_support: Any,
+    flower_restore: Any,
+    source_person_core: Any,
+    source_skin_negative: Any,
+) -> None:
+    """Fail closed when an object layer violates its declared z-order."""
+
+    support = np.asarray(edit_support, dtype=np.bool_)
+    flower = np.asarray(flower_restore, dtype=np.bool_)
+    person_core = np.asarray(source_person_core, dtype=np.bool_)
+    skin = np.asarray(source_skin_negative, dtype=np.bool_)
+    if not (support.shape == flower.shape == person_core.shape == skin.shape):
+        raise ValueError("visibility-partition masks must have one common shape")
+    if np.any(np.logical_and(flower, np.logical_not(support))):
+        raise ValueError("flower restore escapes the declared edit support")
+    if np.any(np.logical_and(flower, person_core)):
+        raise ValueError("flower restore overlaps the protected source-person core")
+    if np.any(np.logical_and(flower, skin)):
+        raise ValueError("flower restore overlaps the protected source-skin negative")
+
+
 def compose_object_factored_frame(
     np: Any,
     *,

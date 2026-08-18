@@ -235,6 +235,113 @@ def _spatial_luma_edge_energy(np: Any, frame_rgb: Any, mask: Any) -> float:
     return float(np.concatenate(values).mean())
 
 
+def _spatial_luma_sobel_energy(np: Any, frame_rgb: Any, mask: Any) -> float:
+    """Return 3x3 Sobel magnitude on the declared generated-hand support."""
+
+    frame = np.asarray(frame_rgb, dtype=np.float32)
+    luma = 0.2126 * frame[..., 0] + 0.7152 * frame[..., 1] + 0.0722 * frame[..., 2]
+    padded = np.pad(luma, 1, mode="edge")
+    top_left = padded[:-2, :-2]
+    top = padded[:-2, 1:-1]
+    top_right = padded[:-2, 2:]
+    left = padded[1:-1, :-2]
+    right = padded[1:-1, 2:]
+    bottom_left = padded[2:, :-2]
+    bottom = padded[2:, 1:-1]
+    bottom_right = padded[2:, 2:]
+    gradient_x = (
+        top_right + 2.0 * right + bottom_right
+        - top_left - 2.0 * left - bottom_left
+    )
+    gradient_y = (
+        bottom_left + 2.0 * bottom + bottom_right
+        - top_left - 2.0 * top - top_right
+    )
+    values = np.sqrt(gradient_x * gradient_x + gradient_y * gradient_y)
+    selected = values[np.asarray(mask, dtype=np.bool_)]
+    return float(selected.mean()) if selected.size else 0.0
+
+
+def project_hand_detail_to_gate(
+    cv2: Any,
+    np: Any,
+    *,
+    frame_rgb: Any,
+    editable_mask: Any,
+    measurement_mask: Any,
+    minimum_edge_energy: float,
+    gaussian_sigma: float = 0.8,
+    maximum_strength: float = 3.0,
+    search_iterations: int = 12,
+) -> tuple[Any, float, float, bool]:
+    """Project high-frequency hand detail onto a frozen image-space gate.
+
+    The current frame remains the only appearance source.  No neighboring
+    geometry is averaged and pixels outside ``editable_mask`` stay byte-exact.
+    The smallest bounded unsharp-residual strength that reaches the declared
+    edge-energy gate is selected by binary search.
+    """
+
+    frame = np.asarray(frame_rgb, dtype=np.uint8)
+    if frame.ndim != 3 or frame.shape[2] != 3:
+        raise ValueError("frame_rgb must have shape HxWx3")
+    editable = _as_mask(np, editable_mask, frame.shape[:2], "editable mask")
+    measurement = _as_mask(
+        np, measurement_mask, frame.shape[:2], "measurement mask"
+    )
+    for name, value in (
+        ("minimum_edge_energy", minimum_edge_energy),
+        ("gaussian_sigma", gaussian_sigma),
+        ("maximum_strength", maximum_strength),
+    ):
+        if not np.isfinite(value) or value <= 0:
+            raise ValueError(f"{name} must be finite and positive")
+    if search_iterations < 1:
+        raise ValueError("search_iterations must be positive")
+
+    baseline = _spatial_luma_edge_energy(np, frame, measurement)
+    if baseline >= minimum_edge_energy or not np.any(editable):
+        return frame.copy(), 0.0, baseline, baseline >= minimum_edge_energy
+
+    values = frame.astype(np.float32)
+    low_frequency = cv2.GaussianBlur(
+        values,
+        (0, 0),
+        sigmaX=gaussian_sigma,
+        sigmaY=gaussian_sigma,
+        borderType=cv2.BORDER_REFLECT101,
+    )
+    detail = values - low_frequency
+
+    def proposal(strength: float) -> tuple[Any, float]:
+        candidate = frame.copy()
+        sharpened = np.clip(
+            np.rint(values + strength * detail), 0, 255
+        ).astype(np.uint8)
+        candidate[editable] = sharpened[editable]
+        energy = _spatial_luma_edge_energy(np, candidate, measurement)
+        return candidate, energy
+
+    upper_candidate, upper_energy = proposal(maximum_strength)
+    if upper_energy < minimum_edge_energy:
+        return upper_candidate, maximum_strength, upper_energy, False
+
+    lower = 0.0
+    upper = float(maximum_strength)
+    selected = upper_candidate
+    selected_energy = upper_energy
+    for _ in range(search_iterations):
+        middle = 0.5 * (lower + upper)
+        candidate, energy = proposal(middle)
+        if energy >= minimum_edge_energy:
+            upper = middle
+            selected = candidate
+            selected_energy = energy
+        else:
+            lower = middle
+    return selected, upper, selected_energy, True
+
+
 def _grid_topology_coverage(
     np: Any,
     replacement: Any,
@@ -313,6 +420,9 @@ def frame_contract_metrics(
     hand_edge_energy = _spatial_luma_edge_energy(
         np, candidate, hand_evaluation
     )
+    hand_structure_sobel_energy = _spatial_luma_sobel_energy(
+        np, candidate, robot_hand
+    )
     denominator = max(1, int(np.count_nonzero(evaluation)))
     return {
         "palette_surprisal": palette_surprisal(
@@ -327,6 +437,7 @@ def frame_contract_metrics(
         # the generic one-sided audit-limit machinery.
         "hand_edge_energy_lower_gate": hand_edge_energy,
         "hand_edge_energy_upper_gate": hand_edge_energy,
+        "hand_structure_sobel_energy": hand_structure_sobel_energy,
         "replacement_coverage": _coverage(np, replaced, evaluation),
         "arm_replacement_coverage": _coverage(
             np, replaced, np.logical_and(arms, evaluation)
@@ -400,6 +511,236 @@ def merge_missing_replacement(
     adjusted = np.clip(donor.astype(np.float32) + offset, 0, 255).astype(np.uint8)
     result[missing] = adjusted[missing]
     return result, missing, tuple(float(value) for value in offset)
+
+
+def project_missing_contact(
+    np: Any,
+    *,
+    candidate_rgb: Any,
+    source_rgb: Any,
+    hand_support: Any,
+    protected_object: Any,
+    replacement_threshold: float,
+    contact_radius: int,
+    maximum_bridge_steps: int = 6,
+) -> tuple[Any, Any, int, bool]:
+    """Extend an existing generated hand through its source-supported contact fringe.
+
+    The projection is deliberately narrow: it can only grow already replaced
+    pixels through tracked hand support, never writes the protected object, and
+    stops as soon as the fixed projected-contact invariant is satisfied.  It is
+    an image-space continuity repair, not depth or force evidence.
+    """
+
+    candidate = np.asarray(candidate_rgb, dtype=np.uint8)
+    source = np.asarray(source_rgb, dtype=np.uint8)
+    if candidate.shape != source.shape or candidate.ndim != 3 or candidate.shape[2] != 3:
+        raise ValueError("candidate and source RGB frames must be matching HxWx3 frames")
+    if contact_radius < 0 or maximum_bridge_steps < 0:
+        raise ValueError("contact radius and maximum bridge steps must be non-negative")
+    hand = _as_mask(np, hand_support, candidate.shape[:2], "hand support")
+    protected = _as_mask(np, protected_object, candidate.shape[:2], "protected object")
+    result = candidate.copy()
+    added = np.zeros(candidate.shape[:2], dtype=bool)
+    required = projected_contact_required(
+        np, hand, protected, radius=contact_radius
+    )
+
+    def replacement(value: Any) -> Any:
+        return np.logical_and(
+            replacement_mask(np, value, source, threshold=replacement_threshold),
+            np.logical_and(hand, np.logical_not(protected)),
+        )
+
+    current = replacement(result)
+    observed = bool(
+        np.any(
+            np.logical_and(
+                binary_dilate_square(np, current, contact_radius), protected
+            )
+        )
+    )
+    if not required or observed or maximum_bridge_steps == 0:
+        return result, added, 0, observed
+
+    near_object = binary_dilate_square(
+        np, protected, contact_radius + maximum_bridge_steps + 1
+    )
+    current = np.logical_and(current, near_object)
+    corridor = np.logical_and.reduce((hand, np.logical_not(protected), near_object))
+    if not np.any(current):
+        return result, added, 0, False
+
+    steps_used = 0
+    for step in range(1, maximum_bridge_steps + 1):
+        frontier = np.logical_and.reduce(
+            (binary_dilate_square(np, current, 1), corridor, np.logical_not(current))
+        )
+        if not np.any(frontier):
+            break
+        padded_rgb = np.pad(result.astype(np.float32), ((1, 1), (1, 1), (0, 0)))
+        padded_current = np.pad(current, 1)
+        colour_sum = np.zeros_like(result, dtype=np.float32)
+        count = np.zeros(result.shape[:2], dtype=np.float32)
+        for dy in range(3):
+            for dx in range(3):
+                if dy == 1 and dx == 1:
+                    continue
+                neighbour = padded_current[dy : dy + result.shape[0], dx : dx + result.shape[1]]
+                colour_sum += (
+                    padded_rgb[dy : dy + result.shape[0], dx : dx + result.shape[1]]
+                    * neighbour[..., None]
+                )
+                count += neighbour
+        writable = np.logical_and(frontier, count > 0)
+        if not np.any(writable):
+            break
+        colours = np.rint(
+            colour_sum[writable] / count[writable, None]
+        ).clip(0, 255).astype(np.uint8)
+        result[writable] = colours
+        # Averaging may accidentally approach the source colour.  Reuse the
+        # median nearby generated-hand colour in only those invalid pixels.
+        changed = replacement_mask(
+            np, result, source, threshold=replacement_threshold
+        )
+        invalid = np.logical_and(writable, np.logical_not(changed))
+        if np.any(invalid):
+            palette_pixels = result[current]
+            if len(palette_pixels):
+                fallback = np.median(palette_pixels, axis=0).clip(0, 255).astype(np.uint8)
+                result[invalid] = fallback
+        changed = np.logical_and(replacement(result), near_object)
+        added |= np.logical_and(writable, changed)
+        current |= changed
+        steps_used = step
+        observed = bool(
+            np.any(
+                np.logical_and(
+                    binary_dilate_square(np, current, contact_radius), protected
+                )
+            )
+        )
+        if observed:
+            break
+    return result, added, steps_used, observed
+
+
+def mask_chebyshev_distance(
+    np: Any,
+    first_mask: Any,
+    second_mask: Any,
+    *,
+    maximum_radius: int,
+) -> int | None:
+    """Return the bounded image-space gap between two masks.
+
+    The value is measured in the same named camera frame as the masks.  A
+    ``None`` result means the gap is larger than ``maximum_radius``; it does
+    not mean that the objects are unrelated in 3-D.
+    """
+
+    if maximum_radius < 0:
+        raise ValueError("maximum radius must be non-negative")
+    first = np.asarray(first_mask, dtype=np.bool_)
+    second = np.asarray(second_mask, dtype=np.bool_)
+    if first.shape != second.shape or first.ndim != 2:
+        raise ValueError("distance masks must be matching two-dimensional arrays")
+    if not np.any(first) or not np.any(second):
+        return None
+    if np.any(np.logical_and(first, second)):
+        return 0
+    if not np.any(
+        np.logical_and(binary_dilate_square(np, first, maximum_radius), second)
+    ):
+        return None
+    low = 1
+    high = maximum_radius
+    while low < high:
+        middle = (low + high) // 2
+        if np.any(
+            np.logical_and(binary_dilate_square(np, first, middle), second)
+        ):
+            high = middle
+        else:
+            low = middle + 1
+    return low
+
+
+def occlusion_aware_grasp_metrics(
+    np: Any,
+    *,
+    candidate_rgb: Any,
+    source_rgb: Any,
+    hand_support: Any,
+    object_mask: Any,
+    replacement_threshold: float,
+    contact_radius: int,
+    maximum_source_occlusion_gap: int,
+    minimum_bridge_coverage: float,
+) -> dict[str, float | bool | int | None]:
+    """Audit a visually persistent grasp through source-hand occlusion.
+
+    A visible stem can disappear *under* the source hand, so direct mask
+    adjacency is not required on every frame.  When that happens, the source
+    hand/object gap defines a bounded occlusion corridor and the generated
+    robot must replace that corridor.  This is a stronger visual invariant
+    than sparse adjacency, but remains explicitly non-metric and cannot prove
+    depth ordering, contact force, or force closure.
+    """
+
+    if contact_radius < 0 or maximum_source_occlusion_gap < contact_radius:
+        raise ValueError("invalid contact or source-occlusion radius")
+    if not 0.0 <= minimum_bridge_coverage <= 1.0:
+        raise ValueError("minimum bridge coverage must be in [0, 1]")
+    candidate = np.asarray(candidate_rgb, dtype=np.uint8)
+    source = np.asarray(source_rgb, dtype=np.uint8)
+    if candidate.shape != source.shape or candidate.ndim != 3 or candidate.shape[2] != 3:
+        raise ValueError("candidate and source RGB frames must be matching HxWx3 frames")
+    hand = _as_mask(np, hand_support, candidate.shape[:2], "hand support")
+    object_value = _as_mask(np, object_mask, candidate.shape[:2], "object")
+    source_gap = mask_chebyshev_distance(
+        np,
+        hand,
+        object_value,
+        maximum_radius=maximum_source_occlusion_gap,
+    )
+    robot_hand = np.logical_and(
+        replacement_mask(np, candidate, source, threshold=replacement_threshold),
+        hand,
+    )
+    direct_contact = bool(
+        np.any(
+            np.logical_and(
+                binary_dilate_square(np, robot_hand, contact_radius), object_value
+            )
+        )
+    )
+    if source_gap is None:
+        corridor = np.zeros_like(hand)
+    else:
+        corridor = np.logical_and(
+            hand,
+            binary_dilate_square(np, object_value, source_gap + contact_radius),
+        )
+    corridor_pixels = int(np.count_nonzero(corridor))
+    bridge_coverage = (
+        float(np.count_nonzero(np.logical_and(robot_hand, corridor)) / corridor_pixels)
+        if corridor_pixels
+        else 0.0
+    )
+    source_hold_observable = source_gap is not None
+    occlusion_bridge = bool(
+        source_hold_observable and bridge_coverage >= minimum_bridge_coverage
+    )
+    return {
+        "source_hand_object_gap_pixels": source_gap,
+        "source_hold_observable": source_hold_observable,
+        "robot_direct_contact": direct_contact,
+        "occlusion_corridor_pixels": corridor_pixels,
+        "occlusion_bridge_coverage": bridge_coverage,
+        "visual_grasp_pass": bool(direct_contact or occlusion_bridge),
+    }
 
 
 def robust_limit(

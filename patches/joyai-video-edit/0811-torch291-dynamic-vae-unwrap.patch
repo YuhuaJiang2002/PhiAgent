@@ -1,0 +1,20 @@
+diff --git a/deploy/xvideo/models/vae/vae_compile.py b/deploy/xvideo/models/vae/vae_compile.py
+index a1ff59c..918dff5 100644
+--- a/deploy/xvideo/models/vae/vae_compile.py
++++ b/deploy/xvideo/models/vae/vae_compile.py
+@@ -91,6 +91,15 @@ def maybe_setup_encode_dynamic(vae) -> None:
+         core = getattr(vae, "encode")
+     else:
+         raise RuntimeError("VAE has neither _encode nor encode; cannot compile")
++    # Static source-video warmup compiles vae._encode before the reference-image
++    # dynamic-shape path is configured.  PyTorch 2.9 rejects compiling that
++    # Dynamo wrapper again because it asks FX to trace an already optimized
++    # function.  Compile the original callable for the dynamic reference path.
++    while hasattr(core, "_torchdynamo_orig_callable"):
++        original = getattr(core, "_torchdynamo_orig_callable")
++        if original is core:
++            break
++        core = original
+     vae._encode_dynamic = torch.compile(core, mode="max-autotune-no-cudagraphs", dynamic=True)
+     _configured_encode_dynamic.add(id(vae))
+     print("[vae_compile] compiled vae._encode_dynamic (dynamic=True, reference-image path)")

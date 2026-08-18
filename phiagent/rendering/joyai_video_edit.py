@@ -1,9 +1,10 @@
-"""Pinned, dependency-free contract for JoyAI-Video-Edit flower repair.
+"""Pinned, dependency-free contracts for bounded and full-stream JoyAI edits.
 
-The released model is deliberately treated as a proposal generator.  It may
-rewrite pixels inside a measured temporal/spatial support, but it never has
-authority to change source flowers, stems, vase, background, camera motion, or
-the two endpoint frames used to join a repair back into the full video.
+The released model is deliberately treated as a visual proposal generator.
+Bounded repair mode restores flowers, background, and endpoints exactly.  Full
+stream mode instead lets one uninterrupted causal session reproduce source
+object motion; its output must pass an explicit non-freezing/contact audit and
+never acquires physical-evidence authority from appearance alone.
 """
 
 from __future__ import annotations
@@ -12,23 +13,24 @@ import hashlib
 import json
 import os
 import subprocess
+from math import ceil
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Sequence
 
 
 JOYAI_REPOSITORY = "https://github.com/jd-opensource/JoyAI-Video-Edit"
-JOYAI_REPOSITORY_REVISION = "231aab0d32f62fefc853cf9a046b8f29b4a39dfd"
+JOYAI_REPOSITORY_REVISION = "3478e4b8c9a79fe935157d1d477cd3e57bb41f1f"
 JOYAI_SOURCE_REVISION_MARKER = ".phiagent-source-revision"
 JOYAI_MODEL_ID = "jdopensource/JoyAI-Video-Edit"
-JOYAI_MODEL_REVISION = "7c36b253d34449e8cd96241fcd9236a7fe9b30bc"
+JOYAI_MODEL_REVISION = "e14d9ac50d4ad8e9f91b655bfab270c02a43923b"
 JOYAI_MODELSCOPE_MODEL_ID = "JD-OpenSource/JoyAI-Video-Edit"
 JOYAI_MODELSCOPE_MODEL_REVISION = "1566385ac62baea53acbc25239668188a1e85c73"
 JOYAI_TEXT_ENCODER_ID = "XiaomiMiMo/MiMo-VL-7B-RL-2508"
 JOYAI_TEXT_ENCODER_REVISION = "4bfb270765825d2fa059011deb4c96fdd579be6f"
 JOYAI_TEXT_ENCODER_MODELSCOPE_REVISION = "233aba9632b84d30d10fa00f856a83fe11401ef3"
 
-JOYAI_DIT_RELATIVE_PATH = Path("JoyAI-Video-Edit/dit/joyai_video_edit_dit_0804.pth")
+JOYAI_DIT_RELATIVE_PATH = Path("JoyAI-Video-Edit/dit/joyai_video_edit_dit_0811.pth")
 JOYAI_VAE_CONFIG_RELATIVE_PATH = Path("JoyAI-Video-Edit/vae/config.json")
 JOYAI_VAE_WEIGHTS_RELATIVE_PATH = Path(
     "JoyAI-Video-Edit/vae/diffusion_pytorch_model.safetensors"
@@ -37,13 +39,13 @@ JOYAI_TEXT_ENCODER_RELATIVE_PATH = Path("MiMo-VL-7B-RL-2508")
 
 # Sizes are part of the released Hugging Face snapshot contract.  Exact checks
 # catch LFS pointer files and truncated downloads before a GPU process starts.
-JOYAI_DIT_BYTES = 32_527_711_955
+JOYAI_DIT_BYTES = 32_527_662_903
 JOYAI_VAE_BYTES = 1_534_679_470
 JOYAI_MIN_TEXT_ENCODER_BYTES = 16_000_000_000
 JOYAI_LARGE_FILE_CONTRACT = {
     JOYAI_DIT_RELATIVE_PATH: (
         JOYAI_DIT_BYTES,
-        "acc90774bb72c80ffb2b2c93f7ef539da4f993a47c6d44d7423fba2aff8f1aa6",
+        "b3904b6fda53d13b230918bb616f322d12cfb2337b0e8d9dc203cdabc36605ba",
     ),
     JOYAI_VAE_WEIGHTS_RELATIVE_PATH: (
         JOYAI_VAE_BYTES,
@@ -103,6 +105,66 @@ DEFAULT_FLOWER_WINDOWS = (
 )
 
 
+@dataclass(frozen=True)
+class HeldToolContract:
+    """Timeline and topology contract for a rigid tool carried through an edit.
+
+    The contract deliberately records a human-review requirement.  A text
+    prompt or a single reference image cannot prove ring occupancy, attachment,
+    or temporal persistence in the generated frames.
+    """
+
+    name: str
+    source_start_frame: int
+    source_end_frame: int
+    holder: str
+    topology: tuple[str, ...]
+    required_review_frames: tuple[int, ...]
+
+    def validate(self, *, total_frames: int = 660) -> None:
+        if not self.name.strip() or not self.holder.strip():
+            raise ValueError("held tool name and holder must be non-empty")
+        if not 0 <= self.source_start_frame <= self.source_end_frame < total_frames:
+            raise ValueError("held tool interval must lie in the source timeline")
+        if not self.topology:
+            raise ValueError("held tool topology invariants must be non-empty")
+        if not self.required_review_frames:
+            raise ValueError("held tool requires native-resolution review frames")
+        if tuple(sorted(set(self.required_review_frames))) != self.required_review_frames:
+            raise ValueError("held tool review frames must be sorted and unique")
+        if any(
+            frame < self.source_start_frame or frame > self.source_end_frame
+            for frame in self.required_review_frames
+        ):
+            raise ValueError("held tool review frame lies outside its source interval")
+
+    def to_manifest(self) -> dict[str, Any]:
+        self.validate()
+        return {
+            **asdict(self),
+            "review_authority": "native_resolution_human_veto",
+            "automatic_promotion": False,
+            "physical_evidence": False,
+        }
+
+
+DEFAULT_SCISSORS_CONTRACT = HeldToolContract(
+    name="black-handled stainless-steel florist scissors",
+    source_start_frame=398,
+    source_end_frame=447,
+    holder="robot_right_hand",
+    topology=(
+        "exactly_one_rigid_scissors",
+        "two_handle_rings",
+        "two_blades_joined_at_one_pivot",
+        "robot_fingers_remain_inside_handle_rings",
+        "pivot_remains_attached_to_robot_hand",
+        "no_floating_disappearance_or_finger_tool_merge",
+    ),
+    required_review_frames=(398, 402, 406, 410, 414, 417, 423, 431, 439, 447),
+)
+
+
 def flower_repair_prompt() -> str:
     """A source-fidelity prompt; deterministic locks remain the real guardrail."""
 
@@ -115,6 +177,53 @@ def flower_repair_prompt() -> str:
         "reach, grasp, insertion, release, stem contact, and flower response "
         "motion. Do not add, remove, recolor, freeze, or move flowers or stems."
     )
+
+
+def flower_full_stream_prompt() -> str:
+    """Prompt a causal full-stream appearance edit without freezing flowers."""
+
+    return (
+        "Replace only the florist's human appearance with the exact silver humanoid "
+        "robot shown in the reference image. Preserve the source video timeline, "
+        "camera, background, table, vase, every flower and every stem. Each flower "
+        "and stem must follow its original frame-by-frame source trajectory: while "
+        "grasped it moves continuously with the contacting robot hand without lag, "
+        "after release it remains supported by the vase or table, and it never "
+        "freezes, floats, hangs unsupported, teleports, or moves before contact. "
+        "Retarget the florist's complete torso, arm, wrist, hand, grasp, insertion, "
+        "and release motion to one coherent robot with two articulated five-finger "
+        "hands. During the source trimming action, preserve the one black-handled "
+        "stainless-steel florist scissors as a distinct rigid tool held by the robot's "
+        "right hand: the fingers remain closed through its handles, the pivot remains "
+        "attached to the hand, and its two blades follow the exact source trajectory "
+        "and opening angle. The held scissors must never disappear, float, become a "
+        "background object, merge into a flower, or turn into fingers. Preserve flower "
+        "identity, count, color, geometry, depth ordering, occlusion, motion blur, and "
+        "physical response. Keep every robot part boundary, metallic material, texture, "
+        "color, and highlight temporally stable after motion alignment. Adjacent frames "
+        "must not show local shape popping, crawling texture, shimmering patches, "
+        "duplicate contours, exposure pulsing, color pulsing, or a visual reset at a "
+        "causal chunk boundary. Preserve natural source motion instead of freezing or "
+        "smoothing away hand, tool, flower, or stem motion. Do not invent flower motion "
+        "before a causal interaction, and do not add or remove flowers, limbs, people, "
+        "tools, text, cuts, camera motion, or scene changes."
+    )
+
+
+def causal_padded_frame_count(frame_count: int, *, chunk_frames: int = 8) -> int:
+    """Return the shortest JoyAI stream length ``1 + n * chunk_frames``."""
+
+    if frame_count < 1:
+        raise ValueError("frame_count must be positive")
+    if chunk_frames < 1:
+        raise ValueError("chunk_frames must be positive")
+    return 1 + ceil(max(0, frame_count - 1) / chunk_frames) * chunk_frames
+
+
+def causal_tail_padding_frames(frame_count: int, *, chunk_frames: int = 8) -> int:
+    """Return how many cloned tail frames are required for a complete chunk."""
+
+    return causal_padded_frame_count(frame_count, chunk_frames=chunk_frames) - frame_count
 
 
 @dataclass(frozen=True)
@@ -427,29 +536,31 @@ def build_server_argv(
         "2",
         "--seed",
         "42",
+        "--fps",
+        "24",
         "--no-use-pe",
         "--no-online-gate",
-        "--no-person-count-reedit",
-        "--no-require-face",
         "--uplink-codec",
-        "jpeg",
+        "mjpeg",
         "--downlink-codec",
-        "jpeg",
+        "mjpeg",
         "--output-quality",
         "95",
         "--profile-timings",
-        "--holder-idle-timeout-s",
-        "1800",
+        "--kv-reset-frames",
+        "0",
+        "--max-inflight-chunks",
+        "0",
         "--push-frame-timeout-s",
         "600",
         "--inference-lock-timeout-s",
         "600",
         "--session-close-timeout-s",
         "60",
-        "--record-fps",
-        "24",
-        "--download-crf",
-        "8",
+        "--record-bitrate",
+        "20000000",
+        "--record-segment-seconds",
+        "300",
     )
 
 

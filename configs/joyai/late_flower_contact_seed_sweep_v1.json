@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "status": "FROZEN_BEFORE_INFERENCE",
+  "objective": "Improve late flower contact in direct full-stream JoyAI-edit RV2V without SAM-based pixel synthesis or compositing",
+  "prompt_path": "configs/joyai/late_flower_contact_prompt_v1.txt",
+  "source_video": "outputs/wan-flower-animate2/20260810T-full660-distilled-overlap-v3/input/source-full-660.mp4",
+  "reference_image": "inputs/flower-full-expansion/20260811T046000Z-real660/anchor-frames/h3-291.png",
+  "model": {
+    "id": "jdopensource/JoyAI-Video-Edit",
+    "repository_revision": "3478e4b8c9a79fe935157d1d477cd3e57bb41f1f",
+    "weights_revision": "e14d9ac50d4ad8e9f91b655bfab270c02a43923b",
+    "dit_sha256": "b3904b6fda53d13b230918bb616f322d12cfb2337b0e8d9dc203cdabc36605ba"
+  },
+  "inference": {
+    "source_frames": 660,
+    "causal_frames_with_cloned_tail": 665,
+    "fps": 24,
+    "model_width": 1248,
+    "model_height": 720,
+    "num_inference_steps": 2,
+    "output_quality": 95,
+    "noise_seeds": [17, 42, 73, 101]
+  },
+  "selection_contract": {
+    "primary_hard_gates": {
+      "late_projected_contact_recall": 1.0,
+      "persistent_visual_grasp_recall": 1.0,
+      "grasp_erasure_attack_rejection_recall": 1.0,
+      "source_hold_observable_recall": 1.0,
+      "all_structure_and_identity_gates": true,
+      "all_adversarial_attacks_detected": true
+    },
+    "secondary_order_for_hard_gate_passers": [
+      "lowest_full_sequence_p95_flow_aligned_robot_jitter",
+      "lowest_full_sequence_mean_flow_aligned_robot_jitter",
+      "lowest_numeric_seed"
+    ],
+    "no_per_frame_selection": true,
+    "no_threshold_relaxation": true,
+    "no_mean_score_override": true
+  },
+  "claim_boundary": "Full-stream generated visual proposals only. SAM masks may be used for offline measurement but never to create, modify, select, or composite pixels. No metric depth, force, force closure, q/qdot, or real-robot execution claim."
+}

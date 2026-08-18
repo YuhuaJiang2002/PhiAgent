@@ -98,6 +98,15 @@
         font-size: 0.92rem;
       }
 
+      .copy .status-partial {
+        margin: 0 0 8px;
+        color: #ffc083;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
       .repo-link {
         display: inline-block;
         margin-top: 24px;
@@ -276,6 +285,31 @@
               replacement on the right, synchronized frame for frame.
             </p>
             <a class="video-link" href="showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4">Open MP4</a>
+          </div>
+        </article>
+
+        <article class="featured" id="joyai-late-contact">
+          <video controls muted playsinline preload="metadata"
+            poster="showcase/joyai-late-flower-contact-seed17-v1.jpg?v=1">
+            <source src="showcase/joyai-late-flower-contact-seed17-v1.mp4?v=1" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <p class="status-partial">JoyAI direct RV2V · Best of 4 · Partial</p>
+            <h2>27.5-second flower contact: real human vs. robot</h2>
+            <p>
+              The complete human source is on the left and the selected JoyAI-Video-Edit
+              0811 robot result is on the right. A frozen persistent-contact prompt and
+              seeds 17, 42, 73, and 101 improved late projected contact from 5/11 to
+              9/11. Seed 17 won the independent temporal-jitter tie-break. Its
+              authoritative lossless audit passes 145/147 persistent-grasp frames;
+              failures at frames 574, 627–628, and 637 remain visible, so this result is
+              not promoted. SAM masks were used for offline measurement only, not pixel
+              compositing. The evidence is 2-D and makes no force-closure or real-robot claim.
+            </p>
+            <a class="video-link" href="showcase/joyai-late-flower-contact-seed17-v1.mp4?v=1">Open MP4</a>
+            · <a class="video-link" href="showcase/joyai-late-flower-contact-seed17-v1.json">Audit summary</a>
+            · <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/blob/main/docs/JOYAI_LATE_FLOWER_CONTACT.md">Reproduce</a>
           </div>
         </article>
 

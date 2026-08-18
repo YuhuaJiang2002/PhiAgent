@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Launch pinned JoyAI inference after two-physical-GPU and weight preflight."""
+"""Launch the pinned JoyAI 0811 RV2V server after two-GPU preflight."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import csv
 import json
 import os
 import platform
+import shlex
 import shutil
 import signal
 import socket
@@ -48,7 +49,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--overlay",
         type=Path,
-        default=PROJECT_ROOT / "third_party_overlays/joyai_video_edit/a800_streaming_timeout.patch",
+        help="Optional source compatibility patch; its path, SHA256, and command are recorded.",
     )
     parser.add_argument("--preflight-only", action="store_true")
     return parser
@@ -116,7 +117,8 @@ import av
 import cv2
 import flash_attn.cute
 import joyomni_ops
-names = ['torch','transformers','diffusers','fastapi','uvicorn','av','opencv-python-headless','websockets']
+import uvloop
+names = ['torch','transformers','diffusers','fastapi','uvicorn','uvloop','av','opencv-python-headless','websockets']
 versions = {}
 for name in names:
     try: versions[name] = m.version(name)
@@ -164,12 +166,20 @@ print(json.dumps(result))
             "JoyAI runtime must use the pinned torch 2.9.1 / CUDA 12.8 stack; "
             f"observed torch={torch_version}, CUDA={result['torch_cuda']}"
         )
+    transformers_version = str(result["packages"].get("transformers") or "")
+    if tuple(int(part) for part in transformers_version.split(".")[:3]) < (4, 57, 1):
+        raise JoyAIPreflightError(
+            "JoyAI 0811 runtime requires transformers>=4.57.1,<4.58; "
+            f"observed {transformers_version}"
+        )
     if any(row["finite_sum"] != 16.0 for row in result["cuda_smoke"]):
         raise JoyAIPreflightError(f"JoyAI CUDA smoke operation was not finite: {result}")
     return result
 
 
-def stage_runtime_source(repository: Path, destination: Path, overlay: Path) -> dict[str, Any]:
+def stage_runtime_source(
+    repository: Path, destination: Path, overlay: Path | None
+) -> dict[str, Any]:
     if destination.exists():
         raise FileExistsError(destination)
     shutil.copytree(
@@ -177,24 +187,42 @@ def stage_runtime_source(repository: Path, destination: Path, overlay: Path) -> 
         destination,
         ignore=shutil.ignore_patterns(".git", "__pycache__", "*.pyc", "deps", "recordings"),
     )
-    command = ["patch", "-p1", "-i", str(overlay.resolve())]
-    completed = subprocess.run(
-        command, cwd=destination, capture_output=True, text=True, check=False
-    )
-    if completed.returncode:
-        raise JoyAIPreflightError(
-            "could not apply the pinned A800 timeout overlay: "
-            + completed.stdout
-            + completed.stderr
+    command = None
+    if overlay is not None:
+        command = ["patch", "-p1", "-i", str(overlay.resolve())]
+        completed = subprocess.run(
+            command, cwd=destination, capture_output=True, text=True, check=False
         )
+        if completed.returncode:
+            raise JoyAIPreflightError(
+                "could not apply the requested JoyAI overlay: "
+                + completed.stdout
+                + completed.stderr
+            )
     server = destination / "deploy/xvideo/serving/serve_joyomni_streaming.py"
-    if "--holder-idle-timeout-s" not in server.read_text(encoding="utf-8"):
-        raise JoyAIPreflightError("staged JoyAI server is missing the timeout overlay")
+    server_text = server.read_text(encoding="utf-8")
+    if (
+        "--push-frame-timeout-s" not in server_text
+        or "--max-inflight-chunks" not in server_text
+        or "_snap_to_align" not in server_text
+    ):
+        raise JoyAIPreflightError(
+            "staged JoyAI 0811 server is missing its bounded streaming controls"
+        )
+    streaming = destination / "deploy/xvideo/serving/joyomni_streaming.py"
+    streaming_text = streaming.read_text(encoding="utf-8")
+    if (
+        "reference_image_latents" not in streaming_text
+        or "_prefill_static_reference_kv_cache" not in streaming_text
+    ):
+        raise JoyAIPreflightError(
+            "staged JoyAI source is missing reference-image-guided RV2V support"
+        )
     return {
         "source_repository": str(repository),
         "staged_repository": str(destination),
-        "overlay": str(overlay.resolve()),
-        "overlay_sha256": sha256_file(overlay.resolve()),
+        "overlay": str(overlay.resolve()) if overlay is not None else None,
+        "overlay_sha256": sha256_file(overlay.resolve()) if overlay is not None else None,
         "command": command,
     }
 
@@ -237,6 +265,9 @@ def main() -> int:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "hostname": socket.gethostname(),
         "platform": platform.platform(),
+        "command": [sys.executable, *sys.argv],
+        "command_shell": shlex.join([sys.executable, *sys.argv]),
+        "seed": None,
         "git": _git_state(),
         "physical_evidence": False,
         "error": None,
@@ -250,9 +281,9 @@ def main() -> int:
         # Keep the venv interpreter path itself. Path.resolve() would follow its
         # symlink to the shared base interpreter and bypass venv package lookup.
         python = Path(os.path.abspath(args.python.expanduser()))
-        overlay = args.overlay.expanduser().resolve()
-        if not python.is_file() or not overlay.is_file():
-            raise FileNotFoundError("JoyAI Python executable or source overlay is missing")
+        overlay = args.overlay.expanduser().resolve() if args.overlay is not None else None
+        if not python.is_file() or (overlay is not None and not overlay.is_file()):
+            raise FileNotFoundError("JoyAI Python executable or requested source overlay is missing")
         source = validate_upstream_checkout(repository)
         checkpoints = validate_checkpoint_layout(checkpoint_root, verify_large_hashes=True)
         inventory = query_gpu_inventory()
@@ -276,8 +307,12 @@ def main() -> int:
         environment["CUDA_VISIBLE_DEVICES"] = ",".join(str(index) for index in args.physical_gpu)
         environment["JOYOMNI_FP8_IMG"] = "0"
         environment["JOYOMNI_FP8_TXT"] = "0"
+        environment["JOYOMNI_CUDA_GRAPH"] = "1"
+        environment["JOYOMNI_SAGE_ATTN"] = "0"
+        environment["JOYOMNI_TXT_PARALLEL"] = "0"
         environment["PYTHONUNBUFFERED"] = "1"
-        cache = checkpoint_root.parent / "joyai-runtime-cache"
+        environment["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
+        cache = checkpoint_root.parent / "joyai-runtime-cache-3478e4b8"
         environment["TORCHINDUCTOR_CACHE_DIR"] = str(cache / "torchinductor")
         environment["TRITON_CACHE_DIR"] = str(cache / "triton")
         environment["CUDA_CACHE_PATH"] = str(cache / "nv_compute")
@@ -323,6 +358,10 @@ def main() -> int:
                         "CUDA_VISIBLE_DEVICES",
                         "JOYOMNI_FP8_IMG",
                         "JOYOMNI_FP8_TXT",
+                        "JOYOMNI_CUDA_GRAPH",
+                        "JOYOMNI_SAGE_ATTN",
+                        "JOYOMNI_TXT_PARALLEL",
+                        "PYTORCH_CUDA_ALLOC_CONF",
                         "CUDA_HOME",
                         "TORCHINDUCTOR_CACHE_DIR",
                         "TRITON_CACHE_DIR",
@@ -357,7 +396,11 @@ def main() -> int:
         )
         write_json(manifest_path, manifest)
 
+        shutdown_requested = False
+
         def terminate(_signum: int, _frame: Any) -> None:
+            nonlocal shutdown_requested
+            shutdown_requested = True
             if process is not None and process.poll() is None:
                 process.terminate()
 
@@ -387,16 +430,22 @@ def main() -> int:
         write_json(manifest_path, manifest)
         print(json.dumps({"experiment": str(output), "status": "WORKING", "health": health_result}, indent=2))
         returncode = process.wait()
+        clean_requested_stop = shutdown_requested and returncode in (0, -signal.SIGTERM)
         manifest.update(
             {
-                "status": "PARTIAL",
-                "stage": "joyai_server_stopped",
+                "status": "WORKING" if clean_requested_stop else "PARTIAL",
+                "stage": (
+                    "joyai_server_stopped_after_working"
+                    if clean_requested_stop
+                    else "joyai_server_stopped_unexpectedly"
+                ),
                 "server_returncode": returncode,
+                "shutdown_requested": shutdown_requested,
                 "stopped_at": datetime.now(timezone.utc).isoformat(),
             }
         )
         write_json(manifest_path, manifest)
-        return returncode
+        return 0 if clean_requested_stop else returncode
     except Exception as exc:
         manifest.update(
             {

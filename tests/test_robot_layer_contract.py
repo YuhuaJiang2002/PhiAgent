@@ -7,7 +7,11 @@ from phiagent.rendering.robot_layer_contract import (
     canonical_palette_histogram,
     frame_contract_metrics,
     make_state_control,
+    mask_chebyshev_distance,
     merge_missing_replacement,
+    occlusion_aware_grasp_metrics,
+    project_hand_detail_to_gate,
+    project_missing_contact,
     robust_limit,
 )
 
@@ -83,6 +87,59 @@ def test_adversarial_color_shift_increases_identity_and_chroma_scores() -> None:
 
     assert shifted["palette_surprisal"] > baseline["palette_surprisal"]
     assert shifted["high_chroma_fraction"] > baseline["high_chroma_fraction"]
+
+
+def test_shifted_hand_ghost_reduces_generated_hand_sobel_energy() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.full((32, 40, 3), 20, dtype=np.uint8)
+    candidate = source.copy()
+    alpha = np.zeros((32, 40), dtype=bool)
+    alpha[4:28, 4:36] = True
+    candidate[alpha] = 120
+    hands = np.zeros_like(alpha)
+    hands[8:24, 8:32] = True
+    for column in range(8, 32):
+        candidate[hands & (np.indices(hands.shape)[1] == column)] = (
+            40 if ((column - 8) // 2) % 2 == 0 else 220
+        )
+    arms = alpha.copy()
+    flower = np.zeros_like(alpha)
+    palette = canonical_palette_histogram(np, candidate, alpha)
+    baseline = frame_contract_metrics(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        robot_alpha=alpha,
+        arm_support=arms,
+        hand_support=hands,
+        object_mask=flower,
+        palette=palette,
+        contact_radius=1,
+    )
+    attacked = candidate.copy()
+    shifted = np.roll(candidate, 2, axis=1)
+    ghost = np.rint(
+        0.5 * candidate.astype(np.float32)
+        + 0.5 * shifted.astype(np.float32)
+    ).astype(np.uint8)
+    attacked[hands] = ghost[hands]
+    attacked_metrics = frame_contract_metrics(
+        np,
+        candidate_rgb=attacked,
+        source_rgb=source,
+        robot_alpha=alpha,
+        arm_support=arms,
+        hand_support=hands,
+        object_mask=flower,
+        palette=palette,
+        contact_radius=1,
+    )
+
+    assert baseline["hand_structure_sobel_energy"] > 0
+    assert (
+        baseline["hand_structure_sobel_energy"]
+        > attacked_metrics["hand_structure_sobel_energy"]
+    )
 
 
 def test_adversarial_arm_erasure_reduces_topology_coverage() -> None:
@@ -186,6 +243,127 @@ def test_missing_replacement_union_never_overwrites_protected_object() -> None:
     assert np.all(merged[4, 5] > 0)
 
 
+def test_contact_projection_bridges_only_tracked_hand_and_protects_object() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((12, 16, 3), dtype=np.uint8)
+    candidate = source.copy()
+    hand = np.zeros((12, 16), dtype=bool)
+    hand[4:8, 2:13] = True
+    flower = np.zeros_like(hand)
+    flower[4:8, 13:15] = True
+    candidate[4:8, 2:7] = np.asarray([160, 170, 180], dtype=np.uint8)
+
+    projected, added, steps, passed = project_missing_contact(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hand,
+        protected_object=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+        maximum_bridge_steps=6,
+    )
+
+    assert passed is True
+    assert 1 <= steps <= 6
+    assert int(added.sum()) > 0
+    assert int(added.sum()) <= int(hand.sum())
+    assert np.array_equal(projected[flower], candidate[flower])
+    assert not np.any(added & ~hand)
+    assert not np.any(added & flower)
+
+
+def test_contact_projection_is_noop_without_required_source_contact() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((8, 10, 3), dtype=np.uint8)
+    candidate = source.copy()
+    candidate[2:5, 1:3] = 200
+    hand = np.zeros((8, 10), dtype=bool)
+    hand[2:5, 1:4] = True
+    flower = np.zeros_like(hand)
+    flower[2:5, 8:9] = True
+
+    projected, added, steps, passed = project_missing_contact(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hand,
+        protected_object=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+    )
+
+    assert np.array_equal(projected, candidate)
+    assert not np.any(added)
+    assert steps == 0
+    assert passed is False
+
+
+def test_occlusion_aware_grasp_accepts_replaced_hand_corridor() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((12, 20, 3), dtype=np.uint8)
+    candidate = source.copy()
+    hands = np.zeros((12, 20), dtype=bool)
+    hands[4:8, 7:12] = True
+    flower = np.zeros_like(hands)
+    flower[4:8, 15:17] = True
+    candidate[hands] = np.asarray([150, 160, 170], dtype=np.uint8)
+
+    metrics = occlusion_aware_grasp_metrics(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hands,
+        object_mask=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+        maximum_source_occlusion_gap=4,
+        minimum_bridge_coverage=0.8,
+    )
+
+    assert mask_chebyshev_distance(np, hands, flower, maximum_radius=4) == 4
+    assert metrics["robot_direct_contact"] is False
+    assert metrics["occlusion_bridge_coverage"] == 1.0
+    assert metrics["visual_grasp_pass"] is True
+
+
+def test_occlusion_aware_grasp_rejects_floating_object_after_hand_erasure() -> None:
+    np = pytest.importorskip("numpy")
+    source = np.zeros((12, 20, 3), dtype=np.uint8)
+    candidate = source.copy()
+    hands = np.zeros((12, 20), dtype=bool)
+    hands[4:8, 7:12] = True
+    flower = np.zeros_like(hands)
+    flower[4:8, 15:17] = True
+
+    metrics = occlusion_aware_grasp_metrics(
+        np,
+        candidate_rgb=candidate,
+        source_rgb=source,
+        hand_support=hands,
+        object_mask=flower,
+        replacement_threshold=12,
+        contact_radius=1,
+        maximum_source_occlusion_gap=4,
+        minimum_bridge_coverage=0.8,
+    )
+
+    assert metrics["source_hold_observable"] is True
+    assert metrics["occlusion_bridge_coverage"] == 0.0
+    assert metrics["visual_grasp_pass"] is False
+
+
+def test_mask_distance_finds_exact_bounded_radius_with_binary_search() -> None:
+    np = pytest.importorskip("numpy")
+    first = np.zeros((20, 30), dtype=bool)
+    second = np.zeros_like(first)
+    first[10, 3] = True
+    second[10, 20] = True
+
+    assert mask_chebyshev_distance(np, first, second, maximum_radius=16) is None
+    assert mask_chebyshev_distance(np, first, second, maximum_radius=24) == 17
+
+
 def test_frame_metric_fractions_remain_bounded_on_large_masks() -> None:
     np = pytest.importorskip("numpy")
     rng = np.random.default_rng(7)
@@ -228,3 +406,39 @@ def test_frame_metric_fractions_remain_bounded_on_large_masks() -> None:
         np.array_equal(value, snapshot)
         for value, snapshot in zip((alpha, flower, arms, hands), snapshots, strict=True)
     )
+
+
+def test_hand_detail_projection_reaches_gate_and_keeps_locked_pixels_exact() -> None:
+    cv2 = pytest.importorskip("cv2")
+    np = pytest.importorskip("numpy")
+    rng = np.random.default_rng(19)
+    texture = rng.normal(128.0, 8.0, (48, 64, 3)).astype(np.float32)
+    blurred = cv2.GaussianBlur(texture, (0, 0), 1.4)
+    frame = np.clip(np.rint(blurred), 0, 255).astype(np.uint8)
+    editable = np.zeros((48, 64), dtype=bool)
+    editable[8:40, 12:52] = True
+    measurement = editable.copy()
+
+    baseline, _, baseline_energy, _ = project_hand_detail_to_gate(
+        cv2,
+        np,
+        frame_rgb=frame,
+        editable_mask=editable,
+        measurement_mask=measurement,
+        minimum_edge_energy=1e-6,
+    )
+    target = baseline_energy + 0.5
+    projected, strength, achieved, passed = project_hand_detail_to_gate(
+        cv2,
+        np,
+        frame_rgb=frame,
+        editable_mask=editable,
+        measurement_mask=measurement,
+        minimum_edge_energy=target,
+    )
+
+    assert np.array_equal(baseline, frame)
+    assert 0.0 < strength <= 3.0
+    assert passed is True
+    assert achieved >= target
+    assert np.array_equal(projected[~editable], frame[~editable])
