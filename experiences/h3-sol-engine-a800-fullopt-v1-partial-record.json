@@ -1,0 +1,38 @@
+{
+  "evidence": [
+    "The released four-A100 H3 workload reports dense 217.32 seconds, full-opt 61.28 seconds, and 3.55x speedup at 1344x768, 124 frames, 50 steps, and seed 0.",
+    "The matched four-A800 reproduction measured dense 216.599563 seconds, full-opt 61.683806 seconds, and 3.511449x speedup: -0.33%, +0.66%, and -1.09% respectively versus the released A100 figures.",
+    "The A800 optimized benchmark records Triton Sol-Attn on all four ranks, effective route density 0.180392, FirstBlockCache reuse on 33 of 49 calls, and 48098 MiB peak reserved memory per GPU versus 47724 MiB for dense.",
+    "The local 64-frame telemetry measured PSNR 16.739925, SSIM 0.676956, and temporal relative error 0.127109."
+  ],
+  "lessons": [
+    "The A800 result closely reproduces the released A100 end-to-end acceleration while using the portable SM80 Triton backend.",
+    "The 3.511x result belongs to the composed Sol-Attn plus FirstBlockCache profile and cannot be attributed to either component without ablation.",
+    "Sol-Engine ranks lossy generative profiles with aligned pairwise Gemini artifact severity and aligned LPIPS rather than a fixed PSNR or SSIM delivery threshold."
+  ],
+  "limitations": [
+    "The released A100 H3 profile does not publish a directly comparable PSNR or SSIM value, so the local pixel telemetry cannot quantify a delta against an upstream PSNR or SSIM reference.",
+    "The reproduction covers one released prompt and seed on four A800 GPUs; multi-prompt, H100, and component-ablation coverage is separate work.",
+    "Generated videos and checkpoints remain outside Git and are referenced by the recorded run directory."
+  ],
+  "next_actions": [
+    "Evaluate the same outputs with the upstream aligned LPIPS and pairwise artifact rubric for an apples-to-apples quality comparison.",
+    "Run dense, Sol-Attn-only, FirstBlockCache-only, and composed profiles over a fixed multi-prompt robot-action suite."
+  ],
+  "record_id": "2026-08-16.h3-sol-engine-a800-fullopt-v1-partial",
+  "recorded_at": "2026-08-16T02:30:00Z",
+  "run_dir": "/mnt/goosefs/guoyijun/experiments/h3-sol-engine-ab-a800-20260816-009",
+  "schema_version": "1.0.0",
+  "scope": "matched four-A800 MiniMax-H3 dense versus Sol-Engine fullopt_exact inference",
+  "status": "PARTIAL",
+  "summary": "The four-A800 H3 full-opt reproduction reached 3.511x versus the released four-A100 3.55x result, a 1.09% relative difference.",
+  "supersedes": [],
+  "tags": [
+    "engineering",
+    "sol-attn",
+    "firstblockcache",
+    "minimax-h3",
+    "a800",
+    "reproduction"
+  ]
+}
