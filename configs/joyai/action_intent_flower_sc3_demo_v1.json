@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0.0",
+  "task_id": "joyai-flower-action-intent-v1",
+  "instruction": "Retarget the florist's demonstrated reach, grasp, flower transport, scissors use, insertion, release, and retraction into one silver humanoid robot while preserving the real captured flower-arrangement scene and the exact source timing.",
+  "embodiment": "the exact coherent silver humanoid robot shown in the reference image, with two articulated five-finger hands, stable metallic material, and unchanged body identity",
+  "source_video": "outputs/joyai-action-intent/20260819T130000Z-real-source-prep-v1/joyai-full-stream-input-ffv1.mkv",
+  "source_sha256": "bcea083a6fa4781ca16e0f41a7cd88abc92fcd761c1dce81b74860e5a4eff3d1",
+  "reference_image": "outputs/joyai-video-edit-v2/20260817T151111Z-0811-rv2v-temporal-stabilization-v1/reference/robot-reference-frame-0096.png",
+  "reference_sha256": "32174d0f895863da846de90db698f4374bbf719e160a5c0a7d2945f9ec5a99ac",
+  "coordinate_frame": "camera:joyai_center_crop_1248x720",
+  "width": 1248,
+  "height": 720,
+  "fps": 24,
+  "model_frame_count": 665,
+  "deliverable_frame_count": 660,
+  "motion_authority": "source_demonstration",
+  "objects": [
+    {
+      "object_id": "flower-bundle",
+      "description": "the source flowers and individually visible stems, retaining their original color, count, geometry, depth ordering, and per-frame motion",
+      "persistence_invariants": [
+        "Each manipulated stem remains the same material instance throughout the timeline.",
+        "A flower moves only with the demonstrated hand interaction or its demonstrated support response.",
+        "No flower or stem freezes, teleports, duplicates, disappears, or merges with the robot."
+      ]
+    },
+    {
+      "object_id": "florist-scissors",
+      "description": "one black-handled stainless-steel florist scissors with two handle rings, two blades, and one rigid pivot",
+      "persistence_invariants": [
+        "Exactly one scissors exists during its source interval.",
+        "The robot fingers remain visually threaded through the handle rings while the tool is held.",
+        "The pivot remains attached to the right hand and the blades preserve the source opening angle."
+      ]
+    },
+    {
+      "object_id": "vase",
+      "description": "the original vase and its support relationship with placed stems",
+      "persistence_invariants": [
+        "The vase geometry, pose, color, and support surface remain source-locked.",
+        "Inserted stems preserve the demonstrated vase occlusion and support ordering."
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "phase_id": "observe-initial-state",
+      "action": "observe",
+      "start_frame": 0,
+      "end_frame": 95,
+      "actor": "robot",
+      "object_id": null,
+      "target": "source workspace",
+      "contact_state": "free",
+      "instruction": "Establish one stable robot identity and preserve the untouched initial arrangement."
+    },
+    {
+      "phase_id": "approach-flower",
+      "action": "approach",
+      "start_frame": 96,
+      "end_frame": 191,
+      "actor": "robot_right_hand",
+      "object_id": "flower-bundle",
+      "target": "the source-selected stem",
+      "contact_state": "approaching",
+      "instruction": "Follow the source wrist and finger trajectory toward the selected stem without moving it early."
+    },
+    {
+      "phase_id": "grasp-flower",
+      "action": "grasp",
+      "start_frame": 192,
+      "end_frame": 223,
+      "actor": "robot_right_hand",
+      "object_id": "flower-bundle",
+      "target": "the source-selected stem",
+      "contact_state": "held",
+      "instruction": "Close on the demonstrated stem at the source time and retain the same grasp side."
+    },
+    {
+      "phase_id": "transport-flower",
+      "action": "transport",
+      "start_frame": 224,
+      "end_frame": 319,
+      "actor": "robot_right_hand",
+      "object_id": "flower-bundle",
+      "target": "the demonstrated arrangement location",
+      "contact_state": "held",
+      "instruction": "Carry the same held stem along the demonstrated trajectory with no hand-object lag."
+    },
+    {
+      "phase_id": "place-first-flower",
+      "action": "place",
+      "start_frame": 320,
+      "end_frame": 397,
+      "actor": "robot_right_hand",
+      "object_id": "flower-bundle",
+      "target": "vase",
+      "contact_state": "supported",
+      "instruction": "Reproduce the demonstrated insertion and support transition while keeping the vase immutable."
+    },
+    {
+      "phase_id": "use-florist-scissors",
+      "action": "tool_use",
+      "start_frame": 398,
+      "end_frame": 447,
+      "actor": "robot_right_hand",
+      "object_id": "florist-scissors",
+      "target": "the demonstrated trimming location",
+      "contact_state": "held",
+      "instruction": "Carry and articulate the one rigid scissors along the exact source tool trajectory; preserve both rings, both blades, and the pivot."
+    },
+    {
+      "phase_id": "regrasp-and-insert",
+      "action": "transport",
+      "start_frame": 448,
+      "end_frame": 575,
+      "actor": "robot_right_hand",
+      "object_id": "flower-bundle",
+      "target": "final vase position",
+      "contact_state": "held",
+      "instruction": "Preserve the late demonstrated hand-flower contacts and continuous stem response during insertion."
+    },
+    {
+      "phase_id": "release-arrangement",
+      "action": "release",
+      "start_frame": 576,
+      "end_frame": 631,
+      "actor": "robot_right_hand",
+      "object_id": "flower-bundle",
+      "target": "vase support",
+      "contact_state": "released",
+      "instruction": "Open the hand at the demonstrated time and leave the flower supported exactly as in the source."
+    },
+    {
+      "phase_id": "retract-final-state",
+      "action": "retract",
+      "start_frame": 632,
+      "end_frame": 659,
+      "actor": "robot_right_hand",
+      "object_id": null,
+      "target": "source final wrist pose",
+      "contact_state": "free",
+      "instruction": "Retract along the source path while preserving the final flower arrangement and robot identity."
+    }
+  ],
+  "scene_invariants": [
+    "Preserve the source camera trajectory, timing, table, wall, vase, lighting, and every background pixel outside the demonstrated actor region.",
+    "Preserve source object count, object motion, occlusion order, and contact-side depth ordering.",
+    "Do not add people, robot parts, tools, flowers, text, cuts, or camera motion.",
+    "Do not smooth away demonstrated hand, tool, flower, or stem motion."
+  ],
+  "joyai": {
+    "seeds": [17, 42, 73, 101],
+    "num_inference_steps": 2,
+    "output_quality": 95,
+    "minimum_phase_confidence": 0.75
+  }
+}

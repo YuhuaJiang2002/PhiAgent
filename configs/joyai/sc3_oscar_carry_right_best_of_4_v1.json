@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "experiment_root": "../../outputs/joyai-sc3-action-demo",
+  "action_condition": "../../demo/showcase/oscar-acwm-carry-right-action.json",
+  "first_frame": "../../outputs/acwm-oscar-conditions/20260810T131648Z-hand2dex2-v2/input/first-frame.png",
+  "source_video": "../../demo/showcase/oscar-acwm-real-source.mp4",
+  "carrier": {
+    "video": "../../demo/showcase/oscar-acwm-carry-right.mp4",
+    "coordinate_frame": "camera:oscar_640x480_pixels",
+    "generator": "OSCAR-2B action-conditioned world model",
+    "generator_revision": "c9781ffa7dd8556d862d7d9f338a2ea008a58ca6",
+    "motion_authority": "The 81-frame RGB carrier is authoritative for generated image-space robot pose, yellow-bowl trajectory, contact timing, and hold timing; it is not physical evidence.",
+    "physical_evidence": false
+  },
+  "client_script": "../../scripts/run_joyai_video_edit_client.py",
+  "candidate_seeds": [
+    42,
+    101,
+    131,
+    181
+  ],
+  "server_url": "ws://127.0.0.1:18080/ws",
+  "server_manifest": null,
+  "target_width": 1248,
+  "target_height": 720,
+  "target_coordinate_frame": "camera:joyai_center_crop_1248x720",
+  "num_inference_steps": 2,
+  "output_quality": 95,
+  "timeout_seconds": 3600,
+  "padding_blur_sigma": 30,
+  "model_fps": 24,
+  "thresholds": {
+    "action_adherence": 0.75,
+    "embodiment_consistency": 0.75,
+    "object_interaction": 0.75,
+    "temporal_consistency": 0.75,
+    "background_consistency": 0.75
+  },
+  "evaluator_command": [
+    "{python}",
+    "{project_root}/scripts/evaluate_acwm_candidate.py",
+    "--candidate",
+    "{candidate}",
+    "--condition",
+    "{condition}",
+    "--first-frame",
+    "{first_frame}",
+    "--source",
+    "{source}",
+    "--metadata",
+    "{metadata}",
+    "--evidence-root",
+    "{evidence_root}"
+  ]
+}

@@ -432,6 +432,31 @@ class ProtocolRun:
             raise RuntimeError(self.error)
 
 
+def build_start_payload(args: argparse.Namespace) -> dict[str, Any]:
+    """Build the exact session contract sent to the pinned JoyAI server."""
+
+    return {
+        "type": "start",
+        "prompt": args.prompt,
+        "width": args.width,
+        "height": args.height,
+        "fps": args.fps,
+        "num_inference_steps": args.num_inference_steps,
+        "use_pe": False,
+        "gate_enabled": False,
+        "seed": args.seed,
+        "kv_reset_frames": 0,
+        "output_quality": args.output_quality,
+        "no_person_blank": False,
+        "require_face": False,
+        "person_count_reedit": False,
+        "freeze_kv_on_static": False,
+        "profile_timings": args.profile_timings,
+        "uplink_codec": "jpeg",
+        "downlink_codec": "jpeg",
+    }
+
+
 async def run_protocol(
     args: argparse.Namespace, frames: Iterable[bytes], output: Path
 ) -> dict[str, Any]:
@@ -455,25 +480,7 @@ async def run_protocol(
         websocket = await _connect(args.server_url)
         receiver = asyncio.create_task(state.receiver(websocket))
         await asyncio.wait_for(state.session_granted.wait(), timeout=60)
-        payload: dict[str, Any] = {
-            "type": "start",
-            "prompt": args.prompt,
-            "width": args.width,
-            "height": args.height,
-            "num_inference_steps": args.num_inference_steps,
-            "use_pe": False,
-            "gate_enabled": False,
-            "seed": args.seed,
-            "kv_reset_frames": 0,
-            "output_quality": args.output_quality,
-            "no_person_blank": False,
-            "require_face": False,
-            "person_count_reedit": False,
-            "freeze_kv_on_static": False,
-            "profile_timings": args.profile_timings,
-            "uplink_codec": "jpeg",
-            "downlink_codec": "jpeg",
-        }
+        payload = build_start_payload(args)
         reference = _reference_data_url(args.reference_image)
         if reference:
             payload["ref_image"] = reference
