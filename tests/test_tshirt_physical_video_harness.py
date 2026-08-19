@@ -29,6 +29,11 @@ from phiagent.harness.cloth_carrier import (
     TSHIRT_832X480_CARRIER,
     polyline_segment_lengths,
 )
+from phiagent.harness.articulated_camera_rig import (
+    LOWER_LEFT_RIG,
+    UPPER_RIGHT_RIG,
+    compile_tshirt_dual_arm_trajectory,
+)
 from phiagent.harness.test_time_scaling import (
     HardGateTestTimeScalingRepairAgent,
     ScalingRound,
@@ -171,6 +176,29 @@ def test_carrier_rigid_sleeve_phases_preserve_every_material_segment() -> None:
             assert polyline_segment_lengths(points) == pytest.approx(
                 baseline[side], abs=1e-9
             )
+
+
+def test_articulated_contact_carrier_is_connected_and_contact_first() -> None:
+    trajectory = compile_tshirt_dual_arm_trajectory()
+
+    assert trajectory.maximum_link_length_error_pixels < 1e-6
+    assert trajectory.maximum_tip_step_pixels < 18.0
+    assert trajectory.maximum_joint_step_radians < 0.20
+    assert trajectory.mean_tip_error_pixels < 1e-4
+    for name, rig in (
+        ("lower_left", LOWER_LEFT_RIG),
+        ("upper_right", UPPER_RIGHT_RIG),
+    ):
+        for frame in trajectory.frames[name]:
+            observed = tuple(
+                ((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2) ** 0.5
+                for a, b in zip(frame.nodes_xy, frame.nodes_xy[1:])
+            )
+            assert observed == pytest.approx(rig.link_lengths_pixels, abs=1e-6)
+    assert trajectory.frames["lower_left"][20].contact_entity == "viewer_left_sleeve"
+    assert trajectory.frames["upper_right"][60].contact_entity == "viewer_right_sleeve"
+    assert trajectory.frames["lower_left"][19].contact_entity is None
+    assert trajectory.frames["upper_right"][59].contact_entity is None
 
 
 def test_scaling_policy_rejects_threshold_relaxation_and_decreasing_steps() -> None:
