@@ -10,6 +10,7 @@ import pytest
 from scripts.run_joyai_video_edit_client import (
     OutputFrameSink,
     ProtocolRun,
+    build_start_payload,
     cleanup_protocol_frames,
     mux_outputs,
     resolve_throughput_options,
@@ -28,6 +29,25 @@ class _MessageStream:
             return next(self._messages)
         except StopIteration as exc:
             raise StopAsyncIteration from exc
+
+
+def test_start_payload_sends_explicit_model_cadence() -> None:
+    payload = build_start_payload(
+        argparse.Namespace(
+            prompt="Preserve the action carrier.",
+            width=1248,
+            height=720,
+            fps=24,
+            num_inference_steps=2,
+            seed=42,
+            output_quality=95,
+            profile_timings=False,
+        )
+    )
+
+    assert payload["fps"] == 24
+    assert payload["gate_enabled"] is False
+    assert payload["kv_reset_frames"] == 0
 
 
 def test_current_0811_ack_messages_release_client_backpressure(tmp_path: Path) -> None:

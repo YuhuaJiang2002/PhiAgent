@@ -19,6 +19,7 @@ from typing import Any, Mapping
 
 class ActionRepresentation(str, Enum):
     KINEMATIC_SKELETON_2D = "kinematic_skeleton_2d"
+    CAMERA_RELATIVE_EEF_DELTA = "camera_relative_eef_delta"
     EEF_ABSOLUTE = "eef_absolute"
     EEF_DELTA = "eef_delta"
     JOINT_ABSOLUTE = "joint_absolute"
@@ -30,6 +31,7 @@ class ActionRepresentation(str, Enum):
     def requires_camera_frame(self) -> bool:
         return self in {
             ActionRepresentation.KINEMATIC_SKELETON_2D,
+            ActionRepresentation.CAMERA_RELATIVE_EEF_DELTA,
             ActionRepresentation.ROBOT_POINTMAP,
             ActionRepresentation.ROBOT_FLOW,
         }
