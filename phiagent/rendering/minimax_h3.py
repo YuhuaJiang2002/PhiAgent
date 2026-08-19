@@ -21,6 +21,42 @@ DIFFSYNTH_H3_COMMIT = "b1c02ce76aabc989f6bf534756b2da84532249e5"
 MINIMAX_H3_MODEL_ID = "MiniMaxAI/MiniMax-H3"
 MINIMAX_H3_MODELSCOPE_ID = "MiniMax/MiniMax-H3"
 MINIMAX_H3_NF4_MODEL_ID = "DiffSynth-Studio/MiniMax-H3-NF4"
+MINIMAX_H3_NF4_REVISION = "7b12021c3f1c91473f428db91c8c2ed0e7cb6a66"
+MINIMAX_H3_PROCESSOR_REVISION = "29139ad62f28479297e305d690ee1521042133d4"
+MINIMAX_H3_NF4_SHA256 = {
+    "minimax-h3-ref2va-nf4.safetensors": (
+        "765f82272ad5b1e486beef4a5aca719430c6295f3d8d8d07de602a2a740253bb"
+    ),
+    "minimax-h3-text-encoder-nf4.safetensors": (
+        "0964f0634856e68522aa64b801afcd31b4e878619eff21a82324e2cd61690f13"
+    ),
+    "video_vae_nf4.safetensors": (
+        "6d0cb4ff02ebb74cc6bca40018e6efae5082ccd7eb066fa1263098c6dbf8f6f1"
+    ),
+    "audio_vae_nf4.safetensors": (
+        "759662130ba3618b7f196da8f983f857a1f1ec6af8110d657796d9792c0d64e5"
+    ),
+}
+MINIMAX_H3_PROCESSOR_SHA256 = {
+    "chat_template.json": (
+        "5c72a170d2a4a1a3bc5adad2e689ae28138a9700e5b8c96c0266331e86c0acce"
+    ),
+    "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+    "preprocessor_config.json": (
+        "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+    ),
+    "tokenizer.json": (
+        "a5d85b6dcc535e6b93115a9ef287e6132fdbf30270da6218194ba742261173c7"
+    ),
+    "tokenizer_config.json": (
+        "a07e942ac874baa13758de8d1fbdb186683cc03416b5589e1b6671c6b3057c68"
+    ),
+    "video_preprocessor_config.json": (
+        "7768af27c1fafa9cc9011c1dc20067e03f8915e03b63504550e11d5066986d13"
+    ),
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+}
+MINIMAX_H3_PROCESSOR_FILES = tuple(MINIMAX_H3_PROCESSOR_SHA256)
 
 
 @dataclass(frozen=True)
@@ -169,6 +205,39 @@ def file_sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def h3_checkpoint_files(
+    model_base_path: Path,
+    *,
+    model_variant: str = "ref2va-nf4",
+) -> tuple[Path, ...]:
+    """Return every local checkpoint file required by one pinned H3 variant."""
+
+    transformer_names = {
+        "ref2va-nf4": "minimax-h3-ref2va-nf4.safetensors",
+        "fl2va-nf4": "minimax-h3-fl2va-nf4.safetensors",
+    }
+    try:
+        transformer = transformer_names[model_variant]
+    except KeyError as exc:
+        raise ValueError(f"unsupported MiniMax-H3 model variant: {model_variant}") from exc
+    model_root = model_base_path.expanduser().resolve() / MINIMAX_H3_NF4_MODEL_ID
+    files = [
+        model_root / transformer,
+        model_root / "minimax-h3-text-encoder-nf4.safetensors",
+        model_root / "video_vae_nf4.safetensors",
+        model_root / "audio_vae_nf4.safetensors",
+    ]
+    processor_partition = "Ref2VA" if model_variant == "ref2va-nf4" else "FL2VA"
+    processor_root = (
+        model_base_path.expanduser().resolve()
+        / MINIMAX_H3_MODELSCOPE_ID
+        / processor_partition
+        / "processor"
+    )
+    files.extend(processor_root / name for name in MINIMAX_H3_PROCESSOR_FILES)
+    return tuple(files)
 
 
 def align_h3_frame_count(frame_count: int) -> int:

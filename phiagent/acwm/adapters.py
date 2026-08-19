@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import platform
 import socket
@@ -19,6 +20,17 @@ from pathlib import Path
 from typing import Any, Protocol, Sequence
 
 from phiagent.acwm.schema import ACWMCase, ActionRepresentation
+from phiagent.rendering.minimax_h3 import (
+    DIFFSYNTH_H3_COMMIT,
+    MINIMAX_H3_MODELSCOPE_ID,
+    MINIMAX_H3_NF4_MODEL_ID,
+    MINIMAX_H3_NF4_REVISION,
+    MINIMAX_H3_NF4_SHA256,
+    MINIMAX_H3_PROCESSOR_REVISION,
+    MINIMAX_H3_PROCESSOR_SHA256,
+    file_sha256,
+    h3_checkpoint_files,
+)
 from phiagent.rendering.wan_animate import PreflightError, query_gpus, select_gpu
 
 OSCAR_REPOSITORY_COMMIT = "4dea2f657e221b0ff24c895fcc8ab4d46d5a9adb"
@@ -237,6 +249,44 @@ class Kinema4DConfig:
     gpu_index: int | None = None
     minimum_free_gpu_mib: int = 72 * 1024
     mode: str = "xyzrgb"
+
+    @property
+    def python(self) -> Path:
+        return self.python_executable or self.repository / ".venv" / "bin" / "python"
+
+
+@dataclass(frozen=True)
+class MiniMaxH3Config:
+    repository: Path
+    model_base_path: Path
+    python_executable: Path | None = None
+    gpu_index: int | None = None
+    minimum_free_gpu_mib: int = 54 * 1024
+    model_variant: str = "ref2va-nf4"
+    height: int = 480
+    width: int = 832
+    num_frames: int = 124
+    fps: float = 24.0
+    steps: int = 20
+    reference_image_short_edge: int = 768
+    reference_video_short_edge: int = 480
+    vram_reserve_gib: float = 8.0
+
+    def __post_init__(self) -> None:
+        if self.model_variant != "ref2va-nf4":
+            raise ValueError("the action-intent harness requires the H3 Ref2VA partition")
+        if self.width <= 0 or self.height <= 0 or self.width % 32 or self.height % 32:
+            raise ValueError("H3 width and height must be positive multiples of 32")
+        if self.fps != 24.0:
+            raise ValueError("the released MiniMax-H3 pipeline requires 24 FPS")
+        if self.num_frames < 5 or (self.num_frames - 5) % 17:
+            raise ValueError("H3 num_frames must satisfy num_frames = 17n + 5")
+        if self.steps <= 0:
+            raise ValueError("H3 inference steps must be positive")
+        if self.reference_image_short_edge <= 0 or self.reference_video_short_edge <= 0:
+            raise ValueError("H3 reference short edges must be positive")
+        if self.vram_reserve_gib <= 0:
+            raise ValueError("H3 VRAM reserve must be positive")
 
     @property
     def python(self) -> Path:
@@ -556,6 +606,154 @@ class OSCARRenderer(_ExternalBatchAdapter):
             str(self.config.num_frames),
             "--fps",
             str(self.config.fps),
+        ]
+
+
+class MiniMaxH3Renderer(_ExternalBatchAdapter):
+    """Use H3 Ref2VA as a proposal renderer around explicit camera controls."""
+
+    name = "minimax-h3"
+    expected_commit = DIFFSYNTH_H3_COMMIT
+    expected_model_revision = MINIMAX_H3_NF4_MODEL_ID
+
+    def __init__(
+        self,
+        config: MiniMaxH3Config,
+        *,
+        project_root: Path | None = None,
+    ) -> None:
+        super().__init__(project_root=project_root)
+        self.config = config
+
+    @property
+    def repository(self) -> Path:
+        return self.config.repository
+
+    @property
+    def python(self) -> Path:
+        return self.config.python
+
+    @property
+    def gpu_index(self) -> int | None:
+        return self.config.gpu_index
+
+    @property
+    def minimum_free_gpu_mib(self) -> int:
+        return self.config.minimum_free_gpu_mib
+
+    def supports(self, case: ACWMCase) -> BackendSupport:
+        reasons: list[str] = []
+        if case.action.representation is not ActionRepresentation.CAMERA_PIXEL_CONTROL_VIDEO:
+            reasons.append("requires camera_pixel_control_video")
+        if case.action.visual_condition is None:
+            reasons.append("requires a frame-explicit action-control video")
+        if len(case.action.timestamps_s) != self.config.num_frames:
+            reasons.append(f"requires exactly {self.config.num_frames} action frames")
+        else:
+            try:
+                fps = case.action.fps
+            except ValueError as exc:
+                reasons.append(str(exc))
+            else:
+                if not math.isclose(fps, self.config.fps, abs_tol=1e-4):
+                    reasons.append(f"requires {self.config.fps:g} FPS action timestamps")
+        if "embodiment_reference" not in case.assets:
+            reasons.append("requires an embodiment_reference auxiliary image")
+        return BackendSupport(self.name, not reasons, tuple(reasons))
+
+    def _model_preflight(self) -> dict[str, Any]:
+        model_base = _require_dir(self.config.model_base_path, "DiffSynth model base")
+        model_root = model_base / MINIMAX_H3_NF4_MODEL_ID
+        model_revision = _require_file(
+            model_root / ".phiagent-model-revision",
+            "MiniMax-H3 NF4 revision marker",
+        ).read_text().strip()
+        if model_revision != MINIMAX_H3_NF4_REVISION:
+            raise PreflightError(
+                f"MiniMax-H3 NF4 revision is {model_revision}, "
+                f"expected {MINIMAX_H3_NF4_REVISION}"
+            )
+        processor_root = model_base / MINIMAX_H3_MODELSCOPE_ID / "Ref2VA" / "processor"
+        processor_revision = _require_file(
+            processor_root / ".phiagent-model-revision",
+            "MiniMax-H3 processor revision marker",
+        ).read_text().strip()
+        if processor_revision != MINIMAX_H3_PROCESSOR_REVISION:
+            raise PreflightError(
+                f"MiniMax-H3 processor revision is {processor_revision}, "
+                f"expected {MINIMAX_H3_PROCESSOR_REVISION}"
+            )
+        expected_hashes = {
+            **{model_root / name: digest for name, digest in MINIMAX_H3_NF4_SHA256.items()},
+            **{
+                processor_root / name: digest
+                for name, digest in MINIMAX_H3_PROCESSOR_SHA256.items()
+            },
+        }
+        records = []
+        for path in h3_checkpoint_files(
+            model_base,
+            model_variant=self.config.model_variant,
+        ):
+            resolved = _require_file(path, "MiniMax-H3 checkpoint")
+            actual = file_sha256(resolved)
+            expected = expected_hashes.get(resolved)
+            if expected is None or actual != expected:
+                raise PreflightError(
+                    f"MiniMax-H3 checkpoint hash mismatch for {resolved}: "
+                    f"{actual} != {expected}"
+                )
+            records.append(
+                {
+                    "path": str(resolved),
+                    "bytes": resolved.stat().st_size,
+                    "sha256": actual,
+                }
+            )
+        return {
+            "weights": MINIMAX_H3_NF4_MODEL_ID,
+            "weights_revision": model_revision,
+            "processor": MINIMAX_H3_MODELSCOPE_ID,
+            "processor_revision": processor_revision,
+            "variant": self.config.model_variant,
+            "files": records,
+        }
+
+    def _extra_environment(self) -> dict[str, str]:
+        return {
+            "DIFFSYNTH_MODEL_BASE_PATH": str(
+                self.config.model_base_path.expanduser().resolve()
+            ),
+            "DIFFSYNTH_SKIP_DOWNLOAD": "True",
+            "HF_HUB_OFFLINE": "1",
+            "MODELSCOPE_OFFLINE": "1",
+            "TRANSFORMERS_OFFLINE": "1",
+        }
+
+    def _runner_arguments(self) -> list[str]:
+        return [
+            "--repository",
+            str(self.repository.expanduser().resolve()),
+            "--checkpoint",
+            str(self.config.model_base_path.expanduser().resolve()),
+            "--height",
+            str(self.config.height),
+            "--width",
+            str(self.config.width),
+            "--num-frames",
+            str(self.config.num_frames),
+            "--fps",
+            str(self.config.fps),
+            "--h3-model-variant",
+            self.config.model_variant,
+            "--h3-steps",
+            str(self.config.steps),
+            "--h3-reference-image-short-edge",
+            str(self.config.reference_image_short_edge),
+            "--h3-reference-video-short-edge",
+            str(self.config.reference_video_short_edge),
+            "--h3-vram-reserve-gib",
+            str(self.config.vram_reserve_gib),
         ]
 
 

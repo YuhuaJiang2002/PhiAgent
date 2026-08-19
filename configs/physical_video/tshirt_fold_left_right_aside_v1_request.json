@@ -1,0 +1,57 @@
+{
+  "task_id": "two-arm-tshirt-fold",
+  "task_type": "tshirt_fold_left_right_aside",
+  "instruction": "先叠画面左边袖子，再叠画面右边袖子；两只袖子的袖口、肩缝身份和材料长度在整个视频中不能变化。两只袖子都稳定后，再把衣身从下向上叠成紧凑长方形，最后把叠好的衣服整体平稳放到画面左边并保持。",
+  "coordinate_frame": "camera:tshirt_fold_832x480_pixels",
+  "duration_seconds": 5.166667,
+  "entities": [
+    {
+      "entity_id": "lower_left_robot",
+      "role": "manipulator",
+      "description": "lower-left white robot arm and black two-jaw gripper"
+    },
+    {
+      "entity_id": "upper_right_robot",
+      "role": "manipulator",
+      "description": "upper-right white robot arm and black two-jaw gripper"
+    },
+    {
+      "entity_id": "viewer_left_sleeve",
+      "role": "cloth_part",
+      "description": "viewer-left black short sleeve with persistent cuff and shoulder seam"
+    },
+    {
+      "entity_id": "viewer_right_sleeve",
+      "role": "cloth_part",
+      "description": "viewer-right black short sleeve with persistent cuff and shoulder seam"
+    },
+    {
+      "entity_id": "shirt_body",
+      "role": "cloth_body",
+      "description": "gray T-shirt torso and lower hem"
+    }
+  ],
+  "available_evidence": [
+    "single real RGB first frame",
+    "named 832x480 camera pixel frame",
+    "candidate-independent initial sleeve and body material landmarks",
+    "frozen background patches"
+  ],
+  "unavailable_evidence": [
+    "metric camera calibration",
+    "metric 3-D cloth mesh",
+    "cloth material parameters",
+    "contact force or tactile measurements",
+    "exact robot URDF joint trajectory",
+    "collision and safety validation"
+  ],
+  "user_constraints": [
+    "viewer-left sleeve folds first",
+    "viewer-right sleeve folds second",
+    "both sleeve material lengths are hard invariants",
+    "cloth motion requires visible causal contact",
+    "no hard cut, dissolve, crossfade, teleport, shrink, or growth",
+    "body folds only after both sleeves settle",
+    "the completed compact bundle moves viewer-left and holds"
+  ]
+}

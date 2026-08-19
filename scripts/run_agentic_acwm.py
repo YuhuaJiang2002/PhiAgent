@@ -17,9 +17,22 @@ from phiagent.acwm.adapters import (  # noqa: E402
     FlowWAMRenderer,
     Kinema4DConfig,
     Kinema4DRenderer,
+    MiniMaxH3Config,
+    MiniMaxH3Renderer,
     OSCARConfig,
     OSCARRenderer,
 )
+from phiagent.harness.task_reasoning import (  # noqa: E402
+    TSHIRT_FOLD_TASK,
+    TaskReasoningPlan,
+)
+from phiagent.harness.test_time_scaling import (  # noqa: E402
+    HardGateTestTimeScalingRepairAgent,
+    compile_task_reasoning_prompt,
+    initial_scaled_proposals,
+    load_test_time_scaling_policy,
+)
+from phiagent.rendering.minimax_h3 import file_sha256  # noqa: E402
 from phiagent.acwm.schema import ACWMActionCondition, ACWMCase  # noqa: E402
 from phiagent.agent.acwm import (  # noqa: E402
     ACWMProposal,
@@ -72,8 +85,12 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--backend",
         action="append",
-        choices=("oscar", "bwm", "kinema4d", "flowwam"),
+        choices=("oscar", "minimax-h3", "bwm", "kinema4d", "flowwam"),
     )
+    parser.add_argument("--task-reasoning-plan", type=Path)
+    parser.add_argument("--test-time-scaling-config", type=Path)
+    parser.add_argument("--tshirt-fold-tracking-contract", type=Path)
+    parser.add_argument("--plan-only", action="store_true")
     parser.add_argument("--experiment-root", type=Path, default=Path("outputs/acwm-open-models"))
     parser.add_argument("--maximum-rounds", type=int, default=2)
     parser.add_argument("--seed", type=int, default=20260810)
@@ -85,6 +102,13 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--oscar-cosmos-reason", type=Path)
     parser.add_argument("--oscar-wan-vae", type=Path)
     parser.add_argument("--offline", action="store_true")
+    parser.add_argument("--h3-repo", type=Path)
+    parser.add_argument("--h3-model-base", type=Path)
+    parser.add_argument("--h3-python", type=Path)
+    parser.add_argument("--h3-steps", type=int, default=20)
+    parser.add_argument("--h3-width", type=int, default=832)
+    parser.add_argument("--h3-height", type=int, default=480)
+    parser.add_argument("--h3-num-frames", type=int, default=124)
     parser.add_argument("--bwm-repo", type=Path)
     parser.add_argument("--bwm-base-model", type=Path)
     parser.add_argument("--bwm-checkpoint", type=Path)
@@ -146,7 +170,14 @@ def initial_proposals(
     if any(not suffix.strip() for suffix in suffixes) and len(suffixes) > 1:
         raise ValueError("an empty prompt suffix cannot be mixed with repair suffixes")
     return tuple(
-        ACWMProposal(case.case_id, name, seed, prompt_suffix=suffix)
+        ACWMProposal(
+            case.case_id,
+            name,
+            seed,
+            num_inference_steps=(renderer.config.steps if name == "minimax-h3" else 35),
+            guidance_scale=1.0 if name == "minimax-h3" else 6.0,
+            prompt_suffix=suffix,
+        )
         for case in cases
         for name, renderer in renderers.items()
         if renderer.supports(case).supported
@@ -157,6 +188,39 @@ def initial_proposals(
 def main() -> int:
     parser = _parser()
     args = parser.parse_args()
+    reasoning_plan_path = (
+        args.task_reasoning_plan.expanduser().resolve()
+        if args.task_reasoning_plan is not None
+        else None
+    )
+    reasoning_plan = None
+    if reasoning_plan_path is not None:
+        payload = json.loads(reasoning_plan_path.read_text())
+        if not isinstance(payload, dict):
+            raise ValueError("task reasoning plan must contain one JSON object")
+        reasoning_plan = TaskReasoningPlan.from_dict(payload)
+    scaling_policy_path = (
+        args.test_time_scaling_config.expanduser().resolve()
+        if args.test_time_scaling_config is not None
+        else None
+    )
+    scaling_policy = (
+        load_test_time_scaling_policy(scaling_policy_path)
+        if scaling_policy_path is not None
+        else None
+    )
+    tracking_contract_path = (
+        args.tshirt_fold_tracking_contract.expanduser().resolve()
+        if args.tshirt_fold_tracking_contract is not None
+        else None
+    )
+    if scaling_policy is not None and reasoning_plan is None:
+        parser.error("--test-time-scaling-config requires --task-reasoning-plan")
+    if reasoning_plan is not None and reasoning_plan.task_type == TSHIRT_FOLD_TASK:
+        if tracking_contract_path is None or not tracking_contract_path.is_file():
+            parser.error("T-shirt reasoning requires --tshirt-fold-tracking-contract")
+    if scaling_policy is not None and args.prompt_suffix:
+        parser.error("test-time scaling owns prompt repair suffixes")
     selected = tuple(dict.fromkeys(args.backend or ("oscar",)))
     project_root = Path(__file__).resolve().parents[1]
     renderers = {}
@@ -173,6 +237,24 @@ def main() -> int:
                 wan_vae_path=args.oscar_wan_vae,
                 offline=args.offline,
                 gpu_index=args.gpu,
+            ),
+            project_root=project_root,
+        )
+    if "minimax-h3" in selected:
+        _required(
+            parser,
+            {"--h3-repo": args.h3_repo, "--h3-model-base": args.h3_model_base},
+        )
+        renderers["minimax-h3"] = MiniMaxH3Renderer(
+            MiniMaxH3Config(
+                repository=args.h3_repo,
+                model_base_path=args.h3_model_base,
+                python_executable=args.h3_python,
+                gpu_index=args.gpu,
+                steps=args.h3_steps,
+                width=args.h3_width,
+                height=args.h3_height,
+                num_frames=args.h3_num_frames,
             ),
             project_root=project_root,
         )
@@ -242,6 +324,12 @@ def main() -> int:
     manifest = json.loads(manifest_path.read_text())
     first_frame = _manifest_path(manifest_path, str(manifest["first_frame"]))
     source_video = _manifest_path(manifest_path, str(manifest["source_video"]))
+    plan_prompt = (
+        compile_task_reasoning_prompt(reasoning_plan)
+        if reasoning_plan is not None
+        else ""
+    )
+    top_level_auxiliary = dict(manifest.get("auxiliary_inputs", {}))
     cases = select_cases(tuple(
         ACWMCase(
             case_id=str(item["label"]),
@@ -253,17 +341,26 @@ def main() -> int:
             prompt=str(
                 item.get("prompt")
                 or PROMPTS.get(str(item["label"]), str(item["instruction"]))
-            ),
+            ) + plan_prompt,
             auxiliary_inputs=tuple(
                 (
                     str(key),
                     _manifest_path(manifest_path, str(value)),
                 )
-                for key, value in dict(item.get("auxiliary_inputs", {})).items()
+                for key, value in {
+                    **top_level_auxiliary,
+                    **dict(item.get("auxiliary_inputs", {})),
+                }.items()
             ),
         )
         for item in manifest["variants"]
     ), args.cases)
+    if reasoning_plan is not None and any(
+        case.action.coordinate_frame != reasoning_plan.coordinate_frame for case in cases
+    ):
+        raise ValueError(
+            "task reasoning plan and action conditions must use the same named coordinate frame"
+        )
     support = {
         case.case_id: {
             name: as_report.__dict__
@@ -272,6 +369,43 @@ def main() -> int:
         }
         for case in cases
     }
+    if args.plan_only:
+        print(
+            json.dumps(
+                {
+                    "support": support,
+                    "task_reasoning_plan": (
+                        {
+                            "path": str(reasoning_plan_path),
+                            "sha256": file_sha256(reasoning_plan_path),
+                            "plan_sha256": reasoning_plan.plan_sha256,
+                        }
+                        if reasoning_plan_path is not None and reasoning_plan is not None
+                        else None
+                    ),
+                    "test_time_scaling": (
+                        {
+                            "path": str(scaling_policy_path),
+                            "sha256": file_sha256(scaling_policy_path),
+                            "policy": scaling_policy.to_dict(),
+                        }
+                        if scaling_policy_path is not None and scaling_policy is not None
+                        else None
+                    ),
+                    "tracking_contract": (
+                        {
+                            "path": str(tracking_contract_path),
+                            "sha256": file_sha256(tracking_contract_path),
+                        }
+                        if tracking_contract_path is not None
+                        else None
+                    ),
+                },
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return 0
     if args.preflight_only:
         preflight = {
             name: renderer.preflight()
@@ -281,28 +415,55 @@ def main() -> int:
         print(json.dumps({"support": support, "preflight": preflight}, indent=2, sort_keys=True))
         return 0
 
-    proposals = initial_proposals(
-        cases,
-        renderers,
-        seed=args.seed,
-        prompt_suffixes=args.prompt_suffix,
+    proposals = (
+        initial_scaled_proposals(
+            cases,
+            renderers,
+            policy=scaling_policy,
+            base_seed=args.seed,
+        )
+        if scaling_policy is not None
+        else initial_proposals(
+            cases,
+            renderers,
+            seed=args.seed,
+            prompt_suffixes=args.prompt_suffix,
+        )
     )
     if not proposals:
         raise ValueError("none of the selected models accepts the compiled action representation")
-    evaluator_command = [
-        sys.executable,
-        str(project_root / "scripts" / "evaluate_acwm_candidate.py"),
-        "--candidate",
-        "{candidate}",
-        "--condition",
-        "{condition}",
-        "--first-frame",
-        "{first_frame}",
-        "--source",
-        "{source}",
-        "--metadata",
-        "{metadata}",
-    ]
+    if reasoning_plan is not None and reasoning_plan.task_type == TSHIRT_FOLD_TASK:
+        assert reasoning_plan_path is not None
+        assert tracking_contract_path is not None
+        evaluator_command = [
+            sys.executable,
+            str(project_root / "scripts" / "evaluate_tshirt_fold_candidate.py"),
+            "--candidate",
+            "{candidate}",
+            "--first-frame",
+            "{first_frame}",
+            "--plan",
+            str(reasoning_plan_path),
+            "--tracking-contract",
+            str(tracking_contract_path),
+            "--metadata",
+            "{metadata}",
+        ]
+    else:
+        evaluator_command = [
+            sys.executable,
+            str(project_root / "scripts" / "evaluate_acwm_candidate.py"),
+            "--candidate",
+            "{candidate}",
+            "--condition",
+            "{condition}",
+            "--first-frame",
+            "{first_frame}",
+            "--source",
+            "{source}",
+            "--metadata",
+            "{metadata}",
+        ]
     if args.human_review_dir is not None:
         evaluator_command.extend(
             [
@@ -313,6 +474,11 @@ def main() -> int:
     controller = AgenticACWMController(
         renderers,
         CommandACWMEvaluator(tuple(evaluator_command)),
+        repair_agent=(
+            HardGateTestTimeScalingRepairAgent(scaling_policy, base_seed=args.seed)
+            if scaling_policy is not None
+            else None
+        ),
         project_root=project_root,
     )
     outcome = controller.run(
@@ -327,7 +493,20 @@ def main() -> int:
                 temporal_consistency=args.temporal_threshold,
                 background_consistency=args.background_threshold,
             ),
-            maximum_rounds=args.maximum_rounds,
+            maximum_rounds=(
+                len(scaling_policy.rounds)
+                if scaling_policy is not None
+                else args.maximum_rounds
+            ),
+            frozen_inputs=tuple(
+                (name, path)
+                for name, path in (
+                    ("task_reasoning_plan", reasoning_plan_path),
+                    ("test_time_scaling_policy", scaling_policy_path),
+                    ("tshirt_fold_tracking_contract", tracking_contract_path),
+                )
+                if path is not None
+            ),
         )
     )
     print(
