@@ -1,0 +1,19 @@
+{
+  "maximum_candidates": 4,
+  "rounds": [
+    {
+      "candidate_count": 2,
+      "inference_steps": 32,
+      "purpose": "diverse-seed retake with continuous length-preserving cloth carrier",
+      "seed_offset": 300000
+    },
+    {
+      "candidate_count": 2,
+      "inference_steps": 40,
+      "purpose": "hard-gate-specific carrier repair without threshold relaxation",
+      "seed_offset": 400000
+    }
+  ],
+  "seed_stride": 1009,
+  "threshold_policy": "frozen_fail_closed"
+}

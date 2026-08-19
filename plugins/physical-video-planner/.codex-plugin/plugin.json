@@ -1,0 +1,34 @@
+{
+  "name": "physical-video-planner",
+  "version": "0.1.0",
+  "description": "Plan and audit physically constrained foundation-model manipulation videos",
+  "author": {
+    "name": "PhiAgent contributors"
+  },
+  "homepage": "https://github.com/YuhuaJiang2002/PhiAgent",
+  "repository": "https://github.com/YuhuaJiang2002/PhiAgent",
+  "keywords": [
+    "physical-video",
+    "robotics",
+    "test-time-scaling",
+    "hard-gates"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Physical Video Planner",
+    "shortDescription": "Plan manipulation videos with fail-closed physical gates.",
+    "longDescription": "Expands manipulation language into causal phases, freezes material and task hard gates, and applies failure-aware test-time scaling without threshold relaxation.",
+    "developerName": "PhiAgent contributors",
+    "category": "Productivity",
+    "capabilities": [
+      "Planning",
+      "Evaluation",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Plan this robot video with physical hard gates.",
+      "Audit material conservation and action order.",
+      "Scale generation without relaxing failed gates."
+    ]
+  }
+}

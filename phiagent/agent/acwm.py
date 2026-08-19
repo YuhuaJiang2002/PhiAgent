@@ -70,6 +70,7 @@ class ACWMScorecard:
     temporal_consistency: float
     background_consistency: float
     human_review_passed: bool | None
+    hard_gates_passed: bool = True
     diagnoses: tuple[str, ...] = ()
     evidence: Path | None = None
 
@@ -80,6 +81,10 @@ class ACWMScorecard:
             value = getattr(self, field)
             if not math.isfinite(value) or not 0 <= value <= 1:
                 raise ValueError(f"{field} score must be finite and in [0, 1]")
+        if not isinstance(self.hard_gates_passed, bool):
+            raise ValueError("hard_gates_passed must be a boolean")
+        if self.human_review_passed is not None and type(self.human_review_passed) is not bool:
+            raise ValueError("human_review_passed must be a boolean or None")
         if self.evidence is not None and not self.evidence.is_file():
             raise ValueError(f"AC-WM evidence does not exist: {self.evidence}")
 
@@ -88,7 +93,7 @@ class ACWMScorecard:
         return sum(getattr(self, field) for field in _SCORE_FIELDS) / len(_SCORE_FIELDS)
 
     def automatic_gates_pass(self, thresholds: ACWMThresholds) -> bool:
-        return all(
+        return self.hard_gates_passed and all(
             getattr(self, field) >= getattr(thresholds, field) for field in _SCORE_FIELDS
         )
 
@@ -99,11 +104,31 @@ class ACWMScorecard:
         margin = min(
             getattr(self, field) - getattr(thresholds, field) for field in _SCORE_FIELDS
         )
+        if not self.hard_gates_passed:
+            return min(margin, -1.0)
         if self.human_review_passed is False:
             return min(margin, -1.0)
-        if self.human_review_passed is None:
-            return min(margin, -0.5)
         return margin
+
+
+def scorecard_selection_key(
+    scorecard: ACWMScorecard,
+    thresholds: ACWMThresholds,
+) -> tuple[bool, int, float, float]:
+    """Prefer hard-gate passes before any aggregate diagnostic score."""
+
+    automatic_pass = scorecard.automatic_gates_pass(thresholds)
+    human_rank = (
+        {False: 0, None: 1, True: 2}[scorecard.human_review_passed]
+        if automatic_pass
+        else 0
+    )
+    return (
+        automatic_pass,
+        human_rank,
+        scorecard.constraint_margin(thresholds),
+        scorecard.mean_score,
+    )
 
 
 @dataclass(frozen=True)
@@ -122,6 +147,7 @@ class CommandACWMEvaluator:
 
     _PLACEHOLDERS = {
         "candidate",
+        "candidate_sha256",
         "case_id",
         "condition",
         "first_frame",
@@ -158,6 +184,7 @@ class CommandACWMEvaluator:
             condition = request.case.action.visual_condition
         values = {
             "candidate": str(request.result.output),
+            "candidate_sha256": _sha256(request.result.output),
             "case_id": request.case.case_id,
             "condition": str(condition),
             "first_frame": str(request.case.first_frame),
@@ -168,7 +195,12 @@ class CommandACWMEvaluator:
             argument.format_map(values) if "{" in argument else argument
             for argument in self.command
         )
-        completed = subprocess.run(command, check=True, capture_output=True, text=True)
+        completed = subprocess.run(command, check=False, capture_output=True, text=True)
+        if completed.returncode != 0:
+            detail = (completed.stderr or completed.stdout or "no evaluator output").strip()
+            raise RuntimeError(
+                f"AC-WM evaluator exited {completed.returncode}: {detail[-2000:]}"
+            )
         payload = json.loads(completed.stdout)
         if not isinstance(payload, dict):
             raise ValueError("AC-WM evaluator must emit one JSON object")
@@ -178,6 +210,9 @@ class CommandACWMEvaluator:
         human = payload.get("human_review_passed")
         if human not in {True, False, None}:
             raise ValueError("human_review_passed must be true, false, or null")
+        hard_gates = payload.get("hard_gates_passed", True)
+        if not isinstance(hard_gates, bool):
+            raise ValueError("hard_gates_passed must be true or false")
         diagnoses = payload.get("diagnoses", [])
         if not isinstance(diagnoses, list) or not all(
             isinstance(diagnosis, str) for diagnosis in diagnoses
@@ -188,6 +223,7 @@ class CommandACWMEvaluator:
             evaluator=str(payload.get("evaluator", command[0])),
             **{field: float(payload[field]) for field in _SCORE_FIELDS},
             human_review_passed=human,
+            hard_gates_passed=hard_gates,
             diagnoses=tuple(diagnoses),
             evidence=Path(evidence_value).resolve() if evidence_value else None,
         )
@@ -271,10 +307,7 @@ class ModelRoutingRepairAgent:
                 continue
             best = max(
                 case_history,
-                key=lambda item: (
-                    item.scorecard.constraint_margin(thresholds),
-                    item.scorecard.mean_score,
-                ),
+                key=lambda item: scorecard_selection_key(item.scorecard, thresholds),
             )
             if (
                 best.scorecard.automatic_gates_pass(thresholds)
@@ -318,6 +351,7 @@ class AgenticACWMRequest:
     experiment_root: Path
     thresholds: ACWMThresholds = ACWMThresholds()
     maximum_rounds: int = 3
+    frozen_inputs: tuple[tuple[str, Path], ...] = ()
 
     def __post_init__(self) -> None:
         if not self.cases or not self.initial_proposals:
@@ -329,6 +363,14 @@ class AgenticACWMRequest:
             raise ValueError("AC-WM proposal refers to an unknown case")
         if self.maximum_rounds < 1:
             raise ValueError("maximum_rounds must be positive")
+        frozen_names = tuple(name for name, _ in self.frozen_inputs)
+        if len(frozen_names) != len(set(frozen_names)):
+            raise ValueError("AC-WM frozen input names must be unique")
+        for name, path in self.frozen_inputs:
+            if not name.strip():
+                raise ValueError("AC-WM frozen input name must be non-empty")
+            if not path.expanduser().resolve().is_file():
+                raise ValueError(f"AC-WM frozen input does not exist: {path}")
 
 
 @dataclass(frozen=True)
@@ -400,7 +442,11 @@ class AgenticACWMController:
             self.project_root / "phiagent" / "acwm" / "schema.py",
             self.project_root / "phiagent" / "acwm" / "adapters.py",
             self.project_root / "phiagent" / "agent" / "acwm.py",
+            self.project_root / "phiagent" / "harness" / "task_reasoning.py",
+            self.project_root / "phiagent" / "harness" / "test_time_scaling.py",
+            self.project_root / "phiagent" / "evaluation" / "tshirt_fold_video.py",
             self.project_root / "scripts" / "run_acwm_backend.py",
+            self.project_root / "scripts" / "evaluate_tshirt_fold_candidate.py",
         ]
         packages = subprocess.run(
             [sys.executable, "-m", "pip", "freeze"],
@@ -422,6 +468,13 @@ class AgenticACWMController:
             "source_files": {str(path.relative_to(self.project_root)): _sha256(path) for path in source_files},
             "thresholds": asdict(request.thresholds),
             "maximum_rounds": request.maximum_rounds,
+            "frozen_inputs": {
+                name: {
+                    "path": str(path.expanduser().resolve()),
+                    "sha256": _sha256(path.expanduser().resolve()),
+                }
+                for name, path in request.frozen_inputs
+            },
             "cases": [
                 {
                     "case_id": case.case_id,
@@ -515,9 +568,22 @@ class AgenticACWMController:
                 if len(results) != len(items):
                     raise RuntimeError(f"{backend} returned the wrong number of candidates")
                 for (proposal, render_request), result in zip(items, results):
-                    scorecard = self.evaluator.evaluate(
-                        ACWMEvaluationRequest(render_request.case, result)
-                    )
+                    try:
+                        scorecard = self.evaluator.evaluate(
+                            ACWMEvaluationRequest(render_request.case, result)
+                        )
+                    except Exception as exc:
+                        scorecard = ACWMScorecard(
+                            evaluator="fail-closed-evaluator-error",
+                            action_adherence=0.0,
+                            embodiment_consistency=0.0,
+                            object_interaction=0.0,
+                            temporal_consistency=0.0,
+                            background_consistency=0.0,
+                            human_review_passed=None,
+                            hard_gates_passed=False,
+                            diagnoses=(f"evaluator_error:{type(exc).__name__}:{exc}",),
+                        )
                     candidates.append(
                         ACWMCandidate(
                             round_index=round_index,
@@ -532,9 +598,8 @@ class AgenticACWMController:
             best_by_case = tuple(
                 max(
                     (item for item in candidates if item.proposal.case_id == case_id),
-                    key=lambda item: (
-                        item.scorecard.constraint_margin(request.thresholds),
-                        item.scorecard.mean_score,
+                    key=lambda item: scorecard_selection_key(
+                        item.scorecard, request.thresholds
                     ),
                 )
                 for case_id in cases
@@ -562,9 +627,8 @@ class AgenticACWMController:
         best_by_case = tuple(
             max(
                 (item for item in candidates if item.proposal.case_id == case_id),
-                key=lambda item: (
-                    item.scorecard.constraint_margin(request.thresholds),
-                    item.scorecard.mean_score,
+                key=lambda item: scorecard_selection_key(
+                    item.scorecard, request.thresholds
                 ),
             )
             for case_id in cases

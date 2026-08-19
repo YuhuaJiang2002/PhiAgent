@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isolated GPU entry point for OSCAR, BWM, and Kinema4D.
+"""Isolated GPU entry point for OSCAR, MiniMax-H3, BWM, and Kinema4D.
 
 This script is launched only after the PhiAgent adapter has inspected all
 physical GPUs, selected one, and set ``CUDA_VISIBLE_DEVICES``.  Heavy model
@@ -23,6 +23,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from phiagent.acwm.schema import ACWMActionCondition, ActionRepresentation  # noqa: E402
+from phiagent.rendering.minimax_h3 import (  # noqa: E402
+    MINIMAX_H3_MODELSCOPE_ID,
+    MINIMAX_H3_NF4_MODEL_ID,
+    MINIMAX_H3_NF4_REVISION,
+    MINIMAX_H3_PROCESSOR_REVISION,
+)
 
 
 def _sha256(path: Path) -> str:
@@ -196,6 +202,196 @@ def _run_oscar(args: argparse.Namespace, requests: list[dict[str, Any]]) -> list
                 "fps": args.fps,
                 "height": args.height,
                 "width": args.width,
+            },
+        )
+        results.append(
+            {"case_id": str(item["case_id"]), "output": str(output), "metadata": str(metadata)}
+        )
+    return results
+
+
+def _run_minimax_h3(
+    args: argparse.Namespace,
+    requests: list[dict[str, Any]],
+) -> list[dict[str, str]]:
+    runtime = _runtime_gpu()
+    os.environ["DIFFSYNTH_MODEL_BASE_PATH"] = str(args.checkpoint)
+    os.environ["DIFFSYNTH_SKIP_DOWNLOAD"] = "True"
+
+    import torch
+    from PIL import Image
+    from diffsynth.pipelines.minimax_h3_audio_video import (
+        MiniMaxH3Pipeline,
+        ModelConfig,
+    )
+    from diffsynth.utils.data.audio_video import read_video_audio, write_video_audio
+
+    if torch.cuda.device_count() != 1:
+        raise RuntimeError("MiniMax-H3 requires exactly one selected logical CUDA device")
+    if args.h3_model_variant != "ref2va-nf4":
+        raise ValueError("the action-intent harness requires the H3 Ref2VA partition")
+    if float(args.fps) != 24.0:
+        raise ValueError("MiniMax-H3 requires 24 FPS")
+    if args.num_frames < 5 or (args.num_frames - 5) % 17:
+        raise ValueError("MiniMax-H3 num_frames must satisfy num_frames = 17n + 5")
+    if (
+        args.h3_steps <= 0
+        or args.h3_reference_image_short_edge <= 0
+        or args.h3_reference_video_short_edge <= 0
+        or args.h3_vram_reserve_gib <= 0
+    ):
+        raise ValueError("MiniMax-H3 steps, reference sizes, and VRAM reserve must be positive")
+    for item in requests:
+        if int(item["num_inference_steps"]) <= 0:
+            raise ValueError("request num_inference_steps must be positive")
+        if float(item["guidance_scale"]) != 1.0:
+            raise ValueError(
+                "MiniMax-H3 does not expose the generic AC-WM guidance scale; use 1.0"
+            )
+
+    free_bytes, total_bytes = torch.cuda.mem_get_info("cuda")
+    free_gib = free_bytes / 1024**3
+    vram_limit_gib = free_gib - args.h3_vram_reserve_gib
+    if vram_limit_gib <= 8:
+        raise RuntimeError(
+            f"only {free_gib:.2f} GiB is free after reserving "
+            f"{args.h3_vram_reserve_gib:.2f} GiB"
+        )
+    runtime.update(
+        {
+            "free_gib_at_load": free_gib,
+            "total_gib": total_bytes / 1024**3,
+            "vram_limit_gib": vram_limit_gib,
+            "weights": MINIMAX_H3_NF4_MODEL_ID,
+            "weights_revision": MINIMAX_H3_NF4_REVISION,
+            "processor": MINIMAX_H3_MODELSCOPE_ID,
+            "processor_revision": MINIMAX_H3_PROCESSOR_REVISION,
+            "model_variant": args.h3_model_variant,
+            "claim_boundary": (
+                "H3 is a reference-conditioned image-space proposal renderer; "
+                "the camera control is not a metric 3-D or executable robot action."
+            ),
+        }
+    )
+    vram_config = {
+        "offload_dtype": "disk",
+        "offload_device": "disk",
+        "onload_dtype": torch.bfloat16,
+        "onload_device": "cpu",
+        "preparing_dtype": torch.bfloat16,
+        "preparing_device": "cuda",
+        "computation_dtype": torch.bfloat16,
+        "computation_device": "cuda",
+        "skip_download": True,
+    }
+    pipe = MiniMaxH3Pipeline.from_pretrained(
+        torch_dtype=torch.bfloat16,
+        device="cuda",
+        model_configs=[
+            ModelConfig(
+                model_id=MINIMAX_H3_NF4_MODEL_ID,
+                origin_file_pattern="minimax-h3-ref2va-nf4.safetensors",
+                **vram_config,
+            ),
+            ModelConfig(
+                model_id=MINIMAX_H3_NF4_MODEL_ID,
+                origin_file_pattern="minimax-h3-text-encoder-nf4.safetensors",
+                **vram_config,
+            ),
+            ModelConfig(
+                model_id=MINIMAX_H3_NF4_MODEL_ID,
+                origin_file_pattern="video_vae_nf4.safetensors",
+                **vram_config,
+            ),
+            ModelConfig(
+                model_id=MINIMAX_H3_NF4_MODEL_ID,
+                origin_file_pattern="audio_vae_nf4.safetensors",
+                **vram_config,
+            ),
+        ],
+        processor_config=ModelConfig(
+            model_id=MINIMAX_H3_MODELSCOPE_ID,
+            origin_file_pattern="Ref2VA/processor/",
+            skip_download=True,
+        ),
+        vram_limit=vram_limit_gib,
+    )
+
+    results: list[dict[str, str]] = []
+    for item in requests:
+        condition = ACWMActionCondition.from_json(Path(item["condition"]))
+        if condition.representation is not ActionRepresentation.CAMERA_PIXEL_CONTROL_VIDEO:
+            raise ValueError("MiniMax-H3 requires camera_pixel_control_video")
+        if condition.visual_condition is None:
+            raise ValueError("MiniMax-H3 requires an action-control video")
+        if len(condition.timestamps_s) != args.num_frames:
+            raise ValueError("MiniMax-H3 action-control timeline has the wrong frame count")
+        auxiliary_inputs = item.get("auxiliary_inputs", {})
+        embodiment_value = auxiliary_inputs.get("embodiment_reference")
+        if not isinstance(embodiment_value, str):
+            raise ValueError("MiniMax-H3 requires an embodiment_reference auxiliary input")
+        embodiment_reference = Path(embodiment_value).expanduser().resolve()
+        first_frame = Path(item["first_frame"]).expanduser().resolve()
+        control_frames, _, _ = read_video_audio(
+            str(condition.visual_condition),
+            height=args.height,
+            width=args.width,
+            num_frames=args.num_frames,
+            fps=args.fps,
+            audio_sample_rate=pipe.audio_vae.sample_rate,
+        )
+        if len(control_frames) != args.num_frames:
+            raise RuntimeError(
+                f"action-control decoder returned {len(control_frames)} frames, "
+                f"expected {args.num_frames}"
+            )
+        references = [
+            {"type": "image", "image": Image.open(embodiment_reference).convert("RGB")},
+            {"type": "image", "image": Image.open(first_frame).convert("RGB")},
+            {"type": "video", "video": control_frames},
+        ]
+        video, audio = pipe(
+            prompt=item["prompt"],
+            height=args.height,
+            width=args.width,
+            num_frames=args.num_frames,
+            num_inference_steps=int(item["num_inference_steps"]),
+            seed=int(item["seed"]),
+            references=references,
+            ref_image_short_edge=args.h3_reference_image_short_edge,
+            ref_video_short_edge=args.h3_reference_video_short_edge,
+            ref_video_max_pixels=args.width * args.height,
+        )
+        if len(video) != args.num_frames:
+            raise RuntimeError(
+                f"MiniMax-H3 returned {len(video)} frames, expected {args.num_frames}"
+            )
+        exact_first_frame = Image.open(first_frame).convert("RGB")
+        if exact_first_frame.size != (args.width, args.height):
+            exact_first_frame = exact_first_frame.resize(
+                (args.width, args.height), Image.Resampling.LANCZOS
+            )
+        video[0] = exact_first_frame
+        output = Path(item["output"])
+        output.parent.mkdir(parents=True, exist_ok=True)
+        write_video_audio(
+            video=video,
+            audio=audio,
+            output_path=str(output),
+            fps=args.fps,
+            audio_sample_rate=pipe.audio_vae.sample_rate,
+        )
+        metadata = _metadata(
+            backend="minimax-h3",
+            item=item,
+            output=output,
+            runtime=runtime,
+            applied_generation_parameters={
+                "seed": int(item["seed"]),
+                "num_frames": args.num_frames,
+                "num_inference_steps": int(item["num_inference_steps"]),
+                "fps": args.fps,
+                "exact_first_frame_enforced": True,
             },
         )
         results.append(
@@ -533,7 +729,10 @@ def _run_flowwam(
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
-    parser.add_argument("backend", choices=("oscar", "bwm", "kinema4d", "flowwam"))
+    parser.add_argument(
+        "backend",
+        choices=("oscar", "minimax-h3", "bwm", "kinema4d", "flowwam"),
+    )
     parser.add_argument("--request-manifest", type=Path, required=True)
     parser.add_argument("--result-manifest", type=Path, required=True)
     parser.add_argument("--repository", type=Path, required=True)
@@ -548,6 +747,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--num-frames", type=int, default=81)
     parser.add_argument("--fps", type=float, default=15.0)
     parser.add_argument("--kinema-mode", default="xyzrgb")
+    parser.add_argument("--h3-model-variant", default="ref2va-nf4")
+    parser.add_argument("--h3-steps", type=int, default=20)
+    parser.add_argument("--h3-reference-image-short-edge", type=int, default=768)
+    parser.add_argument("--h3-reference-video-short-edge", type=int, default=480)
+    parser.add_argument("--h3-vram-reserve-gib", type=float, default=8.0)
     return parser
 
 
@@ -564,6 +768,8 @@ def main() -> int:
     requests = _load_requests(args.request_manifest)
     if args.backend == "oscar":
         results = _run_oscar(args, requests)
+    elif args.backend == "minimax-h3":
+        results = _run_minimax_h3(args, requests)
     elif args.backend == "bwm":
         if args.base_model is None or args.action_stats is None or args.config is None:
             raise ValueError("BWM requires --base-model, --action-stats, and --config")

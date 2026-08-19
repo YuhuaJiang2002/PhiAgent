@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-19.tshirt-carrier-h3-tts-v1-rejected",
+  "recorded_at": "2026-08-19T13:55:00Z",
+  "scope": "Carrier-conditioned MiniMax-H3 test-time scaling and contact-causality audit for ordered T-shirt folding",
+  "status": "PARTIAL",
+  "summary": "A predeclared four-candidate carrier-conditioned MiniMax-H3 run completed with two 32-step and two 40-step seeds. All four candidates were rejected. The best 40-step output satisfied the original camera-frame order, continuity, body-fold, bundle-move, first-frame, background, and compact-terminal checks, but both sleeve-length gates failed. Native-resolution review also found stationary manipulators while the shirt folded itself. A new frozen gripper-proximity gate replayed all four candidates and rejected contact_precedes_cloth_motion for every one. No video is accepted or delivered.",
+  "run_dir": "outputs/tshirt-fold-h3-physical-carrier-scaled/20260819T125707Z-89f3aa89",
+  "evidence": [
+    "outputs/tshirt-fold-h3-physical-carrier-scaled/20260819T125707Z-89f3aa89/trace.json",
+    "Candidate 3 maximum sleeve-length relative deviations were 0.231 viewer-left and 0.160 viewer-right against the unchanged 0.08 limit",
+    "outputs/tshirt-fold-h3-physical-carrier-scaled/20260819T125707Z-89f3aa89/candidates/003-contact-audit.metadata.tshirt-hard-gates.json",
+    "All four contact-audit evidence files report contact_precedes_cloth_motion=false",
+    "outputs/tshirt-fold-h3-physical/20260819T135000Z-contact-carrier-v3/control/carrier-contact-sheet.jpg"
+  ],
+  "lessons": [
+    "A continuous cloth carrier improved task order but caused H3 to copy self-moving cloth when manipulator motion was absent from the carrier.",
+    "Increasing inference steps from 32 to 40 improved downstream action ordering but did not repair either sleeve-length invariant.",
+    "A physical-video harness must freeze and track manipulator points as well as cloth material points; language-only contact instructions are not acceptance evidence.",
+    "The analytic carrier transform must use the same camera-pixel rotation convention as OpenCV rendering even when both transforms independently preserve segment length."
+  ],
+  "limitations": [
+    "The gripper proximity gate is 2-D visual causal evidence and does not establish force, grasp stability, collision safety, joint feasibility, or real-robot success.",
+    "The attempted whole-arm translated carrier produced holes and disconnected limbs in visual preflight and was rejected before GPU generation.",
+    "No current MiniMax-H3 candidate passes the immutable sleeve-length and contact-causality gates."
+  ],
+  "next_actions": [
+    "Use a temporally coherent articulated robot or simulator-derived contact carrier with connected arm geometry rather than translating raster arm regions.",
+    "Predeclare the contact-aware tracking contract before the next candidate generation and keep the existing sleeve limits unchanged."
+  ],
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "tshirt-folding",
+    "test-time-scaling",
+    "cloth-carrier",
+    "contact-causality",
+    "hard-gates",
+    "rejected",
+    "partial"
+  ]
+}

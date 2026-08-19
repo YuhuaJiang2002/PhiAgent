@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-19.tshirt-static-h3-tts-v1-rejected",
+  "recorded_at": "2026-08-19T09:50:00Z",
+  "scope": "MiniMax-H3 static-reference test-time scaling for ordered T-shirt folding",
+  "status": "PARTIAL",
+  "summary": "The frozen 10-candidate MiniMax-H3 test-time-scaling run completed at 24, 32, and 40 inference steps. All 10 proposals were rejected by the predeclared fail-closed gates: every candidate violated both sleeve-length invariants and the required fold/move ordering. No candidate is promoted or delivered. A continuous rigid-sleeve carrier was therefore added as a new architecture experiment rather than increasing seeds or relaxing thresholds.",
+  "run_dir": "outputs/tshirt-fold-h3-physical-scaled/20260819T090945Z-2cec8962",
+  "evidence": [
+    "outputs/tshirt-fold-h3-physical-scaled/20260819T090945Z-2cec8962/trace.json",
+    "All 10 candidate evidence files reject viewer_left_sleeve_length_conserved and viewer_right_sleeve_length_conserved",
+    "The frozen maximum sleeve-length relative-deviation threshold remained 0.08 for every candidate",
+    "outputs/tshirt-fold-h3-physical/20260819T094200Z-rigid-carrier-v2/control/carrier-contract.json",
+    "The v2 carrier analytically preserves every declared sleeve material segment to floating-point tolerance across all 124 frames"
+  ],
+  "lessons": [
+    "Static scene identity plus a detailed causal language plan is insufficient to make H3 preserve sleeve material topology in this scene.",
+    "Test-time scaling diagnoses a systematic conditioning failure when all seeds and step budgets fail the same hard gates; further seed expansion is not evidence of progress.",
+    "A camera-frame carrier can encode ordered continuous motion while rigid sleeve transforms make declared material-segment conservation exact in the control signal."
+  ],
+  "limitations": [
+    "The carrier's exact conservation is in the named 2-D camera-pixel frame and is not metric 3-D cloth, force, contact, collision, or real-robot evidence.",
+    "The carrier is a proposal-control signal and fails the generic optical-flow output evaluator under occlusion; it is not an accepted final video.",
+    "A carrier-conditioned H3 output has not yet passed every frozen output hard gate or native-resolution human review."
+  ],
+  "next_actions": [
+    "Run the predeclared four-candidate carrier-conditioned H3 policy at 32 and 40 inference steps.",
+    "Evaluate each H3 output with the unchanged tracking contract and deliver only an all-gates-pass candidate."
+  ],
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "tshirt-folding",
+    "test-time-scaling",
+    "hard-gates",
+    "architecture-failure",
+    "cloth-carrier",
+    "partial"
+  ]
+}

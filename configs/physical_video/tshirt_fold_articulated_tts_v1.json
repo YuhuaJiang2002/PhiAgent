@@ -1,0 +1,19 @@
+{
+  "maximum_candidates": 3,
+  "rounds": [
+    {
+      "candidate_count": 2,
+      "inference_steps": 32,
+      "purpose": "diverse-seed retake from connected contact-first articulated dual-arm carrier",
+      "seed_offset": 500000
+    },
+    {
+      "candidate_count": 1,
+      "inference_steps": 40,
+      "purpose": "one higher-compute hard-gate repair without threshold relaxation",
+      "seed_offset": 600000
+    }
+  ],
+  "seed_stride": 1009,
+  "threshold_policy": "frozen_fail_closed"
+}

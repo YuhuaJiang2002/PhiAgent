@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-19.tshirt-articulated-contact-h3-tts-v1-rejected",
+  "recorded_at": "2026-08-19T15:09:04Z",
+  "scope": "Connected contact-first dual-arm carrier, MiniMax-H3 test-time scaling, and bounded material-protection audit for ordered T-shirt folding",
+  "status": "PARTIAL",
+  "summary": "A synthetic fixed-base planar dual-arm carrier was compiled from the supplied first frame with complete per-frame node chains, q/qdot, conserved link lengths, bounded joint and tip steps, and named gripper contact before each sleeve moved. The frozen MiniMax-H3 policy then generated two 32-step candidates and one 40-step repair candidate. All three passed contact causality, exact first frame, continuity, bundle transport, background, and terminal compactness, but all three failed both sleeve-length gates, viewer-left-before-viewer-right tracking, and body-after-sleeves tracking. Native-resolution contact sheets show H3 stretching the black sleeves into long strips, so no H3 candidate is accepted. A bounded hybrid that restored the analytic shirt support after H3 also failed the independent visual gates and is retained only as a rejected experiment. The articulated carrier is useful proposal-control evidence but is not promoted as a final photorealistic video.",
+  "run_dir": "outputs/tshirt-fold-h3-articulated-scaled/20260819T142637Z-e0ed834b",
+  "evidence": [
+    "outputs/tshirt-fold-h3-physical/20260819T142000Z-articulated-contact-v1/control/articulated-trajectory.json",
+    "Analytic carrier metrics: maximum link-length error 6.394884621840902e-14 pixels, maximum joint step 0.1732065255923385 radians, maximum tip step 16.56505804922376 pixels",
+    "outputs/tshirt-fold-h3-articulated-scaled/20260819T142637Z-e0ed834b/trace.json sha256=7c68ab7c32411e6a56ba9f165546bf7f9a2cd98737ebd261a9bbbb2b1c40a215",
+    "All three H3 candidates report contact_precedes_cloth_motion=true and both sleeve-length gates=false",
+    "Candidate 1 was the diagnostic best but its maximum sleeve-length relative deviations were 1.4479370908954579 viewer-left and 0.4952819656115264 viewer-right against the unchanged 0.08 threshold",
+    "outputs/tshirt-fold-h3-articulated-scaled/20260819T142637Z-e0ed834b/001-timeline.jpg",
+    "outputs/tshirt-fold-h3-articulated-protected/20260819T150500Z-candidate001-v1/manifest.tshirt-hard-gates.json sha256=725f7009350853fa28968976cb9919af98a9559e5f318f120a233ee6d752f2e8"
+  ],
+  "lessons": [
+    "Adding connected articulated manipulator motion and contact timing repaired the previous carrier's self-moving-cloth failure: every H3 candidate passed the frozen 2-D contact-causality gate.",
+    "Increasing the repair candidate from 32 to 40 steps did not improve either sleeve invariant and slightly worsened both maximum relative deviations, so more seeds or steps are not a justified next action.",
+    "A 2-D analytic carrier can make link and declared material-path conservation exact while still being visually inadequate for photorealistic H3 transfer; analytic proposal gates cannot replace independent output gates.",
+    "Post-H3 material restoration is not automatically safe: repeated encoding, moving-mask seams, tracker loss, and poor source carrier appearance can regress first-frame and background gates even when analytic transforms are exact."
+  ],
+  "limitations": [
+    "The two planar rigs are synthetic camera-frame mechanisms because no exact pictured-robot URDF/MJCF or calibrated camera was available; their q/qdot are not real-robot joint commands.",
+    "The contact gate is 2-D visual proximity and temporal causality, not force, grasp stability, collision safety, or sensor-confirmed contact.",
+    "The protected hybrid preserves declared carrier pixels but failed the frozen visual evaluator and native-resolution plausibility review; it is not an accepted deliverable.",
+    "No MiniMax-H3 output in this experiment passes every immutable material and task-order gate."
+  ],
+  "next_actions": [
+    "Replace raster articulation with a calibrated 3-D robot-and-cloth control render or a model with explicit dense correspondence/material-coordinate conditioning before spending more H3 seeds.",
+    "Design an occlusion-aware material tracker prospectively on held-out synthetic rotations, freeze it before generation, and keep the 0.08 sleeve threshold unchanged.",
+    "Use H3 only for bounded appearance refinement after the structured renderer is visually acceptable; preserve the original first frame without a second lossy encode."
+  ],
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "tshirt-folding",
+    "articulated-carrier",
+    "contact-causality",
+    "test-time-scaling",
+    "material-protection",
+    "hard-gates",
+    "rejected",
+    "partial"
+  ]
+}

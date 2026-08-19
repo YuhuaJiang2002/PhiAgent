@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-19.tshirt-physical-video-harness-v1-partial",
+  "recorded_at": "2026-08-19T09:05:00Z",
+  "scope": "MiniMax-H3 T-shirt folding language planner, material hard gates, and fail-closed test-time scaling harness",
+  "status": "PARTIAL",
+  "summary": "The harness now compiles the left-sleeve, right-sleeve, body-fold, and move-aside instruction into a hash-bound causal plan; H3 proposals can scale over frozen seeds and inference steps; and independent camera-frame cloth, order, continuity, first-frame, background, and terminal-state gates reject failures without mean-score override. CPU tests, plugin validation, static-condition compilation, and plan-only integration pass. A new H3 candidate has not yet passed the frozen hard gates, so the task remains PARTIAL.",
+  "run_dir": "outputs/tshirt-fold-h3-physical/20260819T084953Z-static-plan-v1",
+  "evidence": [
+    "45 focused CPU tests passed for the physical-video harness and existing AC-WM workflow",
+    "The full repository CPU suite reached 927 passed and 1 skipped; one pre-existing JoyAI timeout assertion failed on unmodified origin/main",
+    "plugins/physical-video-planner passed both skill and plugin validation",
+    "outputs/physical-video-plans/20260819T084558Z-tshirt-fold-v1/task-reasoning-plan.json",
+    "outputs/tshirt-fold-h3/20260819T075218Z-tshirt-fold-control-v1/delivery/verification.tshirt-hard-gates.json"
+  ],
+  "lessons": [
+    "A visually plausible aggregate score cannot establish sleeve conservation; endpoint and segment material tracks must be independent fail-closed gates.",
+    "Test-time scaling must vary seeds, inference steps, and gate-specific repair text while leaving all thresholds and initial landmarks frozen.",
+    "A static scene reference avoids encoding abrupt edited target states into the H3 condition; the target motion must come from the causal language plan."
+  ],
+  "limitations": [
+    "The cloth checks are camera-pixel production gates, not metric 3-D inextensibility, force, collision, or executable robot evidence.",
+    "The previous keyframe-composed video failed multiple hard gates and is not an accepted deliverable.",
+    "Native-resolution human review remains a veto after all automatic gates pass."
+  ],
+  "next_actions": [
+    "Run the frozen MiniMax-H3 scaling policy on the A800 host and evaluate every candidate independently.",
+    "Deliver only a candidate that passes every automatic hard gate, then request native-resolution human review."
+  ],
+  "supersedes": [],
+  "tags": [
+    "minimax-h3",
+    "tshirt-folding",
+    "physical-video",
+    "test-time-scaling",
+    "hard-gates",
+    "partial"
+  ]
+}
