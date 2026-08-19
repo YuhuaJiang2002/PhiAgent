@@ -16,6 +16,8 @@ these files before using the workflow:
 
 - `scripts/compile_physical_video_plan.py`
 - `scripts/build_tshirt_length_preserving_carrier.py` for carrier-guided T-shirt retakes
+- `scripts/build_tshirt_articulated_contact_carrier.py` when the cloth carrier
+  must be coupled to connected dual-arm motion
 - `scripts/run_agentic_acwm.py`
 - `scripts/evaluate_tshirt_fold_candidate.py` for T-shirt tasks
 - `phiagent/harness/task_reasoning.py`
@@ -92,9 +94,21 @@ hard gates for:
    garment move while both manipulators remain stationary. The carrier remains
    a control proposal, not acceptance evidence, and all original output gates
    remain frozen.
-9. Rank only candidates that passed every automatic hard gate. Then require a
+9. Before sending a cloth carrier back to H3, reject it if the garment moves
+   while the manipulators remain stationary or if raster arm motion creates
+   detached links. When no exact robot URDF/MJCF and calibrated camera are
+   available, use `scripts/build_tshirt_articulated_contact_carrier.py` to
+   compile explicitly synthetic fixed-base planar camera rigs. Require a
+   complete per-frame node chain, `q`, and `qdot`; conserved link lengths; a
+   bounded joint step and tip step; and named gripper contact before the
+   corresponding sleeve motion. Record that this is a proposal-control rig,
+   not the unidentified real robot, metric kinematics, force, collision safety,
+   or executable commands. Do not replace visual output failures with analytic
+   carrier claims, and do not let a protected compositing pass override a
+   failed first-frame, background, material-tracking, or human-review gate.
+10. Rank only candidates that passed every automatic hard gate. Then require a
    candidate-SHA-bound native-resolution human review before acceptance.
-10. Append every success, rejection, failure, or blocker to
+11. Append every success, rejection, failure, or blocker to
    `experiences/ledger.jsonl` through `scripts/experience_ledger.py`.
 
 ## Reporting
