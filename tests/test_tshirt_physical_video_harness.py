@@ -242,6 +242,8 @@ def _contract() -> TshirtFoldTrackingContract:
         right_fold=FrameWindow(3, 5),
         body_fold=FrameWindow(5, 7),
         bundle_move=FrameWindow(7, 11),
+        lower_left_gripper_xy=((-5.0, 0.0), (-2.0, 0.0)),
+        upper_right_gripper_xy=((42.0, 0.0), (45.0, 0.0)),
         thresholds=TshirtFoldTrackingThresholds(
             minimum_motion_pixels=2.0,
             maximum_material_step_pixels=16.0,
@@ -276,6 +278,13 @@ def _passing_tracks(*, shorten_left: bool = False, right_early: bool = False):
                 ),
                 body_points_xy=tuple((x + bundle_shift, y) for x, y in body),
                 confidence=1.0,
+                lower_left_gripper_xy=tuple(
+                    (x + bundle_shift, y) for x, y in ((-5.0, 0.0), (-2.0, 0.0))
+                ),
+                upper_right_gripper_xy=tuple(
+                    (x + bundle_shift, y) for x, y in ((42.0, 0.0), (45.0, 0.0))
+                ),
+                manipulator_confidence=1.0,
             )
         )
     return tuple(frames)
@@ -313,3 +322,28 @@ def test_track_gates_fail_closed_on_sleeve_shrink_and_wrong_order() -> None:
 
     assert "viewer_left_sleeve_length_conserved" in shortened.failed_gates
     assert "viewer_left_fold_precedes_viewer_right_fold" in wrong_order.failed_gates
+
+
+def test_track_gates_fail_closed_when_cloth_moves_without_gripper_contact() -> None:
+    frames = tuple(
+        TrackedMaterialFrame(
+            frame_index=frame.frame_index,
+            viewer_left_sleeve_xy=frame.viewer_left_sleeve_xy,
+            viewer_right_sleeve_xy=frame.viewer_right_sleeve_xy,
+            body_points_xy=frame.body_points_xy,
+            confidence=frame.confidence,
+            lower_left_gripper_xy=((100.0, 100.0), (105.0, 100.0)),
+            upper_right_gripper_xy=((120.0, 100.0), (125.0, 100.0)),
+            manipulator_confidence=1.0,
+        )
+        for frame in _passing_tracks()
+    )
+
+    score = score_tshirt_fold_tracks(
+        frames,
+        contract=_contract(),
+        first_frame_score=1.0,
+        background_score=1.0,
+    )
+
+    assert "contact_precedes_cloth_motion" in score.failed_gates

@@ -45,10 +45,11 @@ def rigid_transform_points(
     sine = math.sin(angle)
     px, py = pivot
     tx, ty = translation
+    # Match cv2.getRotationMatrix2D in a camera frame where +y points down.
     return tuple(
         (
-            px + cosine * (x - px) - sine * (y - py) + tx,
-            py + sine * (x - px) + cosine * (y - py) + ty,
+            px + cosine * (x - px) + sine * (y - py) + tx,
+            py - sine * (x - px) + cosine * (y - py) + ty,
         )
         for x, y in points
     )

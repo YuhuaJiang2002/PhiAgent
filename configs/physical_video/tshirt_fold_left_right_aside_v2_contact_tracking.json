@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.1.0",
+  "coordinate_frame": "camera:tshirt_fold_832x480_pixels",
+  "frame_count": 124,
+  "material_points": {
+    "viewer_left_sleeve": [[246.0, 184.0], [260.0, 176.0], [276.0, 166.0], [292.0, 153.0], [309.0, 141.0]],
+    "viewer_right_sleeve": [[444.0, 124.0], [423.0, 126.0], [402.0, 130.0], [380.0, 134.0], [355.0, 136.0]],
+    "body": [[306.0, 158.0], [326.0, 221.0], [389.0, 276.0], [462.0, 259.0], [512.0, 207.0], [401.0, 151.0]]
+  },
+  "manipulator_points": {
+    "lower_left_gripper": [[431.0, 269.0], [418.0, 276.0], [400.0, 287.0], [382.0, 300.0]],
+    "upper_right_gripper": [[536.0, 198.0], [541.0, 184.0], [552.0, 167.0], [566.0, 147.0]]
+  },
+  "background_rectangles_xywh": [[8, 8, 180, 88], [16, 104, 176, 48]],
+  "phase_windows": {
+    "viewer_left_sleeve_fold": [19, 40],
+    "viewer_right_sleeve_fold": [60, 80],
+    "body_fold": [80, 100],
+    "bundle_move": [112, 121]
+  },
+  "thresholds": {
+    "sleeve": {
+      "minimum_tracking_fraction": 0.98,
+      "minimum_confidence": 0.55,
+      "maximum_length_cv": 0.05,
+      "maximum_relative_deviation": 0.08,
+      "maximum_segment_relative_deviation": 0.15,
+      "maximum_terminal_relative_deviation": 0.06
+    },
+    "minimum_point_confidence": 0.55,
+    "minimum_motion_pixels": 1.75,
+    "maximum_material_step_pixels": 14.0,
+    "maximum_terminal_bbox_area_ratio": 0.62,
+    "minimum_bundle_move_left_pixels": 24.0,
+    "maximum_contact_distance_pixels": 48.0,
+    "minimum_first_frame_score": 0.985,
+    "minimum_background_score": 0.94
+  },
+  "evidence_boundary": "Frozen camera-frame optical-flow tracks require gripper proximity before sleeve motion. Proximity is a visual causal gate, not force, grasp, collision, safety, or real-robot evidence."
+}

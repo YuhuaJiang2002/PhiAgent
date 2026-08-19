@@ -67,8 +67,9 @@ hard gates for:
 2. Run `scripts/compile_physical_video_plan.py` in a new output directory. Read
    the complete plan and verify its SHA-256 before generating.
 3. Freeze the candidate-independent tracking contract: initial material
-   landmarks, phase frame windows, background patches, and thresholds. Do not
-   tune it after viewing candidate results.
+   landmarks, both gripper point sets, phase frame windows, background patches,
+   contact distance, and all other thresholds. Do not tune it after viewing
+   candidate results. Fail closed if gripper tracks are absent.
 4. Run `scripts/run_agentic_acwm.py --plan-only` with
    `--task-reasoning-plan`, `--test-time-scaling-config`, and the relevant
    tracking contract. Confirm prompt expansion, coordinate-frame equality,
@@ -87,8 +88,10 @@ hard gates for:
    Predeclare a new experiment and build a continuous carrier with rigid sleeve
    rotations using `scripts/build_tshirt_length_preserving_carrier.py`. Verify
    analytically that every frozen sleeve segment length is unchanged before
-   using the carrier as H3 Video 1. The carrier remains a control proposal, not
-   acceptance evidence, and all original output gates remain frozen.
+   using the carrier as H3 Video 1. Reject a cloth-only carrier that makes the
+   garment move while both manipulators remain stationary. The carrier remains
+   a control proposal, not acceptance evidence, and all original output gates
+   remain frozen.
 9. Rank only candidates that passed every automatic hard gate. Then require a
    candidate-SHA-bound native-resolution human review before acceptance.
 10. Append every success, rejection, failure, or blocker to

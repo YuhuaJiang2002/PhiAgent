@@ -45,6 +45,7 @@ class TshirtFoldTrackingThresholds:
     maximum_material_step_pixels: float = 16.0
     maximum_terminal_bbox_area_ratio: float = 0.62
     minimum_bundle_move_left_pixels: float = 24.0
+    maximum_contact_distance_pixels: float = 48.0
     minimum_first_frame_score: float = 0.985
     minimum_background_score: float = 0.94
 
@@ -62,6 +63,7 @@ class TshirtFoldTrackingThresholds:
             "minimum_motion_pixels",
             "maximum_material_step_pixels",
             "minimum_bundle_move_left_pixels",
+            "maximum_contact_distance_pixels",
         ):
             value = getattr(self, name)
             if not math.isfinite(value) or value <= 0:
@@ -80,6 +82,8 @@ class TshirtFoldTrackingContract:
     right_fold: FrameWindow
     body_fold: FrameWindow
     bundle_move: FrameWindow
+    lower_left_gripper_xy: tuple[Point2D, ...] = ()
+    upper_right_gripper_xy: tuple[Point2D, ...] = ()
     thresholds: TshirtFoldTrackingThresholds = TshirtFoldTrackingThresholds()
 
     def __post_init__(self) -> None:
@@ -96,6 +100,16 @@ class TshirtFoldTrackingContract:
                 raise ValueError(f"{name} requires at least three material points")
             if any(not all(math.isfinite(value) for value in point) for point in points):
                 raise ValueError(f"{name} points must be finite")
+        for name, points in (
+            ("lower_left_gripper_xy", self.lower_left_gripper_xy),
+            ("upper_right_gripper_xy", self.upper_right_gripper_xy),
+        ):
+            if points and len(points) < 2:
+                raise ValueError(f"{name} requires at least two tracked points")
+            if any(not all(math.isfinite(value) for value in point) for point in points):
+                raise ValueError(f"{name} points must be finite")
+        if bool(self.lower_left_gripper_xy) != bool(self.upper_right_gripper_xy):
+            raise ValueError("both manipulator point sets must be present or absent")
         if not self.background_rectangles_xywh:
             raise ValueError("T-shirt tracking requires frozen background rectangles")
         if any(
@@ -136,6 +150,9 @@ class TshirtFoldTrackingContract:
         rectangles = payload.get("background_rectangles_xywh")
         if not isinstance(rectangles, list):
             raise ValueError("background_rectangles_xywh must be an array")
+        manipulators = payload.get("manipulator_points", {})
+        if not isinstance(manipulators, dict):
+            raise ValueError("manipulator_points must be an object")
         return cls(
             coordinate_frame=str(payload["coordinate_frame"]),
             frame_count=int(payload["frame_count"]),
@@ -149,6 +166,12 @@ class TshirtFoldTrackingContract:
             right_fold=window("viewer_right_sleeve_fold"),
             body_fold=window("body_fold"),
             bundle_move=window("bundle_move"),
+            lower_left_gripper_xy=point_tuple(manipulators["lower_left_gripper"])
+            if "lower_left_gripper" in manipulators
+            else (),
+            upper_right_gripper_xy=point_tuple(manipulators["upper_right_gripper"])
+            if "upper_right_gripper" in manipulators
+            else (),
             thresholds=TshirtFoldTrackingThresholds(
                 sleeve=SleeveLengthThresholds(**sleeve_thresholds),
                 **{
@@ -174,12 +197,17 @@ class TrackedMaterialFrame:
     viewer_right_sleeve_xy: tuple[Point2D, ...]
     body_points_xy: tuple[Point2D, ...]
     confidence: float
+    lower_left_gripper_xy: tuple[Point2D, ...] = ()
+    upper_right_gripper_xy: tuple[Point2D, ...] = ()
+    manipulator_confidence: float = 1.0
 
     def __post_init__(self) -> None:
         if self.frame_index < 0:
             raise ValueError("tracked material frame index must be non-negative")
         if not 0.0 <= self.confidence <= 1.0:
             raise ValueError("tracked material confidence must be in [0, 1]")
+        if not 0.0 <= self.manipulator_confidence <= 1.0:
+            raise ValueError("manipulator confidence must be in [0, 1]")
 
 
 @dataclass(frozen=True)
@@ -245,6 +273,38 @@ def _centroid_x(points: Sequence[Point2D]) -> float:
     return fmean(point[0] for point in points)
 
 
+def _minimum_set_distance(left: Sequence[Point2D], right: Sequence[Point2D]) -> float:
+    if not left or not right:
+        return math.inf
+    return min(_point_distance(a, b) for a in left for b in right)
+
+
+def _contact_before_onset(
+    frames: Sequence[TrackedMaterialFrame],
+    *,
+    sleeve: str,
+    onset: int | None,
+    threshold: float,
+    minimum_confidence: float,
+) -> bool:
+    if onset is None:
+        return False
+    first = max(0, onset - 2)
+    for frame in frames[first : onset + 1]:
+        if frame.manipulator_confidence < minimum_confidence:
+            continue
+        sleeve_points = getattr(frame, f"{sleeve}_sleeve_xy")
+        if any(
+            _minimum_set_distance(gripper, sleeve_points) <= threshold
+            for gripper in (
+                frame.lower_left_gripper_xy,
+                frame.upper_right_gripper_xy,
+            )
+        ):
+            return True
+    return False
+
+
 def score_tshirt_fold_tracks(
     frames: Sequence[TrackedMaterialFrame],
     *,
@@ -304,6 +364,20 @@ def score_tshirt_fold_tracks(
     left_onset = _motion_onset(left_steps, thresholds.minimum_motion_pixels)
     right_onset = _motion_onset(right_steps, thresholds.minimum_motion_pixels)
     body_onset = _motion_onset(body_steps, thresholds.minimum_motion_pixels)
+    left_contact = _contact_before_onset(
+        frames,
+        sleeve="viewer_left",
+        onset=left_onset,
+        threshold=thresholds.maximum_contact_distance_pixels,
+        minimum_confidence=thresholds.minimum_point_confidence,
+    )
+    right_contact = _contact_before_onset(
+        frames,
+        sleeve="viewer_right",
+        onset=right_onset,
+        threshold=thresholds.maximum_contact_distance_pixels,
+        minimum_confidence=thresholds.minimum_point_confidence,
+    )
     maximum_step = max((*left_steps, *right_steps, *body_steps))
     initial_points = (
         *frames[0].viewer_left_sleeve_xy,
@@ -334,6 +408,7 @@ def score_tshirt_fold_tracks(
         "viewer_left_sleeve_length_conserved": sleeve_scores["viewer_left"].passed,
         "viewer_right_sleeve_length_conserved": sleeve_scores["viewer_right"].passed,
         "viewer_left_fold_precedes_viewer_right_fold": left_before_right,
+        "contact_precedes_cloth_motion": left_contact and right_contact,
         "no_teleportation_or_crossfade": (
             maximum_step <= thresholds.maximum_material_step_pixels
         ),
@@ -442,6 +517,8 @@ def extract_and_score_tshirt_fold_video(
     left_points = contract.viewer_left_sleeve_xy
     right_points = contract.viewer_right_sleeve_xy
     body_points = contract.body_points_xy
+    lower_left_gripper = contract.lower_left_gripper_xy
+    upper_right_gripper = contract.upper_right_gripper_xy
     tracked = [
         TrackedMaterialFrame(
             frame_index=0,
@@ -449,6 +526,9 @@ def extract_and_score_tshirt_fold_video(
             viewer_right_sleeve_xy=right_points,
             body_points_xy=body_points,
             confidence=1.0,
+            lower_left_gripper_xy=lower_left_gripper,
+            upper_right_gripper_xy=upper_right_gripper,
+            manipulator_confidence=1.0 if lower_left_gripper else 0.0,
         )
     ]
     previous_gray = cv2.cvtColor(decoded[0], cv2.COLOR_BGR2GRAY)
@@ -481,6 +561,12 @@ def extract_and_score_tshirt_fold_video(
         left_points, left_confidence = _advect_points(left_points, forward, backward)
         right_points, right_confidence = _advect_points(right_points, forward, backward)
         body_points, body_confidence = _advect_points(body_points, forward, backward)
+        lower_left_gripper, lower_confidence = _advect_points(
+            lower_left_gripper, forward, backward
+        )
+        upper_right_gripper, upper_confidence = _advect_points(
+            upper_right_gripper, forward, backward
+        )
         confidence = min(left_confidence, right_confidence, body_confidence)
         tracked.append(
             TrackedMaterialFrame(
@@ -489,6 +575,9 @@ def extract_and_score_tshirt_fold_video(
                 viewer_right_sleeve_xy=right_points,
                 body_points_xy=body_points,
                 confidence=confidence,
+                lower_left_gripper_xy=lower_left_gripper,
+                upper_right_gripper_xy=upper_right_gripper,
+                manipulator_confidence=min(lower_confidence, upper_confidence),
             )
         )
         previous_gray = current_gray
