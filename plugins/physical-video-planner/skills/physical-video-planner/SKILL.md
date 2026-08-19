@@ -15,6 +15,7 @@ Run `git rev-parse --show-toplevel` from the active PhiAgent workspace. Require
 these files before using the workflow:
 
 - `scripts/compile_physical_video_plan.py`
+- `scripts/build_tshirt_length_preserving_carrier.py` for carrier-guided T-shirt retakes
 - `scripts/run_agentic_acwm.py`
 - `scripts/evaluate_tshirt_fold_candidate.py` for T-shirt tasks
 - `phiagent/harness/task_reasoning.py`
@@ -81,9 +82,16 @@ hard gates for:
 7. For ordinary hard-gate failures, use their exact IDs to build the next repair
    prompts and increase compute according to the frozen scaling policy. Do not
    change thresholds or the initial material tracks.
-8. Rank only candidates that passed every automatic hard gate. Then require a
+8. If scaled static-reference proposals repeatedly fail the same cloth-motion
+   gates, treat that as an architecture failure rather than adding more seeds.
+   Predeclare a new experiment and build a continuous carrier with rigid sleeve
+   rotations using `scripts/build_tshirt_length_preserving_carrier.py`. Verify
+   analytically that every frozen sleeve segment length is unchanged before
+   using the carrier as H3 Video 1. The carrier remains a control proposal, not
+   acceptance evidence, and all original output gates remain frozen.
+9. Rank only candidates that passed every automatic hard gate. Then require a
    candidate-SHA-bound native-resolution human review before acceptance.
-9. Append every success, rejection, failure, or blocker to
+10. Append every success, rejection, failure, or blocker to
    `experiences/ledger.jsonl` through `scripts/experience_ledger.py`.
 
 ## Reporting

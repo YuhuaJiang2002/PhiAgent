@@ -25,6 +25,10 @@ from phiagent.harness.task_reasoning import (
     TaskReasoningRequest,
     TshirtFoldReasoningPlugin,
 )
+from phiagent.harness.cloth_carrier import (
+    TSHIRT_832X480_CARRIER,
+    polyline_segment_lengths,
+)
 from phiagent.harness.test_time_scaling import (
     HardGateTestTimeScalingRepairAgent,
     ScalingRound,
@@ -152,6 +156,21 @@ def test_h3_accepts_camera_control_and_per_candidate_scaled_steps(tmp_path) -> N
     assert 'num_inference_steps=int(item["num_inference_steps"])' in source
     assert "video[0] = exact_first_frame" in source
     assert "must equal the frozen H3 adapter setting" not in source
+
+
+def test_carrier_rigid_sleeve_phases_preserve_every_material_segment() -> None:
+    geometry = TSHIRT_832X480_CARRIER
+    baseline = {
+        "viewer_left": polyline_segment_lengths(geometry.viewer_left_material),
+        "viewer_right": polyline_segment_lengths(geometry.viewer_right_material),
+    }
+
+    for frame in range(124):
+        transformed = geometry.sleeve_material_at(frame)
+        for side, points in transformed.items():
+            assert polyline_segment_lengths(points) == pytest.approx(
+                baseline[side], abs=1e-9
+            )
 
 
 def test_scaling_policy_rejects_threshold_relaxation_and_decreasing_steps() -> None:
