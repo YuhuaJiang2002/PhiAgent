@@ -1,6 +1,6 @@
 # Status
 
-Evidence date: 2026-08-13. Status labels describe acceptance evidence, not code
+Evidence date: 2026-08-21. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
@@ -431,6 +431,17 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- SAM2 / SAM3.1 video-segmentation A/B harness: one CPU preparation stage now
+  binds byte-identical JPEG frames and initial masks, then launches pinned SAM2
+  and SAM3.1 Object Multiplex workers concurrently in separate Python
+  environments on distinct validated physical GPUs. SAM2 remains the only
+  decision-bearing evaluator; SAM3.1 receives no thresholds and can only report
+  agreement, potential label takeover, timing, and memory diagnostics. CPU-only
+  contract, scoring, GPU-selection, command-binding, and packed-mask comparison
+  tests pass. This is PARTIAL because the gated 3.5 GB SAM3.1 checkpoint has not
+  been run here on a representative real-video set, native labeled keyframes do
+  not yet exist, and no SAM3.1 evaluator epoch or thresholds have been accepted.
+  See `docs/SAM_SEGMENTATION_AB.md`.
 - Geometry-grounded AC-WM redesign: a primary-source review of 2025--2026
   releases identifies FlowWAM robot flow, Kinema4D pointmaps, and OSCAR
   skeletons as the strongest executable spatial controls; vector-only BWM

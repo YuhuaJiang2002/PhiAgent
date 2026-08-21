@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0.0",
+  "coordinate_frame": "camera:joyai_center_fit_1248x720",
+  "frame_count": 57,
+  "frame_size": [
+    1248,
+    720
+  ],
+  "fps": 24.0,
+  "initial_frame_index": 4,
+  "ab_policy": {
+    "evaluator_epoch_id": "tshirt-segmentation-ab-20260821-v1",
+    "authoritative_model": "sam2",
+    "shadow_model": "sam3.1",
+    "decision_mode": "sam2_authoritative_sam31_shadow",
+    "reuse_incumbent_thresholds_for_shadow": false,
+    "promotion_requires_labeled_keyframes": true
+  },
+  "sam2": {
+    "model_id": "sam2",
+    "role": "authoritative",
+    "evaluator_epoch_id": "tshirt-sam2-mask-geometry-20260820-v1",
+    "repository": "external/sam2",
+    "repository_commit": "0e78a118995e66bb27d78518c4bd9a3e95b4e266",
+    "config": "sam2_hiera_l.yaml",
+    "checkpoint": "checkpoints/Wan2.2-Animate-14B/process_checkpoint/sam2/sam2_hiera_large.pt",
+    "checkpoint_sha256": "7442e4e9b732a508f80e141e7c2913437a3610ee0c77381a66658c3a445df87b"
+  },
+  "objects": {
+    "viewer_left_sleeve": {
+      "object_id": 1,
+      "initial_polygon_xy": [
+        [330, 298],
+        [386, 341],
+        [454, 332],
+        [458, 254],
+        [438, 203],
+        [402, 185],
+        [365, 224]
+      ]
+    },
+    "viewer_right_sleeve": {
+      "object_id": 2,
+      "initial_polygon_xy": [
+        [508, 170],
+        [574, 139],
+        [656, 170],
+        [626, 212],
+        [555, 201]
+      ]
+    }
+  },
+  "thresholds": {
+    "baseline_hold_frames": 8,
+    "minimum_area_pixels": 800,
+    "minimum_component_area_pixels": 100,
+    "maximum_connected_components": 2,
+    "maximum_major_axis_cv": 0.08,
+    "maximum_major_axis_relative_deviation": 0.15,
+    "maximum_terminal_major_axis_relative_deviation": 0.12,
+    "maximum_area_cv": 0.12,
+    "maximum_area_relative_deviation": 0.2,
+    "maximum_terminal_area_relative_deviation": 0.18,
+    "minimum_component_area_fraction": 0.0,
+    "maximum_centroid_step_pixels": 90.0
+  },
+  "initial_mask_refinement": {
+    "maximum_luma": 115,
+    "closing_kernel_pixels": 9,
+    "keep_largest_component": true,
+    "minimum_area_pixels": 800
+  },
+  "evidence_boundary": "SAM2 remains the decision-bearing camera-frame evaluator in this epoch. SAM3.1 masks are shadow diagnostics only. Neither track proves metric 3-D cloth geometry, force, friction, safety, or physical execution."
+}

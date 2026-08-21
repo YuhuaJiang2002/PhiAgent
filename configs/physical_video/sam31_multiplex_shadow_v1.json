@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "model_id": "sam3.1",
+  "role": "shadow",
+  "evaluator_epoch_id": "sam31-shadow-uncalibrated-20260821-v1",
+  "repository": "external/sam3",
+  "repository_commit": "8f0b7f4d4e7eda2ed606ebde6702c93359ad01da",
+  "checkpoint": "checkpoints/sam3.1/sam3.1_multiplex.pt",
+  "checkpoint_sha256": "0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6",
+  "huggingface_repository": "facebook/sam3.1",
+  "huggingface_revision": "daa63191845a41281374e725f4c9e51c7a824460",
+  "checkpoint_filename": "sam3.1_multiplex.pt",
+  "multiplex_count": 16,
+  "compile": false,
+  "offload_video_to_cpu": false,
+  "offload_state_to_cpu": false,
+  "thresholds": null,
+  "license": "SAM License"
+}

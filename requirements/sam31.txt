@@ -1,0 +1,4 @@
+# Optional shadow evaluator. Install in a separate Python 3.12 CUDA environment
+# after installing a compatible PyTorch 2.7+ build.
+-r segmentation-ab.txt
+sam3 @ git+https://github.com/facebookresearch/sam3.git@8f0b7f4d4e7eda2ed606ebde6702c93359ad01da

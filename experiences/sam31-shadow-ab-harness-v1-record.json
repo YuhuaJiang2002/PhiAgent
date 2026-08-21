@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-21.sam31-shadow-ab-harness-v1-partial",
+  "recorded_at": "2026-08-21T15:54:19Z",
+  "status": "PARTIAL",
+  "scope": "Pinned SAM2-authoritative and SAM3.1-shadow T-shirt video segmentation A/B harness",
+  "summary": "The harness now prepares one hash-bound frame and initial-mask input, runs SAM2 and SAM3.1 concurrently in isolated environments on distinct physical GPUs, preserves SAM2 as the only decision-bearing evaluator, and reports SAM3.1 agreement diagnostics without reusing incumbent thresholds.",
+  "evidence": [
+    "Ten targeted CPU tests pass for frozen geometry scoring, shadow-policy validation, distinct GPU selection, worker command binding, clean external-source enforcement, shadow-failure isolation, packed-mask comparison, and potential label takeover detection.",
+    "Targeted Ruff checks and Ruff format checks pass for all new Python modules and scripts; git diff --check reports no whitespace errors.",
+    "The full CPU suite reaches 916 passed and 2 skipped; its only failure is the pre-existing untouched tests/test_joyai_video_edit.py holder-idle-timeout assertion, whose expected argument is absent from origin/main.",
+    "The SAM3.1 source is pinned to 8f0b7f4d4e7eda2ed606ebde6702c93359ad01da and the gated facebook/sam3.1 checkpoint is pinned to Hugging Face revision daa63191845a41281374e725f4c9e51c7a824460 with SHA-256 0567debeec80ba4ac6369540c6c248025283cb3ff2b92827509e57e2b3541cb6."
+  ],
+  "lessons": [
+    "A shadow evaluator must never gain veto authority over a completed incumbent result; SAM3.1 failure now leaves the SAM2 decision intact and returns an explicit partial outcome.",
+    "Checking only a model repository HEAD is insufficient reproducibility evidence; external model repositories must also be clean before their code is imported.",
+    "A/B agreement metrics cannot establish accuracy without labeled native-resolution keyframes, so SAM3.1 thresholds and promotion remain intentionally unavailable."
+  ],
+  "limitations": [
+    "No real SAM3.1 checkpoint was loaded and no representative T-shirt video was evaluated on NVIDIA hardware in this engineering attempt.",
+    "No labeled-keyframe boundary, identity-switch, missed-mask, or wrong-object-takeover comparison exists yet.",
+    "The full repository suite retains one unrelated pre-existing JoyAI server timeout test failure."
+  ],
+  "next_actions": [
+    "Install the pinned optional environments, run the same representative videos and initial masks on two physical GPUs, and retain every immutable run artifact.",
+    "Label native-resolution occlusion and identity-challenge keyframes, compare boundary quality and identity failures, then preregister a separate SAM3.1 evaluator epoch before considering promotion."
+  ],
+  "supersedes": [],
+  "tags": [
+    "sam2",
+    "sam3.1",
+    "shadow-evaluator",
+    "ab-harness",
+    "tshirt",
+    "reproducibility",
+    "partial"
+  ]
+}
