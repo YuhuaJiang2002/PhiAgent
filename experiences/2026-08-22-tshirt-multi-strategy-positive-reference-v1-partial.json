@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-22.tshirt-multi-strategy-positive-reference-v1-partial",
+  "recorded_at": "2026-08-22T04:48:00Z",
+  "status": "PARTIAL",
+  "scope": "Preserve three user-approved T-shirt-folding videos, compile them into a non-overrideable positive-reference harness, create a synchronized comparison, and publish the result on the PhiAgent demo.",
+  "summary": "Three 8-second visual results are retained as distinct alternating, staged, and synchronized proposal references. A dependency-light compiler binds each reference to its compatible strategy plan while preserving every hard gate and human veto. The synchronized showcase and website integration are complete, but the evidence remains visual rather than physical execution.",
+  "evidence": [
+    "Original video SHA-256 values are 66edab0ba24ee441816694a373528628befe29c5136fd6d57f34fc53f09f4f1b, b101b611aab37d3d87af90e291633e0f23e4ea8a627ae4d0fdd2bf5563a4cbca, and fe590fc0fbac1a83c325f131066e6df23c5de09dfa472960c4ccf659cb7b82d3.",
+    "The positive-reference bank SHA-256 is d025a32251971dfe6db40b8812decb3f774af8aad6302980eafcf496c8cbddd8 and file validation passes for all three repo-relative videos.",
+    "The comparison SHA-256 is 36cd86d3b63ef094e35de3ff47b562371c656f65334a911a78b474765f32d05d; ffprobe reports H.264 yuv420p, 1920x720, 24 FPS, 192 frames, 8.0 seconds, and no published audio track.",
+    "Twenty focused task-reasoning, strategy, positive-reference, and lazy-import CPU tests pass; Ruff passes on the new module, exports, and tests.",
+    "The frozen default physical plan SHA-256 is 4ba723d7b8d9f2f895919c695c2104eaeae453ddc79013594ca741690e5689da. Strategy conditioning SHA-256 values are 1ecc2be9390a000ab9c215d37bbf858d12eb102111d21b6ff13151e2b7cbd166, 1e63dfc07416a5d7f099b85567e30755080c1daf4821a86f86a4d33acd6a5a19, and 7ded699044506a0664be0355667948cbeafb0a576ff9f28bf6216975ca18e3e6.",
+    "Local static-site checks return HTTP 200 with the expected MIME types for the page, CSS, MP4, poster, and JSON manifest."
+  ],
+  "lessons": [
+    "Matched camera, scene, embodiment, duration, frame rate, and terminal dwell make choreography differences legible.",
+    "Positive visual examples should guide approach, contact cadence, arm-role separation, and terminal readability without supplying automatic gate outcomes.",
+    "Candidate allocation should branch on sleeve order before sampling so best-of-N does not collapse onto one attractive choreography.",
+    "The original full-resolution videos must remain beside a scaled comparison because presentation media is not evaluation evidence."
+  ],
+  "limitations": [
+    "User approval covers visual generation quality, not every automatic physical gate.",
+    "The first frames are scene-matched but not pixel-identical; SSIM against the alternating reference is 0.936417 and 0.939120 for the other two videos.",
+    "No calibrated cloth geometry, force, tactile data, exact joint trajectory, collision-safety result, or real-robot execution evidence is available."
+  ],
+  "next_actions": [
+    "Use the bank only for bounded strategy-compatible proposal generation and rerun all frozen automatic gates on every new candidate.",
+    "Require candidate-SHA-bound native-resolution review before promoting any future physically evaluated generation."
+  ],
+  "run_dir": "outputs/tshirt-multi-strategy-reference/20260822T044000Z-plan-v3",
+  "supersedes": [
+    "2026-08-22.tshirt-multi-strategy-plan-system-python-not-started"
+  ],
+  "tags": [
+    "tshirt",
+    "multi-strategy",
+    "positive-reference",
+    "harness",
+    "showcase",
+    "user-review",
+    "partial"
+  ]
+}

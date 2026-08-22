@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0.0",
+  "title": "PhiAgent user-accepted multi-strategy T-shirt folding showcase",
+  "created_at": "2026-08-22T04:30:00Z",
+  "positive_reference_bank": {
+    "bank_id": "user-accepted-three-strategy-v1",
+    "bank_sha256": "d025a32251971dfe6db40b8812decb3f774af8aad6302980eafcf496c8cbddd8",
+    "conditioning_scope": "camera_pixel_reference_only",
+    "references": [
+      {
+        "reference_id": "fold-alternating",
+        "video_path": "demo/showcase/tshirt-fold-strategies/fold-alternating.mp4",
+        "video_sha256": "66edab0ba24ee441816694a373528628befe29c5136fd6d57f34fc53f09f4f1b",
+        "coordinate_frame": "camera:tshirt_fold_1024x768_pixels",
+        "width": 1024,
+        "height": 768,
+        "fps": 24.0,
+        "frame_count": 192,
+        "duration_seconds": 8.0,
+        "sleeve_order": "left_then_right",
+        "terminal_behavior": "compact_in_place",
+        "review_scope": "visual_generation_quality",
+        "review_state": "passed",
+        "observed_strengths": [
+          "stable camera and scene layout",
+          "persistent dual-arm embodiment appearance",
+          "alternating visible arm roles before body compaction",
+          "continuous eight-second edit with a compact terminal hold"
+        ],
+        "unavailable_evidence": [
+          "calibrated metric cloth geometry",
+          "force or tactile sensing",
+          "exact robot joint trajectory",
+          "collision safety or real-robot execution"
+        ]
+      },
+      {
+        "reference_id": "fold-staged",
+        "video_path": "demo/showcase/tshirt-fold-strategies/fold-staged.mp4",
+        "video_sha256": "b101b611aab37d3d87af90e291633e0f23e4ea8a627ae4d0fdd2bf5563a4cbca",
+        "coordinate_frame": "camera:tshirt_fold_1024x768_pixels",
+        "width": 1024,
+        "height": 768,
+        "fps": 24.0,
+        "frame_count": 192,
+        "duration_seconds": 8.0,
+        "sleeve_order": "right_then_left",
+        "terminal_behavior": "compact_in_place",
+        "review_scope": "visual_generation_quality",
+        "review_state": "passed",
+        "observed_strengths": [
+          "stable camera and scene layout",
+          "persistent dual-arm embodiment appearance",
+          "clearly staged sleeve handling before torso folding",
+          "continuous eight-second edit with a compact terminal hold"
+        ],
+        "unavailable_evidence": [
+          "calibrated metric cloth geometry",
+          "force or tactile sensing",
+          "exact robot joint trajectory",
+          "collision safety or real-robot execution"
+        ]
+      },
+      {
+        "reference_id": "fold-synchronized",
+        "video_path": "demo/showcase/tshirt-fold-strategies/fold-synchronized.mp4",
+        "video_sha256": "fe590fc0fbac1a83c325f131066e6df23c5de09dfa472960c4ccf659cb7b82d3",
+        "coordinate_frame": "camera:tshirt_fold_1024x768_pixels",
+        "width": 1024,
+        "height": 768,
+        "fps": 24.0,
+        "frame_count": 192,
+        "duration_seconds": 8.0,
+        "sleeve_order": "simultaneous",
+        "terminal_behavior": "compact_in_place",
+        "review_scope": "visual_generation_quality",
+        "review_state": "passed",
+        "observed_strengths": [
+          "stable camera and scene layout",
+          "persistent dual-arm embodiment appearance",
+          "bilateral sleeve motion with visibly synchronized onset",
+          "continuous eight-second edit with a compact terminal hold"
+        ],
+        "unavailable_evidence": [
+          "calibrated metric cloth geometry",
+          "force or tactile sensing",
+          "exact robot joint trajectory",
+          "collision safety or real-robot execution"
+        ]
+      }
+    ]
+  },
+  "comparison": {
+    "video_path": "demo/showcase/tshirt-fold-strategies/three-strategy-comparison.mp4",
+    "video_sha256": "36cd86d3b63ef094e35de3ff47b562371c656f65334a911a78b474765f32d05d",
+    "poster_path": "demo/showcase/tshirt-fold-strategies/three-strategy-comparison-poster.jpg",
+    "poster_sha256": "7f4b0543e6ae4314a3573fa84b41cefd548210876df5184bb66648d4b805e219",
+    "width": 1920,
+    "height": 720,
+    "fps": 24.0,
+    "frame_count": 192,
+    "duration_seconds": 8.0,
+    "audio": "none",
+    "layout": "three synchronized 600x450 panels on a 1920x720 canvas",
+    "first_frame_evidence": {
+      "pixel_identical": false,
+      "ssim_against_fold_alternating": {
+        "fold_staged": 0.936417,
+        "fold_synchronized": 0.939120
+      }
+    }
+  },
+  "generation_lessons": [
+    "Keep the camera, environment, robot embodiment, duration, frame rate, and terminal dwell matched so choreography differences remain legible.",
+    "Treat contact approach, sleeve motion, body compaction, and terminal hold as separate visible phases instead of asking one prompt to imply the full action at once.",
+    "Allocate candidates across explicit sleeve-order strategies rather than letting best-of-N collapse onto one visually preferred route.",
+    "Use user-approved videos as hash-bound proposal priors only; never let a positive reference relax material, contact, continuity, task-order, background, or native-review gates.",
+    "Preserve each original full-resolution video beside the comparison because the scaled showcase is presentation media, not evaluation evidence."
+  ],
+  "claim_boundary": "These are user-approved generated camera-pixel proposals. They demonstrate visually distinct folding strategies, not calibrated 3-D cloth state, force, robot joint commands, collision safety, or real-robot execution."
+}

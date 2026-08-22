@@ -1,6 +1,6 @@
 # Status
 
-Evidence date: 2026-08-21. Status labels describe acceptance evidence, not code
+Evidence date: 2026-08-22. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
@@ -430,6 +430,20 @@ locations are recorded per experiment below.
   transitions; this acceptance is explicitly limited to early continuity.
 
 ## PARTIAL
+
+- Multi-strategy T-shirt folding visual generation is `PARTIAL`. Three
+  user-approved 1024x768, 24 FPS, 192-frame generated videos are preserved as a
+  hash-bound positive-reference bank covering alternating, staged, and
+  synchronized dual-arm choreography. The 1920x720 synchronized comparison at
+  `demo/showcase/tshirt-fold-strategies/three-strategy-comparison.mp4` has
+  SHA-256
+  `36cd86d3b63ef094e35de3ff47b562371c656f65334a911a78b474765f32d05d`.
+  The dependency-light reference compiler binds video, bank, and task-plan
+  hashes while retaining every original hard gate and human veto. The source
+  first frames are scene-matched but not pixel exact, and the user review covers
+  visual generation quality only. No calibrated cloth state, force, joint
+  trajectory, collision-safety, or real-robot execution claim is made. See
+  `docs/TSHIRT_MULTI_STRATEGY_REFERENCES.md`.
 
 - SAM2 / SAM3.1 video-segmentation A/B harness: one CPU preparation stage now
   binds byte-identical JPEG frames and initial masks, then launches pinned SAM2

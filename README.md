@@ -3,6 +3,10 @@
 > **Play every video directly on the
 > [web demo](https://yuhuajiang2002.github.io/PhiAgent/).**
 
+> **Watch
+> [three PhiAgent T-shirt-folding strategies](https://yuhuajiang2002.github.io/PhiAgent/#tshirt-fold-strategies)
+> side by side.**
+
 PhiAgent-0 is an open research system for translating human manipulation
 demonstrations into embodiment-invariant physical state, robot motion, verified
 simulation, and robot video:
@@ -11,6 +15,19 @@ simulation, and robot video:
 
 The project is being built as measured teacher-pipeline milestones before any
 attempt to train a unified foundation model.
+
+## Multi-strategy T-shirt folding
+
+Three user-approved 8-second, 1024x768, 24 FPS generated videos now form a
+hash-bound positive-reference bank for alternating, staged, and synchronized
+two-arm folding choreography. The synchronized 1920x720 comparison is available
+on the [web demo](https://yuhuajiang2002.github.io/PhiAgent/#tshirt-fold-strategies)
+or as a [direct MP4](demo/showcase/tshirt-fold-strategies/three-strategy-comparison.mp4).
+The harness may use each original video as a camera-pixel proposal prior only;
+it cannot relax cloth-identity, contact, continuity, task-order, background, or
+native-resolution review gates. These videos show distinct visual robot-folding
+strategies, not calibrated cloth physics or real-robot execution. See the
+[generation lessons and evidence boundary](docs/TSHIRT_MULTI_STRATEGY_REFERENCES.md).
 
 ## Key concepts
 

@@ -1,0 +1,52 @@
+{
+  "task_id": "tshirt-multi-strategy-positive-reference-v1",
+  "task_type": "tshirt_fold_left_right_aside",
+  "instruction": "Use three distinct reviewed visual references to propose left-first, right-first, and synchronized two-arm T-shirt folding candidates. Preserve one shirt, both original sleeves, visible causal contact, continuous motion, a fixed camera and background, and the terminal placement declared by each strategy plan.",
+  "coordinate_frame": "camera:tshirt_fold_1024x768_pixels",
+  "duration_seconds": 8.0,
+  "entities": [
+    {
+      "entity_id": "lower_left_robot",
+      "role": "manipulator",
+      "description": "white robot arm entering from the lower-left camera region"
+    },
+    {
+      "entity_id": "upper_right_robot",
+      "role": "manipulator",
+      "description": "white robot arm entering from the upper-right camera region"
+    },
+    {
+      "entity_id": "viewer_left_sleeve",
+      "role": "cloth_part",
+      "description": "original viewer-left black sleeve in the named camera frame"
+    },
+    {
+      "entity_id": "viewer_right_sleeve",
+      "role": "cloth_part",
+      "description": "original viewer-right black sleeve in the named camera frame"
+    },
+    {
+      "entity_id": "shirt_body",
+      "role": "cloth_body",
+      "description": "single original gray T-shirt torso"
+    }
+  ],
+  "available_evidence": [
+    "three user-reviewed 1024x768 RGB videos at 24 FPS and 192 frames",
+    "SHA-256-bound positive-reference manifest",
+    "named camera-pixel coordinate frame",
+    "native-resolution user visual-quality review"
+  ],
+  "unavailable_evidence": [
+    "calibrated metric depth or cloth mesh",
+    "force or tactile sensing",
+    "exact robot URDF or joint trajectory",
+    "collision-safety or real-robot execution evidence"
+  ],
+  "user_constraints": [
+    "preserve all three visibly distinct folding strategies",
+    "use reviewed examples only as camera-pixel proposal priors",
+    "never relax or delete a material, contact, continuity, task-order, background, or human-review gate",
+    "publish a synchronized comparison while retaining each original full-resolution video"
+  ]
+}

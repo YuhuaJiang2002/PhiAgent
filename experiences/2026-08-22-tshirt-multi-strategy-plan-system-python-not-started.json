@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-22.tshirt-multi-strategy-plan-system-python-not-started",
+  "recorded_at": "2026-08-22T04:39:00Z",
+  "status": "NOT STARTED",
+  "scope": "Compile the multi-strategy positive-reference T-shirt request with the host system Python runtime.",
+  "summary": "Two host-system-Python launches did not reach task-plan compilation. The first preserved only request.json in a new directory; the second was interrupted before creating its run directory after the interpreter stalled during standard-library import.",
+  "evidence": [
+    "outputs/tshirt-multi-strategy-reference/20260822T043500Z-plan-v1 contains only request.json and no plan, scaling policy, or compile manifest.",
+    "The interrupted traceback remained inside the macOS command-line-tools Python 3.9 standard-library import path before PhiAgent planning code executed.",
+    "No GPU or model request was launched and no incomplete result was promoted."
+  ],
+  "lessons": [
+    "A host Python interpreter stall must be recorded as a not-started environment failure rather than a planner or model failure.",
+    "A retry must use a new output directory and the project-managed dependency environment."
+  ],
+  "limitations": [],
+  "next_actions": [
+    "Rerun the unchanged request with the project .venv-wuji interpreter in a new output directory."
+  ],
+  "run_dir": "outputs/tshirt-multi-strategy-reference/20260822T043500Z-plan-v1",
+  "supersedes": [],
+  "tags": [
+    "tshirt",
+    "positive-reference",
+    "planner",
+    "environment",
+    "not-started"
+  ]
+}

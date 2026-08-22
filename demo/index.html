@@ -107,6 +107,33 @@
         text-transform: uppercase;
       }
 
+      .copy .status-accepted {
+        margin: 0 0 8px;
+        color: #7ee7c8;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .strategy-facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .strategy-facts li {
+        padding: 6px 9px;
+        border: 1px solid rgba(126, 231, 200, 0.3);
+        border-radius: 999px;
+        color: #bcd7d0;
+        background: rgba(126, 231, 200, 0.06);
+        font-size: 0.72rem;
+      }
+
       .repo-link {
         display: inline-block;
         margin-top: 24px;
@@ -272,6 +299,36 @@
       </section>
 
       <section class="grid" aria-label="Demo videos">
+        <article class="featured" id="tshirt-fold-strategies">
+          <video controls muted autoplay loop playsinline preload="metadata"
+            poster="showcase/tshirt-fold-strategies/three-strategy-comparison-poster.jpg?v=1">
+            <source src="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=1" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <p class="status-accepted">3 / 3 user-approved visual generations · Partial physical evidence</p>
+            <h2>One scene, three ways for a robot to fold a T-shirt</h2>
+            <p>
+              Three synchronized eight-second PhiAgent proposals show visibly
+              different dual-arm choreography: alternating arm roles, staged
+              sleeve handling, and a synchronized bilateral fold. The original
+              1024×768 videos remain beside this 1920×720 comparison and form a
+              SHA-bound positive-reference bank. They guide future proposals
+              without overriding cloth, contact, continuity, task-order,
+              background, or native-review gates. These are generated
+              camera-pixel results, not real-robot execution evidence.
+            </p>
+            <ul class="strategy-facts" aria-label="Folding strategies">
+              <li>A · Alternating</li>
+              <li>B · Staged</li>
+              <li>C · Synchronized</li>
+            </ul>
+            <a class="video-link" href="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=1">Open MP4</a>
+            · <a class="video-link" href="showcase/tshirt-fold-strategies/manifest.json?v=1">Hashes and evidence boundary</a>
+            · <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/blob/main/docs/TSHIRT_MULTI_STRATEGY_REFERENCES.md">Generation lessons</a>
+          </div>
+        </article>
+
         <article class="featured">
           <video controls muted autoplay loop playsinline preload="metadata"
             poster="showcase/ego-cabbage-human-vs-robot-confidence-routed.jpg">
