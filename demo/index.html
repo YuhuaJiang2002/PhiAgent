@@ -299,74 +299,42 @@
       </section>
 
       <section class="grid" aria-label="Demo videos">
-        <article class="featured" id="tshirt-fold-strategies">
+        <article class="featured" id="joyai-late-contact">
           <video controls muted autoplay loop playsinline preload="metadata"
-            poster="showcase/tshirt-fold-strategies/three-strategy-comparison-poster.jpg?v=1">
-            <source src="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=1" type="video/mp4">
+            poster="showcase/joyai-late-flower-contact-seed17-v1.jpg?v=2">
+            <source src="showcase/joyai-late-flower-contact-seed17-v1.mp4?v=2" type="video/mp4">
             Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
-            <p class="status-accepted">3 / 3 user-approved visual generations · Partial physical evidence</p>
-            <h2>One scene, three ways for a robot to fold a T-shirt</h2>
-            <p>
-              Three synchronized eight-second PhiAgent proposals show visibly
-              different dual-arm choreography: alternating arm roles, staged
-              sleeve handling, and a synchronized bilateral fold. The original
-              1024×768 videos remain beside this 1920×720 comparison and form a
-              SHA-bound positive-reference bank. They guide future proposals
-              without overriding cloth, contact, continuity, task-order,
-              background, or native-review gates. These are generated
-              camera-pixel results, not real-robot execution evidence.
-            </p>
-            <ul class="strategy-facts" aria-label="Folding strategies">
-              <li>A · Alternating</li>
-              <li>B · Staged</li>
-              <li>C · Synchronized</li>
-            </ul>
-            <a class="video-link" href="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=1">Open MP4</a>
-            · <a class="video-link" href="showcase/tshirt-fold-strategies/manifest.json?v=1">Hashes and evidence boundary</a>
-            · <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/blob/main/docs/TSHIRT_MULTI_STRATEGY_REFERENCES.md">Generation lessons</a>
+            <h2>Flower arranging: real human to robot</h2>
+            <p><strong>Input:</strong> A 27.5-second real human flower-arranging video.<br><strong>Output:</strong> A robot-rendered flower-arranging video aligned beside the source.</p>
+            <a class="video-link" href="showcase/joyai-late-flower-contact-seed17-v1.mp4?v=2">Open MP4</a>
+          </div>
+        </article>
+
+        <article class="featured" id="tshirt-fold-strategies">
+          <video controls muted loop playsinline preload="metadata"
+            poster="showcase/tshirt-fold-strategies/three-strategy-comparison-poster.jpg?v=2">
+            <source src="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=2" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <h2>T-shirt folding to three final positions</h2>
+            <p><strong>Input:</strong> The same T-shirt scene and dual-arm robot setup.<br><strong>Output:</strong> Three synchronized folds that place the finished T-shirt in front, left, or right.</p>
+            <a class="video-link" href="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=2">Open MP4</a>
           </div>
         </article>
 
         <article class="featured">
-          <video controls muted autoplay loop playsinline preload="metadata"
+          <video controls muted loop playsinline preload="metadata"
             poster="showcase/ego-cabbage-human-vs-robot-confidence-routed.jpg">
             <source src="showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4" type="video/mp4">
             Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
             <h2>Ego cabbage cutting: human vs. robot</h2>
-            <p>
-              Human source on the left and the confidence-routed Wan/SAM2 robot
-              replacement on the right, synchronized frame for frame.
-            </p>
+            <p><strong>Input:</strong> An Ego video of a human cutting cabbage.<br><strong>Output:</strong> A frame-aligned robot-hand replacement video.</p>
             <a class="video-link" href="showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4">Open MP4</a>
-          </div>
-        </article>
-
-        <article class="featured" id="joyai-late-contact">
-          <video controls muted playsinline preload="metadata"
-            poster="showcase/joyai-late-flower-contact-seed17-v1.jpg?v=1">
-            <source src="showcase/joyai-late-flower-contact-seed17-v1.mp4?v=1" type="video/mp4">
-            Your browser does not support embedded MP4 video.
-          </video>
-          <div class="copy">
-            <p class="status-partial">JoyAI direct RV2V · Best of 4 · Partial</p>
-            <h2>27.5-second flower contact: real human vs. robot</h2>
-            <p>
-              The complete human source is on the left and the selected JoyAI-Video-Edit
-              0811 robot result is on the right. A frozen persistent-contact prompt and
-              seeds 17, 42, 73, and 101 improved late projected contact from 5/11 to
-              9/11. Seed 17 won the independent temporal-jitter tie-break. Its
-              authoritative lossless audit passes 145/147 persistent-grasp frames;
-              failures at frames 574, 627–628, and 637 remain visible, so this result is
-              not promoted. SAM masks were used for offline measurement only, not pixel
-              compositing. The evidence is 2-D and makes no force-closure or real-robot claim.
-            </p>
-            <a class="video-link" href="showcase/joyai-late-flower-contact-seed17-v1.mp4?v=1">Open MP4</a>
-            · <a class="video-link" href="showcase/joyai-late-flower-contact-seed17-v1.json">Audit summary</a>
-            · <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/blob/main/docs/JOYAI_LATE_FLOWER_CONTACT.md">Reproduce</a>
           </div>
         </article>
 
@@ -377,10 +345,7 @@
           </video>
           <div class="copy">
             <h2>Action-conditioned bowl grasp comparison</h2>
-            <p>
-              The same real first frame and seed produce two distinct OSCAR futures:
-              lift then carry right (left) versus lift up (right).
-            </p>
+            <p><strong>Input:</strong> The same real first frame with two action conditions.<br><strong>Output:</strong> A lift-and-carry-right future and a lift-up future.</p>
             <a class="video-link" href="showcase/oscar-acwm-accepted-comparison.mp4">Open MP4</a>
           </div>
         </article>
@@ -391,7 +356,7 @@
           </video>
           <div class="copy">
             <h2>AC-WM three-action comparison</h2>
-            <p>Three 10-second futures in the same Ego scene: bottle handover, cap unscrewing, and bottle rinsing.</p>
+            <p><strong>Input:</strong> The same Ego kitchen scene with three action instructions.<br><strong>Output:</strong> Ten-second bottle-handover, cap-unscrewing, and bottle-rinsing futures.</p>
             <a class="video-link" href="showcase/acwm-ego-instruction-task-comparison-generated-only-10s.mp4">Open MP4</a>
           </div>
         </article>
@@ -403,7 +368,7 @@
           </video>
           <div class="copy">
             <h2>Shadow hand and forearm replacement</h2>
-            <p>All 621 frames of a continuous human-hand gesture retargeted to a 24-DOF hand.</p>
+            <p><strong>Input:</strong> A 621-frame continuous human-hand gesture.<br><strong>Output:</strong> A 24-DOF Shadow Hand and forearm retargeting.</p>
             <a class="video-link" href="showcase/five-finger-shadow-arm-background-locked.mp4">Open MP4</a>
           </div>
         </article>
@@ -415,7 +380,7 @@
           </video>
           <div class="copy">
             <h2>Three-hand confidence-routed comparison</h2>
-            <p>Human source, silver robot hand, and graphite robot-hand condition.</p>
+            <p><strong>Input:</strong> One human-hand source video.<br><strong>Output:</strong> Frame-aligned human, silver robot-hand, and graphite robot-hand views.</p>
             <a class="video-link" href="showcase/three-hand-confidence-routed.mp4">Open MP4</a>
           </div>
         </article>
@@ -427,7 +392,7 @@
           </video>
           <div class="copy">
             <h2>Vendor-hand comparison</h2>
-            <p>Sharpa, Wonik Allegro, and Shadow conditions in the same scene.</p>
+            <p><strong>Input:</strong> The same source motion and scene.<br><strong>Output:</strong> Sharpa, Wonik Allegro, and Shadow Hand variants.</p>
             <a class="video-link" href="showcase/vendor-hand-confidence-routed-comparison.mp4">Open MP4</a>
           </div>
         </article>
@@ -439,7 +404,7 @@
           </video>
           <div class="copy">
             <h2>Four-embodiment gripper attempt</h2>
-            <p>A retained negative result comparing dexterous hands with a two-finger gripper.</p>
+            <p><strong>Input:</strong> One manipulation source video.<br><strong>Output:</strong> A four-embodiment comparison including a two-finger gripper attempt.</p>
             <a class="video-link" href="showcase/four-embodiment-gripper-attempt.mp4">Open MP4</a>
           </div>
         </article>
@@ -451,10 +416,7 @@
           </video>
           <div class="copy">
             <h2>Short human-hand to robot-arm conversion</h2>
-            <p>
-              A synchronized 89-frame comparison of the human input, silver robot
-              arm, and graphite robot-arm appearance, focused on hand motion transfer.
-            </p>
+            <p><strong>Input:</strong> An 89-frame human-hand motion video.<br><strong>Output:</strong> Synchronized silver and graphite robot-arm conversions.</p>
             <a class="video-link" href="showcase/human-silver-graphite-vertical.mp4">Open MP4</a>
           </div>
         </article>
@@ -466,7 +428,7 @@
           </video>
           <div class="copy">
             <h2>Robot appearance comparison</h2>
-            <p>Human, silver, graphite, and Sudo R1-style conditions.</p>
+            <p><strong>Input:</strong> The same human motion video.<br><strong>Output:</strong> Silver, graphite, and Sudo R1-style robot variants.</p>
             <a class="video-link" href="showcase/human-silver-graphite-sudo-vertical.mp4">Open MP4</a>
           </div>
         </article>

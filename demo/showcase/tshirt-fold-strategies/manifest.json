@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "title": "PhiAgent user-accepted multi-strategy T-shirt folding showcase",
+  "title": "PhiAgent user-accepted multi-destination T-shirt folding showcase",
   "created_at": "2026-08-22T04:30:00Z",
   "positive_reference_bank": {
     "bank_id": "user-accepted-three-strategy-v1",
@@ -92,16 +92,22 @@
   },
   "comparison": {
     "video_path": "demo/showcase/tshirt-fold-strategies/three-strategy-comparison.mp4",
-    "video_sha256": "36cd86d3b63ef094e35de3ff47b562371c656f65334a911a78b474765f32d05d",
+    "video_sha256": "eb03698d46940cc7ce2a0e9141a9599841e410a4048cc4333e6bb2dd50894ba6",
     "poster_path": "demo/showcase/tshirt-fold-strategies/three-strategy-comparison-poster.jpg",
-    "poster_sha256": "7f4b0543e6ae4314a3573fa84b41cefd548210876df5184bb66648d4b805e219",
+    "poster_sha256": "0a7c9f44d6b5fe7869feb45e5c29b7c6a80ef383ede44353d3c179aa03112a93",
     "width": 1920,
     "height": 720,
     "fps": 24.0,
     "frame_count": 192,
     "duration_seconds": 8.0,
     "audio": "none",
-    "layout": "three synchronized 600x450 panels on a 1920x720 canvas",
+    "layout": "three synchronized 600x450 panels on a 1920x720 English-only canvas",
+    "display_difference": "terminal T-shirt placement",
+    "panel_labels": [
+      "front",
+      "left",
+      "right"
+    ],
     "first_frame_evidence": {
       "pixel_identical": false,
       "ssim_against_fold_alternating": {

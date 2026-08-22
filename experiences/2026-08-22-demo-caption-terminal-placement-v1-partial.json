@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-22.demo-caption-terminal-placement-v1-partial",
+  "recorded_at": "2026-08-22T05:28:40Z",
+  "status": "PARTIAL",
+  "scope": "Correct the public PhiAgent demo so the T-shirt comparison is presented by terminal placement, place the flower-arranging video first, remove Chinese display text, and reduce every demo caption to input and output.",
+  "summary": "The demo now opens with flower arranging, all eleven captions contain only concise English Input and Output statements, and the T-shirt comparison is labeled by front, left, and right terminal placement rather than inferred arm choreography. The result remains generated camera-pixel evidence rather than real-robot execution evidence.",
+  "evidence": [
+    "The HTML audit finds 11 demo articles and 11 matching captions; every caption contains exactly one Input label and one Output label.",
+    "A Unicode audit finds no CJK characters in demo/index.html.",
+    "The revised comparison SHA-256 is eb03698d46940cc7ce2a0e9141a9599841e410a4048cc4333e6bb2dd50894ba6 and the poster SHA-256 is 0a7c9f44d6b5fe7869feb45e5c29b7c6a80ef383ede44353d3c179aa03112a93.",
+    "FFprobe reports H.264 yuv420p, 1920x720, 24 FPS, 192 frames, 8.0 seconds, and no audio track for the revised English-only comparison.",
+    "Local HTTP checks return 200 with the expected MIME types for the page, flower MP4, folding MP4, and folding poster."
+  ],
+  "lessons": [
+    "The user-identified distinguishing axis for these three folding results is terminal placement, not inferred sleeve order or arm-role choreography.",
+    "Public demo captions are easier to scan when every card uses the same explicit Input and Output structure.",
+    "Visible text inside a comparison video must follow the same language policy as the surrounding page."
+  ],
+  "limitations": [
+    "Front, left, and right are user-provided display labels in camera-visible task context, not calibrated robot-base coordinates.",
+    "The legacy positive-reference harness retains earlier sleeve-order identifiers and must not be treated as validated evidence that sleeve order distinguishes these three clips.",
+    "The videos remain visual generations without force, tactile, calibrated cloth geometry, collision-safety, or real-robot execution evidence."
+  ],
+  "next_actions": [
+    "If the positive-reference harness is revised later, migrate its strategy axis to an explicitly framed terminal-placement contract and rerun its tests without changing physical hard gates."
+  ],
+  "supersedes": [
+    "2026-08-22.tshirt-multi-strategy-positive-reference-v1-partial"
+  ],
+  "tags": [
+    "demo",
+    "tshirt",
+    "flower-arranging",
+    "terminal-placement",
+    "caption",
+    "partial"
+  ]
+}
