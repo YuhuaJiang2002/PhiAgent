@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-23.h2r-occlusion-demo-pages-v1-working",
+  "recorded_at": "2026-08-23T04:24:31Z",
+  "status": "WORKING",
+  "scope": "Append the accepted human-to-robot garment-fold comparison to the end of the existing public PhiAgent GitHub Pages demo, explicitly showing semantic task completion across visible source-video occlusion without replacing or redesigning the existing page.",
+  "summary": "The existing card-based demo page now ends with an eight-second, side-by-side real-human source and dual-arm robot result. The card identifies the source laptop occlusion, reports the image-space evaluation, links the display MP4 and evidence JSON, and states that completion is task-semantic rather than unique hidden-pixel reconstruction or physical execution proof.",
+  "evidence": [
+    "Main commit 3bd96da108dc171dda0e55fea3fd9422deb69249 was pushed over SSH and GitHub Pages workflow run 32617753710 completed successfully.",
+    "The public URL https://yuhuajiang2002.github.io/PhiAgent/#garment-fold-occlusion-completion contains 12 demo articles and garment-fold-occlusion-completion is the last article.",
+    "A live-browser acceptance check loaded the public H.264 MP4 at 1920x540, 24 FPS, 192 frames, and 8.0 seconds with readyState 4 and no media error.",
+    "Desktop 1440x1000 and mobile 390x844 browser checks found no horizontal overflow and no console warnings or errors.",
+    "The public MP4 SHA-256 is 915c21139997c1d2a3fe503dd6bc8272de199df295a571dab55ebb52fc92d844, matching the deployed evidence JSON; the poster SHA-256 is d8135f7ddbd81efd97299d55877719787be93bcb85d80316b3cbcf8308ef4887.",
+    "The evidence JSON reports PASS_IMAGE_SPACE, TransferCore 98.3333, visual quality 100, all six hard gates true, and six of six constructed negative controls rejected by all non-abstaining judges."
+  ],
+  "lessons": [
+    "When the user requests an addition to an existing public demo, the deployed main-branch page is the design and ordering authority even if another local branch contains a newer redesign.",
+    "A side-by-side comparison plus a concise claim boundary communicates occlusion-aware completion more honestly than presenting the generated result alone.",
+    "Deployment is not complete until the public URL and media assets are re-opened after the Pages workflow succeeds."
+  ],
+  "limitations": [
+    "PASS_IMAGE_SPACE establishes visible 2-D video quality only; it does not establish metric 3-D cloth state, contact force, collision safety, joint feasibility, simulation success, or real-robot execution.",
+    "Occlusion completion means generating an unoccluded, task-equivalent robot video from visible temporal context, not uniquely reconstructing the source pixels hidden by the laptop or near-camera finger.",
+    "The side-by-side file is presentation-only and time-normalizes the longer source video to the accepted eight-second candidate."
+  ],
+  "next_actions": [],
+  "tags": [
+    "demo",
+    "github-pages",
+    "human-to-robot",
+    "garment-folding",
+    "occlusion",
+    "image-space",
+    "working"
+  ]
+}
