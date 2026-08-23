@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Occlusion-aware human-to-robot garment-fold comparison",
+  "status": "WORKING",
+  "decision": "PASS_IMAGE_SPACE",
+  "display_asset": {
+    "path": "h2r-garment-fold-occlusion-completion.mp4",
+    "sha256": "915c21139997c1d2a3fe503dd6bc8272de199df295a571dab55ebb52fc92d844",
+    "codec": "h264",
+    "width": 1920,
+    "height": 540,
+    "fps": 24,
+    "frames": 192,
+    "duration_seconds": 8.0,
+    "source_time_normalized": true,
+    "presentation_only": true
+  },
+  "poster": {
+    "path": "h2r-garment-fold-occlusion-completion-poster.jpg",
+    "sha256": "d8135f7ddbd81efd97299d55877719787be93bcb85d80316b3cbcf8308ef4887"
+  },
+  "source": {
+    "kind": "real_human_video",
+    "sha256": "fe964197b31cb7d68bc657bc8b2788e14f6c0c213ae9e9b1fa8209c508673650",
+    "width": 3840,
+    "height": 2160,
+    "fps": 25,
+    "frames": 273,
+    "duration_seconds": 10.92,
+    "visible_occlusion": "A near-camera laptop or monitor covers a substantial middle-right workspace region during the middle and late task, and a near-camera finger covers part of the terminal frame."
+  },
+  "candidate": {
+    "generation_model": "MiniMaxAI/MiniMax-H3 Ref2VA",
+    "generation_model_version": "42ed227ee7df40d41602854ae760620d6eb651fe",
+    "seed": 2026089401,
+    "sha256": "a36e1eed819573f44724700ca7db81637a19ecec61c47d271823309aadf4680d",
+    "target_robot": "dual_industrial_robot_arm",
+    "target_end_effector": "parallel_jaw_gripper",
+    "width": 1024,
+    "height": 768,
+    "fps": 24,
+    "frames": 192,
+    "duration_seconds": 8.0
+  },
+  "automatic_evaluation": {
+    "result_file_sha256": "c29f5a42c3471c9d30cf6d7b4e07ae94268e2622ae72f9a1c707d3068fa89c64",
+    "transfer_core": 98.33333333333331,
+    "visual_quality": 100.0,
+    "all_six_hard_gates_true": true,
+    "maximum_critical_disagreement_0_to_4": 0.8,
+    "judge_model_families": ["Qwen3-VL", "Gemma-4", "Ministral-3"],
+    "constructed_negative_suite": {
+      "case_count": 6,
+      "all_non_abstaining_reject": true,
+      "report_sha256": "7c424ebff2722cd325f399ccc26fc9fd256ec40abd167111c3f71e012f55eb38"
+    }
+  },
+  "occlusion_completion_claim": "The candidate uses visible task context to generate an unoccluded, source-relative robot execution with a continuous garment identity, fold sequence, and terminal state. This is semantic task completion, not a claim that hidden source pixels have a unique recovered ground truth.",
+  "claim_boundary": "PASS_IMAGE_SPACE and occlusion completion refer only to visible 2-D video evidence. They do not establish metric 3-D cloth geometry, force, collision safety, joint feasibility, simulation success, real-robot execution, or agreement with human ratings."
+}

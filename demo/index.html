@@ -134,6 +134,32 @@
         font-size: 0.72rem;
       }
 
+      .occlusion-completion {
+        border-color: rgba(126, 231, 200, 0.44);
+        background:
+          radial-gradient(circle at 100% 0%, rgba(126, 231, 200, 0.11), transparent 28rem),
+          rgba(18, 24, 39, 0.9);
+      }
+
+      .occlusion-completion video {
+        aspect-ratio: 32 / 9;
+        object-fit: contain;
+      }
+
+      .evidence-boundary {
+        margin-top: 16px !important;
+        padding-top: 14px;
+        border-top: 1px solid rgba(174, 184, 208, 0.14);
+        color: #8f9bb6 !important;
+        font-size: 0.8rem !important;
+      }
+
+      .evidence-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
       .repo-link {
         display: inline-block;
         margin-top: 24px;
@@ -430,6 +456,30 @@
             <h2>Robot appearance comparison</h2>
             <p><strong>Input:</strong> The same human motion video.<br><strong>Output:</strong> Silver, graphite, and Sudo R1-style robot variants.</p>
             <a class="video-link" href="showcase/human-silver-graphite-sudo-vertical.mp4">Open MP4</a>
+          </div>
+        </article>
+
+        <article class="featured occlusion-completion" id="garment-fold-occlusion-completion">
+          <video controls muted loop playsinline preload="metadata"
+            poster="showcase/h2r-garment-fold-occlusion-completion-poster.jpg?v=1">
+            <source src="showcase/h2r-garment-fold-occlusion-completion.mp4?v=1" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <p class="status-accepted">Image-space evaluation passed · occlusion-aware completion</p>
+            <h2>Occluded human folding → complete robot folding</h2>
+            <p><strong>Left:</strong> The real human source is visibly blocked by a near-camera laptop during the middle and later folding stages. <strong>Right:</strong> The generated dual-arm robot result preserves the garment task, completes the fold continuously, and does not copy the person or foreground occluder into the result.</p>
+            <ul class="strategy-facts" aria-label="Occlusion completion evaluation summary">
+              <li>TransferCore 98.33</li>
+              <li>Visual quality 100</li>
+              <li>6 / 6 hard gates</li>
+              <li>6 / 6 negative controls rejected</li>
+            </ul>
+            <p class="evidence-boundary"><strong>Claim boundary:</strong> “Completion” means generating an unoccluded, task-equivalent, temporally continuous robot video from the visible context—not uniquely reconstructing the hidden source pixels or proving 3D cloth state, contact force, collision safety, or real-robot execution.</p>
+            <div class="evidence-links">
+              <a class="video-link" href="showcase/h2r-garment-fold-occlusion-completion.mp4?v=1">Open comparison MP4</a>
+              <a class="video-link" href="showcase/h2r-garment-fold-occlusion-completion.json?v=1">Evaluation, hashes, and claim boundary</a>
+            </div>
           </div>
         </article>
 
