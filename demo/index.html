@@ -154,6 +154,24 @@
         font-size: 0.8rem !important;
       }
 
+      .physical-followup {
+        margin-top: 14px;
+        padding: 14px;
+        border: 1px solid rgba(244, 191, 92, 0.25);
+        border-radius: 12px;
+        background: rgba(244, 191, 92, 0.055);
+      }
+
+      .physical-followup p {
+        margin: 0;
+        color: #b9c3d9;
+        font-size: 0.82rem;
+      }
+
+      .physical-followup strong {
+        color: #f4bf5c;
+      }
+
       .evidence-links {
         display: flex;
         flex-wrap: wrap;
@@ -476,9 +494,13 @@
               <li>6 / 6 negative controls rejected</li>
             </ul>
             <p class="evidence-boundary"><strong>Claim boundary:</strong> “Completion” means generating an unoccluded, task-equivalent, temporally continuous robot video from the visible context—not uniquely reconstructing the hidden source pixels or proving 3D cloth state, contact force, collision safety, or real-robot execution.</p>
+            <div class="physical-followup">
+              <p><strong>Physical-boundary follow-up · PARTIAL:</strong> We added nine fail-closed physical gates, proved monocular scale ambiguity, measured a 9.09× visually compatible force range, and rejected eight evidence-spoof attacks. The harness and acquisition contract are ready, but 0 / 9 candidate physical gates pass without real calibration, telemetry, sensors, simulation, robot trials, and independent human ratings.</p>
+            </div>
             <div class="evidence-links">
               <a class="video-link" href="showcase/h2r-garment-fold-occlusion-completion.mp4?v=1">Open comparison MP4</a>
-              <a class="video-link" href="showcase/h2r-garment-fold-occlusion-completion.json?v=1">Evaluation, hashes, and claim boundary</a>
+              <a class="video-link" href="showcase/h2r-garment-fold-occlusion-completion.json?v=2">Evaluation, hashes, and claim boundary</a>
+              <a class="video-link" href="showcase/h2r-garment-fold-physical-boundary-followup.json?v=1">Physical follow-up evidence</a>
             </div>
           </div>
         </article>

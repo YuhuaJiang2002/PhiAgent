@@ -56,5 +56,14 @@
     }
   },
   "occlusion_completion_claim": "The candidate uses visible task context to generate an unoccluded, source-relative robot execution with a continuous garment identity, fold sequence, and terminal state. This is semantic task completion, not a claim that hidden source pixels have a unique recovered ground truth.",
-  "claim_boundary": "PASS_IMAGE_SPACE and occlusion completion refer only to visible 2-D video evidence. They do not establish metric 3-D cloth geometry, force, collision safety, joint feasibility, simulation success, real-robot execution, or agreement with human ratings."
+  "physical_boundary_followup": {
+    "path": "h2r-garment-fold-physical-boundary-followup.json",
+    "status": "PARTIAL",
+    "manifest_sha256": "75027355299e930719c7aba0da6bb9e23e9da8f4b4ca61b14527c590ce7415f0",
+    "completed": "Fail-closed physical gates, scale and force non-identifiability experiments, eight anti-spoof attacks, human-agreement harness controls, and a frozen external evidence acquisition contract.",
+    "candidate_physical_gates_passed": 0,
+    "candidate_physical_gates_total": 9,
+    "promoted": false
+  },
+  "claim_boundary": "PASS_IMAGE_SPACE and occlusion completion refer only to visible 2-D video evidence. The follow-up validates the physical-evidence harness and shows why monocular RGB cannot establish the missing measurements; it does not establish metric 3-D cloth geometry, force, collision safety, joint feasibility, simulation success, real-robot execution, or agreement with real human ratings."
 }

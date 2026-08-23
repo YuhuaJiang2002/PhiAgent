@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0.0",
+  "title": "H2R garment-fold physical-boundary follow-up",
+  "status": "PARTIAL",
+  "candidate_sha256": "a36e1eed819573f44724700ca7db81637a19ecec61c47d271823309aadf4680d",
+  "source_sha256": "fe964197b31cb7d68bc657bc8b2788e14f6c0c213ae9e9b1fa8209c508673650",
+  "remote_campaign": {
+    "host": "h200-2",
+    "physical_gpu_index": 2,
+    "physical_gpu_uuid": "GPU-d56c67a2-d981-4798-197b-1d9746e4f22a",
+    "compute_mode": "cpu_diagnostic_on_h200_host",
+    "models_or_checkpoints_loaded": false,
+    "seed": 2026082302,
+    "run_id": "20260823T044949Z-h2002-v2",
+    "manifest_sha256": "75027355299e930719c7aba0da6bb9e23e9da8f4b4ca61b14527c590ce7415f0"
+  },
+  "completed_harness_experiments": {
+    "camera_frame_q_qdot_and_persistent_mesh_wiring_pass": true,
+    "monocular_scale_non_identifiability": {
+      "scale_multipliers": [0.45, 0.7, 1.0, 1.4],
+      "maximum_projection_difference_pixels": 1.1368683772161603e-13,
+      "learned_scale_spoof_rejected": true
+    },
+    "visual_force_non_identifiability": {
+      "minimum_compatible_pinch_force_newtons": 1.633064,
+      "maximum_compatible_pinch_force_newtons": 14.856512,
+      "compatible_force_ratio": 9.097323803598636,
+      "visual_force_spoof_rejected": true
+    },
+    "adversarial_contract": {
+      "attacks": 8,
+      "all_rejected": true,
+      "audit_sha256": "d2bff2d9a91dbb2d51afa45c8f73f69c606ee838cbe203379dbd843f7491c70b"
+    },
+    "human_agreement_harness_controls": {
+      "synthetic_positive_control_pass": true,
+      "synthetic_positive_control_agreement": 1.0,
+      "synthetic_positive_control_fleiss_kappa": 1.0,
+      "model_rater_spoof_rejected": true,
+      "counts_as_real_human_evidence": false
+    }
+  },
+  "physical_gates": {
+    "metric_camera": false,
+    "robot_trajectory": false,
+    "persistent_object_geometry": false,
+    "contact_forces": false,
+    "joint_feasibility": false,
+    "collision_safety": false,
+    "simulation_success": false,
+    "real_robot_execution": false,
+    "human_rating_agreement": false
+  },
+  "supervision": {
+    "checker_valid": true,
+    "monitor_status": "EVOLVE",
+    "promoted": false,
+    "decision_reason": "proposal_not_physical_calibration",
+    "next_experiment": "calibrated-metric-camera-capture-v1"
+  },
+  "frozen_acquisition_contract": {
+    "sha256": "78a3e061e143c919e67038aba3220dee66849ee4270fe7154b17067de7e03931",
+    "requires": [
+      "known-scale camera calibration or calibrated depth/multiview capture",
+      "exact robot asset plus synchronized full q/qdot and telemetry",
+      "persistent metric garment observations",
+      "calibrated force/tactile data or residual-bounded named solver",
+      "joint-limit and continuous collision reports",
+      "hash-bound deterministic physics replay",
+      "at least five authorized real-robot trials with zero safety aborts",
+      "at least three independent human raters over seven native-resolution cases"
+    ]
+  },
+  "claim_boundary": "The follow-up completes the fail-closed harness, non-identifiability experiments, spoof audits, and evidence-acquisition contract. It does not convert the monocular generated video into metric calibration, robot telemetry, force sensing, simulation, real-robot execution, or real human ratings; every such candidate gate remains false."
+}
