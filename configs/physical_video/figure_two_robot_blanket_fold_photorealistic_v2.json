@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0.0",
+  "campaign_id": "figure-two-robot-blanket-fold-photorealistic-v2",
+  "task": "Two full-body humanoid robots cooperatively fold one rectangular quilt on a residential laundry table.",
+  "coordinate_frames": {
+    "camera": "camera:figure_blanket_fold_1024x768_pixels",
+    "world": "UNAVAILABLE",
+    "viewer_left_robot_base": "UNAVAILABLE",
+    "viewer_right_robot_base": "UNAVAILABLE"
+  },
+  "initial_frame": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-realistic-v2-1024x768.png",
+    "sha256": "b90b4d36513937cae08537c579a7b54ce9fdcd72a6ace83cb2fb85aebfa836b2",
+    "width": 1024,
+    "height": 768
+  },
+  "model": {
+    "id": "MiniMaxAI/MiniMax-H3",
+    "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+    "partition": "Ref2VA",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "runtime": {
+      "torch": "2.11.0+cu128",
+      "cuda": "12.8",
+      "sglang": "0.5.17",
+      "attention_backend": "torch_sdpa",
+      "approximate_attention": false
+    }
+  },
+  "generation": {
+    "task": "ref2va",
+    "num_inference_steps": 50,
+    "flow_shift": 12.0,
+    "audio_flow_shift": 3.0,
+    "quality": "lossless",
+    "fps": 24,
+    "expected_frames": 192,
+    "target": {
+      "aspect_ratio": "4:3",
+      "duration_seconds": 8.0,
+      "short_edge": 768
+    },
+    "seeds": [
+      2026082501,
+      2026082502,
+      2026082503,
+      2026082504
+    ]
+  },
+  "phase_plan": [
+    {
+      "phase_id": "exact_initial_hold",
+      "start_seconds": 0.0,
+      "end_seconds": 0.5,
+      "instruction": "Hold the supplied frame exactly. Both robots and every quilt point remain still."
+    },
+    {
+      "phase_id": "four_corner_precontact",
+      "start_seconds": 0.5,
+      "end_seconds": 1.4,
+      "instruction": "Both robots approach their two assigned quilt corners without moving cloth, then visibly close all four hands on the bound corners."
+    },
+    {
+      "phase_id": "cooperative_lengthwise_half_fold",
+      "start_seconds": 1.4,
+      "end_seconds": 3.4,
+      "instruction": "The robots synchronously lift the viewer-near corners while stabilizing the far corners and rotate the complete near half over the far half as one connected quilt."
+    },
+    {
+      "phase_id": "first_fold_settle",
+      "start_seconds": 3.4,
+      "end_seconds": 4.0,
+      "instruction": "Hold the half-folded quilt supported and motionless before any regrasp."
+    },
+    {
+      "phase_id": "bilateral_regrasp",
+      "start_seconds": 4.0,
+      "end_seconds": 4.8,
+      "instruction": "Regrasp the new viewer-left and viewer-right outer corners without disturbing the settled first fold."
+    },
+    {
+      "phase_id": "simultaneous_gatefold",
+      "start_seconds": 4.8,
+      "end_seconds": 6.6,
+      "instruction": "The viewer-left robot folds the left third inward while the viewer-right robot folds the right third inward with synchronized, contact-driven motion."
+    },
+    {
+      "phase_id": "square_release",
+      "start_seconds": 6.6,
+      "end_seconds": 7.3,
+      "instruction": "Both robots gently square the compact layered rectangle, place it fully on the table, open their hands, and withdraw without cloth drift."
+    },
+    {
+      "phase_id": "terminal_hold",
+      "start_seconds": 7.3,
+      "end_seconds": 8.0,
+      "instruction": "Hold one compact folded quilt completely still and keep both robots visible."
+    }
+  ],
+  "visual_hard_gates": [
+    "artifact_hash_binding",
+    "gpu_and_runtime_preflight",
+    "pinned_model_revision",
+    "media_contract_1024x768_24fps_192frames",
+    "exact_first_frame_ssim_at_least_0_985",
+    "single_uninterrupted_shot_no_cut_crossfade_or_teleport",
+    "fixed_camera_background_and_lighting",
+    "exactly_two_persistent_robot_identities",
+    "four_anatomically_consistent_robot_arms_and_hands",
+    "exactly_one_persistent_quilt",
+    "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+    "quilt_color_pattern_thickness_and_topology_persist",
+    "visible_contact_precedes_every_quilt_motion",
+    "bilateral_fold_motion_onset_within_0_25_seconds",
+    "first_fold_settles_before_regrasp",
+    "gatefold_begins_only_after_regrasp",
+    "lifted_cloth_motion_is_gravity_and_support_consistent",
+    "no_robot_robot_or_robot_table_interpenetration",
+    "terminal_compact_rectangle",
+    "terminal_motion_below_1_pixel_rms_for_last_12_frames",
+    "no_text_guides_markers_or_watermarks",
+    "candidate_sha_bound_native_resolution_user_review"
+  ],
+  "physical_promotion_gates": [
+    "calibrated_metric_camera",
+    "exact_robot_joint_trajectories",
+    "persistent_metric_quilt_geometry",
+    "force_or_tactile_contact_evidence",
+    "collision_checked_executable_motion",
+    "recorded_real_robot_execution"
+  ],
+  "decision_policy": {
+    "visual_acceptance": "All visual_hard_gates must be PASS; FAIL or UNAVAILABLE rejects. No aggregate score may override a gate.",
+    "physical_promotion": "All visual and physical_promotion_gates must be PASS. Generated RGB alone cannot satisfy a physical gate.",
+    "selection": "Evaluate every seed independently, discard any failed candidate, then compare visual quality only among candidates that pass every prior gate."
+  },
+  "claim_boundary": "MiniMax-H3 outputs are generated camera-pixel proposals depicting full-body humanoid cooperation. They are not recorded real-hardware execution and cannot be promoted to physical PASS without the declared physical evidence."
+}

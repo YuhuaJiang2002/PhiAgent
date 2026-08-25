@@ -1,0 +1,96 @@
+{
+  "candidate_sha256": "1701268237cc2f993ab23dca60f26cd18c889b0425945b5ff14257faae96199d",
+  "claim_boundary": "This review can accept visual-generation quality only; it cannot establish real-robot execution or any metric/force/safety gate.",
+  "gates": [
+    {
+      "gate_id": "exactly_two_persistent_robot_identities",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "four_anatomically_consistent_robot_arms_and_hands",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "exactly_one_persistent_quilt",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "quilt_color_pattern_thickness_and_topology_persist",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "visible_contact_precedes_every_quilt_motion",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "bilateral_fold_motion_onset_within_0_25_seconds",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "first_fold_settles_before_regrasp",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "gatefold_begins_only_after_regrasp",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "lifted_cloth_motion_is_gravity_and_support_consistent",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "no_robot_robot_or_robot_table_interpenetration",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "terminal_compact_rectangle",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "no_text_guides_markers_or_watermarks",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "candidate_sha_bound_native_resolution_user_review",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    }
+  ],
+  "instructions": "Watch the original candidate at native 1024x768 resolution from start to finish. Set every gate to PASS or FAIL and cite time ranges. Do not infer hidden contact or material state. Any FAIL or missing evidence rejects.",
+  "overall_visual_acceptance": false,
+  "review_scope": "native_resolution_full_video",
+  "reviewed_at": null,
+  "reviewer": "UNASSIGNED",
+  "schema_version": "1.0.0"
+}

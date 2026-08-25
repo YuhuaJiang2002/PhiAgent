@@ -431,6 +431,21 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- Photorealistic two-full-body-humanoid blanket folding, strict rejection:
+  four frozen-seed MiniMax-H3 Ref2VA candidates ran at BF16/50 steps on four
+  independent two-H200 lanes using a hash-bound 1024x768 first frame, static
+  scene reference, and eight-phase contact/order plan. All `4/4` have 192
+  frames at 24 FPS and zero detected cuts. Strict acceptance is `0/4` because
+  exact-first-frame SSIM is `0.880198`, `0.899624`, `0.936478`, and `0.886893`
+  under the frozen `0.985` veto; seed `2026082504` additionally fails terminal
+  stability. No failed gate was relaxed and no aggregate score overrode
+  rejection. Seed `2026082503` is published only as a retrospective diagnostic.
+  Evidence is under
+  `demo/showcase/figure-two-robot-blanket-fold-realistic-v2/`. These are
+  photorealistic generated RGB proposals, not recorded real-hardware execution,
+  calibrated geometry, force, joint, collision-safety, or physical-success
+  evidence.
+
 - Multi-strategy T-shirt folding visual generation is `PARTIAL`. Three
   user-approved 1024x768, 24 FPS, 192-frame generated videos are preserved as a
   hash-bound positive-reference bank covering alternating, staged, and

@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-08-25T14:55:00Z",
+  "generator": {
+    "mode": "codex_builtin_imagegen",
+    "request_id": "exec-28acb801-7185-48c1-99fc-ef56743c24fb",
+    "internal_seed": "UNAVAILABLE"
+  },
+  "edit_target": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-v1.png",
+    "sha256": "59206fa807cf0af9daded3dad42d5450b332bc0302a6c3e1e5d7e131f9ccc3a0",
+    "role": "preserve camera, room, table, and both robot identities"
+  },
+  "prompt": "Use case: precise-object-edit\nAsset type: exact first-frame reference for a photorealistic robot-manipulation video\nPrimary request: Add exactly one large unfolded rectangular quilt/blanket lying flat and centered on the entire worktable, and put both existing humanoid robots into a credible ready-to-fold pose.\nInput image: edit target; preserve the room, camera, table, and the identities and design of both robots.\nScene/backdrop: the same real residential laundry/bedroom seen in the input.\nSubject: one medium-weight slate-blue cotton quilt with subtle stitched square channels, realistic thickness, soft wrinkles, four distinct persistent corners and continuous bound edges. The quilt lies fully supported by the tabletop. The viewer-left robot extends its existing articulated forearms toward the left two quilt corners; the viewer-right robot extends its existing articulated forearms toward the right two quilt corners. Each robot has exactly two normal robot hands/grippers total, hovering 1–2 cm above the corresponding corners without touching or moving the cloth yet.\nStyle/medium: natural photorealistic full-frame camera photograph, physically plausible optics, fabric, metal, shadows, occlusion, and contact geometry; no CGI or illustration appearance.\nComposition/framing: fixed front wide shot, keep both robots fully readable on opposite sides and all four blanket corners visible. Keep the tabletop usable and unobstructed except for the one quilt.\nLighting/mood: preserve the original daylight and warm cabinet light exactly.\nMaterials/textures: realistic brushed-metal robot shells and black joints; matte cotton quilt with visible weave, seams, edge binding, thickness and mild gravity wrinkles.\nConstraints: preserve the original camera viewpoint, room layout, table geometry, robot count, robot identity, scale, design, and left/right placement. Exactly two robots, one quilt, four robot arms total, four robot hands/grippers total. No cloth motion; this is a stationary initial-state hold.\nAvoid: extra or missing arms, extra fingers, merged limbs, human hands, extra robots, duplicate cloth, floating fabric, warped table, text, logos, labels, guide marks, overlays, watermarks, motion blur, cinematic cuts, stylized render.",
+  "outputs": {
+    "full_frame": {
+      "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-realistic-v2.png",
+      "sha256": "8d2964bc8f70cc815fd7c5c979c09745a1fdfc52656952b56cf4802bb21ac909",
+      "width": 1672,
+      "height": 941
+    },
+    "normalized_first_frame": {
+      "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-realistic-v2-1024x768.png",
+      "sha256": "b90b4d36513937cae08537c579a7b54ce9fdcd72a6ace83cb2fb85aebfa836b2",
+      "coordinate_frame": "camera:figure_blanket_fold_1024x768_pixels",
+      "normalization": "center crop 1254x940 at x=209,y=0, then Lanczos scale to 1024x768",
+      "width": 1024,
+      "height": 768
+    }
+  },
+  "claim_boundary": "This generated still is a photorealistic camera-frame condition. It is not evidence of physical robot execution, calibrated geometry, force, safety, or joint feasibility."
+}

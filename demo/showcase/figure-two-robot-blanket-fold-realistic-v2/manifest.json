@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0.0",
+  "title": "Photorealistic full-body dual-humanoid quilt-fold campaign",
+  "campaign_id": "figure-two-robot-blanket-fold-photorealistic-v2",
+  "run_id": "20260825T145924Z-minimax-h3-v2",
+  "status": "BLOCKED",
+  "decision": "REJECT_ALL_FOUR_AUTOMATIC_HARD_GATE_FAILURE",
+  "model": {
+    "id": "MiniMaxAI/MiniMax-H3",
+    "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+    "partition": "Ref2VA",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "inference_steps": 50
+  },
+  "media_contract": {
+    "width": 1024,
+    "height": 768,
+    "fps": 24,
+    "frame_count": 192,
+    "duration_seconds": 8.0
+  },
+  "initial_frame": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-realistic-v2-1024x768.png",
+    "sha256": "b90b4d36513937cae08537c579a7b54ce9fdcd72a6ace83cb2fb85aebfa836b2"
+  },
+  "gate_contract": {
+    "visual_hard_gate_count": 22,
+    "physical_promotion_gate_count": 6,
+    "exact_first_frame_ssim_min": 0.985,
+    "background_patch_ssim_min": 0.9,
+    "terminal_window_ssim_min": 0.985,
+    "override_policy": "No score, visual preference, or seed count may override one failed or unavailable hard gate."
+  },
+  "candidates": [
+    {
+      "seed": 2026082501,
+      "path": "candidates/seed-2026082501.mp4",
+      "sha256": "0eab851c64af1b63b1efa04fd184cc6ff43ee64ba92a92a18a1a805c60003ef0",
+      "first_frame_ssim": 0.880198,
+      "minimum_background_patch_ssim": 0.903647,
+      "terminal_window_ssim": 0.992926,
+      "detected_scene_cuts": 0,
+      "failed_automatic_hard_gates": [
+        "exact_first_frame_ssim_at_least_0_985"
+      ],
+      "decision": "REJECT"
+    },
+    {
+      "seed": 2026082502,
+      "path": "candidates/seed-2026082502.mp4",
+      "sha256": "879c953d08de4957131649a4483161d63ade85f725b321f7909c29be5ff53cc0",
+      "first_frame_ssim": 0.899624,
+      "minimum_background_patch_ssim": 0.918098,
+      "terminal_window_ssim": 0.997468,
+      "detected_scene_cuts": 0,
+      "failed_automatic_hard_gates": [
+        "exact_first_frame_ssim_at_least_0_985"
+      ],
+      "decision": "REJECT"
+    },
+    {
+      "seed": 2026082503,
+      "path": "candidates/seed-2026082503.mp4",
+      "sha256": "1701268237cc2f993ab23dca60f26cd18c889b0425945b5ff14257faae96199d",
+      "first_frame_ssim": 0.936478,
+      "minimum_background_patch_ssim": 0.935253,
+      "terminal_window_ssim": 0.998355,
+      "detected_scene_cuts": 0,
+      "failed_automatic_hard_gates": [
+        "exact_first_frame_ssim_at_least_0_985"
+      ],
+      "diagnostic_only_observation": "At frame 140, both gatefold panels are visibly raised while all four grippers appear separated from the moving quilt; this is non-authoritative model-assisted evidence of an additional contact-causality failure requiring native human adjudication.",
+      "decision": "REJECT"
+    },
+    {
+      "seed": 2026082504,
+      "path": "candidates/seed-2026082504.mp4",
+      "sha256": "4a42e5f36d856405eff6d2ef937e9459726f0c46281d01adbc3174a0d9735a8b",
+      "first_frame_ssim": 0.886893,
+      "minimum_background_patch_ssim": 0.908522,
+      "terminal_window_ssim": 0.983194,
+      "detected_scene_cuts": 0,
+      "failed_automatic_hard_gates": [
+        "exact_first_frame_ssim_at_least_0_985",
+        "terminal_motion_below_1_pixel_rms_for_last_12_frames"
+      ],
+      "decision": "REJECT"
+    }
+  ],
+  "presentation": {
+    "video_path": "video.mp4",
+    "video_sha256": "1701268237cc2f993ab23dca60f26cd18c889b0425945b5ff14257faae96199d",
+    "poster_path": "poster.jpg",
+    "poster_sha256": "ea16e5497774b8c6569860cc4b45145ca1320519da82324ae33e1f2e32b9437a",
+    "contact_sheet_path": "contact-sheet.jpg",
+    "contact_sheet_sha256": "468d77bcfa4e28e19704b667bb4d7a30e6a5b4f64cdd0ade8426ea9e77cd087f",
+    "selection_scope": "retrospective diagnosis only",
+    "selection_reason": "Seed 2026082503 has the highest first-frame and minimum-background SSIM among the four rejected candidates. Showing it cannot reverse rejection or create an accepted representative."
+  },
+  "reproducibility": {
+    "campaign_dir": "outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2",
+    "campaign_config_sha256": "9b64f9902ca9d23f86e179f99718ae7b3f842a95c362dcde8966c2f464bdf9a2",
+    "generation_spec_file_sha256": "f079ad75d7587ecdb4f33aa2d8038f8c6011b0d0d5bc8765eb8a73e9998133cc",
+    "task_plan_sha256": "066a0a8fe761eb3496419e804334139c2911030eeda0effd30c251c90e41543b",
+    "generation_prompt_sha256": "98e8d190b7ee2cfda660abbe0f72456944f76b0063ee2c5b229d55df98069885",
+    "gpu_release": "Both h200-1 and h200-2 reported all eight physical GPUs at 1 MiB and 0% utilization after completion."
+  },
+  "claim_boundary": "These are photorealistic generated RGB proposals depicting full-body humanoid collaboration. The campaign has zero accepted candidates, is not recorded real-hardware execution, and supplies no calibrated geometry, force, joint, safety, or physical-success evidence."
+}

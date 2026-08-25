@@ -1,0 +1,343 @@
+{
+  "automatic_hard_gates_passed": false,
+  "candidate": {
+    "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/remote-results/h200-2/seed-2026082503/candidates/figure-two-robot-blanket-fold-photorealistic-v2/seed-2026082503/candidate.mp4",
+    "sha256": "1701268237cc2f993ab23dca60f26cd18c889b0425945b5ff14257faae96199d"
+  },
+  "claim_boundary": "MiniMax-H3 outputs are generated camera-pixel proposals depicting full-body humanoid cooperation. They are not recorded real-hardware execution and cannot be promoted to physical PASS without the declared physical evidence.",
+  "decision": "REJECTED_AUTOMATIC_HARD_GATE_FAILURE",
+  "diagnostic_logs": {
+    "first_frame_ssim": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/remote-results/h200-2/seed-2026082503/candidates/figure-two-robot-blanket-fold-photorealistic-v2/seed-2026082503/candidate.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf58.29.100\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 807 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1024x768, 669 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 32000 Hz, stereo, fltp, 129 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\nInput #1, png_pipe, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/inputs/initial-frame.png':\n  Duration: N/A, bitrate: N/A\n  Stream #1:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1024x768, 24 fps, 24 tbr, 24 tbn\nStream mapping:\n  Stream #0:0 (h264) -> trim:default\n  Stream #1:0 (png) -> setpts:default\n  ssim:default -> Stream #0:0 (wrapped_avframe)\n[Parsed_ssim_5 @ 0x93b0267c0] not matching timebases found between first input: 1/12288 and second input 1/24, results may be incorrect!\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.12.102\n  Stream #0:0: Video: wrapped_avframe, yuv420p(progressive), 1024x768, q=2-31, 200 kb/s, 24 fps, 24 tbn\n    Metadata:\n      encoder         : Lavc62.28.102 wrapped_avframe\n[Parsed_ssim_5 @ 0x93b0267c0] SSIM Y:0.911176 (10.514685) U:0.987483 (19.025021) V:0.986684 (18.756267) All:0.936478 (11.970783)\n[out#0/null @ 0x93b024780] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\nframe=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=1.14x elapsed=0:00:00.03    \n",
+    "scene_cut": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/remote-results/h200-2/seed-2026082503/candidates/figure-two-robot-blanket-fold-photorealistic-v2/seed-2026082503/candidate.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf58.29.100\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 807 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1024x768, 669 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 32000 Hz, stereo, fltp, 129 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))\n[Parsed_showinfo_1 @ 0x9fac0a4c0] config in time_base: 1/12288, frame_rate: 24/1\n[Parsed_showinfo_1 @ 0x9fac0a4c0] config out time_base: 0/0, frame_rate: 0/0\n[vf#0:0 @ 0x9facc4200] No filtered frames for output stream, trying to initialize anyway.\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.12.102\n  Stream #0:0(und): Video: wrapped_avframe, yuv420p(progressive), 1024x768, q=2-31, 200 kb/s, 24 fps, 12288 tbn (default)\n    Metadata:\n      encoder         : Lavc62.28.102 wrapped_avframe\n      handler_name    : VideoHandler\n[out#0/null @ 0x9fac08840] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\n[out#0/null @ 0x9fac08840] Output file is empty, nothing was encoded(check -ss / -t / -frames parameters if used)\nframe=    0 fps=0.0 q=0.0 Lsize=N/A time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.07    \n",
+    "terminal_ssim": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/remote-results/h200-2/seed-2026082503/candidates/figure-two-robot-blanket-fold-photorealistic-v2/seed-2026082503/candidate.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf58.29.100\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 807 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1024x768, 669 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 32000 Hz, stereo, fltp, 129 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\nInput #1, png_pipe, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/evaluations/seed-2026082503/final-frame.png':\n  Duration: N/A, bitrate: N/A\n  Stream #1:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1024x768, 24 fps, 24 tbr, 24 tbn\nStream mapping:\n  Stream #0:0 (h264) -> trim:default\n  Stream #1:0 (png) -> setpts:default\n  ssim:default -> Stream #0:0 (wrapped_avframe)\n[Parsed_ssim_5 @ 0x9bb026ac0] not matching timebases found between first input: 1/12288 and second input 1/24, results may be incorrect!\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.12.102\n  Stream #0:0: Video: wrapped_avframe, yuv420p(progressive), 1024x768, q=2-31, 200 kb/s, 24 fps, 24 tbn\n    Metadata:\n      encoder         : Lavc62.28.102 wrapped_avframe\n[Parsed_ssim_5 @ 0x9bb026ac0] SSIM Y:0.997612 (26.219404) U:0.999815 (37.338656) V:0.999870 (38.858865) All:0.998355 (27.839588)\n[out#0/null @ 0x9bb024780] video:5KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\nframe=   12 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.50 bitrate=N/A speed=4.62x elapsed=0:00:00.10    \n"
+  },
+  "evaluated_at": "2026-08-25T15:28:30.003986+00:00",
+  "failed_visual_gate_ids": [
+    "exact_first_frame_ssim_at_least_0_985"
+  ],
+  "honest_status": "BLOCKED",
+  "metrics": {
+    "background_patch_ssim": {
+      "bed_and_window": 0.942003,
+      "table_front": 0.96382,
+      "upper_center_room": 0.935253
+    },
+    "detected_cut_times_seconds": [],
+    "first_frame_ssim": 0.936478,
+    "minimum_background_patch_ssim": 0.935253,
+    "terminal_window_ssim_against_final": 0.998355
+  },
+  "physical_promotion": false,
+  "physical_promotion_gates": [
+    {
+      "evidence": {
+        "reason": "generated RGB cannot establish this physical-execution gate"
+      },
+      "gate_id": "calibrated_metric_camera",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "generated RGB cannot establish this physical-execution gate"
+      },
+      "gate_id": "exact_robot_joint_trajectories",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "generated RGB cannot establish this physical-execution gate"
+      },
+      "gate_id": "persistent_metric_quilt_geometry",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "generated RGB cannot establish this physical-execution gate"
+      },
+      "gate_id": "force_or_tactile_contact_evidence",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "generated RGB cannot establish this physical-execution gate"
+      },
+      "gate_id": "collision_checked_executable_motion",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "generated RGB cannot establish this physical-execution gate"
+      },
+      "gate_id": "recorded_real_robot_execution",
+      "state": "UNAVAILABLE"
+    }
+  ],
+  "review_packet": {
+    "contact_sheet": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/evaluations/seed-2026082503/native-review-contact-sheet.jpg",
+    "contact_sheet_sha256": "468d77bcfa4e28e19704b667bb4d7a30e6a5b4f64cdd0ade8426ea9e77cd087f",
+    "frame_indices": [
+      0,
+      12,
+      34,
+      48,
+      82,
+      96,
+      115,
+      140,
+      158,
+      175,
+      191
+    ],
+    "template": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-fold-realistic/20260825T145924Z-minimax-h3-v2/evaluations/seed-2026082503/native-review-template.json"
+  },
+  "schema_version": "1.0.0",
+  "unavailable_visual_gate_ids": [
+    "exactly_two_persistent_robot_identities",
+    "four_anatomically_consistent_robot_arms_and_hands",
+    "exactly_one_persistent_quilt",
+    "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+    "quilt_color_pattern_thickness_and_topology_persist",
+    "visible_contact_precedes_every_quilt_motion",
+    "bilateral_fold_motion_onset_within_0_25_seconds",
+    "first_fold_settles_before_regrasp",
+    "gatefold_begins_only_after_regrasp",
+    "lifted_cloth_motion_is_gravity_and_support_consistent",
+    "no_robot_robot_or_robot_table_interpenetration",
+    "terminal_compact_rectangle",
+    "no_text_guides_markers_or_watermarks",
+    "candidate_sha_bound_native_resolution_user_review"
+  ],
+  "visual_acceptance": false,
+  "visual_gates": [
+    {
+      "evidence": {},
+      "gate_id": "artifact_hash_binding",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "runtime_probe": {
+          "capabilities": [
+            [
+              9,
+              0
+            ],
+            [
+              9,
+              0
+            ]
+          ],
+          "cuda": "12.8",
+          "cuda_available": true,
+          "device_count": 2,
+          "device_names": [
+            "NVIDIA H200",
+            "NVIDIA H200"
+          ],
+          "mapped_cuda13_libraries": [],
+          "sglang": "0.5.17",
+          "sglang_kernel": "0.4.5",
+          "sglang_kernel_common_ops": {
+            "path": "/dev/shm/phiagent-h3-h200-cu128-v2/lib/python3.12/site-packages/sgl_kernel/sm90/common_ops.abi3.so",
+            "sha256": "041ad7991302d3faf726be66411223c6bb8de0210abd85bfa7d7d2eb14bea075"
+          },
+          "torch": "2.11.0+cu128",
+          "triton": "3.6.0"
+        },
+        "selected": [
+          {
+            "compute_capability": "9.0",
+            "compute_processes": [],
+            "driver_version": "570.124.06",
+            "free_mib": 143167,
+            "name": "NVIDIA H200",
+            "physical_index": 0,
+            "total_mib": 143771,
+            "used_mib": 1,
+            "uuid": "GPU-fc1d96a1-dd3e-3e77-c18b-4ae819c7b5d1"
+          },
+          {
+            "compute_capability": "9.0",
+            "compute_processes": [],
+            "driver_version": "570.124.06",
+            "free_mib": 143167,
+            "name": "NVIDIA H200",
+            "physical_index": 1,
+            "total_mib": 143771,
+            "used_mib": 1,
+            "uuid": "GPU-b220235e-a0f6-465e-c5a8-b240327e441b"
+          }
+        ]
+      },
+      "gate_id": "gpu_and_runtime_preflight",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+        "text_encoder_shards": 14,
+        "transformer_shards": 13
+      },
+      "gate_id": "pinned_model_revision",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "probe": {
+          "format": {
+            "duration": "8.000000"
+          },
+          "stream": {
+            "avg_frame_rate": "24/1",
+            "codec_name": "h264",
+            "duration": "8.000000",
+            "height": 768,
+            "nb_frames": "192",
+            "nb_read_frames": "192",
+            "r_frame_rate": "24/1",
+            "width": 1024
+          }
+        }
+      },
+      "gate_id": "media_contract_1024x768_24fps_192frames",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "ssim": 0.936478,
+        "threshold": 0.985
+      },
+      "gate_id": "exact_first_frame_ssim_at_least_0_985",
+      "state": "FAIL"
+    },
+    {
+      "evidence": {
+        "detected_cut_times_seconds": [],
+        "limitation": "Automatic scene detection covers hard cuts only. Crossfade, teleport, and local material discontinuity remain native-review requirements.",
+        "scene_threshold": 0.3
+      },
+      "gate_id": "single_uninterrupted_shot_no_cut_crossfade_or_teleport",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "minimum_ssim": 0.935253,
+        "patch_ssim": {
+          "bed_and_window": 0.942003,
+          "table_front": 0.96382,
+          "upper_center_room": 0.935253
+        },
+        "threshold": 0.9
+      },
+      "gate_id": "fixed_camera_background_and_lighting",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "exactly_two_persistent_robot_identities",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "four_anatomically_consistent_robot_arms_and_hands",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "exactly_one_persistent_quilt",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "quilt_color_pattern_thickness_and_topology_persist",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "visible_contact_precedes_every_quilt_motion",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "bilateral_fold_motion_onset_within_0_25_seconds",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "first_fold_settles_before_regrasp",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "gatefold_begins_only_after_regrasp",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "lifted_cloth_motion_is_gravity_and_support_consistent",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "no_robot_robot_or_robot_table_interpenetration",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "terminal_compact_rectangle",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "conservative_proxy_threshold": 0.985,
+        "limitation": "SSIM is a conservative RGB proxy; the named pixel-RMS gate also requires native review.",
+        "terminal_window_ssim_against_final": 0.998355
+      },
+      "gate_id": "terminal_motion_below_1_pixel_rms_for_last_12_frames",
+      "state": "PASS"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "no_text_guides_markers_or_watermarks",
+      "state": "UNAVAILABLE"
+    },
+    {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution full-video review required"
+      },
+      "gate_id": "candidate_sha_bound_native_resolution_user_review",
+      "state": "UNAVAILABLE"
+    }
+  ]
+}
