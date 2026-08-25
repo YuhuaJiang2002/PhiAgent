@@ -1,0 +1,161 @@
+{
+  "attestation": {
+    "reviewed_original_mp4_not_contact_sheet_only": false,
+    "watched_at_native_1024x768_resolution": false,
+    "watched_full_video_from_start_to_finish": false
+  },
+  "candidate_sha256": "560053b15a6e6f516df764b90c72b3764ed18614a32ac98cd7c14c4e744d8e70",
+  "claim_boundary": "Native review can accept visual-generation quality only; it cannot establish metric, force, safety, or real-hardware evidence.",
+  "gates": [
+    {
+      "gate_id": "exactly_two_persistent_robot_identities",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "four_anatomically_consistent_robot_arms_and_hands",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "exactly_one_persistent_quilt",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "exactly_two_persistent_pillows",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "pillow_assignment_identity_persists",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "visible_contact_precedes_every_pillow_motion",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "both_pillows_clear_and_settled_before_quilt_motion",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "pillows_remain_in_separate_safe_zones",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "quilt_color_pattern_thickness_and_topology_persist",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "visible_contact_precedes_every_quilt_motion",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "tucked_corner_recovered_before_rotation",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "overhang_recovered_before_first_fold",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "canonical_square_quilt_settles_before_first_fold",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "first_fold_settles_before_regrasp",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "second_fold_begins_only_after_bilateral_regrasp",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "lifted_cloth_motion_is_gravity_and_support_consistent",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "no_robot_robot_robot_table_or_object_interpenetration",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "terminal_bundle_moves_only_under_dual_contact",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "terminal_bundle_moves_as_one_connected_material",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "terminal_bundle_inside_viewer_far_center_target_zone",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "terminal_compact_rectangle",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "no_text_guides_markers_or_watermarks",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    },
+    {
+      "gate_id": "candidate_sha_bound_native_resolution_user_review",
+      "notes": "",
+      "state": "UNAVAILABLE",
+      "time_ranges": []
+    }
+  ],
+  "instructions": "Watch the original candidate at native resolution. Set every gate to PASS or FAIL with time ranges and notes. Missing or hidden evidence rejects.",
+  "overall_visual_acceptance": false,
+  "review_scope": "native_resolution_full_video",
+  "reviewed_at": null,
+  "reviewer": "UNASSIGNED",
+  "schema_version": "1.0.0"
+}

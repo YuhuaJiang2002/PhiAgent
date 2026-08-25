@@ -50,6 +50,7 @@ from scripts.run_minimax_h3_ref2va_optical_module import (  # noqa: E402
     _build_model_view,
     _checkpoint_sources,
 )
+from scripts.bind_exact_first_frame import bind_exact_first_frame  # noqa: E402
 
 
 H0_VERSION = "tshirt-direct-fold-h0"
@@ -66,6 +67,7 @@ H18_VISUAL_ACTION_PROMPT_VERSION = (
 H19_FUSED_ACTION_FLOW_VERSION = "tshirt-fused-action-flow-terminal-containment-h19"
 H4_VERSION = "tshirt-verified-incremental-recovery-h4"
 FIGURE_BLANKET_VERSION = "figure-two-robot-blanket-fold-photorealistic-v2"
+FIGURE_BLANKET_TRI_EVOLVE_VERSION = "figure-two-robot-blanket-tri-evolve-e2-v1"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -87,8 +89,21 @@ def _parser() -> argparse.ArgumentParser:
             H19_FUSED_ACTION_FLOW_VERSION,
             H4_VERSION,
             FIGURE_BLANKET_VERSION,
+            FIGURE_BLANKET_TRI_EVOLVE_VERSION,
         ),
         required=True,
+    )
+    parser.add_argument(
+        "--case-label",
+        help="optional exact case label for one independent generation lane",
+    )
+    parser.add_argument(
+        "--bind-exact-first-frame",
+        action="store_true",
+        help=(
+            "apply only a spec-declared boundary adapter that prepends the exact "
+            "source frame and preserves the raw proposal"
+        ),
     )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--runtime-env", type=Path, required=True)
@@ -350,6 +365,8 @@ def main() -> int:
     for item in raw_cases:
         if item.get("harness_version") != args.harness_version:
             continue
+        if args.case_label is not None and item.get("label") != args.case_label:
+            continue
         declared_seeds = list(item.get("seeds", []))
         stop = (
             None
@@ -399,6 +416,20 @@ def main() -> int:
         raise ValueError(
             "generation requires Ref2VA, 50 steps, 24 FPS, and 192 frames"
         )
+    boundary_binding = generation.get("boundary_binding", {})
+    if bool(boundary_binding.get("enabled", False)) != args.bind_exact_first_frame:
+        raise ValueError(
+            "--bind-exact-first-frame must exactly match the frozen generation spec"
+        )
+    if args.bind_exact_first_frame and (
+        boundary_binding.get("method")
+        != "prepend_exact_source_frame_then_first_191_generated_frames"
+        or boundary_binding.get("source_frame_count") != 1
+        or boundary_binding.get("generated_frame_count") != 191
+        or boundary_binding.get("thresholds_unchanged") is not True
+        or boundary_binding.get("raw_candidate_preserved") is not True
+    ):
+        raise ValueError("unsupported or incomplete exact-first-frame binding contract")
 
     output.mkdir(parents=True)
     (output / "cache").mkdir()
@@ -493,6 +524,8 @@ def main() -> int:
         "challenge_frame_sha256": _sha256(frozen_frame),
         "spec_sha256": _sha256(frozen_spec),
         "selected_cases": [item["label"] for item in cases],
+        "case_label_filter": args.case_label,
+        "boundary_binding_enabled": args.bind_exact_first_frame,
         "seed_start_index": args.seed_start_index,
         "seed_count": args.seed_count,
         "candidate_budget": sum(len(item["seeds"]) for item in cases),
@@ -744,6 +777,28 @@ def main() -> int:
                     candidate_dir=candidate_dir,
                 )
                 video = Path(str(result["video"]))
+                if args.bind_exact_first_frame:
+                    raw_video = video.with_name(f"{video.stem}.raw{video.suffix}")
+                    if raw_video.exists():
+                        raise FileExistsError(
+                            f"refusing to overwrite raw proposal: {raw_video}"
+                        )
+                    shutil.move(video, raw_video)
+                    binding_record = bind_exact_first_frame(
+                        raw_video=raw_video,
+                        exact_frame=frozen_frame,
+                        output_video=video,
+                        expected_frames=int(generation["expected_frames"]),
+                        fps=int(generation["fps"]),
+                    )
+                    result = {
+                        **result,
+                        "raw_video": str(raw_video),
+                        "raw_video_sha256": _sha256(raw_video),
+                        "video": str(video),
+                        "video_sha256": _sha256(video),
+                        "boundary_binding": binding_record,
+                    }
                 probe = _validate_media_contract(
                     video,
                     challenge=challenge,

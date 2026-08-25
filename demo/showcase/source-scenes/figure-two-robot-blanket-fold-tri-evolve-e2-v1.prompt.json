@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-08-25T15:47:44Z",
+  "mode": "built-in-imagegen-edit",
+  "request_id": "exec-1cc6fdc1-010b-4fba-aca4-a5f6b7b8f4f5",
+  "use_case": "precise-object-edit",
+  "edit_target": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-realistic-v2.png",
+    "sha256": "8d2964bc8f70cc815fd7c5c979c09745a1fdfc52656952b56cf4802bb21ac909"
+  },
+  "prompt": "Use case: precise-object-edit\nAsset type: photorealistic first-frame condition for a strict robot-manipulation video benchmark\nInput image: edit target; preserve its camera, room, table, natural daylight, and the exact two persistent silver-and-black full-body humanoid robot identities.\nPrimary request: make the blanket-folding task visibly harder while remaining a plausible real laundry-room setup. Change only the task objects and robot ready poses. Rotate the same single slate-blue stitched quilt about 15 degrees clockwise so it lies diagonally and off-center on the table; make the viewer-left near corner partly folded underneath and the viewer-right far edge softly bunched with realistic wrinkles, while all four bound edges and corners remain visually identifiable. Place exactly two ordinary cream-colored rectangular bed pillows on top of the quilt near its far half, separated from each other, as obstacles that must be removed before folding. Pose both robots with four anatomically consistent open hands hovering several centimeters above the task objects, ready to collaborate but making no contact yet.\nStyle/medium: highly photorealistic documentary photograph of real humanoid robots, realistic metal, joints, articulated fingers, fabric thickness, quilt stitching, pillow seams, contact shadows, and imperfect household texture; not CGI-looking.\nComposition/framing: preserve the original wide fixed camera and show both robots full torso, all four arms and hands, the entire table, the entire quilt, and both pillows.\nLighting/mood: preserve the original soft natural daylight and physically consistent shadows.\nConstraints: exactly two persistent humanoid robots; exactly four arms and four hands; exactly one slate-blue quilt; exactly two cream pillows on the quilt; no human; no extra robot; no extra limb; no missing finger cluster; no object already held; no contact at the initial frame; no text, labels, arrows, UI, watermark, logo, motion blur, split screen, crop, or camera change. Keep the room architecture, furniture, window, washing machine, shelves, and table unchanged.",
+  "generated_asset": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-tri-evolve-e2-v1.png",
+    "sha256": "8f00e7137441a0bc8ad22dc9bb1783535bdda5b5c7cdd9d76ec79ff036c81c08",
+    "width": 1672,
+    "height": 941
+  },
+  "normalized_asset": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-tri-evolve-e2-v1-1024x768.png",
+    "sha256": "7a34261281d2a6ecc691ebbd286fdd1608c6d9ca5d69e8a7c0721477f721bf66",
+    "width": 1024,
+    "height": 768,
+    "operation": "center crop 1254x940 at x=209,y=0 followed by Lanczos resize"
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "schema_version": "1.0.0",
+  "campaign_id": "figure-two-robot-blanket-tri-evolve-e2-v1",
+  "task": "Two humanoid robots remove two pillows, canonicalize one diagonal partly overhanging quilt, perform two cooperative folds, and transport the compact bundle to a target zone.",
+  "coordinate_frames": {
+    "camera": "camera:figure_blanket_fold_1024x768_pixels",
+    "world": "UNAVAILABLE",
+    "viewer_left_robot_base": "UNAVAILABLE",
+    "viewer_right_robot_base": "UNAVAILABLE"
+  },
+  "initial_frame": {
+    "path": "demo/showcase/source-scenes/figure-two-robot-blanket-fold-tri-evolve-e2-v1-1024x768.png",
+    "sha256": "7a34261281d2a6ecc691ebbd286fdd1608c6d9ca5d69e8a7c0721477f721bf66",
+    "width": 1024,
+    "height": 768
+  },
+  "difficulty_evolution": {
+    "incumbent": {
+      "environment_id": "blanket-flat-e0",
+      "level": "E0",
+      "coordinate_frame": "camera:figure_blanket_fold_1024x768_pixels",
+      "obstacle_count": 0,
+      "quilt_rotation_degrees": 0.0,
+      "off_table_overhang_fraction": 0.0,
+      "self_occlusion_fraction": 0.02,
+      "required_action_stages": 4,
+      "required_regrasps": 1,
+      "terminal_transport_fraction": 0.0
+    },
+    "challenger": {
+      "environment_id": "blanket-obstacle-diagonal-e2",
+      "level": "E2",
+      "coordinate_frame": "camera:figure_blanket_fold_1024x768_pixels",
+      "obstacle_count": 2,
+      "quilt_rotation_degrees": 15.0,
+      "off_table_overhang_fraction": 0.2,
+      "self_occlusion_fraction": 0.18,
+      "required_action_stages": 8,
+      "required_regrasps": 3,
+      "terminal_transport_fraction": 0.3
+    },
+    "retained_incumbent_gates": true,
+    "threshold_relaxation_allowed": false
+  },
+  "tri_evolve": {
+    "incumbent_failed_gate_ids": [
+      "exact_first_frame_ssim_at_least_0_985",
+      "visible_contact_precedes_every_quilt_motion"
+    ],
+    "language_stage": "Decompose obstacle removal, quilt canonicalization, verification, two folds, and bundle transport into an immutable order.",
+    "physical_stage": "Bind contact, support, object identity, settle windows, and no-collision requirements to every phase in the named camera frame.",
+    "test_time_scaling_stage": "Allocate one direct H0 seed, two ordered H1 seeds, and one failure-repair H2 seed without changing any gate or threshold.",
+    "strategies": [
+      {
+        "label": "h0-direct-obstacle-fold",
+        "strategy": "direct_multi_object_fold",
+        "seeds": [2026082521],
+        "directive": "Execute the full task directly while preserving the declared phase order."
+      },
+      {
+        "label": "h1-canonicalize-verify-fold",
+        "strategy": "canonicalize_verify_then_fold",
+        "seeds": [2026082522, 2026082523],
+        "directive": "Prioritize complete pillow clearance and a visibly square, settled quilt checkpoint before any fold begins."
+      },
+      {
+        "label": "h2-contact-repair-transport-lock",
+        "strategy": "failure_aware_contact_and_transport_repair",
+        "seeds": [2026082524],
+        "directive": "Repair the incumbent exact-first-frame and contact-causality failures using the predeclared boundary binder and continuous visible gripper support; preserve every threshold."
+      }
+    ]
+  },
+  "model": {
+    "id": "MiniMaxAI/MiniMax-H3",
+    "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+    "partition": "Ref2VA",
+    "dtype": "bfloat16",
+    "quantization": null,
+    "runtime": {
+      "torch": "2.11.0+cu128",
+      "cuda": "12.8",
+      "sglang": "0.5.17",
+      "attention_backend": "torch_sdpa",
+      "approximate_attention": false
+    }
+  },
+  "generation": {
+    "task": "ref2va",
+    "num_inference_steps": 50,
+    "flow_shift": 12.0,
+    "audio_flow_shift": 3.0,
+    "quality": "lossless",
+    "fps": 24,
+    "expected_frames": 192,
+    "target": {
+      "aspect_ratio": "4:3",
+      "duration_seconds": 8.0,
+      "short_edge": 768
+    },
+    "boundary_binding": {
+      "enabled": true,
+      "method": "prepend_exact_source_frame_then_first_191_generated_frames",
+      "source_frame_count": 1,
+      "generated_frame_count": 191,
+      "thresholds_unchanged": true,
+      "raw_candidate_preserved": true
+    }
+  },
+  "phase_plan": [
+    {
+      "phase_id": "exact_initial_hold",
+      "start_seconds": 0.0,
+      "end_seconds": 0.4,
+      "instruction": "Hold the supplied frame exactly; no robot, pillow, or quilt point moves."
+    },
+    {
+      "phase_id": "assigned_dual_pillow_removal",
+      "start_seconds": 0.4,
+      "end_seconds": 1.4,
+      "instruction": "The viewer-left robot grasps only the viewer-left pillow and the viewer-right robot grasps only the viewer-right pillow; both lift after visible contact and place them in separate safe table-edge zones fully clear of the quilt."
+    },
+    {
+      "phase_id": "quilt_untuck_and_canonicalize",
+      "start_seconds": 1.4,
+      "end_seconds": 2.8,
+      "instruction": "After both pillows settle, the robots visibly grasp quilt corners, recover the tucked viewer-near corner, lift the overhang, rotate the diagonal quilt square to the table, and spread all four bound edges without folding."
+    },
+    {
+      "phase_id": "canonical_state_verify_hold",
+      "start_seconds": 2.8,
+      "end_seconds": 3.2,
+      "instruction": "Hold a flat square quilt with four identifiable corners completely still; folding is forbidden before this checkpoint."
+    },
+    {
+      "phase_id": "cooperative_lengthwise_fold",
+      "start_seconds": 3.2,
+      "end_seconds": 4.6,
+      "instruction": "With bilateral visible contact, lift the viewer-near edge and rotate the connected near half onto the far half; keep both pillows stationary outside the quilt."
+    },
+    {
+      "phase_id": "settle_and_bilateral_regrasp",
+      "start_seconds": 4.6,
+      "end_seconds": 5.2,
+      "instruction": "Let the half-fold settle, then both robots regrasp the new outer corners without cloth drift."
+    },
+    {
+      "phase_id": "cooperative_crosswise_quarter_fold",
+      "start_seconds": 5.2,
+      "end_seconds": 6.2,
+      "instruction": "Synchronously fold the half-blanket crosswise into one compact layered rectangle under continuous support."
+    },
+    {
+      "phase_id": "dual_contact_bundle_transport",
+      "start_seconds": 6.2,
+      "end_seconds": 7.2,
+      "instruction": "Both robots establish two-sided support, lift the compact bundle as one material body, move it to the viewer-far center target zone, place it, release, and withdraw."
+    },
+    {
+      "phase_id": "terminal_hold",
+      "start_seconds": 7.2,
+      "end_seconds": 8.0,
+      "instruction": "Hold the compact transported quilt and both separated pillows completely still with both robots visible."
+    }
+  ],
+  "visual_hard_gates": [
+    "artifact_hash_binding",
+    "gpu_and_runtime_preflight",
+    "pinned_model_revision",
+    "media_contract_1024x768_24fps_192frames",
+    "predeclared_exact_boundary_binding",
+    "exact_first_frame_ssim_at_least_0_985",
+    "single_uninterrupted_shot_no_cut_crossfade_or_teleport",
+    "fixed_camera_background_and_lighting",
+    "exactly_two_persistent_robot_identities",
+    "four_anatomically_consistent_robot_arms_and_hands",
+    "exactly_one_persistent_quilt",
+    "exactly_two_persistent_pillows",
+    "pillow_assignment_identity_persists",
+    "visible_contact_precedes_every_pillow_motion",
+    "both_pillows_clear_and_settled_before_quilt_motion",
+    "pillows_remain_in_separate_safe_zones",
+    "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+    "quilt_color_pattern_thickness_and_topology_persist",
+    "visible_contact_precedes_every_quilt_motion",
+    "tucked_corner_recovered_before_rotation",
+    "overhang_recovered_before_first_fold",
+    "canonical_square_quilt_settles_before_first_fold",
+    "first_fold_settles_before_regrasp",
+    "second_fold_begins_only_after_bilateral_regrasp",
+    "lifted_cloth_motion_is_gravity_and_support_consistent",
+    "no_robot_robot_robot_table_or_object_interpenetration",
+    "terminal_bundle_moves_only_under_dual_contact",
+    "terminal_bundle_moves_as_one_connected_material",
+    "terminal_bundle_inside_viewer_far_center_target_zone",
+    "terminal_compact_rectangle",
+    "terminal_motion_below_1_pixel_rms_for_last_12_frames",
+    "no_text_guides_markers_or_watermarks",
+    "candidate_sha_bound_native_resolution_user_review"
+  ],
+  "physical_promotion_gates": [
+    "calibrated_metric_camera",
+    "exact_robot_joint_trajectories",
+    "persistent_metric_quilt_geometry",
+    "force_or_tactile_contact_evidence",
+    "collision_checked_executable_motion",
+    "recorded_real_robot_execution"
+  ],
+  "automatic_thresholds": {
+    "exact_first_frame_ssim_min": 0.985,
+    "background_patch_ssim_min": 0.9,
+    "scene_cut_score_max": 0.3,
+    "terminal_flow_rms_pixels_max": 1.0
+  },
+  "decision_policy": {
+    "visual_acceptance": "Every visual hard gate must be PASS; FAIL or UNAVAILABLE rejects. No aggregate score may override a gate.",
+    "physical_promotion": "Every visual and physical promotion gate must be PASS across at least two independent source groups.",
+    "test_time_scaling": "Failure IDs may allocate the frozen H2 repair seed; thresholds, phase order, initial frame, and tracking identities may not change.",
+    "selection": "Rank only candidates that pass every automatic and native-resolution gate."
+  },
+  "claim_boundary": "MiniMax-H3 outputs and deterministic boundary binding are generated camera-pixel proposals. They are not recorded real-hardware execution and cannot establish metric geometry, force, safety, joint feasibility, or physical task success."
+}

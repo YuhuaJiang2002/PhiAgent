@@ -1,0 +1,132 @@
+{
+  "campaign_hashes": {
+    "frozen_config": "f2c1b790185f451fd705b217d22e74794b22d82cd7ab4a68e53f1b34ce339b24",
+    "generation_spec_file": "90bbb1a2ff0627234cd0a13e0e17410e94b0e391d7d02cd5f1d548c0c09a5d44",
+    "initial_frame": "7a34261281d2a6ecc691ebbd286fdd1608c6d9ca5d69e8a7c0721477f721bf66",
+    "source_config": "f2c1b790185f451fd705b217d22e74794b22d82cd7ab4a68e53f1b34ce339b24",
+    "task_plan": "1814f09df4886cd0149c9c1cf862c1ab740e182526b8dea7e9548d8e5f9ad24f"
+  },
+  "campaign_id": "figure-two-robot-blanket-tri-evolve-e2-v1",
+  "candidates": [
+    {
+      "authoritative_video_sha256": "c404b9b570f101e355abf1acfe7edb73a68eb31ab44d0598bd0a90e38f542425",
+      "automatic_decision": "REJECT",
+      "case_id": "h0-direct-obstacle-fold",
+      "evaluation_path": "evaluations/h0-direct-obstacle-fold-seed-2026082521.json",
+      "evaluation_sha256": "b4feed5accb38b146a1e9ee1a04794e28a6fa3b6dd665a13b93b17ddf53481ef",
+      "failed_automatic_hard_gate_ids": [
+        "terminal_motion_below_1_pixel_rms_for_last_12_frames"
+      ],
+      "first_frame_ssim": 0.999535,
+      "minimum_background_patch_ssim": 0.921295,
+      "overall_visual_acceptance": false,
+      "physical_promotion": false,
+      "raw_video_sha256": "96d2684e62eb18c5c807eecc1007029b0a0f1364af96b04d85f7e058415f4886",
+      "seed": 2026082521,
+      "strategy": "direct_multi_object_fold",
+      "terminal_flow_rms_pixels": 2.5562992095947266
+    },
+    {
+      "authoritative_video_sha256": "e722bc08d065c2bce9dff277294d58ef884443bb8da7719babed856c5e9e5808",
+      "automatic_decision": "REJECT",
+      "case_id": "h1-canonicalize-verify-fold",
+      "evaluation_path": "evaluations/h1-canonicalize-verify-fold-seed-2026082522.json",
+      "evaluation_sha256": "0257bab30f925c0b6a62fb39e08e5968a02532c1f3c8225fcf9686710e0ee572",
+      "failed_automatic_hard_gate_ids": [
+        "terminal_motion_below_1_pixel_rms_for_last_12_frames"
+      ],
+      "first_frame_ssim": 0.999535,
+      "minimum_background_patch_ssim": 0.945523,
+      "overall_visual_acceptance": false,
+      "physical_promotion": false,
+      "raw_video_sha256": "b71547883c060d50c2b52896cbb1d32e30835ef976394a8b48b7c141ffc3c405",
+      "seed": 2026082522,
+      "strategy": "canonicalize_verify_then_fold",
+      "terminal_flow_rms_pixels": 1.3205218315124512
+    },
+    {
+      "authoritative_video_sha256": "560053b15a6e6f516df764b90c72b3764ed18614a32ac98cd7c14c4e744d8e70",
+      "automatic_decision": "REJECT",
+      "case_id": "h1-canonicalize-verify-fold",
+      "evaluation_path": "evaluations/h1-canonicalize-verify-fold-seed-2026082523.json",
+      "evaluation_sha256": "4bbb133ee8dd4098e3752c727d560d5c0759a9b75d12bdb009a62505a66539df",
+      "failed_automatic_hard_gate_ids": [
+        "terminal_motion_below_1_pixel_rms_for_last_12_frames"
+      ],
+      "first_frame_ssim": 0.999535,
+      "minimum_background_patch_ssim": 0.960037,
+      "overall_visual_acceptance": false,
+      "physical_promotion": false,
+      "raw_video_sha256": "6ea5722ddcf7e6beab7e73816fbe367cbef8286f84f35c1133c9fafec2b7a6ca",
+      "seed": 2026082523,
+      "strategy": "canonicalize_verify_then_fold",
+      "terminal_flow_rms_pixels": 2.0087296962738037
+    },
+    {
+      "authoritative_video_sha256": "cf8225ef0252c592a676c9d1b16a38c752eca8f7db7c3cc057727a2d1e83f4be",
+      "automatic_decision": "REJECT",
+      "case_id": "h2-contact-repair-transport-lock",
+      "evaluation_path": "evaluations/h2-contact-repair-transport-lock-seed-2026082524.json",
+      "evaluation_sha256": "a8f49ba8054edcfa209a93a73d38600d767a3a38ef9e5c38c4b475917c3efa7a",
+      "failed_automatic_hard_gate_ids": [
+        "terminal_motion_below_1_pixel_rms_for_last_12_frames"
+      ],
+      "first_frame_ssim": 0.999535,
+      "minimum_background_patch_ssim": 0.912938,
+      "overall_visual_acceptance": false,
+      "physical_promotion": false,
+      "raw_video_sha256": "04ec06ed4a1fd9e72bffb6c34101dc2fe12d47ad9d5dc58d19a65813c8ded6f0",
+      "seed": 2026082524,
+      "strategy": "failure_aware_contact_and_transport_repair",
+      "terminal_flow_rms_pixels": 5.735792636871338
+    }
+  ],
+  "claim_boundary": "MiniMax-H3 outputs and deterministic boundary binding are generated camera-pixel proposals. They are not recorded real-hardware execution and cannot establish metric geometry, force, safety, joint feasibility, or physical task success.",
+  "created_at": "2026-08-25T16:35:14.374140+00:00",
+  "difficulty_comparison": {
+    "challenger_sha256": "9a0b58bb68da7b887ec89f4b58a7f6689e7d8829e6726f1ac8e1001826d95957",
+    "deltas": {
+      "obstacle_count": 2.0,
+      "off_table_overhang_fraction": 0.2,
+      "quilt_rotation_degrees": 15.0,
+      "required_action_stages": 4.0,
+      "required_regrasps": 2.0,
+      "self_occlusion_fraction": 0.16,
+      "terminal_transport_fraction": 0.3
+    },
+    "increased_dimensions": [
+      "obstacle_count",
+      "off_table_overhang_fraction",
+      "quilt_rotation_degrees",
+      "required_action_stages",
+      "required_regrasps",
+      "self_occlusion_fraction",
+      "terminal_transport_fraction"
+    ],
+    "incumbent_sha256": "a4b57a3a86f2ac8bbfa0d32c17e95db2d2b594339ee105e0d871a48cac667905",
+    "passed": true,
+    "reason": "all_contract_conditions_pass",
+    "regressed_dimensions": []
+  },
+  "presentation": {
+    "authoritative_video_sha256": "560053b15a6e6f516df764b90c72b3764ed18614a32ac98cd7c14c4e744d8e70",
+    "contact_sheet_sha256": "d63207490c0b53bddff09acc14fef59c9255e5415002aeb6afa6aaad29826e20",
+    "poster_sha256": "1ab8feeba49f5f9f77afa26fba042470da075c49b7e33a01cc95ce91ad820568",
+    "presentation_video_path": "video.mp4",
+    "presentation_video_sha256": "89eaffadf247aa7b523f80181fb0f60cd27bcd627a9fdef5dc2914a9d4988cbf",
+    "selection_case_id": "h1-canonicalize-verify-fold",
+    "selection_reason": "Fewest automatic failures, then highest frozen-background SSIM, then lowest terminal flow. This ranking cannot create acceptance.",
+    "selection_scope": "retrospective diagnosis only",
+    "selection_seed": 2026082523
+  },
+  "schema_version": "1.0.0",
+  "status": "PARTIAL",
+  "strict_result": {
+    "aggregate_override_allowed": false,
+    "automatic_rejection_count": 4,
+    "candidate_count": 4,
+    "decision": "REJECT_ALL_AUTOMATIC",
+    "physical_promotion_count": 0,
+    "visual_acceptance_count": 0
+  }
+}

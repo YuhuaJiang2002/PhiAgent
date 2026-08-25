@@ -446,6 +446,25 @@ locations are recorded per experiment below.
   calibrated geometry, force, joint, collision-safety, or physical-success
   evidence.
 
+- Blanket Tri-Evolve E2 obstacle challenge, strict rejection: the frozen
+  challenger adds two assigned pillow obstacles, a 15-degree diagonal quilt,
+  0.20 camera-frame overhang, greater self-occlusion, four additional ordered
+  stages, two additional regrasps, and terminal bundle transport without
+  reducing any incumbent difficulty dimension or hard gate. One H0, two H1,
+  and one failure-repair H2 MiniMax-H3 candidates completed at BF16/50 steps.
+  The predeclared exact-boundary adapter raises first-frame SSIM to `0.999535`
+  for all four while preserving every raw proposal; minimum frozen-background
+  SSIM is `0.912938` to `0.960037`, with zero detected hard cuts. Strict
+  acceptance is nevertheless `0/4`: maximum pairwise terminal flow is
+  `2.556299`, `1.320522`, `2.008730`, and `5.735793 px`, all above the frozen
+  `<1.0 px` veto. A first H0 launch failed closed when GPU 0 lacked free VRAM;
+  its append-only retry used idle GPUs 2/3 and did not change seed or contract.
+  All sixteen H200 GPUs later reported 1 MiB and 0% utilization. The displayed
+  H1 seed `2026082523` is a retrospective diagnosis only. Evidence is under
+  `demo/showcase/figure-two-robot-blanket-tri-evolve-e2-v1/`. Generated RGB and
+  source-frame binding are not recorded hardware, metric geometry, force,
+  joint, safety, or physical-success evidence.
+
 - Multi-strategy T-shirt folding visual generation is `PARTIAL`. Three
   user-approved 1024x768, 24 FPS, 192-frame generated videos are preserved as a
   hash-bound positive-reference bank covering alternating, staged, and

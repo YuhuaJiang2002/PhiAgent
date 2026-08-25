@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-25.blanket-tri-evolve-e2-strict-rejected",
+  "recorded_at": "2026-08-25T16:35:40Z",
+  "status": "PARTIAL",
+  "scope": "Tri-Evolve E2 dual-humanoid pillow-removal, blanket-canonicalization, two-fold, and bundle-transport video challenge",
+  "summary": "Four frozen MiniMax-H3 BF16/50-step candidates completed across H0, H1, and H2 strategies. The predeclared exact-boundary adapter repaired the incumbent first-frame failure to SSIM 0.999535 for every candidate while preserving raw proposals. All four still failed the unchanged terminal-motion hard gate, so strict visual acceptance and physical promotion remain 0/4. One failed H0 GPU preflight was preserved and retried append-only on idle GPUs without changing its seed or contract.",
+  "evidence": [
+    "demo/showcase/figure-two-robot-blanket-tri-evolve-e2-v1/manifest.json sha256=8bc3d518bca0ca93ec22665231c369129443af01d027cb7597c838109f6d7ca9",
+    "Published diagnosis derivative sha256=89eaffadf247aa7b523f80181fb0f60cd27bcd627a9fdef5dc2914a9d4988cbf; 1024x768; 24 FPS; 192 frames",
+    "Authoritative candidate terminal-flow maxima were 2.556299, 1.320522, 2.008730, and 5.735793 pixels under the frozen less-than-1.0-pixel veto",
+    "All four first-frame SSIM values were 0.999535 and frozen-background minimum SSIM ranged from 0.912938 to 0.960037 with zero detected hard cuts",
+    "outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/provenance/gpu-release.txt sha256=cf59473ce1a2f758834354808b1cf68ae6b73e032dab062a4d4190edbfc3a229"
+  ],
+  "lessons": [
+    "A predeclared source-bound first-frame adapter can repair a systematic VAE boundary mismatch without relaxing the exact-frame gate or deleting raw evidence.",
+    "When H0, H1, and H2 all violate terminal dwell on the same frozen task, more seeds are not a justified remedy; the next change must alter temporal observability or task-duration architecture.",
+    "Photorealistic completion of obstacle clearing, folding, and transport in RGB does not establish force, collision safety, exact robot trajectories, or real execution."
+  ],
+  "limitations": [
+    "Every candidate failed at least one automatic hard gate, so none advanced to candidate-SHA-bound native-resolution human acceptance.",
+    "The challenge has one generated scene/object group and no independently calibrated metric camera, q/qdot, cloth geometry, tactile/force, or recorded-hardware evidence.",
+    "The repository lacks scripts/compile_physical_video_plan.py, so the complete physical-video-planner standard entrypoint could not be invoked; the existing hash-bound Tri-Evolve components were used instead."
+  ],
+  "next_actions": [
+    "Predeclare an architecture experiment with a longer terminal-dwell budget or endpoint-conditioned temporal controller while preserving every current hard gate.",
+    "Run at least one independent scene/object group and require all automatic gates before native-resolution human review.",
+    "Acquire calibrated real-robot trajectories and sensor contact evidence before making a physical-success claim."
+  ],
+  "run_dir": "outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1",
+  "supersedes": [],
+  "tags": [
+    "blanket",
+    "tri-evolve",
+    "multi-robot",
+    "minimax-h3",
+    "hard-gate",
+    "rejected",
+    "github-pages"
+  ]
+}

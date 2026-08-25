@@ -1,0 +1,502 @@
+{
+  "automatic_decision": "REJECT",
+  "automatic_gate_results": {
+    "artifact_hash_binding": {
+      "evidence": {},
+      "gate_id": "artifact_hash_binding",
+      "state": "PASS"
+    },
+    "exact_first_frame_ssim_at_least_0_985": {
+      "evidence": {
+        "ssim": 0.999535,
+        "threshold": 0.985
+      },
+      "gate_id": "exact_first_frame_ssim_at_least_0_985",
+      "state": "PASS"
+    },
+    "fixed_camera_background_and_lighting": {
+      "evidence": {
+        "minimum_ssim": 0.921295,
+        "patch_ssim": {
+          "bed_window": 0.921295,
+          "upper_center_room": 0.936679
+        },
+        "threshold": 0.9
+      },
+      "gate_id": "fixed_camera_background_and_lighting",
+      "state": "PASS"
+    },
+    "gpu_and_runtime_preflight": {
+      "evidence": {
+        "runtime_probe": {
+          "capabilities": [
+            [
+              9,
+              0
+            ],
+            [
+              9,
+              0
+            ]
+          ],
+          "cuda": "12.8",
+          "cuda_available": true,
+          "device_count": 2,
+          "device_names": [
+            "NVIDIA H200",
+            "NVIDIA H200"
+          ],
+          "mapped_cuda13_libraries": [],
+          "sglang": "0.5.17",
+          "sglang_kernel": "0.4.5",
+          "sglang_kernel_common_ops": {
+            "path": "/dev/shm/phiagent-h3-h200-cu128-v2/lib/python3.12/site-packages/sgl_kernel/sm90/common_ops.abi3.so",
+            "sha256": "041ad7991302d3faf726be66411223c6bb8de0210abd85bfa7d7d2eb14bea075"
+          },
+          "torch": "2.11.0+cu128",
+          "triton": "3.6.0"
+        },
+        "selected": [
+          {
+            "compute_capability": "9.0",
+            "compute_processes": [],
+            "driver_version": "570.124.06",
+            "free_mib": 143167,
+            "name": "NVIDIA H200",
+            "physical_index": 2,
+            "total_mib": 143771,
+            "used_mib": 1,
+            "uuid": "GPU-3105bf40-69e9-3577-57d6-dc389411707b"
+          },
+          {
+            "compute_capability": "9.0",
+            "compute_processes": [],
+            "driver_version": "570.124.06",
+            "free_mib": 143167,
+            "name": "NVIDIA H200",
+            "physical_index": 3,
+            "total_mib": 143771,
+            "used_mib": 1,
+            "uuid": "GPU-6963b4db-f9a5-8be6-941c-90e28b372751"
+          }
+        ]
+      },
+      "gate_id": "gpu_and_runtime_preflight",
+      "state": "PASS"
+    },
+    "media_contract_1024x768_24fps_192frames": {
+      "evidence": {
+        "probe": {
+          "format": {
+            "duration": "8.000000"
+          },
+          "stream": {
+            "avg_frame_rate": "24/1",
+            "codec_name": "h264",
+            "duration": "8.000000",
+            "height": 768,
+            "nb_frames": "192",
+            "nb_read_frames": "192",
+            "r_frame_rate": "24/1",
+            "width": 1024
+          }
+        }
+      },
+      "gate_id": "media_contract_1024x768_24fps_192frames",
+      "state": "PASS"
+    },
+    "pinned_model_revision": {
+      "evidence": {
+        "revision": "42ed227ee7df40d41602854ae760620d6eb651fe"
+      },
+      "gate_id": "pinned_model_revision",
+      "state": "PASS"
+    },
+    "predeclared_exact_boundary_binding": {
+      "evidence": {
+        "binding": {
+          "bound_video": "/opt/phiagent/runs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.mp4",
+          "bound_video_sha256": "c404b9b570f101e355abf1acfe7edb73a68eb31ab44d0598bd0a90e38f542425",
+          "command": [
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-nostdin",
+            "-y",
+            "-loop",
+            "1",
+            "-framerate",
+            "24",
+            "-i",
+            "/opt/phiagent/runs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/h0-seed-2026082521-retry1/frozen-inputs/figure-blanket-obstacle-diagonal-e2-001.png",
+            "-i",
+            "/opt/phiagent/runs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.raw.mp4",
+            "-filter_complex",
+            "[0:v]trim=start_frame=0:end_frame=1,setpts=PTS-STARTPTS[first];[1:v]trim=start_frame=0:end_frame=191,setpts=PTS-STARTPTS[rest];[first][rest]concat=n=2:v=1:a=0,format=yuv420p[v]",
+            "-map",
+            "[v]",
+            "-map",
+            "1:a?",
+            "-r",
+            "24",
+            "-c:v",
+            "libx264",
+            "-preset",
+            "slow",
+            "-crf",
+            "0",
+            "-pix_fmt",
+            "yuv420p",
+            "-c:a",
+            "copy",
+            "-t",
+            "8.000000000",
+            "-movflags",
+            "+faststart",
+            "/opt/phiagent/runs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.mp4"
+          ],
+          "generated_frame_count": 191,
+          "method": "prepend_exact_source_frame_then_first_191_generated_frames",
+          "raw_video": "/opt/phiagent/runs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.raw.mp4",
+          "raw_video_sha256": "96d2684e62eb18c5c807eecc1007029b0a0f1364af96b04d85f7e058415f4886",
+          "source_frame_count": 1,
+          "source_frame_sha256": "7a34261281d2a6ecc691ebbd286fdd1608c6d9ca5d69e8a7c0721477f721bf66",
+          "thresholds_unchanged": true
+        },
+        "raw_candidate_preserved": true
+      },
+      "gate_id": "predeclared_exact_boundary_binding",
+      "state": "PASS"
+    },
+    "single_uninterrupted_shot_no_cut_crossfade_or_teleport": {
+      "evidence": {
+        "detected_hard_cut_times_seconds": [],
+        "reason": "Hard-cut pre-screen passed; crossfade, teleport, and local material continuity still require native-resolution review."
+      },
+      "gate_id": "single_uninterrupted_shot_no_cut_crossfade_or_teleport",
+      "state": "UNAVAILABLE"
+    },
+    "terminal_motion_below_1_pixel_rms_for_last_12_frames": {
+      "evidence": {
+        "terminal_flow": {
+          "aggregate_vector_magnitude_rms_pixels": 1.1697627917454212,
+          "algorithm": "OpenCV Farneback dense optical flow",
+          "frame_count": 12,
+          "maximum_pairwise_vector_magnitude_rms_pixels": 2.5562992095947266,
+          "pairwise_vector_magnitude_rms_pixels": [
+            2.24448561668396,
+            2.5562992095947266,
+            1.495693564414978,
+            0.9592167139053345,
+            0.4932597577571869,
+            0.2532113790512085,
+            0.080439493060112,
+            0.06291485577821732,
+            0.04967014119029045,
+            0.03724569082260132,
+            0.022655164822936058
+          ],
+          "start_frame": 180,
+          "transition_count": 11
+        },
+        "threshold": 1.0
+      },
+      "gate_id": "terminal_motion_below_1_pixel_rms_for_last_12_frames",
+      "state": "FAIL"
+    }
+  },
+  "automatic_metrics": {
+    "background_patch_ssim": {
+      "bed_window": 0.921295,
+      "upper_center_room": 0.936679
+    },
+    "detected_hard_cut_times_seconds": [],
+    "first_frame_ssim": 0.999535,
+    "minimum_background_patch_ssim": 0.921295,
+    "terminal_flow": {
+      "aggregate_vector_magnitude_rms_pixels": 1.1697627917454212,
+      "algorithm": "OpenCV Farneback dense optical flow",
+      "frame_count": 12,
+      "maximum_pairwise_vector_magnitude_rms_pixels": 2.5562992095947266,
+      "pairwise_vector_magnitude_rms_pixels": [
+        2.24448561668396,
+        2.5562992095947266,
+        1.495693564414978,
+        0.9592167139053345,
+        0.4932597577571869,
+        0.2532113790512085,
+        0.080439493060112,
+        0.06291485577821732,
+        0.04967014119029045,
+        0.03724569082260132,
+        0.022655164822936058
+      ],
+      "start_frame": 180,
+      "transition_count": 11
+    }
+  },
+  "campaign_id": "figure-two-robot-blanket-tri-evolve-e2-v1",
+  "candidate": {
+    "case_id": "h0-direct-obstacle-fold",
+    "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/remote-results/h200-1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.mp4",
+    "raw_path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/remote-results/h200-1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.raw.mp4",
+    "raw_sha256": "96d2684e62eb18c5c807eecc1007029b0a0f1364af96b04d85f7e058415f4886",
+    "seed": 2026082521,
+    "sha256": "c404b9b570f101e355abf1acfe7edb73a68eb31ab44d0598bd0a90e38f542425",
+    "strategy": "direct_multi_object_fold"
+  },
+  "claim_boundary": "MiniMax-H3 outputs and deterministic boundary binding are generated camera-pixel proposals. They are not recorded real-hardware execution and cannot establish metric geometry, force, safety, joint feasibility, or physical task success.",
+  "evaluation_contract": {
+    "canonical_sha256": "6c8a03b9c56d7a32bc72f7cf70fc15b2c57cae5a3b976120490a934f2e523092",
+    "file_sha256": "ecc9b2a844135dd529e4327ba69bbd7352736b37f572cf04b92f27ce6d1100ca",
+    "path": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/inputs/evaluation-contract.json"
+  },
+  "failed_automatic_hard_gate_ids": [
+    "terminal_motion_below_1_pixel_rms_for_last_12_frames"
+  ],
+  "logs": {
+    "first_frame_ssim_tail": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/remote-results/h200-1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf58.76.100\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 18613 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High 4:4:4 Predictive) (avc1 / 0x31637661), yuv420p(progressive), 1024x768, 18477 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 32000 Hz, stereo, fltp, 129 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\nInput #1, png_pipe, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/inputs/initial-frame.png':\n  Duration: N/A, bitrate: N/A\n  Stream #1:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1024x768, 24 fps, 24 tbr, 24 tbn\nStream mapping:\n  Stream #0:0 (h264) -> trim:default\n  Stream #1:0 (png) -> setpts:default\n  ssim:default -> Stream #0:0 (wrapped_avframe)\n[Parsed_ssim_5 @ 0x84901e1c0] not matching timebases found between first input: 1/12288 and second input 1/24, results may be incorrect!\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.12.102\n  Stream #0:0: Video: wrapped_avframe, yuv420p(progressive), 1024x768, q=2-31, 200 kb/s, 24 fps, 24 tbn\n    Metadata:\n      encoder         : Lavc62.28.102 wrapped_avframe\n[Parsed_ssim_5 @ 0x84901e1c0] SSIM Y:1.000000 (inf) U:0.998641 (28.669082) V:0.998568 (28.440178) All:0.999535 (33.324335)\n[out#0/null @ 0x84901c780] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\nframe=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=0.433x elapsed=0:00:00.09    \n",
+    "scene_cut_tail": "Input #0, mov,mp4,m4a,3gp,3g2,mj2, from '/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/remote-results/h200-1/h0-seed-2026082521-retry1/candidates/h0-direct-obstacle-fold/seed-2026082521/candidate.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf58.76.100\n  Duration: 00:00:08.00, start: 0.000000, bitrate: 18613 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High 4:4:4 Predictive) (avc1 / 0x31637661), yuv420p(progressive), 1024x768, 18477 kb/s, 24 fps, 24 tbr, 12288 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 32000 Hz, stereo, fltp, 129 kb/s (default)\n    Metadata:\n      handler_name    : SoundHandler\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))\n[Parsed_showinfo_1 @ 0xa4d04d680] config in time_base: 1/12288, frame_rate: 24/1\n[Parsed_showinfo_1 @ 0xa4d04d680] config out time_base: 0/0, frame_rate: 0/0\n[vf#0:0 @ 0xa4ccac200] No filtered frames for output stream, trying to initialize anyway.\nOutput #0, null, to 'pipe:':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.12.102\n  Stream #0:0(und): Video: wrapped_avframe, yuv420p(progressive), 1024x768, q=2-31, 200 kb/s, 24 fps, 12288 tbn (default)\n    Metadata:\n      encoder         : Lavc62.28.102 wrapped_avframe\n      handler_name    : VideoHandler\n[out#0/null @ 0xa4d04c300] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\n[out#0/null @ 0xa4d04c300] Output file is empty, nothing was encoded(check -ss / -t / -frames parameters if used)\nframe=    0 fps=0.0 q=0.0 Lsize=N/A time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.43    \n"
+  },
+  "native_review_gate_results": {
+    "both_pillows_clear_and_settled_before_quilt_motion": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "both_pillows_clear_and_settled_before_quilt_motion",
+      "state": "UNAVAILABLE"
+    },
+    "candidate_sha_bound_native_resolution_user_review": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "candidate_sha_bound_native_resolution_user_review",
+      "state": "UNAVAILABLE"
+    },
+    "canonical_square_quilt_settles_before_first_fold": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "canonical_square_quilt_settles_before_first_fold",
+      "state": "UNAVAILABLE"
+    },
+    "exactly_one_persistent_quilt": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "exactly_one_persistent_quilt",
+      "state": "UNAVAILABLE"
+    },
+    "exactly_two_persistent_pillows": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "exactly_two_persistent_pillows",
+      "state": "UNAVAILABLE"
+    },
+    "exactly_two_persistent_robot_identities": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "exactly_two_persistent_robot_identities",
+      "state": "UNAVAILABLE"
+    },
+    "first_fold_settles_before_regrasp": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "first_fold_settles_before_regrasp",
+      "state": "UNAVAILABLE"
+    },
+    "four_anatomically_consistent_robot_arms_and_hands": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "four_anatomically_consistent_robot_arms_and_hands",
+      "state": "UNAVAILABLE"
+    },
+    "four_quilt_corners_and_bound_edges_persist_or_reacquire": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "four_quilt_corners_and_bound_edges_persist_or_reacquire",
+      "state": "UNAVAILABLE"
+    },
+    "lifted_cloth_motion_is_gravity_and_support_consistent": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "lifted_cloth_motion_is_gravity_and_support_consistent",
+      "state": "UNAVAILABLE"
+    },
+    "no_robot_robot_robot_table_or_object_interpenetration": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "no_robot_robot_robot_table_or_object_interpenetration",
+      "state": "UNAVAILABLE"
+    },
+    "no_text_guides_markers_or_watermarks": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "no_text_guides_markers_or_watermarks",
+      "state": "UNAVAILABLE"
+    },
+    "overhang_recovered_before_first_fold": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "overhang_recovered_before_first_fold",
+      "state": "UNAVAILABLE"
+    },
+    "pillow_assignment_identity_persists": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "pillow_assignment_identity_persists",
+      "state": "UNAVAILABLE"
+    },
+    "pillows_remain_in_separate_safe_zones": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "pillows_remain_in_separate_safe_zones",
+      "state": "UNAVAILABLE"
+    },
+    "quilt_color_pattern_thickness_and_topology_persist": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "quilt_color_pattern_thickness_and_topology_persist",
+      "state": "UNAVAILABLE"
+    },
+    "second_fold_begins_only_after_bilateral_regrasp": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "second_fold_begins_only_after_bilateral_regrasp",
+      "state": "UNAVAILABLE"
+    },
+    "terminal_bundle_inside_viewer_far_center_target_zone": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "terminal_bundle_inside_viewer_far_center_target_zone",
+      "state": "UNAVAILABLE"
+    },
+    "terminal_bundle_moves_as_one_connected_material": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "terminal_bundle_moves_as_one_connected_material",
+      "state": "UNAVAILABLE"
+    },
+    "terminal_bundle_moves_only_under_dual_contact": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "terminal_bundle_moves_only_under_dual_contact",
+      "state": "UNAVAILABLE"
+    },
+    "terminal_compact_rectangle": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "terminal_compact_rectangle",
+      "state": "UNAVAILABLE"
+    },
+    "tucked_corner_recovered_before_rotation": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "tucked_corner_recovered_before_rotation",
+      "state": "UNAVAILABLE"
+    },
+    "visible_contact_precedes_every_pillow_motion": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "visible_contact_precedes_every_pillow_motion",
+      "state": "UNAVAILABLE"
+    },
+    "visible_contact_precedes_every_quilt_motion": {
+      "evidence": {
+        "reason": "candidate-SHA-bound native-resolution human review not completed"
+      },
+      "gate_id": "visible_contact_precedes_every_quilt_motion",
+      "state": "UNAVAILABLE"
+    }
+  },
+  "overall_visual_acceptance": false,
+  "physical_promotion": {
+    "promote": false,
+    "reason": "proposal_not_physical_calibration"
+  },
+  "physical_promotion_gate_results": {
+    "calibrated_metric_camera": {
+      "evidence": {
+        "reason": "generated RGB cannot satisfy physical promotion evidence"
+      },
+      "gate_id": "calibrated_metric_camera",
+      "state": "UNAVAILABLE"
+    },
+    "collision_checked_executable_motion": {
+      "evidence": {
+        "reason": "generated RGB cannot satisfy physical promotion evidence"
+      },
+      "gate_id": "collision_checked_executable_motion",
+      "state": "UNAVAILABLE"
+    },
+    "exact_robot_joint_trajectories": {
+      "evidence": {
+        "reason": "generated RGB cannot satisfy physical promotion evidence"
+      },
+      "gate_id": "exact_robot_joint_trajectories",
+      "state": "UNAVAILABLE"
+    },
+    "force_or_tactile_contact_evidence": {
+      "evidence": {
+        "reason": "generated RGB cannot satisfy physical promotion evidence"
+      },
+      "gate_id": "force_or_tactile_contact_evidence",
+      "state": "UNAVAILABLE"
+    },
+    "persistent_metric_quilt_geometry": {
+      "evidence": {
+        "reason": "generated RGB cannot satisfy physical promotion evidence"
+      },
+      "gate_id": "persistent_metric_quilt_geometry",
+      "state": "UNAVAILABLE"
+    },
+    "recorded_real_robot_execution": {
+      "evidence": {
+        "reason": "generated RGB cannot satisfy physical promotion evidence"
+      },
+      "gate_id": "recorded_real_robot_execution",
+      "state": "UNAVAILABLE"
+    }
+  },
+  "review_packet": {
+    "contact_sheet": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/evaluations/h0-seed-2026082521-retry1/native-review-contact-sheet.jpg",
+    "contact_sheet_sha256": "6abbc6082d172d1dd1e3e0a95a85c2c65144d277e59d1543cb5aaf10090a3bee",
+    "frame_indices": [
+      0,
+      10,
+      24,
+      34,
+      52,
+      67,
+      77,
+      96,
+      110,
+      125,
+      149,
+      173,
+      191
+    ],
+    "template": "/Users/jiangyuhua/Documents/ChatGPT/PhiAgent-0/outputs/figure-two-robot-blanket-tri-evolve/20260825T155443Z-e2-v1/evaluations/h0-seed-2026082521-retry1/native-review-template.json"
+  },
+  "schema_version": "1.0.0"
+}
