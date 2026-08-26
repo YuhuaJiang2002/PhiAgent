@@ -204,6 +204,18 @@ morphology/size jump during the fast fist gesture around 8-9 seconds. This is a
 geometric gesture-retargeting visualization without object manipulation, not
 official PhiZero inference.
 
+#### H3MR 21-Keypoint Overlay Comparison
+
+[![H3MR 21-Keypoint Overlay Comparison](demo/showcase/h3mr-21-keypoint-overlay-comparison.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-21-keypoint-overlay-comparison.mp4)
+
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-21-keypoint-overlay-comparison.mp4)
+
+#### H3MR MANO Mesh Comparison
+
+[![H3MR MANO Mesh Comparison](demo/showcase/h3mr-mano-mesh-comparison.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-mano-mesh-comparison.mp4)
+
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-mano-mesh-comparison.mp4)
+
 ### Confidence-routed three-hand comparison
 
 [![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/three-hand-confidence-routed.mp4)
