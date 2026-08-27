@@ -107,6 +107,15 @@
         text-transform: uppercase;
       }
 
+      .copy .status-working {
+        margin: 0 0 8px;
+        color: #7ee7c8;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
       .copy .status-accepted {
         margin: 0 0 8px;
         color: #7ee7c8;
@@ -400,6 +409,26 @@
             <h2>T-shirt folding to three final positions</h2>
             <p><strong>Input:</strong> The same T-shirt scene and dual-arm robot setup.<br><strong>Output:</strong> Three synchronized folds that place the finished T-shirt in front, left, or right.</p>
             <a class="video-link" href="showcase/tshirt-fold-strategies/three-strategy-comparison.mp4?v=2">Open MP4</a>
+          </div>
+        </article>
+
+        <article class="featured" id="rm65-simulation-replay">
+          <video controls muted loop playsinline preload="metadata"
+            poster="showcase/rm65-ag2f90c-source-vs-simulation-v11.jpg?v=1">
+            <source src="showcase/rm65-ag2f90c-source-vs-simulation-v11.mp4?v=1" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <p class="status-working">Simulation working · URDF-constrained IK/FK replay</p>
+            <h2>PhiAgent folding video to RM65 simulation</h2>
+            <p><strong>Input:</strong> An eight-second PhiAgent dual-arm T-shirt-folding video with reviewed gripper points and open/close events.<br><strong>Output:</strong> The synchronized source-conditioned motion realized in MuJoCo by two six-axis RealMan RM65-B arms and AG2F90-C grippers. All 192 frames are IK-solvable in this model; mean left/right EEF FK residual is 0.61/0.51 mm and grasp-event fingertip clearance is 19.8–31.3 mm above the tabletop.</p>
+            <a class="video-link" href="showcase/rm65-ag2f90c-source-vs-simulation-v11.mp4?v=1">Open comparison MP4</a>
+            ·
+            <a class="video-link" href="showcase/rm65-ag2f90c-simulation-only-v11.mp4?v=1">Open simulation only</a>
+            ·
+            <a class="video-link" href="showcase/rm65-ag2f90c-source-vs-simulation-v11-audit.json?v=1">Inspect audit</a>
+            ·
+            <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/blob/main/docs/RM65_SIMULATION_REPLAY_DEMO.md">Method and scope</a>
           </div>
         </article>
 

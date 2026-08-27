@@ -1,0 +1,10 @@
+{
+  "schema_version": "phiagent-rm65-reviewed-eef-height/1.0",
+  "description": "Event-conditioned fingertip-centre heights for the source folding replay. Table top is z=0.014 m; grasp events approach within 21-31 mm and transport phases lift clear.",
+  "frames": [0, 20, 32, 40, 64, 71, 80, 96, 104, 112, 140, 150, 157, 168, 191],
+  "left_z_m": [0.075, 0.070, 0.040, 0.035, 0.065, 0.040, 0.075, 0.035, 0.035, 0.055, 0.070, 0.060, 0.040, 0.080, 0.090],
+  "right_z_m": [0.090, 0.085, 0.045, 0.040, 0.070, 0.045, 0.080, 0.045, 0.040, 0.055, 0.070, 0.060, 0.045, 0.090, 0.100],
+  "grasp_transition_frames": [32, 104],
+  "release_transition_frames": [71, 157],
+  "claim_boundary": "Reviewed visual-contact height anchors for the comparison demo; not measured cloth contact or force-torque ground truth."
+}

@@ -1,0 +1,45 @@
+{
+  "schema_version": "phiagent-rm65-public-replay-audit/1.0",
+  "status": "WORKING_SIMULATION",
+  "summary": "The source-conditioned folding motion is realized as a synchronized MuJoCo joint replay for two six-axis RealMan RM65-B arms with AG2F90-C grippers.",
+  "input": {
+    "description": "PhiAgent dual-arm T-shirt-folding video with reviewed gripper points and open/close events",
+    "frames": 192,
+    "fps": 24.0,
+    "duration_seconds": 8.0,
+    "resolution": [1024, 768]
+  },
+  "output": {
+    "comparison_resolution": [2048, 768],
+    "robot": "RealMan RM65-B",
+    "arm_revolute_joints_per_side": 6,
+    "gripper": "ChangingTek AG2F90-C",
+    "simulator": "MuJoCo",
+    "finite_state": true,
+    "ik_solved_frames": 192
+  },
+  "eef_fk_residual_m": {
+    "left": {"mean": 0.0006108626447156696, "rmse": 0.0007944883172853495, "max": 0.003919834510588202},
+    "right": {"mean": 0.0005141603175340218, "rmse": 0.0007087508826383597, "max": 0.0016451543891417124}
+  },
+  "grasp_event_table_clearance_m": {
+    "left_min": 0.019765753236703557,
+    "left_max": 0.025770669662871663,
+    "right_min": 0.024676008218190923,
+    "right_max": 0.03128662464597309
+  },
+  "temporal": {
+    "left_max_frame_joint_delta_rad": 0.11371248217105934,
+    "right_max_frame_joint_delta_rad": 0.11269783230550678,
+    "left_max_joint_acceleration_rad_s2": 14.849433095610891,
+    "right_max_joint_acceleration_rad_s2": 22.02248374730567,
+    "gripper_half_command_crossing_frames": [32, 71, 104, 157]
+  },
+  "artifacts": {
+    "comparison_mp4": {"path": "rm65-ag2f90c-source-vs-simulation-v11.mp4", "sha256": "9a130815a8d88d2039da9f1809bb0ecf4d960ec5a0f1c573ed2c99c08fc3b510"},
+    "simulation_mp4": {"path": "rm65-ag2f90c-simulation-only-v11.mp4", "sha256": "7651c148374e1667a71e5c055c62f2f0b957edec6ede0d3a3087645edcb40746"},
+    "poster": {"path": "rm65-ag2f90c-source-vs-simulation-v11.jpg", "sha256": "99f73031f4e038539b20d1472441870ffcb4164c7590d275da9810cfeb251679"},
+    "state_npz": {"path": "rm65-ag2f90c-source-vs-simulation-v11-state.npz", "sha256": "04cc6a64dfc0395310f98a676b4bfa8be71372a5609689b808381be6d969b364"}
+  },
+  "claim_boundary": "WORKING simulation means the published URDF-constrained kinematic replay is solvable and renderable in MuJoCo. It is not a claim of cloth/contact dynamics, collision-safe control, calibrated camera extrinsics, or recorded hardware execution."
+}

@@ -68,6 +68,24 @@ strategies, not calibrated cloth physics or real-robot execution. See the
 
 Click a preview below to open its MP4.
 
+### URDF-constrained RM65 simulation replay
+
+[![PhiAgent folding video and synchronized RM65-B MuJoCo replay](demo/showcase/rm65-ag2f90c-source-vs-simulation-v11.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#rm65-simulation-replay)
+
+[Play the synchronized source-versus-simulation MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-source-vs-simulation-v11.mp4),
+[watch the simulation alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-simulation-only-v11.mp4),
+or inspect the [measured audit](demo/showcase/rm65-ag2f90c-source-vs-simulation-v11-audit.json)
+and [method description](docs/RM65_SIMULATION_REPLAY_DEMO.md).
+
+This demo shows that the source-conditioned folding motion can be realized in
+MuJoCo as a URDF-constrained joint replay for two six-axis RealMan RM65-B arms
+with AG2F90-C grippers. The eight-second output contains 192 synchronized frames
+at 24 FPS. Every state is finite and IK-solvable in the published model; mean
+left/right EEF forward-kinematics residual is 0.61/0.51 mm, with maxima of
+3.92/1.65 mm. This is a working kinematic simulation result. It does not by
+itself claim cloth dynamics, collision-safe control, calibrated camera
+extrinsics, or recorded real-robot execution.
+
 ### Supplemental real-scene action-conditioned comparison
 
 [![Accepted OSCAR AC-WM counterfactuals: carry right versus lift up](demo/showcase/oscar-acwm-accepted-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/oscar-acwm-accepted-comparison.mp4)

@@ -1,0 +1,28 @@
+{
+  "schema_version": "phiagent-rm65-a-edge-mount/1.0",
+  "description": "Source-conditioned raised and table-offset dual-shoulder mount on near long edge A; both six-axis RM65 arms point toward the table workspace.",
+  "table": {
+    "half_size_xy_m": [0.55, 0.35],
+    "center_y_m": 0.10,
+    "working_edge": "A / near long edge"
+  },
+  "left_base_xyz_rpy": [-0.21, -0.28, 0.19, 1.5708, -0.87266, -1.5708],
+  "right_base_xyz_rpy": [0.21, -0.28, 0.19, -1.5708, 0.87266, -1.5708],
+  "shoulder_center_distance_m": 0.42,
+  "table_inward_direction_world": [0.0, 1.0, 0.0],
+  "camera": {
+    "azimuth_deg": 45.0,
+    "elevation_deg": -25.0,
+    "distance_m": 1.15,
+    "lookat_xyz_m": [0.0, 0.10, 0.10]
+  },
+  "monocular_depth_regularization": {
+    "stable_plane_to_source_ray_blend": 0.50,
+    "left_eef_z_offset_m": -0.02,
+    "right_eef_z_offset_m": -0.06,
+    "eef_world_z_range_m": [0.025, 0.20],
+    "eef_height_anchors": "rm65_reference_video_eef_height_anchors.json",
+    "ik_rotation_weight": 0.01
+  },
+  "claim_boundary": "Approximate RGB-conditioned mount/camera layout for visual replay; not surveyed extrinsic calibration."
+}

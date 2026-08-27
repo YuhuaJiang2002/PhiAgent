@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-27.rm65-simulation-replay-v11-working",
+  "recorded_at": "2026-08-27T09:50:23Z",
+  "status": "WORKING",
+  "scope": "Publish the source-conditioned T-shirt-folding motion as an audited dual-RM65-B plus AG2F90-C MuJoCo simulation replay.",
+  "summary": "The eight-second, 192-frame source motion is realized in MuJoCo as a finite, URDF-constrained dual-arm joint replay with synchronized gripper events and sub-4-mm maximum EEF FK residual.",
+  "evidence": [
+    "The H.264 yuv420p comparison is 2048x768, 24 FPS, 192 frames and 8.0 seconds with SHA-256 9a130815a8d88d2039da9f1809bb0ecf4d960ec5a0f1c573ed2c99c08fc3b510.",
+    "All 192 states are finite and IK-solvable in the configured MuJoCo model.",
+    "Mean left/right EEF FK residual is 0.6109/0.5142 mm; maximum residual is 3.9198/1.6452 mm.",
+    "Reviewed grasp-event fingertip clearance is 19.8-25.8 mm on the left and 24.7-31.3 mm on the right.",
+    "The public audit binds the comparison, simulation-only video, poster and state NPZ by SHA-256."
+  ],
+  "lessons": [
+    "Optimizing uncalibrated image-plane alignment alone can produce visibly floating grippers; event-conditioned EEF height constraints restore a plausible tabletop approach.",
+    "Raising and moving the dual bases away from the table while lowering only contact-phase EEF targets produces a more human-like shoulder/elbow posture without sacrificing IK feasibility.",
+    "Base pose, camera and EEF depth are suitable targets for an evaluator-guided iterative search rather than permanent manual tuning."
+  ],
+  "limitations": [
+    "The result is a kinematic MuJoCo replay without deformable cloth dynamics, enabled collision proof, calibrated camera extrinsics, force closure, controller validation or recorded real-robot execution."
+  ],
+  "next_actions": [
+    "Replace manual base/depth tuning with a reconstruction-conditioned agentic evaluator that optimizes reprojection, reachability, collision margin, contact height and temporal smoothness."
+  ],
+  "supersedes": [],
+  "tags": ["rm65", "ag2f90c", "mujoco", "ik", "simulation", "github-pages", "working"]
+}

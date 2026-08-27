@@ -1,0 +1,28 @@
+{
+  "schema_version": "phiagent-rm65-reviewed-eef-anchors/1.0",
+  "source_video_frames": 192,
+  "description": "Reviewed centers between the visible AG2F90-C distal fingertips. These replace the older garment/contact-target points for visual EEF replay only.",
+  "left_tip_px": {
+    "0": [487, 438],
+    "24": [320, 350],
+    "48": [285, 220],
+    "72": [310, 285],
+    "96": [525, 455],
+    "120": [375, 245],
+    "144": [490, 305],
+    "168": [180, 455],
+    "191": [405, 425]
+  },
+  "right_tip_px": {
+    "0": [693, 312],
+    "24": [660, 170],
+    "48": [535, 115],
+    "72": [525, 165],
+    "96": [675, 340],
+    "120": [535, 180],
+    "144": [555, 285],
+    "168": [620, 175],
+    "191": [625, 160]
+  },
+  "claim_boundary": "manual RGB review at one-second anchors; not encoder, calibration, or joint-angle ground truth"
+}
