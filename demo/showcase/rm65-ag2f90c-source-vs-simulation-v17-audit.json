@@ -1,0 +1,67 @@
+{
+  "schema_version": "phiagent-rm65-public-replay-audit/1.2",
+  "status": "WORKING_SIMULATION",
+  "summary": "Browser-compatible delivery of the audited v16 synchronized dual-RM65-B MuJoCo replay; trajectory, gripper state and rendered frames are unchanged.",
+  "input": {
+    "description": "PhiAgent dual-arm T-shirt-folding video with reviewed gripper points, wrist-to-tip axes and open/close events",
+    "frames": 192,
+    "fps": 24.0,
+    "duration_seconds": 8.0,
+    "resolution": [1024, 768]
+  },
+  "output": {
+    "comparison_resolution": [2048, 768],
+    "robot": "RealMan RM65-B",
+    "arm_revolute_joints_per_side": 6,
+    "gripper": "ChangingTek AG2F90-C",
+    "simulator": "MuJoCo",
+    "finite_state": true,
+    "ik_solved_frames": 192,
+    "left_tool_roll_offset_deg": 90.0
+  },
+  "browser_media": {
+    "comparison_codec": "H.264/AVC High@4.1 (avc1)",
+    "pixel_format": "yuv420p",
+    "faststart": true,
+    "audio": false,
+    "psnr_vs_decoded_v16_db": 47.421813,
+    "ssim_vs_decoded_v16": 0.994808,
+    "state_and_frame_timing_changed": false
+  },
+  "eef_fk_residual_m": {
+    "left": {"mean": 0.0007233620166712196, "rmse": 0.0008690742552971239, "max": 0.003776076877248887},
+    "right": {"mean": 0.000678854132364941, "rmse": 0.0007825479770016683, "max": 0.0019191238069098328}
+  },
+  "ik_solver_position_error_m": {
+    "left": {"mean": 0.0004979534065414514, "max": 0.0017507126265475705},
+    "right": {"mean": 0.0005526875579104107, "max": 0.0017191260569470695}
+  },
+  "visible_gripper_axis_error_deg": {
+    "left": {"mean": 3.774288361886615, "max": 7.5496947812715325},
+    "right": {"mean": 1.4645083835103765, "max": 3.082261027334566}
+  },
+  "joint_limit_audit": {
+    "minimum_margin_rad": 0.27042168094229924,
+    "left_joint_4_range_rad": [-0.057669378778574816, 0.36526453353795074],
+    "right_joint_4_range_rad": [1.0463928353239003, 1.759717260258718]
+  },
+  "artifacts": {
+    "comparison_mp4": {
+      "path": "rm65-ag2f90c-source-vs-simulation-v17.mp4",
+      "sha256": "94b1599e84ed987c00e0cb0bdefb501e755a9cc2b453bf8c86c2a76487f39a1a"
+    },
+    "simulation_mp4": {
+      "path": "rm65-ag2f90c-simulation-only-v17.mp4",
+      "sha256": "906f095add2547c9e2c4b23686e7355150988cfab2e0f3206d07d57a13e3a42f"
+    },
+    "poster": {
+      "path": "rm65-ag2f90c-source-vs-simulation-v16.jpg",
+      "sha256": "c3cdb770ccce1cc1d85a596e0b86d6bb7397a479f2136ee6fecc6a68342c613b"
+    },
+    "state_npz": {
+      "path": "rm65-ag2f90c-source-vs-simulation-v16-state.npz",
+      "sha256": "7ee4c018ff0c46e03d3869a9155732d6e7204601f4161572df69d2f30bccc5d4"
+    }
+  },
+  "claim_boundary": "WORKING simulation means the published URDF-constrained kinematic replay is solvable and renderable in MuJoCo. V17 is a media-compatibility release and does not alter the audited v16 trajectory."
+}

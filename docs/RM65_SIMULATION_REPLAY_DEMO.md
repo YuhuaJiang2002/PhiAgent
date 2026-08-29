@@ -2,7 +2,7 @@
 
 ## Result
 
-The public v16 demo establishes that the reviewed source-conditioned folding
+The public v17 demo establishes that the reviewed source-conditioned folding
 motion can be realized as a synchronized MuJoCo joint replay for two six-axis
 RealMan RM65-B arms with AG2F90-C grippers.
 
@@ -57,6 +57,17 @@ does not change the EEF path or the observed longitudinal axis. On real
 hardware, the same quantity must be represented by a measured
 flange-to-gripper extrinsic rather than blindly added to a joint command.
 
+## Browser media compatibility
+
+V17 changes only the web delivery encoding. The v16 comparison MP4 used
+MPEG-4 Part 2 (`mp4v`), which is not accepted by several HTML5 browser video
+decoders even though the container is MP4. The comparison is re-encoded as
+H.264/AVC (`avc1`, High@4.1) with `yuv420p`, and both web MP4s place the `moov`
+metadata before media data for progressive playback. Relative to the decoded
+v16 comparison, the compatibility encode measures 47.42 dB PSNR and 0.9948
+SSIM. The 192-frame trajectory, MuJoCo state and rendering content are
+otherwise unchanged.
+
 ## Reproducibility assets
 
 - `configs/rm65_reference_video_actual_eef_anchors.json`: reviewed image-space
@@ -78,7 +89,11 @@ flange-to-gripper extrinsic rather than blindly added to a joint command.
   clearance audit.
 - `demo/showcase/rm65-ag2f90c-source-vs-simulation-v16-state.npz`: final 192-frame
   q, EEF, gripper and timing state.
-- `demo/showcase/rm65-ag2f90c-source-vs-simulation-v16-audit.json`: public
+- `demo/showcase/rm65-ag2f90c-source-vs-simulation-v17.mp4`: browser-compatible
+  synchronized comparison.
+- `demo/showcase/rm65-ag2f90c-simulation-only-v17.mp4`: browser-compatible
+  simulation-only replay.
+- `demo/showcase/rm65-ag2f90c-source-vs-simulation-v17-audit.json`: public
   measured summary and artifact hashes.
 
 The robot and gripper mesh packages remain external assets and are not vendored
