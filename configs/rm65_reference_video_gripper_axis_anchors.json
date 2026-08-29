@@ -1,0 +1,30 @@
+{
+  "schema_version": "phiagent-rm65-reviewed-gripper-axis/1.0",
+  "description": "Reviewed wrist-to-distal-tip image directions. DX/DY are source-image vectors; view_depth is the regularized component along the review-camera ray after normalizing DX/DY.",
+  "frames": [0, 24, 40, 48, 72, 96, 120, 144, 168, 191],
+  "left_dx_dy_view_depth": [
+    [140, -95, 2.75],
+    [115, -95, 2.75],
+    [150, -95, 2.75],
+    [85, -70, 2.75],
+    [140, -120, 2.75],
+    [110, -80, 2.75],
+    [140, -110, 2.75],
+    [50, -115, 2.75],
+    [-70, -160, 3.0],
+    [-15, -130, 3.0]
+  ],
+  "right_dx_dy_view_depth": [
+    [-110, 160, 0.75],
+    [-125, 130, 0.75],
+    [-120, 90, 0.75],
+    [-120, 80, 0.75],
+    [-125, 70, 0.75],
+    [-120, 165, 0.75],
+    [-125, 95, 0.75],
+    [-120, 90, 0.75],
+    [-120, 65, 0.75],
+    [-120, 65, 0.75]
+  ],
+  "claim_boundary": "Manual RGB review; image direction is observed, camera-depth component is a kinematic regularizer rather than metric ground truth."
+}

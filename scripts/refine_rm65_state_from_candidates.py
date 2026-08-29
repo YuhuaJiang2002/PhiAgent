@@ -12,10 +12,11 @@ import argparse
 import json
 from pathlib import Path
 
+import mujoco
 import numpy as np
 
 from recover_rm65_synchronized_state import _recover_q
-from render_realman_rm65_visual_replay import build_model
+from render_realman_rm65_visual_replay import _joint_dofs, build_model
 
 
 def parse_args() -> argparse.Namespace:
@@ -47,10 +48,106 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--left-seed", nargs=6, type=float, required=True)
     parser.add_argument("--right-seed", nargs=6, type=float, required=True)
     parser.add_argument("--rotation-weight", type=float, default=0.02)
+    parser.add_argument(
+        "--orientation-mode",
+        choices=("full", "axis", "none"),
+        default="full",
+        help="Use axis-only orientation for monocular RGB to avoid an unobserved wrist-roll flip.",
+    )
     parser.add_argument("--posture-weight", type=float, default=5e-6)
+    parser.add_argument(
+        "--left-tool-roll-offset-deg",
+        type=float,
+        default=0.0,
+        help="Fixed joint-6/tool-roll mounting offset applied after axis-only IK.",
+    )
+    parser.add_argument(
+        "--right-tool-roll-offset-deg",
+        type=float,
+        default=0.0,
+        help="Fixed joint-6/tool-roll mounting offset applied after axis-only IK.",
+    )
     parser.add_argument("--table-half-size", nargs=2, type=float, default=(0.55, 0.35))
     parser.add_argument("--table-center-y", type=float, default=0.10)
+    parser.add_argument(
+        "--camera",
+        nargs=6,
+        type=float,
+        metavar=("AZIMUTH", "ELEVATION", "DISTANCE", "LOOK_X", "LOOK_Y", "LOOK_Z"),
+        help="MuJoCo review camera used to lift an observed 2-D gripper axis into 3-D.",
+    )
+    parser.add_argument(
+        "--left-screen-axis",
+        nargs=3,
+        type=float,
+        metavar=("DX", "DY", "VIEW_DEPTH"),
+        help="Visible wrist-to-tip image direction plus its unobserved camera-depth component.",
+    )
+    parser.add_argument(
+        "--right-screen-axis",
+        nargs=3,
+        type=float,
+        metavar=("DX", "DY", "VIEW_DEPTH"),
+        help="Visible wrist-to-tip image direction plus its unobserved camera-depth component.",
+    )
+    parser.add_argument(
+        "--screen-axis-keyframes",
+        type=Path,
+        help="Reviewed frame-wise left/right wrist-to-tip image axes; overrides constant screen axes.",
+    )
+    parser.add_argument(
+        "--joint-anchor-file",
+        type=Path,
+        help="Multistart IK branch anchors used as a temporal posture prior.",
+    )
     return parser.parse_args()
+
+
+def target_rotation_from_axis(axis: np.ndarray) -> np.ndarray:
+    site_z = np.asarray(axis, dtype=np.float64)
+    site_z /= np.linalg.norm(site_z)
+    site_x = np.asarray((0.0, 0.0, 1.0), dtype=np.float64)
+    site_x -= site_z * np.dot(site_x, site_z)
+    if np.linalg.norm(site_x) < 0.1:
+        site_x = np.asarray((1.0, 0.0, 0.0), dtype=np.float64)
+        site_x -= site_z * np.dot(site_x, site_z)
+    site_x /= np.linalg.norm(site_x)
+    return np.column_stack((site_x, np.cross(site_z, site_x), site_z))
+
+
+def observed_axis_rotations(
+    model: mujoco.MjModel,
+    frames: int,
+    camera_values: list[float],
+    image_axis: np.ndarray | list[float],
+) -> np.ndarray:
+    camera = mujoco.MjvCamera()
+    mujoco.mjv_defaultCamera(camera)
+    camera.azimuth, camera.elevation, camera.distance = camera_values[:3]
+    camera.lookat[:] = camera_values[3:]
+    data = mujoco.MjData(model)
+    with mujoco.Renderer(model, height=768, width=1024) as renderer:
+        renderer.update_scene(data, camera=camera)
+        scene_camera = renderer.scene.camera[0]
+        forward = np.asarray(scene_camera.forward, dtype=np.float64)
+        up = np.asarray(scene_camera.up, dtype=np.float64)
+        right = np.cross(forward, up)
+        right /= np.linalg.norm(right)
+    axes = np.asarray(image_axis, dtype=np.float64)
+    if axes.shape == (3,):
+        axes = np.repeat(axes[None, :], frames, axis=0)
+    if axes.shape != (frames, 3):
+        raise ValueError(f"screen axes must have shape (3,) or ({frames}, 3), got {axes.shape}")
+    rotations = []
+    for dx, dy, view_depth in axes:
+        screen_axis = dx * right - dy * up
+        norm = np.linalg.norm(screen_axis)
+        if norm < 1e-8:
+            raise ValueError("screen-axis DX/DY must not both be zero")
+        screen_axis /= norm
+        world_axis = screen_axis + view_depth * forward
+        rotations.append(target_rotation_from_axis(world_axis))
+    return np.asarray(rotations)
 
 
 def temporal_metrics(q: np.ndarray, fps: float) -> dict[str, float]:
@@ -108,14 +205,92 @@ def main() -> None:
         tuple(args.table_half_size),
         args.table_center_y,
     )
+    if bool(args.left_screen_axis) != bool(args.right_screen_axis):
+        raise ValueError("left and right screen-axis constraints must be supplied together")
+    if args.screen_axis_keyframes and args.left_screen_axis:
+        raise ValueError("use either constant screen axes or --screen-axis-keyframes, not both")
+    if (args.left_screen_axis or args.screen_axis_keyframes) and not args.camera:
+        raise ValueError("--camera is required with screen-axis constraints")
+    left_rotations = right_rotations = None
+    screen_axis_manifest: dict[str, object] | None = None
+    if args.screen_axis_keyframes:
+        keyframes = json.loads(args.screen_axis_keyframes.read_text())
+        keyframe_indices = np.asarray(keyframes["frames"], dtype=int)
+        if keyframe_indices[0] != 0 or keyframe_indices[-1] != len(targets["left"]) - 1:
+            raise ValueError("screen-axis keyframes must include the first and final state frames")
+        if np.any(np.diff(keyframe_indices) <= 0):
+            raise ValueError("screen-axis keyframe indices must be strictly increasing")
+        frame_axis: dict[str, np.ndarray] = {}
+        for side in ("left", "right"):
+            values = np.asarray(keyframes[f"{side}_dx_dy_view_depth"], dtype=np.float64)
+            if values.shape != (len(keyframe_indices), 3):
+                raise ValueError(f"{side} screen-axis values must have shape ({len(keyframe_indices)}, 3)")
+            frame_axis[side] = np.column_stack([
+                np.interp(np.arange(len(targets[side])), keyframe_indices, values[:, component])
+                for component in range(3)
+            ])
+        left_rotations = observed_axis_rotations(model, len(targets["left"]), args.camera, frame_axis["left"])
+        right_rotations = observed_axis_rotations(model, len(targets["right"]), args.camera, frame_axis["right"])
+        screen_axis_manifest = {
+            "keyframes": str(args.screen_axis_keyframes),
+            "frames": keyframe_indices.tolist(),
+        }
+    elif args.left_screen_axis:
+        left_rotations = observed_axis_rotations(
+            model, len(targets["left"]), args.camera, args.left_screen_axis
+        )
+        right_rotations = observed_axis_rotations(
+            model, len(targets["right"]), args.camera, args.right_screen_axis
+        )
+        screen_axis_manifest = {
+            "left_screen_dx_dy_view_depth": args.left_screen_axis,
+            "right_screen_dx_dy_view_depth": args.right_screen_axis,
+        }
+    left_q_reference = right_q_reference = None
+    if args.joint_anchor_file:
+        joint_anchors = json.loads(args.joint_anchor_file.read_text())
+        joint_frames = np.asarray(joint_anchors["frames"], dtype=int)
+        if joint_frames[0] != 0 or joint_frames[-1] != len(targets["left"]) - 1:
+            raise ValueError("joint anchor frames must include the first and final state frames")
+        if np.any(np.diff(joint_frames) <= 0):
+            raise ValueError("joint anchor frames must be strictly increasing")
+
+        def interpolate_joint_anchors(side: str) -> np.ndarray:
+            values = np.asarray(joint_anchors[f"{side}_q"], dtype=np.float64)
+            if values.shape != (len(joint_frames), 6):
+                raise ValueError(f"{side}_q must have shape ({len(joint_frames)}, 6)")
+            return np.column_stack([
+                np.interp(np.arange(len(targets[side])), joint_frames, values[:, joint])
+                for joint in range(6)
+            ])
+
+        left_q_reference = interpolate_joint_anchors("left")
+        right_q_reference = interpolate_joint_anchors("right")
     left_q, left_pos, left_rot = _recover_q(
         model, targets["left"], "left", np.asarray(args.left_base),
         args.rotation_weight, np.asarray(args.left_seed), args.posture_weight,
+        target_rotations=left_rotations,
+        q_reference=left_q_reference,
+        orientation_mode=args.orientation_mode,
     )
     right_q, right_pos, right_rot = _recover_q(
         model, targets["right"], "right", np.asarray(args.right_base),
         args.rotation_weight, np.asarray(args.right_seed), args.posture_weight,
+        target_rotations=right_rotations,
+        q_reference=right_q_reference,
+        orientation_mode=args.orientation_mode,
     )
+    if args.orientation_mode == "full" and (
+        args.left_tool_roll_offset_deg or args.right_tool_roll_offset_deg
+    ):
+        raise ValueError("tool-roll offsets require axis-only or position-only orientation")
+    left_q[:, 5] += np.deg2rad(args.left_tool_roll_offset_deg)
+    right_q[:, 5] += np.deg2rad(args.right_tool_roll_offset_deg)
+    for side, q in (("left", left_q), ("right", right_q)):
+        _, dofs = _joint_dofs(model, side)
+        limits = np.asarray([model.jnt_range[model.dof_jntid[dof]] for dof in dofs])
+        if np.any(q < limits[:, 0]) or np.any(q > limits[:, 1]):
+            raise ValueError(f"{side} trajectory exceeds RM65 joint limits after tool-roll offset")
     fps = float(stable["fps"])
     output = args.output_dir / "rm65_synchronized_state.npz"
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -150,6 +325,17 @@ def main() -> None:
         "ik_orientation_error_deg": {
             "left_mean": float(np.degrees(left_rot).mean()), "left_max": float(np.degrees(left_rot).max()),
             "right_mean": float(np.degrees(right_rot).mean()), "right_max": float(np.degrees(right_rot).max()),
+        },
+        "orientation_mode": args.orientation_mode,
+        "tool_roll_offset_deg": {
+            "left": args.left_tool_roll_offset_deg,
+            "right": args.right_tool_roll_offset_deg,
+        },
+        "joint_anchor_file": str(args.joint_anchor_file) if args.joint_anchor_file else None,
+        "rgb_gripper_axis_constraint": {
+            "camera": args.camera,
+            "input": screen_axis_manifest,
+            "semantics": "source-visible wrist-to-tip axis; camera-depth component is regularized, not observed",
         },
         "temporal": {
             "left": temporal_metrics(left_q, fps),

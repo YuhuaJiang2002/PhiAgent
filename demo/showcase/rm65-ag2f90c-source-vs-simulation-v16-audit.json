@@ -1,0 +1,60 @@
+{
+  "schema_version": "phiagent-rm65-public-replay-audit/1.1",
+  "status": "WORKING_SIMULATION",
+  "summary": "Visible gripper-axis constraints, branch-continuous IK and a fixed left tool-roll offset realize the source-conditioned folding motion as a synchronized dual-RM65-B MuJoCo replay without the previous wrist-flip posture.",
+  "input": {
+    "description": "PhiAgent dual-arm T-shirt-folding video with reviewed gripper points, wrist-to-tip axes and open/close events",
+    "frames": 192,
+    "fps": 24.0,
+    "duration_seconds": 8.0,
+    "resolution": [1024, 768]
+  },
+  "output": {
+    "comparison_resolution": [2048, 768],
+    "robot": "RealMan RM65-B",
+    "arm_revolute_joints_per_side": 6,
+    "gripper": "ChangingTek AG2F90-C",
+    "simulator": "MuJoCo",
+    "finite_state": true,
+    "ik_solved_frames": 192,
+    "left_tool_roll_offset_deg": 90.0
+  },
+  "eef_fk_residual_m": {
+    "left": {"mean": 0.0007233620166712196, "rmse": 0.0008690742552971239, "max": 0.003776076877248887},
+    "right": {"mean": 0.000678854132364941, "rmse": 0.0007825479770016683, "max": 0.0019191238069098328}
+  },
+  "ik_solver_position_error_m": {
+    "left": {"mean": 0.0004979534065414514, "max": 0.0017507126265475705},
+    "right": {"mean": 0.0005526875579104107, "max": 0.0017191260569470695}
+  },
+  "visible_gripper_axis_error_deg": {
+    "left": {"mean": 3.774288361886615, "max": 7.5496947812715325},
+    "right": {"mean": 1.4645083835103765, "max": 3.082261027334566}
+  },
+  "joint_limit_audit": {
+    "minimum_margin_rad": 0.27042168094229924,
+    "left_joint_4_range_rad": [-0.057669378778574816, 0.36526453353795074],
+    "right_joint_4_range_rad": [1.0463928353239003, 1.759717260258718],
+    "note": "The superseded position-equivalent wrist branch reached joint-4 limits near +/-3.106 rad."
+  },
+  "grasp_event_table_clearance_m": {
+    "left_min": 0.021140350377835737,
+    "left_max": 0.027278169430622702,
+    "right_min": 0.026910335209893874,
+    "right_max": 0.03237189554865823
+  },
+  "temporal": {
+    "left_max_frame_joint_delta_rad": 0.12765974170009065,
+    "right_max_frame_joint_delta_rad": 0.09387698405953904,
+    "left_max_joint_acceleration_rad_s2": 21.996705893250915,
+    "right_max_joint_acceleration_rad_s2": 19.97594218349702,
+    "gripper_half_command_crossing_frames": [32, 71, 104, 157]
+  },
+  "artifacts": {
+    "comparison_mp4": {"path": "rm65-ag2f90c-source-vs-simulation-v16.mp4", "sha256": "7241c97a72948ea1e468ee843bf73b0df82ccc8d3f5e22393a0269d38144ca3d"},
+    "simulation_mp4": {"path": "rm65-ag2f90c-simulation-only-v16.mp4", "sha256": "9aec8eff7fafba486618b90ce4bf37e72c0f9a98260dfb089c9e1db9c2bc7f8b"},
+    "poster": {"path": "rm65-ag2f90c-source-vs-simulation-v16.jpg", "sha256": "c3cdb770ccce1cc1d85a596e0b86d6bb7397a479f2136ee6fecc6a68342c613b"},
+    "state_npz": {"path": "rm65-ag2f90c-source-vs-simulation-v16-state.npz", "sha256": "7ee4c018ff0c46e03d3869a9155732d6e7204601f4161572df69d2f30bccc5d4"}
+  },
+  "claim_boundary": "WORKING simulation means the published URDF-constrained kinematic replay is solvable and renderable in MuJoCo. It is not a claim of cloth/contact dynamics, collision-safe control, calibrated camera extrinsics, or recorded hardware execution. The 90-degree roll is a reviewed tool-frame regularizer and should become a measured flange-to-gripper extrinsic before hardware control."
+}

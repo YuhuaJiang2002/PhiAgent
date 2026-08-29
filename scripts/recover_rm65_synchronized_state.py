@@ -52,6 +52,16 @@ def _args() -> argparse.Namespace:
     parser.add_argument("--z-scale", type=float, default=0.8)
     parser.add_argument("--z-offset", type=float, default=0.02)
     parser.add_argument("--rotation-weight", type=float, default=0.005)
+    parser.add_argument(
+        "--orientation-mode",
+        choices=("full", "axis", "none"),
+        default="full",
+        help=(
+            "Wrist observation model. 'axis' constrains only the visible gripper "
+            "approach axis and leaves unobserved roll free; this avoids artificial "
+            "wrist-flip IK branches in monocular RGB replay."
+        ),
+    )
     parser.add_argument("--left-seed", nargs=6, type=float, default=(0.0, -0.55, 0.75, 0.0, 0.55, 0.0))
     parser.add_argument("--right-seed", nargs=6, type=float, default=(0.0, -0.55, 0.75, 0.0, 0.55, 0.0))
     parser.add_argument("--posture-weight", type=float, default=0.001)
@@ -271,17 +281,39 @@ def _solve_pose_ik(
     rotation_weight: float,
     preferred_q: np.ndarray,
     posture_weight: float,
+    orientation_mode: str = "full",
 ) -> tuple[float, float]:
     for _ in range(72):
         mujoco.mj_forward(model, data)
         position_error = target_xyz - data.site_xpos[site]
         current_rotation = data.site_xmat[site].reshape(3, 3)
-        rotation_error = Rotation.from_matrix(target_rotation @ current_rotation.T).as_rotvec()
+        if orientation_mode == "full":
+            rotation_error = Rotation.from_matrix(target_rotation @ current_rotation.T).as_rotvec()
+        elif orientation_mode == "axis":
+            current_axis = current_rotation[:, 2]
+            target_axis = target_rotation[:, 2]
+            rotation_error = target_axis - current_axis
+        elif orientation_mode == "none":
+            rotation_error = np.empty(0, dtype=np.float64)
+        else:
+            raise ValueError(f"unsupported orientation mode: {orientation_mode}")
         if np.linalg.norm(position_error) < 0.0018 and np.linalg.norm(rotation_error) < 0.05:
             break
         jacp = np.zeros((3, model.nv)); jacr = np.zeros((3, model.nv))
         mujoco.mj_jacSite(model, data, jacp, jacr, site)
-        jacobian = np.vstack((jacp[:, dofs], rotation_weight * jacr[:, dofs]))
+        if orientation_mode == "full":
+            orientation_jacobian = jacr[:, dofs]
+        elif orientation_mode == "axis":
+            # d(Rz)/dq = omega x (Rz) = -skew(Rz) J_omega.  Unlike a
+            # full SO(3) residual this has rank two, so roll about the gripper
+            # axis is selected by continuity/posture rather than invented from
+            # a single RGB tip observation.
+            x, y, z = current_rotation[:, 2]
+            skew_axis = np.asarray(((0.0, -z, y), (z, 0.0, -x), (-y, x, 0.0)))
+            orientation_jacobian = -skew_axis @ jacr[:, dofs]
+        else:
+            orientation_jacobian = np.empty((0, len(dofs)), dtype=np.float64)
+        jacobian = np.vstack((jacp[:, dofs], rotation_weight * orientation_jacobian))
         error = np.r_[position_error, rotation_weight * rotation_error]
         current_q = data.qpos[qpos]
         lhs = jacobian.T @ jacobian + (5e-4 + posture_weight) * np.eye(len(qpos))
@@ -294,7 +326,13 @@ def _solve_pose_ik(
     mujoco.mj_forward(model, data)
     position = float(np.linalg.norm(target_xyz - data.site_xpos[site]))
     current_rotation = data.site_xmat[site].reshape(3, 3)
-    angle = float(np.linalg.norm(Rotation.from_matrix(target_rotation @ current_rotation.T).as_rotvec()))
+    if orientation_mode == "full":
+        angle = float(np.linalg.norm(Rotation.from_matrix(target_rotation @ current_rotation.T).as_rotvec()))
+    elif orientation_mode == "axis":
+        cosine = float(np.clip(np.dot(target_rotation[:, 2], current_rotation[:, 2]), -1.0, 1.0))
+        angle = float(np.arccos(cosine))
+    else:
+        angle = 0.0
     return position, angle
 
 
@@ -308,6 +346,7 @@ def _recover_q(
     posture_weight: float,
     target_rotations: np.ndarray | None = None,
     q_reference: np.ndarray | None = None,
+    orientation_mode: str = "full",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     data = mujoco.MjData(model)
     qpos, dofs = _joint_dofs(model, prefix)
@@ -326,11 +365,12 @@ def _recover_q(
         )
         pos_error, rot_error = _solve_pose_ik(
             model, data, qpos, dofs, site, target, rotation, rotation_weight,
-            preferred_q, posture_weight,
+            preferred_q, posture_weight, orientation_mode,
         )
         if pos_error > 0.025:
             pos_error, rot_error = _solve_pose_ik(
-                model, data, qpos, dofs, site, target, rotation, 0.0, preferred_q, posture_weight
+                model, data, qpos, dofs, site, target, rotation, 0.0, preferred_q, posture_weight,
+                orientation_mode,
             )
         candidate = data.qpos[qpos].copy()
         if previous_q is not None:
@@ -356,11 +396,12 @@ def _recover_q(
         )
         pos_error, rot_error = _solve_pose_ik(
             model, data, qpos, dofs, site, target, rotation, rotation_weight,
-            preferred_q, posture_weight,
+            preferred_q, posture_weight, orientation_mode,
         )
         if pos_error > 0.025:
             pos_error, rot_error = _solve_pose_ik(
-                model, data, qpos, dofs, site, target, rotation, 0.0, preferred_q, posture_weight
+                model, data, qpos, dofs, site, target, rotation, 0.0, preferred_q, posture_weight,
+                orientation_mode,
             )
         candidate = data.qpos[qpos].copy()
         if previous_q is not None:
@@ -471,10 +512,12 @@ def main() -> None:
     left_q, left_position_error, left_rotation_error = _recover_q(
         model, left_target, "left", np.asarray(args.left_base), args.rotation_weight,
         np.asarray(args.left_seed), args.posture_weight, left_rotations, left_q_reference,
+        args.orientation_mode,
     )
     right_q, right_position_error, right_rotation_error = _recover_q(
         model, right_target, "right", np.asarray(args.right_base), args.rotation_weight,
         np.asarray(args.right_seed), args.posture_weight, right_rotations, right_q_reference,
+        args.orientation_mode,
     )
     command = _event_command(len(frames))
     phase = np.empty(len(frames), dtype="U64")
@@ -518,7 +561,10 @@ def main() -> None:
         },
         "posture_prior": {"left_seed": args.left_seed, "right_seed": args.right_seed, "weight": args.posture_weight},
         "joint_anchor_file": str(args.joint_anchor_file.resolve()) if args.joint_anchor_file else None,
-        "wrist_orientation": "opposed gripper approach axes" if args.opposed_grippers else "base-to-target approach axes",
+        "wrist_orientation": {
+            "target": "opposed gripper approach axes" if args.opposed_grippers else "base-to-target approach axes",
+            "constraint": args.orientation_mode,
+        },
         "track_confidence_mean": {"left": float(left_confidence.mean()), "right": float(right_confidence.mean())},
         "ik_position_error_m": {
             "left_mean": float(left_position_error.mean()), "left_max": float(left_position_error.max()),
