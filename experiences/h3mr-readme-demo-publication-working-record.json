@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-31.h3mr-readme-demo-publication-working",
+  "recorded_at": "2026-08-31T14:25:53+08:00",
+  "scope": "Publish and verify the reviewed H3MR README evaluation and wide demo-page layout",
+  "status": "WORKING",
+  "summary": "Commit 1d95cde published the reviewed H3MR GT-2D upper-bound table and wide comparison-card layout to main; the GitHub Pages deployment and public-content checks succeeded.",
+  "evidence": [
+    "Local HEAD and origin/main both resolved to 1d95cde51783a43e0081b8625f5df09a51974832 after the push.",
+    "GitHub Actions Pages run 33364047443 completed successfully for commit 1d95cde51783a43e0081b8625f5df09a51974832.",
+    "The public demo homepage returned HTTP 200 and exposed AC-WM, bowl-grasp, Shadow, both H3MR comparisons, and the four-embodiment comparison in the intended order.",
+    "The public README contains the H3MR GT-2D upper-bound evaluation, Stage 3-BIR (Ours), and PhiAgent vs. Native labels.",
+    "The publication commit is authored and committed by zhuhuanan <zhuhuanan@users.noreply.github.com>."
+  ],
+  "limitations": [
+    "This record verifies documentation and webpage publication; it does not claim that H3MR training or inference was independently reproduced.",
+    "The reported metrics were transcribed from the H3MR project report rather than recomputed in PhiAgent.",
+    "The GitHub Actions run emitted a non-blocking notice that selected actions still declare Node.js 20 while the runner forces Node.js 24."
+  ],
+  "lessons": [
+    "Full-width rows make three- and four-panel videos legible while retaining compact two-column cards for simpler comparisons.",
+    "Public HTTP checks and exact remote commit verification distinguish a successful deployment from a merely successful local edit."
+  ],
+  "next_actions": [
+    "Review the public page manually on narrow mobile screens if responsive presentation becomes a publication requirement."
+  ],
+  "supersedes": [
+    "2026-08-31.h3mr-readme-demo-publication-partial"
+  ],
+  "tags": [
+    "h3mr",
+    "readme",
+    "demo",
+    "github-pages",
+    "publication",
+    "working"
+  ]
+}
