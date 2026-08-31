@@ -1,0 +1,39 @@
+{
+  "schema_version": "0.1.0",
+  "method": "phiagent-rm65-visual-replay-v17",
+  "suite_name": "phiagent-public-preview",
+  "metadata": {
+    "status": "PARTIAL",
+    "source_revision": "1c327023f9b611606edb1477cbfcff4f2549da45",
+    "audit_uri": "demo/showcase/rm65-ag2f90c-source-vs-simulation-v17-audit.json",
+    "legacy_visual_audit_uri": "demo/showcase/h2r-garment-fold-occlusion-completion.json",
+    "claim_boundary": "The public artifact establishes a synchronized, finite, URDF-constrained kinematic replay. Its legacy image-space score is not converted to H2R M1-M5; FK residual is not treated as source action ground truth; cloth physics and real execution are absent."
+  },
+  "records": [
+    {
+      "case_id": "public-rm65-fold-replay-001",
+      "generated_uri": "demo/showcase/rm65-ag2f90c-source-vs-simulation-v17.mp4",
+      "visual": null,
+      "geometry": null,
+      "action": null,
+      "simulation": {
+        "backend": "phiagent_mujoco_kinematic_replay",
+        "attempted": true,
+        "physical_gate_complete": false,
+        "physically_valid": false,
+        "task_success": false,
+        "stage_success_rate": 0.0,
+        "contact_success_rate": 0.0,
+        "ik_success_rate": 1.0,
+        "joint_limit_violation_rate": 0.0,
+        "velocity_violation_rate": 0.0,
+        "collision_rate": 0.0,
+        "singularity_rate": 0.0,
+        "source_revision": "1c327023f9b611606edb1477cbfcff4f2549da45"
+      },
+      "real": null,
+      "runtime": null,
+      "policy_utility": null
+    }
+  ]
+}

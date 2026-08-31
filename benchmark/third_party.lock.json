@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "dependencies": [
+    {
+      "name": "H2R-Bench",
+      "url": "https://github.com/Rongdingyi/H2R-Bench",
+      "revision": "6549ae11bb9b361c8690dbb460ea3a67f590460d",
+      "integration": "clean-room reproduction of public paper equations only",
+      "license_observation": "No repository-wide LICENSE file at the pinned revision; project-page footer states CC BY-SA 4.0. Evaluation code and annotations are not published.",
+      "vendored": false
+    },
+    {
+      "name": "RoboWM-Bench",
+      "url": "https://github.com/fffstrong/RoboWM-Bench",
+      "revision": "0a8b0eab3ebfb7993f6ab895f12eac41dfefa1c1",
+      "integration": "external command/result adapter",
+      "license_observation": "No repository-wide top-level LICENSE file at the pinned revision; bundled IsaacLab and Phantom components have their own licenses.",
+      "vendored": false
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1.0",
+  "name": "phiagent-smoke",
+  "version": "0.1.0",
+  "cases": [
+    {
+      "case_id": "smoke-fold-001",
+      "task_name": "fold a cloth into a compact rectangle",
+      "task_family": "f4_deformable_configuration",
+      "track": "cross_embodiment",
+      "split": "smoke",
+      "source_uri": "data/smoke/source.mp4",
+      "source_interface": "full_video",
+      "target": {
+        "robot_model": "dual_rm65",
+        "end_effector": "ag2f90c_parallel_jaw",
+        "arm_count": 2,
+        "arm_dof": [6, 6],
+        "urdf_uri": "assets/realman/rm65_dual.urdf"
+      },
+      "camera_frame": "camera:smoke_head",
+      "world_frame": "world:smoke_table",
+      "robot_base_frame": "robot_base:dual_rm65",
+      "required_dimensions": [
+        "l1_visual",
+        "l2_geometry",
+        "l3_action",
+        "l4_sim",
+        "l5_real"
+      ],
+      "required_metrics": {
+        "l2_geometry": [
+          "reprojection_rmse_px",
+          "object_translation_error_m"
+        ],
+        "l3_action": [
+          "eef_position_rmse_m",
+          "eef_orientation_rmse_deg",
+          "gripper_event_f1",
+          "trajectory_coverage"
+        ]
+      },
+      "annotation": {
+        "goal_predicates": [
+          {"id": "cloth_compact", "description": "cloth ends in a compact folded configuration", "weight": 1.0}
+        ],
+        "action_events": [
+          {"id": "grasp_edges", "description": "grasp task-relevant cloth edges", "weight": 1.0},
+          {"id": "fold_inward", "description": "move the grasped edges inward", "weight": 2.0},
+          {"id": "release", "description": "release after placing the fold", "weight": 1.0}
+        ],
+        "applicable_contact_dimensions": [
+          "contact_region_transfer",
+          "contact_establishment",
+          "manipulation_mode_transfer",
+          "temporally_supported_object_response",
+          "embodiment_compatible_contact_strategy"
+        ],
+        "contact_specification": {
+          "entities": ["left_cloth_edge", "right_cloth_edge"],
+          "mode": "bimanual pinch, transport, and release",
+          "expected_response": "cloth edges move inward and remain placed"
+        },
+        "target_embodiment": {
+          "category": "dual-arm robot",
+          "end_effector": "parallel-jaw gripper"
+        }
+      }
+    }
+  ]
+}

@@ -64,6 +64,19 @@ strategies, not calibrated cloth physics or real-robot execution. See the
   human-readable typed schema and cannot be substituted for those unreleased
   tokens when claiming an exact PhiZero reproduction.
 
+## PhiAgent-Bench
+
+[`benchmark/`](benchmark/) contains the `PARTIAL` PhiAgent-Bench v0.1 preview:
+a dependency-light L1--L5 contract spanning source-conditioned visual transfer,
+metric geometry, synchronized EEF/joint/gripper reconstruction, physics
+execution, and recorded real-robot audit. It clean-room reproduces the public
+H2R-Bench scoring equations, provides a pinned external RoboWM-Bench adapter,
+and reports all requested cases so rejected simulations cannot disappear from
+the real-success denominator. The included RM65 public-preview submission is
+deliberately incomplete: it imports the measured 192/192-frame IK replay but
+does not reinterpret self-consistency, image-space scores, or missing cloth
+physics as physical ground truth.
+
 ## Demos
 
 Click a preview below to open its MP4.

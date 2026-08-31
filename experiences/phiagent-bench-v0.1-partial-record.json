@@ -1,0 +1,41 @@
+{
+  "record_id": "2026-08-31.phiagent-bench-v0.1-partial",
+  "recorded_at": "2026-08-31T14:00:00Z",
+  "status": "PARTIAL",
+  "scope": "PhiAgent-Bench v0.1 clean-room H2R, action, simulation, real-audit, and leaderboard infrastructure",
+  "summary": "The dependency-light PhiAgent-Bench v0.1 software path is implemented and acceptance-tested, while official H2R assets, a heavyweight RoboWM simulation run, and new real-robot trials remain absent.",
+  "evidence": [
+    "The corrected smoke run closes L1-L5, reports H2RCore 94.625 from the same three structured H2R judge fixtures, and writes suite, submission, report, Git state, host, packages, policy seed, and command under runs/phiagent-bench/20260831T140000Z-smoke-v0.1-corrected.",
+    "The public RM65 preview imports the measured 192/192-frame IK replay but reports complete=false, L4=0.0, and E2E valid real success=0.0 under runs/phiagent-bench/20260831T140000Z-public-preview-v0.1.",
+    "Fifteen focused benchmark, recorded-real-evidence, evaluation-statistics, and simulator-interface tests pass; the optional MuJoCo test skips because the lightweight local environment has no mujoco package.",
+    "The full CPU suite reports 956 passed, 3 skipped, and 2 unrelated pre-existing failures: ffmpeg/ffprobe are absent from PATH, and the main-branch JoyAI server command omits a timeout flag expected by its test. This change does not modify those files.",
+    "Targeted Ruff and git diff whitespace checks pass; the external RoboWM-Bench checkout preflight matches revision 0a8b0eab3ebfb7993f6ab895f12eac41dfefa1c1 and emits its pinned one-episode evaluation command."
+  ],
+  "lessons": [
+    "H2R visual equations, source action truth, simulator task outcome, complete physical gates, and recorded hardware success must remain separate evidence types.",
+    "A dual-arm action score should conservatively expose the weakest arm so one accurate trajectory cannot hide the other arm's error.",
+    "Exact suite coverage and end-to-end denominators prevent simulation rejection or missing real trials from being cherry-picked away.",
+    "Smoke fixtures must be generated from the same structured judge outputs used by the standalone scorer; acceptance caught and corrected an inconsistent hand-entered M2 value."
+  ],
+  "limitations": [
+    "H2R-Bench has not published its evaluator code or 120-clip annotations at the pinned revision, so this is a clean-room reproduction of public paper equations, not official score parity.",
+    "RoboWM-Bench requires Isaac Sim 5.1, Isaac Lab, GPU resources, and task actions; only revision preflight, command construction, and fail-closed result parsing ran locally.",
+    "M5 model inference and three production judge backends have not run on a released PhiAgent case.",
+    "No new blind-reviewed real-robot trial exists, and the checked-in RM65 adapter is evidence-only with hardware execution disabled."
+  ],
+  "next_actions": [
+    "Freeze a redistributable multi-family source suite and author H2R predicates/events without exposing test annotations to generation.",
+    "Run RoboWM-Bench on a GPU Isaac Lab 5.1 host and add complete collision, velocity, singularity, contact, and task-success evidence rather than only upstream task outcome.",
+    "Collect repeated, blind-reviewed trials through one execution-enabled hardware adapter and publish Coverage, RealPrecisionLowerBound, E2E-VSR, confidence intervals, and valid-data goodput."
+  ],
+  "run_dir": "runs/phiagent-bench/20260831T140000Z-smoke-v0.1-corrected",
+  "supersedes": [],
+  "tags": [
+    "phiagent-bench",
+    "h2r-bench",
+    "robowm-bench",
+    "simulation",
+    "real-robot",
+    "leaderboard"
+  ]
+}

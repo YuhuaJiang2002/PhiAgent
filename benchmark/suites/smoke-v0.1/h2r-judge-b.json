@@ -1,0 +1,23 @@
+{
+  "judge_id": "judge-b",
+  "goal_scores": {"goal": 4},
+  "action_scores": {"grasp": 4, "place": 3},
+  "source_grounded": true,
+  "contact_scores": {
+    "contact_region_transfer": 4,
+    "contact_establishment": 4,
+    "manipulation_mode_transfer": 4,
+    "temporally_supported_object_response": 3,
+    "embodiment_compatible_contact_strategy": 4
+  },
+  "embodiment_hard_failure": false,
+  "embodiment_scores": {
+    "robot_actor_presence": 4,
+    "human_absence": 4,
+    "embodiment_category_match": 4,
+    "end_effector_correctness": 4,
+    "structural_consistency": 4
+  },
+  "evidence_frame_indices": {"goal": [20, 24], "action": [5, 12, 21]},
+  "rationale": {"goal": "fixture evidence", "action": "fixture evidence"}
+}

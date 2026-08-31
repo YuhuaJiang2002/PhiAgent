@@ -31,6 +31,7 @@ phiagent-visual-transfer = "phiagent.rendering.cli:main"
 phiagent-trajectory-render = "phiagent.rendering.cosmos_cli:main"
 phiagent-experience = "phiagent.learning.cli:main"
 phiagent-workflow = "phiagent.workflows.cli:main"
+phiagent-bench = "phiagent.benchmark.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["phiagent*"]

@@ -1,0 +1,6 @@
+{
+  "imaging_quality": 0.8,
+  "aesthetic_quality": 0.7,
+  "temporal_stability": 0.9,
+  "motion_smoothness": 0.8
+}

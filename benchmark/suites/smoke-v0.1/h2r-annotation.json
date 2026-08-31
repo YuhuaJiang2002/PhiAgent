@@ -1,0 +1,18 @@
+{
+  "goal_predicates": [
+    {"id": "goal", "description": "object reaches the requested final state", "weight": 1.0}
+  ],
+  "action_events": [
+    {"id": "grasp", "description": "robot grasps the object", "weight": 1.0},
+    {"id": "place", "description": "robot places the object", "weight": 1.0}
+  ],
+  "applicable_contact_dimensions": [
+    "contact_region_transfer",
+    "contact_establishment",
+    "manipulation_mode_transfer",
+    "temporally_supported_object_response",
+    "embodiment_compatible_contact_strategy"
+  ],
+  "contact_specification": {"mode": "grasp and place"},
+  "target_embodiment": {"end_effector": "parallel-jaw gripper"}
+}

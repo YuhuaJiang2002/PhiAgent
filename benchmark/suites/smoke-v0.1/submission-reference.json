@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1.0",
+  "method": "reference-smoke",
+  "suite_name": "phiagent-smoke",
+  "metadata": {
+    "purpose": "synthetic schema and aggregation acceptance fixture; not a model result"
+  },
+  "records": [
+    {
+      "case_id": "smoke-fold-001",
+      "generated_uri": "data/smoke/generated.mp4",
+      "visual": {
+        "goal_completion": 1.0,
+        "action_completion": 0.875,
+        "contact_transfer": 0.95,
+        "embodiment_correctness": 1.0,
+        "video_quality": 0.8,
+        "judge_count": 3,
+        "evidence_frames": 25,
+        "protocol": "phiagent_h2r_reproduction_arxiv_2608.13049v1",
+        "diagnostics": {"fixture": true}
+      },
+      "geometry": {
+        "coordinate_frame": "world:smoke_table",
+        "values": {
+          "reprojection_rmse_px": 3.0,
+          "object_translation_error_m": 0.01
+        }
+      },
+      "action": {
+        "coordinate_frame": "robot_base:dual_rm65",
+        "values": {
+          "eef_position_rmse_m": 0.0036,
+          "eef_orientation_rmse_deg": 4.0,
+          "gripper_event_f1": 1.0,
+          "trajectory_coverage": 1.0
+        }
+      },
+      "simulation": {
+        "backend": "phiagent_mujoco",
+        "attempted": true,
+        "physical_gate_complete": true,
+        "physically_valid": true,
+        "task_success": true,
+        "stage_success_rate": 1.0,
+        "contact_success_rate": 1.0,
+        "ik_success_rate": 1.0,
+        "joint_limit_violation_rate": 0.0,
+        "velocity_violation_rate": 0.0,
+        "collision_rate": 0.0,
+        "singularity_rate": 0.0,
+        "source_revision": "smoke-fixture"
+      },
+      "real": {
+        "adapter": "recorded_trial_fixture",
+        "robot_id": "dual_rm65",
+        "hardware_serial": "fixture-001",
+        "session_id": "smoke-session",
+        "attempted": true,
+        "task_success": true,
+        "stage_success_rate": 1.0,
+        "safety_violation": false,
+        "human_intervention": false,
+        "collision_count": 0,
+        "emergency_stop": false,
+        "force_limit_violation": false,
+        "blind_review": true
+      },
+      "runtime": {
+        "generated_video_seconds": 5.0,
+        "latency_seconds": 60.0,
+        "gpu_hours": 0.1,
+        "peak_vram_gb": 48.0,
+        "candidate_count": 1
+      },
+      "policy_utility": {
+        "real_only_success_rate": 0.5,
+        "real_plus_phiagent_success_rate": 0.7,
+        "evaluation_episodes": 30,
+        "matched_training_budget": true
+      }
+    }
+  ]
+}

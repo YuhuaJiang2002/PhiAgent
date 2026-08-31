@@ -1,0 +1,41 @@
+{
+  "record_id": "2026-08-31.phiagent-bench-v0.1-final-partial",
+  "recorded_at": "2026-08-31T14:10:00Z",
+  "status": "PARTIAL",
+  "scope": "Final PhiAgent-Bench v0.1 acceptance after real-audit numerator hardening",
+  "summary": "PhiAgent-Bench v0.1 is ready as a tested rough benchmark branch; incomplete public evidence is shown without ranking, and a real success cannot count unless the corresponding complete simulation gate passed.",
+  "evidence": [
+    "The final smoke report SHA-256 is 8e358ebfa7c161e85bc6b739fb6549b78e01f15e534bb02934ad67a6544dd647; it is schema-complete and reports H2RCore 94.625 from the structured three-judge fixture.",
+    "The final public-preview report SHA-256 is 7f73baef80394a9d5add4872599c8168034de8b389ee88521eef71c33d1a2672; it reports incomplete evidence, H2RCore null, L4 0.0, and E2E-VSR 0.0 while retaining measured IK success 1.0.",
+    "Twenty-six focused benchmark, evidence-ledger, recorded-real-evidence, evaluation-statistics, and simulator-interface tests pass; one optional MuJoCo test skips in the dependency-light environment.",
+    "The final full CPU regression reports 957 passed, 3 skipped, and the same 2 unrelated main-branch JoyAI failures caused by missing ffmpeg/ffprobe and an existing timeout-argument mismatch.",
+    "The RM65/AG2F90-C manifest is compatible with the public case while remaining evidence_only=true and execution_enabled=false; targeted Ruff and git diff checks pass."
+  ],
+  "lessons": [
+    "Leaderboard eligibility must depend on evidence completeness, while low-scoring but complete attempts stay visible and rankable.",
+    "Valid real-success and goodput numerators must be conditioned on the same case passing the complete L4 gate, otherwise malformed evidence can produce impossible precision above one.",
+    "Public kinematic replay is useful benchmark evidence, but its FK residual remains self-consistency rather than source action truth."
+  ],
+  "limitations": [
+    "Official H2R evaluator code and case annotations remain unpublished at the pinned revision.",
+    "No Isaac Lab 5.1 RoboWM task was executed in this local environment and no model-derived M5 run was performed.",
+    "No new blind-reviewed real hardware trial exists; consequently this release is a benchmark infrastructure preview, not a populated production leaderboard."
+  ],
+  "next_actions": [
+    "Populate a frozen multi-family suite with redistributable sources and hidden annotations.",
+    "Execute RoboWM and full PhiAgent physical gates on a compatible GPU simulator host.",
+    "Enable a reviewed hardware adapter only after telemetry, safety, repeated trials, and blind outcome review are operational."
+  ],
+  "run_dir": "runs/phiagent-bench/20260831T141000Z-smoke-v0.1-final",
+  "supersedes": [
+    "2026-08-31.phiagent-bench-v0.1-partial"
+  ],
+  "tags": [
+    "phiagent-bench",
+    "h2r-bench",
+    "robowm-bench",
+    "fail-closed",
+    "leaderboard",
+    "release-preview"
+  ]
+}

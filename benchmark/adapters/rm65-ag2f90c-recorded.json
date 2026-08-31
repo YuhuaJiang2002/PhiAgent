@@ -1,0 +1,31 @@
+{
+  "adapter_name": "rm65-ag2f90c-recorded-evidence",
+  "adapter_version": "0.1.0",
+  "target": {
+    "robot_model": "dual_rm65",
+    "end_effector": "ag2f90c_parallel_jaw",
+    "arm_count": 2,
+    "arm_dof": [6, 6],
+    "urdf_uri": "assets/realman/rm65_dual.urdf"
+  },
+  "joint_names": [
+    ["left_joint1", "left_joint2", "left_joint3", "left_joint4", "left_joint5", "left_joint6"],
+    ["right_joint1", "right_joint2", "right_joint3", "right_joint4", "right_joint5", "right_joint6"]
+  ],
+  "action_interfaces": ["joint_position", "eef_pose_with_gripper_width"],
+  "control_rate_hz": 24.0,
+  "telemetry_channels": [
+    "timestamp_s",
+    "joint_position",
+    "eef_pose",
+    "gripper_width"
+  ],
+  "safety_channels": [
+    "collision_count",
+    "emergency_stop",
+    "human_intervention",
+    "force_limit_violation"
+  ],
+  "execution_enabled": false,
+  "evidence_only": true
+}

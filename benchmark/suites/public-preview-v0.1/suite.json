@@ -1,0 +1,87 @@
+{
+  "schema_version": "0.1.0",
+  "name": "phiagent-public-preview",
+  "version": "0.1.0",
+  "cases": [
+    {
+      "case_id": "public-rm65-fold-replay-001",
+      "task_name": "transfer a bimanual garment-fold motion to dual RM65-B arms",
+      "task_family": "f4_deformable_configuration",
+      "track": "cross_embodiment",
+      "split": "public-preview",
+      "source_uri": "demo/showcase/h2r-garment-fold-occlusion-completion.mp4#source-panel",
+      "source_interface": "full_video",
+      "target": {
+        "robot_model": "dual_rm65",
+        "end_effector": "ag2f90c_parallel_jaw",
+        "arm_count": 2,
+        "arm_dof": [6, 6],
+        "urdf_uri": "assets/realman/rm65_dual.urdf"
+      },
+      "camera_frame": "camera:public_replay_uncalibrated",
+      "world_frame": "world:public_replay_table",
+      "robot_base_frame": "robot_base:dual_rm65",
+      "required_dimensions": [
+        "l1_visual",
+        "l2_geometry",
+        "l3_action",
+        "l4_sim",
+        "l5_real"
+      ],
+      "required_metrics": {
+        "l2_geometry": [
+          "reprojection_rmse_px",
+          "object_translation_error_m"
+        ],
+        "l3_action": [
+          "eef_position_rmse_m",
+          "eef_orientation_rmse_deg",
+          "gripper_event_f1",
+          "trajectory_coverage"
+        ]
+      },
+      "annotation": {
+        "goal_predicates": [
+          {
+            "id": "garment_folded",
+            "description": "garment reaches the requested folded terminal state",
+            "weight": 1.0
+          }
+        ],
+        "action_events": [
+          {
+            "id": "bimanual_approach",
+            "description": "both end effectors approach the task-relevant garment regions",
+            "weight": 1.0
+          },
+          {
+            "id": "fold_motion",
+            "description": "the two arms perform the source-conditioned fold motion",
+            "weight": 2.0
+          },
+          {
+            "id": "release",
+            "description": "the grippers release after placement",
+            "weight": 1.0
+          }
+        ],
+        "applicable_contact_dimensions": [
+          "contact_region_transfer",
+          "contact_establishment",
+          "manipulation_mode_transfer",
+          "temporally_supported_object_response",
+          "embodiment_compatible_contact_strategy"
+        ],
+        "contact_specification": {
+          "entities": ["left_garment_region", "right_garment_region"],
+          "mode": "bimanual parallel-jaw grasp, transport, placement, and release",
+          "expected_response": "garment deforms into the requested folded configuration"
+        },
+        "target_embodiment": {
+          "category": "dual-arm robot",
+          "end_effector": "parallel-jaw gripper"
+        }
+      }
+    }
+  ]
+}

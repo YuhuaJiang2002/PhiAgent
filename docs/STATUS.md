@@ -431,6 +431,19 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- PhiAgent-Bench v0.1: `phiagent.benchmark` now provides versioned suite and
+  submission contracts, a clean-room implementation of the public H2R-Bench
+  M1--M5/H2RCore equations, named-frame L2/L3 metrics, fail-closed L4 physics
+  gates, non-cherry-picked L5 real-audit denominators, a policy-utility measure,
+  a pinned external RoboWM-Bench command/result adapter, and an evidence-only
+  dual-RM65/AG2F90-C hardware manifest. The synthetic smoke fixture closes all
+  software paths. The existing public RM65 replay is imported separately as
+  incomplete evidence: it records 192/192 IK success but does not promote its
+  FK self-consistency or legacy image-space score to action truth, cloth task
+  success, or real execution. Official H2R annotations/evaluator code, a local
+  Isaac Lab 5.1 run, model-based M5 inference, and new real trials remain
+  unavailable, so the benchmark is `PARTIAL`, not a completed leaderboard.
+
 - Photorealistic two-full-body-humanoid blanket folding, strict rejection:
   four frozen-seed MiniMax-H3 Ref2VA candidates ran at BF16/50 steps on four
   independent two-H200 lanes using a hash-bound 1024x768 first frame, static
