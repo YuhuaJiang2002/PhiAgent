@@ -13,10 +13,10 @@
       "source_interface": "full_video",
       "target": {
         "robot_model": "dual_rm65",
-        "end_effector": "ag2f90c_parallel_jaw",
+        "end_effector": "ag2f90d_parallel_jaw",
         "arm_count": 2,
         "arm_dof": [6, 6],
-        "urdf_uri": "assets/realman/rm65_dual.urdf"
+        "urdf_uri": "registry:realman_rm65_b+changingtek_ag2f90_d"
       },
       "camera_frame": "camera:smoke_head",
       "world_frame": "world:smoke_table",
@@ -41,6 +41,7 @@
         ]
       },
       "annotation": {
+        "real_protocol_id": "phiagent-real-robot-blind-v0.1",
         "goal_predicates": [
           {"id": "cloth_compact", "description": "cloth ends in a compact folded configuration", "weight": 1.0}
         ],

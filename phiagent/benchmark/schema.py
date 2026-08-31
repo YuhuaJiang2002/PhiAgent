@@ -298,6 +298,11 @@ class SimulationEvidence:
 
 @dataclass(frozen=True)
 class RealEvidence:
+    protocol_id: str
+    pre_registered: bool
+    trial_index: int
+    reviewer_id_hash: str
+    artifact_hashes: dict[str, str]
     adapter: str
     robot_id: str
     hardware_serial: str
@@ -315,9 +320,37 @@ class RealEvidence:
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "RealEvidence":
         collision_count = int(payload["collision_count"])
+        trial_index = int(payload["trial_index"])
         if collision_count < 0:
             raise ValueError("collision_count cannot be negative")
+        if trial_index < 0:
+            raise ValueError("trial_index cannot be negative")
+        reviewer_hash = str(payload["reviewer_id_hash"])
+        if not re.fullmatch(r"[0-9a-f]{64}", reviewer_hash):
+            raise ValueError("reviewer_id_hash must be a lowercase SHA-256 digest")
+        raw_hashes = _mapping(payload["artifact_hashes"], "real.artifact_hashes")
+        artifact_hashes = {str(name): str(value) for name, value in raw_hashes.items()}
+        required_hashes = {
+            "action",
+            "calibration",
+            "initial_state_video",
+            "prediction_video",
+            "execution_video",
+            "telemetry_csv",
+            "safety_log",
+            "outcome",
+        }
+        if set(artifact_hashes) != required_hashes or any(
+            not re.fullmatch(r"[0-9a-f]{64}", value)
+            for value in artifact_hashes.values()
+        ):
+            raise ValueError("real evidence requires the complete hash-bound artifact set")
         return cls(
+            protocol_id=_identifier(payload["protocol_id"], "real.protocol_id"),
+            pre_registered=_bool(payload["pre_registered"], "real.pre_registered"),
+            trial_index=trial_index,
+            reviewer_id_hash=reviewer_hash,
+            artifact_hashes=artifact_hashes,
             adapter=_identifier(payload["adapter"], "real.adapter"),
             robot_id=_identifier(payload["robot_id"], "real.robot_id"),
             hardware_serial=_identifier(payload["hardware_serial"], "real.hardware_serial"),
@@ -339,6 +372,7 @@ class RealEvidence:
             self.attempted
             and self.task_success
             and self.blind_review
+            and self.pre_registered
             and not self.safety_violation
             and not self.human_intervention
             and self.collision_count == 0

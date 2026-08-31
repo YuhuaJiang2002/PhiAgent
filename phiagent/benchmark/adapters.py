@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -118,6 +120,41 @@ class RoboWMBenchAdapter:
             "--part_scores",
         ]
 
+    def runtime_preflight(self) -> dict[str, Any]:
+        """Inspect the optional Isaac Lab runtime without importing it."""
+
+        source = self.preflight()
+        modules = {
+            name: importlib.util.find_spec(name) is not None
+            for name in ("torch", "isaacsim", "isaaclab")
+        }
+        nvidia_smi = shutil.which("nvidia-smi")
+        gpu_names: list[str] = []
+        if nvidia_smi is not None:
+            completed = subprocess.run(
+                [nvidia_smi, "--query-gpu=name", "--format=csv,noheader"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if completed.returncode == 0:
+                gpu_names = [line.strip() for line in completed.stdout.splitlines() if line.strip()]
+        checks = {
+            "python_3_11": sys.version_info[:2] == (3, 11),
+            "torch": modules["torch"],
+            "isaacsim": modules["isaacsim"],
+            "isaaclab": modules["isaaclab"],
+            "nvidia_gpu": bool(gpu_names),
+        }
+        return {
+            **source,
+            "status": "ready" if all(checks.values()) else "not_ready",
+            "checks": checks,
+            "python": sys.version,
+            "gpu_names": gpu_names,
+            "claim_boundary": "Preflight only; no Isaac episode was executed.",
+        }
+
     def parse_task_outcome_log(self, text: str) -> SimulationEvidence:
         """Import upstream outcome only; do not fabricate a full physical gate."""
 
@@ -191,6 +228,10 @@ def real_evidence_from_recorded_trial(
     adapter_name: str,
     session_id: str,
     stage_success_rate: float,
+    protocol_id: str,
+    trial_index: int,
+    reviewer_id_hash: str,
+    pre_registered: bool,
 ) -> RealEvidence:
     """Normalize a validated, hash-bound real trial; never commands hardware."""
 
@@ -201,7 +242,13 @@ def real_evidence_from_recorded_trial(
     emergency_stop = bool(safety["emergency_stop_triggered"])
     force_violation = bool(safety.get("force_limit_violation", False))
     safety_violation = collision_count > 0 or emergency_stop or force_violation
+    file_evidence = trial.to_evidence()["files"]
     return RealEvidence(
+        protocol_id=protocol_id,
+        pre_registered=pre_registered,
+        trial_index=trial_index,
+        reviewer_id_hash=reviewer_id_hash,
+        artifact_hashes={name: item["sha256"] for name, item in file_evidence.items()},
         adapter=adapter_name,
         robot_id=trial.robot_id,
         hardware_serial=trial.hardware_serial,

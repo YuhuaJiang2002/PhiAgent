@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1.0",
+  "adapter": "robowm-bench-isaaclab-5.1",
+  "upstream": {
+    "url": "https://github.com/fffstrong/RoboWM-Bench",
+    "revision": "0a8b0eab3ebfb7993f6ab895f12eac41dfefa1c1"
+  },
+  "runtime": {
+    "python": "3.11",
+    "pytorch": "2.7-cu128",
+    "isaac_sim": "5.1",
+    "isaac_lab": "bundled-upstream",
+    "minimum_gpu_vram_gb": 24,
+    "recommended_gpu": "one isolated NVIDIA GPU per replay worker"
+  },
+  "pilot_tasks": [
+    "pick",
+    "put_on_plate",
+    "put_in_drawer",
+    "press_button",
+    "close_drawer"
+  ],
+  "execution_policy": {
+    "warmup_episodes": 1,
+    "measured_repeats_per_case": 5,
+    "preserve_failures": true,
+    "one_output_directory_per_episode": true,
+    "record_physical_gpu": true,
+    "record_source_revision": true
+  },
+  "import_boundary": "RoboWM task outcome alone is not a complete PhiAgent L4 gate; collision, velocity, joint-limit, singularity, and contact evidence must be added by the PhiAgent wrapper."
+}

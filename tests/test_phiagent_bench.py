@@ -7,8 +7,10 @@ from pathlib import Path
 import pytest
 
 from phiagent.benchmark.adapters import RoboWMBenchAdapter
+from phiagent.benchmark.embodiments import EmbodimentRegistry
 from phiagent.benchmark.h2r import H2RAnnotation, H2RJudgeOutput, aggregate_h2r_judges
 from phiagent.benchmark.hardware import HardwareAdapterManifest
+from phiagent.benchmark.integrity import verify_freeze_manifest
 from phiagent.benchmark.metrics import BenchmarkPolicy, evaluate_submission, simulation_pass
 from phiagent.benchmark.schema import BenchmarkSuite, ScalarEvidence, Submission
 from phiagent.benchmark.trajectory import (
@@ -22,6 +24,7 @@ from phiagent.benchmark.trajectory import (
 ROOT = Path(__file__).resolve().parents[1]
 SMOKE = ROOT / "benchmark" / "suites" / "smoke-v0.1"
 PUBLIC_PREVIEW = ROOT / "benchmark" / "suites" / "public-preview-v0.1"
+PUBLIC_VISUAL_PILOT = ROOT / "benchmark" / "suites" / "public-visual-pilot-v0.1"
 
 
 def _payload(name: str) -> dict[str, object]:
@@ -144,12 +147,15 @@ def test_identical_action_trajectories_have_zero_error_and_perfect_events() -> N
 def test_recorded_rm65_adapter_matches_smoke_case_without_enabling_hardware() -> None:
     suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
     manifest = HardwareAdapterManifest.from_json(
-        ROOT / "benchmark" / "adapters" / "rm65-ag2f90c-recorded.json"
+        ROOT / "benchmark" / "adapters" / "rm65-ag2f90d-recorded.json"
     )
     result = manifest.compatibility(suite.cases[0])
     assert result["compatible"] is True
     assert result["execution_enabled"] is False
     assert result["evidence_only"] is True
+    assert result["checks"]["end_effector_limits"] is True
+    assert manifest.end_effector_limits is not None
+    assert manifest.end_effector_limits.speed_modes_m_s == (0.1, 0.25)
 
 
 def test_public_preview_preserves_missing_physical_evidence() -> None:
@@ -191,6 +197,39 @@ def test_real_success_cannot_bypass_a_failed_simulation_gate() -> None:
     assert report["efficiency"]["valid_real_trajectory_seconds"] == 0
 
 
+def test_real_success_requires_pre_registration() -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    submission = Submission.from_json(SMOKE / "submission-reference.json")
+    unregistered = replace(submission.records[0].real, pre_registered=False)
+    report = evaluate_submission(
+        suite,
+        replace(
+            submission,
+            records=(replace(submission.records[0], real=unregistered),),
+        ),
+        BenchmarkPolicy(bootstrap_iterations=100),
+    )
+    assert report["dimension_scores"]["l5_real"] == 0.0
+    assert report["real_audit"]["valid_real_success_count"] == 0
+
+
+def test_real_success_requires_the_case_protocol() -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    submission = Submission.from_json(SMOKE / "submission-reference.json")
+    wrong_protocol = replace(submission.records[0].real, protocol_id="unreviewed-v0")
+    report = evaluate_submission(
+        suite,
+        replace(
+            submission,
+            records=(replace(submission.records[0], real=wrong_protocol),),
+        ),
+        BenchmarkPolicy(bootstrap_iterations=100),
+    )
+    row = report["per_case"][0]
+    assert row["diagnostics"]["l5_real"]["protocol_match"] is False
+    assert report["real_audit"]["valid_real_success_count"] == 0
+
+
 def test_multi_arm_action_uses_conservative_worst_arm_aggregation() -> None:
     arm = {
         "timestamps_s": [0.0, 0.1],
@@ -217,3 +256,31 @@ def test_multi_arm_action_uses_conservative_worst_arm_aggregation() -> None:
     assert per_arm["right"]["eef_position_rmse_m"] == pytest.approx(0.02)
     assert aggregate["eef_position_rmse_m"] == pytest.approx(0.02)
     assert aggregate["trajectory_coverage"] == 1.0
+
+
+def test_embodiment_registry_pins_sources_without_claiming_validation() -> None:
+    registry = EmbodimentRegistry.from_json(
+        ROOT / "benchmark" / "embodiments" / "registry-v0.1.json"
+    )
+    summary = registry.summary()
+    assert summary["asset_count"] == 8
+    assert summary["by_kind"] == {"arm": 6, "end_effector": 2}
+    assert summary["by_validation_tier"]["source_pinned"] == 6
+    assert summary["by_validation_tier"]["hardware_validated"] == 0
+
+
+def test_public_visual_pilot_is_hash_frozen_and_explicitly_l1_only() -> None:
+    result = verify_freeze_manifest(
+        PUBLIC_VISUAL_PILOT / "freeze.json",
+        repository_root=ROOT,
+    )
+    suite = BenchmarkSuite.from_json(PUBLIC_VISUAL_PILOT / "suite.json")
+    assert result["valid"] is True
+    assert result["artifact_count"] == 3
+    assert len(suite.cases) == 3
+    assert {case.task_family for case in suite.cases} == {
+        "f1_rigid_rearrangement",
+        "f4_deformable_configuration",
+        "f6_surface_transformation",
+    }
+    assert all(case.required_dimensions == ("l1_visual",) for case in suite.cases)

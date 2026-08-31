@@ -1,0 +1,44 @@
+{
+  "record_id": "2026-08-31.phiagent-bench-v0.2-hardware-registry-partial",
+  "recorded_at": "2026-08-31T15:32:22Z",
+  "status": "PARTIAL",
+  "scope": "AG2F90-D correction, embodiment registry, frozen public pilot, Isaac Lab preflight, and strict real blind-review evidence",
+  "summary": "PhiAgent-Bench now targets the company's CTAG2F90-D, pins six representative arm sources without vendoring them, freezes three public L1 cases, and enforces protocol-bound real evidence; this host cannot execute RoboWM because the Isaac/GPU runtime is absent.",
+  "evidence": [
+    "The CTAG2F90-D manifest records 0.8 kg mass, 90 mm stroke, 25 N force, 100/250 mm/s declared modes, position/speed/force feedback, and keeps the 250 mm/s mode confirmation-gated; adapter compatibility passes while execution_enabled remains false.",
+    "The embodiment registry validates eight unique assets: six pinned official arm repositories and two ChangingTek end-effector metadata entries; none is overstated as simulation-validated or hardware-validated.",
+    "The frozen public visual pilot verifies all three repository artifacts by exact size and SHA-256 and parses three L1-only cases spanning rigid rearrangement, deformable configuration, and surface transformation.",
+    "A valid L5 result now requires the case's declared protocol, pre-registration, reviewer SHA-256, and the complete eight-artifact hash set in addition to blind success and safety gates.",
+    "Twenty focused benchmark and evidence tests pass. The full CPU suite reports 961 passed, 3 skipped, and the same 2 unrelated existing JoyAI failures caused by missing ffmpeg/ffprobe and a timeout-argument mismatch.",
+    "The RoboWM source revision preflight passes, but runtime status is not_ready because this host has Python 3.13 rather than 3.11 and lacks torch, Isaac Sim, Isaac Lab, and a visible NVIDIA GPU."
+  ],
+  "lessons": [
+    "Broad hardware coverage should be a tiered source registry and validation campaign, not an unreviewed dump of URDF files.",
+    "A visually interchangeable gripper model can still change payload, speed, timing, controller, and safety constraints; visual compatibility does not imply dynamic equivalence.",
+    "Public uncalibrated videos can freeze L1 reproducibly but cannot supply L2 geometry, L3 action, L4 physics, or L5 real labels.",
+    "Blind review must be pre-registered and hash-bound in code, not asserted by one unchecked boolean."
+  ],
+  "limitations": [
+    "The CTAG2F90-D official digital model is not redistributed and its marked 250 mm/s operating conditions still require manufacturer or installed-firmware confirmation.",
+    "The six pinned arm sources have not yet completed independent FK, collision, inertia, controller, and simulator cross-checks.",
+    "No RoboWM Isaac Lab episode ran on this host and no new physical RM65/AG2F90-D blind trial was executed.",
+    "The public pilot covers three of six H2R task families and is intentionally visual-only."
+  ],
+  "next_actions": [
+    "Run the pinned RoboWM pilot in an isolated Python 3.11, PyTorch 2.7 CUDA 12.8, Isaac Sim 5.1 environment on an NVIDIA GPU and import full PhiAgent L4 gates.",
+    "Promote RM65-B and CTAG2F90-D through kinematic, simulation, then hardware validation using official geometry and measured installed-firmware limits.",
+    "Collect at least ten pre-registered trials per case and embodiment across three independent sessions with operator/reviewer separation."
+  ],
+  "run_dir": "runs/phiagent-bench/20260831T153222Z-ag2f90d-registry-protocol-v0.2",
+  "supersedes": [
+    "2026-08-31.phiagent-bench-v0.1-final-partial"
+  ],
+  "tags": [
+    "phiagent-bench",
+    "ag2f90-d",
+    "urdf-registry",
+    "isaac-lab",
+    "blind-review",
+    "hardware-adapter"
+  ]
+}

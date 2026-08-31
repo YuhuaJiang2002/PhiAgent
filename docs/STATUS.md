@@ -436,8 +436,11 @@ locations are recorded per experiment below.
   M1--M5/H2RCore equations, named-frame L2/L3 metrics, fail-closed L4 physics
   gates, non-cherry-picked L5 real-audit denominators, a policy-utility measure,
   a pinned external RoboWM-Bench command/result adapter, and an evidence-only
-  dual-RM65/AG2F90-C hardware manifest. The synthetic smoke fixture closes all
-  software paths. The existing public RM65 replay is imported separately as
+  dual-RM65/AG2F90-D hardware manifest. The synthetic smoke fixture closes all
+  software paths. A hash-frozen three-case public L1 pilot, an eight-asset
+  embodiment source registry, an Isaac Lab 5.1 runtime preflight, and a
+  pre-registered hash-bound real blind-review protocol are also present. The
+  existing public RM65 replay is imported separately as
   incomplete evidence: it records 192/192 IK success but does not promote its
   FK self-consistency or legacy image-space score to action truth, cloth task
   success, or real execution. Official H2R annotations/evaluator code, a local

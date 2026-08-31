@@ -52,7 +52,21 @@
         "source_revision": "smoke-fixture"
       },
       "real": {
-        "adapter": "recorded_trial_fixture",
+        "protocol_id": "phiagent-real-robot-blind-v0.1",
+        "pre_registered": true,
+        "trial_index": 0,
+        "reviewer_id_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "artifact_hashes": {
+          "action": "0000000000000000000000000000000000000000000000000000000000000000",
+          "calibration": "1111111111111111111111111111111111111111111111111111111111111111",
+          "initial_state_video": "2222222222222222222222222222222222222222222222222222222222222222",
+          "prediction_video": "3333333333333333333333333333333333333333333333333333333333333333",
+          "execution_video": "4444444444444444444444444444444444444444444444444444444444444444",
+          "telemetry_csv": "5555555555555555555555555555555555555555555555555555555555555555",
+          "safety_log": "6666666666666666666666666666666666666666666666666666666666666666",
+          "outcome": "7777777777777777777777777777777777777777777777777777777777777777"
+        },
+        "adapter": "rm65-ag2f90d-recorded-fixture",
         "robot_id": "dual_rm65",
         "hardware_serial": "fixture-001",
         "session_id": "smoke-session",

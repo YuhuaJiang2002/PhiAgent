@@ -1,5 +1,10 @@
 # RM65-B + AG2F90-C simulation replay
 
+> Hardware correction: this document preserves the C-labelled geometry used by
+> the published immutable replay. The company's installed unit is CTAG2F90-D.
+> PhiAgent-Bench targets D and records its mass/speed limits separately; the
+> visual replay below is not evidence of D dynamics or high-speed operation.
+
 ## Result
 
 The public v17 demo establishes that the reviewed source-conditioned folding

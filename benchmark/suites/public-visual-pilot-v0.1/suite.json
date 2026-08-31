@@ -1,0 +1,139 @@
+{
+  "schema_version": "0.1.0",
+  "name": "phiagent-public-visual-pilot",
+  "version": "0.1.0",
+  "cases": [
+    {
+      "case_id": "pilot-rigid-bowl-001",
+      "task_name": "grasp and lift the bowl along the requested direction",
+      "task_family": "f1_rigid_rearrangement",
+      "track": "h2r_transfer",
+      "split": "public-frozen",
+      "source_uri": "demo/showcase/oscar-acwm-real-source.mp4",
+      "source_interface": "full_video",
+      "target": {
+        "robot_model": "rm65",
+        "end_effector": "ag2f90d_parallel_jaw",
+        "arm_count": 1,
+        "arm_dof": [6],
+        "urdf_uri": "registry:realman_rm65_b+changingtek_ag2f90_d"
+      },
+      "camera_frame": "camera:source_uncalibrated",
+      "world_frame": "world:unobserved",
+      "robot_base_frame": "robot_base:rm65",
+      "required_dimensions": ["l1_visual"],
+      "required_metrics": {},
+      "annotation": {
+        "goal_predicates": [
+          {"id": "bowl_lifted", "description": "the bowl is securely lifted from its support", "weight": 1.0}
+        ],
+        "action_events": [
+          {"id": "approach", "description": "approach the bowl without premature displacement", "weight": 1.0},
+          {"id": "grasp", "description": "establish a stable task-compatible grasp", "weight": 2.0},
+          {"id": "lift", "description": "lift and hold the bowl along the requested direction", "weight": 2.0}
+        ],
+        "applicable_contact_dimensions": [
+          "contact_region_transfer",
+          "contact_establishment",
+          "manipulation_mode_transfer",
+          "temporally_supported_object_response",
+          "embodiment_compatible_contact_strategy"
+        ],
+        "contact_specification": {
+          "entities": ["bowl"],
+          "mode": "parallel-jaw grasp and lift",
+          "expected_response": "bowl follows the gripper without visible slip"
+        },
+        "target_embodiment": {"category": "single robot arm", "end_effector": "parallel-jaw gripper"}
+      }
+    },
+    {
+      "case_id": "pilot-deformable-garment-001",
+      "task_name": "perform the source-conditioned bimanual garment fold",
+      "task_family": "f4_deformable_configuration",
+      "track": "h2r_transfer",
+      "split": "public-frozen",
+      "source_uri": "demo/showcase/h2r-garment-fold-occlusion-completion.mp4#left-source-panel",
+      "source_interface": "left_panel",
+      "target": {
+        "robot_model": "dual_rm65",
+        "end_effector": "ag2f90d_parallel_jaw",
+        "arm_count": 2,
+        "arm_dof": [6, 6],
+        "urdf_uri": "registry:realman_rm65_b+changingtek_ag2f90_d"
+      },
+      "camera_frame": "camera:source_uncalibrated",
+      "world_frame": "world:source_table_uncalibrated",
+      "robot_base_frame": "robot_base:dual_rm65",
+      "required_dimensions": ["l1_visual"],
+      "required_metrics": {},
+      "annotation": {
+        "goal_predicates": [
+          {"id": "garment_folded", "description": "the garment reaches a compact folded terminal state", "weight": 1.0}
+        ],
+        "action_events": [
+          {"id": "bimanual_grasp", "description": "both grippers grasp task-relevant garment regions", "weight": 1.0},
+          {"id": "fold", "description": "both arms move the grasped regions through the source fold", "weight": 2.0},
+          {"id": "place_release", "description": "place and release the fold without immediate unfolding", "weight": 1.0}
+        ],
+        "applicable_contact_dimensions": [
+          "contact_region_transfer",
+          "contact_establishment",
+          "manipulation_mode_transfer",
+          "temporally_supported_object_response",
+          "embodiment_compatible_contact_strategy"
+        ],
+        "contact_specification": {
+          "entities": ["left_garment_region", "right_garment_region"],
+          "mode": "bimanual pinch, transport, placement, and release",
+          "expected_response": "garment follows both grasps and remains folded"
+        },
+        "target_embodiment": {"category": "dual-arm robot", "end_effector": "parallel-jaw gripper"}
+      }
+    },
+    {
+      "case_id": "pilot-surface-cabbage-001",
+      "task_name": "use a grasped tool to reproduce the cabbage cutting action",
+      "task_family": "f6_surface_transformation",
+      "track": "h2r_transfer",
+      "split": "public-frozen",
+      "source_uri": "demo/showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4#left-source-panel",
+      "source_interface": "left_panel",
+      "target": {
+        "robot_model": "rm65",
+        "end_effector": "ag2f90d_parallel_jaw",
+        "arm_count": 1,
+        "arm_dof": [6],
+        "urdf_uri": "registry:realman_rm65_b+changingtek_ag2f90_d"
+      },
+      "camera_frame": "camera:ego_uncalibrated",
+      "world_frame": "world:cutting_surface_uncalibrated",
+      "robot_base_frame": "robot_base:rm65",
+      "required_dimensions": ["l1_visual"],
+      "required_metrics": {},
+      "annotation": {
+        "goal_predicates": [
+          {"id": "cut_progress", "description": "the tool visibly produces the requested cutting progress", "weight": 1.0}
+        ],
+        "action_events": [
+          {"id": "tool_grasp", "description": "securely hold the cutting tool", "weight": 1.0},
+          {"id": "tool_contact", "description": "bring the working edge to the correct cabbage region", "weight": 2.0},
+          {"id": "cut_strokes", "description": "execute temporally coherent cutting strokes", "weight": 2.0}
+        ],
+        "applicable_contact_dimensions": [
+          "contact_region_transfer",
+          "contact_establishment",
+          "manipulation_mode_transfer",
+          "temporally_supported_object_response",
+          "embodiment_compatible_contact_strategy"
+        ],
+        "contact_specification": {
+          "entities": ["cutting_tool", "cabbage"],
+          "mode": "grasped-tool surface transformation",
+          "expected_response": "tool remains held and cabbage changes in response to contact"
+        },
+        "target_embodiment": {"category": "single robot arm", "end_effector": "parallel-jaw gripper holding a tool"}
+      }
+    }
+  ]
+}

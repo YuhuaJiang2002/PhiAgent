@@ -421,7 +421,7 @@
           <div class="copy">
             <p class="status-working">Simulation working · URDF-constrained IK/FK replay</p>
             <h2>PhiAgent folding video to RM65 simulation</h2>
-            <p><strong>Input:</strong> An eight-second PhiAgent dual-arm T-shirt-folding video with reviewed gripper points, visible wrist-to-tip axes, and open/close events.<br><strong>Output:</strong> The synchronized motion replayed in MuJoCo by two six-axis RealMan RM65-B arms and AG2F90-C grippers. Axis-only orientation, branch-continuous IK, and a reviewed left tool-roll offset remove the wrist-flip solution and keep both gripper planes parallel to the tabletop. All 192 states are finite; mean left/right EEF FK residual is 0.72/0.68 mm.</p>
+            <p><strong>Input:</strong> An eight-second PhiAgent dual-arm T-shirt-folding video with reviewed gripper points, visible wrist-to-tip axes, and open/close events.<br><strong>Output:</strong> The synchronized motion replayed in MuJoCo by two six-axis RealMan RM65-B arms and the published AG2F90-C-labelled geometric proxy. Axis-only orientation, branch-continuous IK, and a reviewed left tool-roll offset remove the wrist-flip solution and keep both gripper planes parallel to the tabletop. All 192 states are finite; mean left/right EEF FK residual is 0.72/0.68 mm.<br><strong>Hardware note:</strong> The company gripper is CTAG2F90-D. Its 0.8 kg mass and 100/250 mm/s speed modes are represented in the new benchmark adapter, not in this legacy visual replay.</p>
             <a class="video-link" href="showcase/rm65-ag2f90c-source-vs-simulation-v17.mp4?v=17">Open comparison MP4</a>
             ·
             <a class="video-link" href="showcase/rm65-ag2f90c-simulation-only-v17.mp4?v=17">Open simulation only</a>

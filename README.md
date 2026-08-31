@@ -106,6 +106,13 @@ The v17 web media uses H.264/AVC (`avc1`, High@4.1), `yuv420p`, and front-loaded
 MP4 metadata for native playback in current desktop and mobile browsers. The
 trajectory and simulation frames are unchanged from the audited v16 result.
 
+Hardware naming note: the published render and immutable audit use the
+AG2F90-C-labelled geometric proxy. The company's actual gripper is CTAG2F90-D;
+its appearance is compatible with this display, but its 0.8 kg mass and
+100/250 mm/s speed modes were not simulated by the published replay. New
+benchmark adapters therefore target D while retaining the C audit for historical
+reproducibility.
+
 ### Supplemental real-scene action-conditioned comparison
 
 [![Accepted OSCAR AC-WM counterfactuals: carry right versus lift up](demo/showcase/oscar-acwm-accepted-comparison-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/oscar-acwm-accepted-comparison.mp4)

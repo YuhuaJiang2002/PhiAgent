@@ -1,0 +1,41 @@
+{
+  "schema_version": "0.1.0",
+  "suite": "phiagent-public-visual-pilot",
+  "frozen_at": "2026-08-31T00:00:00Z",
+  "artifacts": [
+    {
+      "case_id": "pilot-rigid-bowl-001",
+      "path": "demo/showcase/oscar-acwm-real-source.mp4",
+      "sha256": "6c0805f6d54020e592790d749433d49106bb203393ea44e7ea74e985937badd9",
+      "bytes": 1209902,
+      "frames": 124,
+      "fps": 24.0,
+      "width": 896,
+      "height": 512,
+      "source_region": "full_frame"
+    },
+    {
+      "case_id": "pilot-deformable-garment-001",
+      "path": "demo/showcase/h2r-garment-fold-occlusion-completion.mp4",
+      "sha256": "915c21139997c1d2a3fe503dd6bc8272de199df295a571dab55ebb52fc92d844",
+      "bytes": 2862923,
+      "frames": 192,
+      "fps": 24.0,
+      "width": 1920,
+      "height": 540,
+      "source_region": "left_source_panel"
+    },
+    {
+      "case_id": "pilot-surface-cabbage-001",
+      "path": "demo/showcase/ego-cabbage-human-vs-robot-confidence-routed.mp4",
+      "sha256": "d13cc34e068e9e1e57d343f40abb403e2d67d2b859e1b3cec13bb0ddf7122925",
+      "bytes": 1937387,
+      "frames": 90,
+      "fps": 30.0,
+      "width": 1920,
+      "height": 540,
+      "source_region": "left_source_panel"
+    }
+  ],
+  "claim_boundary": "This freezes three repository-published L1 source inputs across three task families. It is not a calibrated L2-L5 physical benchmark and does not cover all six H2R families."
+}

@@ -57,6 +57,11 @@ L5 never commands a robot. It imports an existing PhiAgent
 safety log, outcome review, timestamps, and hashes. A hardware SDK may be added
 later behind a separately reviewed adapter.
 
+A valid L5 success must also name the frozen blind protocol, be pre-registered,
+carry a privacy-preserving reviewer SHA-256, and bind the complete action,
+calibration, initial/predicted/execution video, telemetry, safety, and outcome
+artifact set by SHA-256. Merely setting `blind_review=true` is insufficient.
+
 ## Quick start
 
 From the repository root:
@@ -84,7 +89,7 @@ python -m phiagent.benchmark.cli h2r-score \
   --video-quality benchmark/suites/smoke-v0.1/video-quality.json
 
 python -m phiagent.benchmark.cli adapter-check \
-  --manifest benchmark/adapters/rm65-ag2f90c-recorded.json \
+  --manifest benchmark/adapters/rm65-ag2f90d-recorded.json \
   --suite benchmark/suites/smoke-v0.1/suite.json
 ```
 
@@ -116,6 +121,23 @@ python -m phiagent.benchmark.cli robowm-command \
 
 The command is emitted, not executed. Isaac Sim 5.1 and the bundled Isaac Lab
 environment remain optional heavyweight dependencies.
+
+Validate the three-case frozen public L1 pilot and the embodiment catalog with:
+
+```bash
+python -m phiagent.benchmark.cli freeze-check \
+  --manifest benchmark/suites/public-visual-pilot-v0.1/freeze.json \
+  --repository-root .
+
+python -m phiagent.benchmark.cli registry-check \
+  --registry benchmark/embodiments/registry-v0.1.json
+```
+
+The public pilot freezes rigid rearrangement, deformable configuration, and
+surface transformation sources by SHA-256. It is deliberately L1-only because
+those public display videos have no calibrated metric/action truth. A future
+core L2--L5 split must use synchronized calibration, object state, robot state,
+and outcome annotations rather than inventing labels for these clips.
 
 ## Non-cherry-picked real reporting
 
@@ -149,10 +171,31 @@ Additional robots belong in an adapter track rather than weakening comparability
 by claiming immediate support for every commercial arm and gripper.
 
 Every hardware adapter declares its embodiment, ordered joints, control rate,
-telemetry channels, safety channels, and whether it is permitted to execute or
-only import recorded evidence. The checked-in RM65/AG2F90-C manifest is
+telemetry channels, safety channels, end-effector mass/stroke/force/speed limits,
+and whether it is permitted to execute or only import recorded evidence. The
+primary company-hardware manifest is RM65/AG2F90-D and remains
 `evidence_only=true` and `execution_enabled=false`; benchmark evaluation cannot
-move the robot.
+move the robot. The older C-labelled manifest remains only for reproducing the
+published visual asset.
+
+The D manifest records 100 and 250 mm/s modes from the manufacturer page, but
+keeps `high_speed_requires_confirmation=true`: the page marks 250 mm/s with a
+double asterisk and does not establish the installed firmware/load/duty-cycle
+conditions. The default evaluation limit therefore remains 100 mm/s.
+
+Manufacturer source: [CTAG2F90-D specifications](https://www.changingtek.com/diandong/147).
+
+The pinned source catalog is
+[`embodiments/registry-v0.1.json`](embodiments/registry-v0.1.json). It stores
+official URLs, revisions, asset paths, licenses, validation tiers, and caveats;
+it does not vendor a pile of third-party URDFs or equate parseability with safe
+execution.
+
+The initial catalog intentionally has six representative arm sources rather
+than hundreds of copied files: RM65-B, UR5e, FR3, Kinova Gen3 7DoF, xArm7, and
+ViperX 300 S. Promotion proceeds from `metadata_only` to `source_pinned`,
+`kinematic_validated`, `simulation_validated`, and finally
+`hardware_validated`. Only the latter two belong in physical leaderboard claims.
 
 ## Submission contract and leaderboard
 

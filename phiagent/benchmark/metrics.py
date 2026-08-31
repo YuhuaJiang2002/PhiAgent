@@ -191,10 +191,30 @@ def evaluate_record(
             missing_dimensions.append("l4_sim")
 
     if "l5_real" in case.required_dimensions:
-        valid_success = record.real.valid_success if record.real is not None else False
+        expected_protocol = case.annotation.get("real_protocol_id")
+        protocol_match = bool(
+            record.real is not None
+            and (
+                expected_protocol is None
+                or record.real.protocol_id == expected_protocol
+            )
+        )
+        valid_success = bool(
+            record.real is not None
+            and record.real.valid_success
+            and protocol_match
+        )
         scores["l5_real"] = float(valid_success)
         gates["l5_real"] = valid_success
-        diagnostics["l5_real"] = record.real.to_dict() if record.real else None
+        diagnostics["l5_real"] = (
+            {
+                **record.real.to_dict(),
+                "expected_protocol_id": expected_protocol,
+                "protocol_match": protocol_match,
+            }
+            if record.real
+            else None
+        )
         if sim_valid and record.real is None:
             missing_dimensions.append("l5_real")
 
@@ -266,6 +286,7 @@ def evaluate_submission(
         evaluate_record(case, record_by_id[case.case_id], policy)
         for case in suite.cases
     ]
+    evaluated_by_id = {str(row["case_id"]): row for row in per_case}
     dimension_scores: dict[str, float | None] = {}
     for dimension in DIMENSIONS:
         values = [
@@ -296,8 +317,7 @@ def evaluate_submission(
     valid_real_successes = sum(
         bool(
             simulation_pass(record_by_id[case.case_id], policy)
-            and record_by_id[case.case_id].real
-            and record_by_id[case.case_id].real.valid_success
+            and evaluated_by_id[case.case_id]["gates"]["l5_real"]
         )
         for case in real_cases
     )
@@ -306,7 +326,7 @@ def evaluate_submission(
             simulation_pass(record_by_id[case.case_id], policy)
             and record_by_id[case.case_id].real
             and record_by_id[case.case_id].real.attempted
-            and not record_by_id[case.case_id].real.valid_success
+            and not evaluated_by_id[case.case_id]["gates"]["l5_real"]
         )
         for case in real_cases
     )
@@ -328,7 +348,7 @@ def evaluate_submission(
         if simulation_pass(record_by_id[case.case_id], policy)
         and record_by_id[case.case_id].runtime is not None
         and record_by_id[case.case_id].real is not None
-        and record_by_id[case.case_id].real.valid_success
+        and evaluated_by_id[case.case_id]["gates"]["l5_real"]
     )
     valid_data_goodput = valid_video_seconds / total_gpu_hours if total_gpu_hours > 0 else None
     utility = [

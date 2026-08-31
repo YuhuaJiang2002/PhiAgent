@@ -7,7 +7,8 @@
     "source_revision": "1c327023f9b611606edb1477cbfcff4f2549da45",
     "audit_uri": "demo/showcase/rm65-ag2f90c-source-vs-simulation-v17-audit.json",
     "legacy_visual_audit_uri": "demo/showcase/h2r-garment-fold-occlusion-completion.json",
-    "claim_boundary": "The public artifact establishes a synchronized, finite, URDF-constrained kinematic replay. Its legacy image-space score is not converted to H2R M1-M5; FK residual is not treated as source action ground truth; cloth physics and real execution are absent."
+    "hardware_target_correction": "Company hardware is CTAG2F90-D. The published C-labelled geometry is retained as a visually compatible legacy proxy; D mass, speed modes, firmware behavior, and dynamics were not exercised by this video.",
+    "claim_boundary": "The public artifact establishes a synchronized, finite, URDF-constrained kinematic replay. Its legacy image-space score is not converted to H2R M1-M5; FK residual is not treated as source action ground truth; CTAG2F90-D dynamics, cloth physics, and real execution are absent."
   },
   "records": [
     {

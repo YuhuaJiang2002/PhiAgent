@@ -17,8 +17,10 @@ from pathlib import Path
 from typing import Any
 
 from phiagent.benchmark.adapters import RoboWMBenchAdapter, h2r_judge_packet
+from phiagent.benchmark.embodiments import EmbodimentRegistry
 from phiagent.benchmark.h2r import H2RAnnotation, H2RJudgeOutput, aggregate_h2r_judges
 from phiagent.benchmark.hardware import HardwareAdapterManifest
+from phiagent.benchmark.integrity import verify_freeze_manifest
 from phiagent.benchmark.metrics import BenchmarkPolicy, evaluate_submission
 from phiagent.benchmark.schema import BenchmarkSuite, Submission
 from phiagent.benchmark.trajectory import (
@@ -130,6 +132,13 @@ def _parser() -> argparse.ArgumentParser:
     robowm.add_argument("--episode-index", type=int, required=True)
     robowm.add_argument("--device", default="cpu")
 
+    robowm_preflight = subparsers.add_parser(
+        "robowm-preflight", help="inspect optional Isaac Lab 5.1 prerequisites"
+    )
+    robowm_preflight.add_argument("--checkout", type=Path, required=True)
+    robowm_preflight.add_argument("--revision", required=True)
+    robowm_preflight.add_argument("--output", type=Path)
+
     action = subparsers.add_parser("action-metrics", help="compare synchronized L3 action files")
     action.add_argument("--reference", type=Path, required=True)
     action.add_argument("--candidate", type=Path, required=True)
@@ -141,6 +150,15 @@ def _parser() -> argparse.ArgumentParser:
     hardware.add_argument("--manifest", type=Path, required=True)
     hardware.add_argument("--suite", type=Path, required=True)
     hardware.add_argument("--output", type=Path)
+
+    registry = subparsers.add_parser("registry-check", help="validate embodiment sources")
+    registry.add_argument("--registry", type=Path, required=True)
+    registry.add_argument("--output", type=Path)
+
+    freeze = subparsers.add_parser("freeze-check", help="verify frozen source hashes")
+    freeze.add_argument("--manifest", type=Path, required=True)
+    freeze.add_argument("--repository-root", type=Path, default=Path.cwd())
+    freeze.add_argument("--output", type=Path)
     return parser
 
 
@@ -291,6 +309,10 @@ def main() -> int:
         )
         _write({"command": command, "shell_preview": shlex.join(command)}, None)
         return 0
+    if args.command == "robowm-preflight":
+        adapter = RoboWMBenchAdapter(args.checkout, args.revision)
+        _write(adapter.runtime_preflight(), args.output)
+        return 0
     if args.command == "action-metrics":
         reference_payload = _json(args.reference)
         candidate_payload = _json(args.candidate)
@@ -341,6 +363,19 @@ def main() -> int:
                 "all_compatible": all(result["compatible"] for result in results),
                 "cases": results,
             },
+            args.output,
+        )
+        return 0
+    if args.command == "registry-check":
+        registry = EmbodimentRegistry.from_json(args.registry)
+        _write(registry.summary(), args.output)
+        return 0
+    if args.command == "freeze-check":
+        _write(
+            verify_freeze_manifest(
+                args.manifest,
+                repository_root=args.repository_root,
+            ),
             args.output,
         )
         return 0
