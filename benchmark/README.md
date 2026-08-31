@@ -1,4 +1,4 @@
-# PhiAgent-Bench (rough v0.1)
+# PhiAgent-Bench (v0.1)
 
 PhiAgent-Bench is a source-conditioned, cross-embodiment benchmark contract:
 
