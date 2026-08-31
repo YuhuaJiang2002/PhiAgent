@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-08-31.h3mr-readme-demo-publication-partial",
+  "recorded_at": "2026-08-31T14:15:34+08:00",
+  "scope": "Publish the reviewed H3MR README evaluation and multi-panel demo-page layout",
+  "status": "PARTIAL",
+  "summary": "The reviewed README upper-bound table and demo layout are ready for a narrowly scoped main-branch commit; remote publication and Pages deployment remain pending.",
+  "evidence": [
+    "README.md describes all three H3MR stages and reports the 20-video GT-2D upper-bound table with Stage 3-BIR (Ours), PhiAgent vs. Native, and Relative gain headers.",
+    "demo/index.html gives AC-WM, both H3MR comparisons, and the four-embodiment comparison full-width rows.",
+    "The AC-WM full-width row precedes the paired bowl-grasp and Shadow cards, eliminating the unused half-row cell.",
+    "The local demo server returned HTTP 200 and the expected card order.",
+    "git diff --check completed without whitespace errors."
+  ],
+  "limitations": [
+    "The commit and push had not occurred when this pre-publication record was written.",
+    "GitHub Pages deployment and public browser rendering still require post-push verification.",
+    "The metric values were transcribed from the H3MR project report rather than independently recomputed in PhiAgent."
+  ],
+  "lessons": [
+    "Wide three- and four-panel comparison videos should occupy a full row, while concise metric headers keep the README table readable.",
+    "A dirty research checkout requires selective staging so unrelated work is never included in a public documentation commit."
+  ],
+  "next_actions": [
+    "Commit only README.md, demo/index.html, this record, and its ledger entry.",
+    "Push to main, verify the Pages workflow, and append a correcting publication record with public evidence."
+  ],
+  "supersedes": [],
+  "tags": ["h3mr", "readme", "demo", "github-pages", "publication", "partial"]
+}

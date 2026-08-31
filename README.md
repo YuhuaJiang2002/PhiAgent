@@ -241,6 +241,27 @@ official PhiZero inference.
 
 [Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-mano-mesh-comparison.mp4)
 
+#### H3MR GT-2D upper-bound evaluation
+
+The current upper-bound evaluation uses GT MANO projections as ideal 2D
+observations on 20 H2O videos (40 single-hand trajectories and 25,352 shared
+valid hand frames). All five metrics are lower-is-better. These results measure
+H3MR under ideal 2D observations.
+
+The three refinement stages are:
+
+- **Stage 1 — Initial HMP Infill:** fills internal missing-hand intervals while preserving reliable observations.
+- **Stage 2 — Hierarchical Single-Hand Refinement:** corrects global wrist alignment and then local finger pose.
+- **Stage 3-BIR — Bimanual Interaction Refinement:** jointly improves two-hand interaction geometry and reduces penetration.
+
+| Metric ↓ | Native HaWoR | Stage 2 | Stage 3-BIR (Ours) | PhiAgent **vs. Native** | Relative gain |
+|---|---:|---:|---:|---:|---:|
+| PA-MPJPE | 7.000234 mm | 6.905090 mm | **6.904049 mm** | **+0.096186 mm** | **+1.374%** |
+| W-MPJPE | 26.083659 mm | **24.985688 mm** | 24.995809 mm | **+1.087850 mm** | **+4.171%** |
+| WA-MPJPE | 15.686847 mm | **15.117784 mm** | 15.135564 mm | **+0.551283 mm** | **+3.514%** |
+| RTE | 1.131513% | **1.106384%** | 1.107845% | **+0.023668 pct-pt** | **+2.092%** |
+| Accel | 7.051547 m/s² | **6.344561 m/s²** | 6.442513 m/s² | **+0.609033 m/s²** | **+8.637%** |
+
 ### Confidence-routed three-hand comparison
 
 [![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/three-hand-confidence-routed.mp4)
