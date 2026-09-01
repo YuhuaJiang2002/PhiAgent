@@ -1,0 +1,13 @@
+diff --git a/scripts/robot/eval_franka.py b/scripts/robot/eval_franka.py
+index 7eef205..0000000 100644
+--- a/scripts/robot/eval_franka.py
++++ b/scripts/robot/eval_franka.py
+@@ -335,5 +335,6 @@ def replay_episode(
+             success = env._get_success().item()
+-            if args_cli.part_scores:
+-                res = env.get_part_scores()
++            score_fn = getattr(env, "get_part_scores", None)
++            if args_cli.part_scores and score_fn is not None:
++                res = score_fn()
+                 if res is not None:
+                     part, scores = res

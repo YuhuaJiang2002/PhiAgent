@@ -13,9 +13,12 @@ human / ego video
 
 Status: **PARTIAL**. The dependency-free schema, clean-room H2R aggregation,
 L1--L5 aggregation, pinned RoboWM command adapter, recorded-hardware evidence
-adapter, smoke suite, CLI, and CPU tests work. Isaac Lab execution, official H2R
-annotations, model-based video-quality inference, and new hardware trials are not
-claimed to have run in this checkout.
+adapter, smoke suite, CLI, and CPU tests work. A frozen RoboWM `Franka-pick`
+episode has run successfully in Isaac Lab 5.1 (`1/1` upstream task success) on
+an RTX PRO 5000; it is deliberately not promoted to a full L4 physical pass
+because the upstream replay does not export every required safety/physics gate.
+Official H2R annotations, model-based video-quality inference, and new hardware
+trials are not claimed to have run.
 
 ## What the five levels mean
 
@@ -116,11 +119,19 @@ python -m phiagent.benchmark.cli robowm-command \
   --task pick \
   --trajectory-root /path/to/actions \
   --output-root /path/to/new/run \
-  --episode-index 0
+  --episode-index 0 \
+  --episode-sha256 0d7c012eae5381346374f8b13c6785eb5f539404df6e12d2854495a2fcb4e631 \
+  --pose-sha256 7bde01322ce53bde15712d1a3b2271f1cabc4223a11dfdeb6ccb846ccea5c2e5
 ```
 
 The command is emitted, not executed. Isaac Sim 5.1 and the bundled Isaac Lab
 environment remain optional heavyweight dependencies.
+
+The exact tested environment, frozen episode hashes, compatibility patches,
+warnings, and claim boundary are recorded in
+[`execution/`](execution/README.md). The adapter emits both `--headless` and
+`--enable_cameras`; omitting the latter prevents the RoboWM tiled cameras from
+initializing.
 
 Validate the three-case frozen public L1 pilot and the embodiment catalog with:
 

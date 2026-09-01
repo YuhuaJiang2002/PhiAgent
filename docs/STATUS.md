@@ -1,10 +1,27 @@
 # Status
 
-Evidence date: 2026-08-22. Status labels describe acceptance evidence, not code
+Evidence date: 2026-09-01. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
 ## WORKING
+
+- PhiAgent-Bench RoboWM execution bridge: a pinned RoboWM-Bench
+  `Franka-pick/episode_000000` replay now runs through pip Isaac Sim 5.1 and the
+  bundled Isaac Lab on one isolated RTX PRO 5000 72GB Blackwell, producing 1/1
+  upstream task success. The adapter supplies headless camera initialization;
+  three checked compatibility patches keep optional LeRobot, teleoperation, and
+  absent per-part scoring from corrupting offline replay. The episode and pose
+  hashes, Python/package inventory, GPU identity, command, logs, and result are
+  preserved. This is a WORKING upstream task-outcome bridge but remains PARTIAL
+  for PhiAgent L4: NuRec visual-field and PhysX filter-cardinality warnings are
+  present, and collision, velocity, joint-limit, singularity, and contact gates
+  were not all exported.
+- PhiAgent-Bench blind-trial intake: recorded L5 evidence now requires a
+  timezone-bound pre-registration manifest that freezes action, calibration,
+  initial-state video, and prediction hashes before execution. The CLI validates
+  and hashes the complete nine-artifact bundle without commanding hardware.
+  No new physical trial is claimed.
 
 - Persistent workflow framework and flower long-video reference graph: the
   standard-library `phiagent.workflows` runtime provides named nodes,

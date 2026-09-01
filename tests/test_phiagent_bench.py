@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from dataclasses import replace
 from pathlib import Path
@@ -120,6 +121,46 @@ def test_robowm_task_success_does_not_fake_full_physics() -> None:
     assert evidence.task_success is True
     assert evidence.physical_gate_complete is False
     assert simulation_pass(record, BenchmarkPolicy()) is False
+
+
+def test_robowm_command_is_headless(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(RoboWMBenchAdapter, "preflight", lambda self: {"status": "ready"})
+    adapter = RoboWMBenchAdapter(tmp_path / "RoboWM-Bench", "revision")
+    command = adapter.command(
+        task="pick",
+        trajectory_root=tmp_path / "trajectories",
+        output_root=tmp_path / "output",
+        episode_index=0,
+        device="cuda:0",
+    )
+    assert "--headless" in command
+    assert "--enable_cameras" in command
+    assert command[command.index("--device") + 1] == "cuda:0"
+
+
+def test_robowm_frozen_episode_hashes_fail_closed(tmp_path: Path) -> None:
+    root = tmp_path / "pick"
+    root.mkdir()
+    episode = root / "episode_000000.json"
+    pose = root / "pose.jsonl"
+    episode.write_bytes(b"episode")
+    pose.write_bytes(b"pose")
+    adapter = RoboWMBenchAdapter(tmp_path / "RoboWM-Bench", "revision")
+    result = adapter.verify_frozen_episode(
+        trajectory_root=root,
+        episode_index=0,
+        episode_sha256=hashlib.sha256(b"episode").hexdigest(),
+        pose_sha256=hashlib.sha256(b"pose").hexdigest(),
+    )
+    assert result["status"] == "verified"
+    episode.write_bytes(b"mutated")
+    with pytest.raises(ValueError, match="hash mismatch"):
+        adapter.verify_frozen_episode(
+            trajectory_root=root,
+            episode_index=0,
+            episode_sha256=hashlib.sha256(b"episode").hexdigest(),
+            pose_sha256=hashlib.sha256(b"pose").hexdigest(),
+        )
 
 
 def test_identical_action_trajectories_have_zero_error_and_perfect_events() -> None:

@@ -1,0 +1,18 @@
+diff --git a/scripts/robot/eval_franka.py b/scripts/robot/eval_franka.py
+index 7eef205..3d827b8 100644
+--- a/scripts/robot/eval_franka.py
++++ b/scripts/robot/eval_franka.py
+@@ -96,6 +96,4 @@ import gymnasium as gym
+ import torch
+ from isaaclab.envs import DirectRLEnv
+ from isaaclab_tasks.utils import parse_env_cfg
+-from lerobot.datasets.lerobot_dataset import LeRobotDataset
+-
+ from lehome.utils.record import get_next_experiment_path_with_gap
+@@ -146,1 +144,6 @@ def create_replay_dataset(args: argparse.Namespace):
++    # LeRobot is only required for the optional dataset-export path.  Keeping
++    # this import lazy lets task-only simulation run in an Isaac-pinned
++    # environment without LeRobot upgrading NumPy and other simulator pins.
++    from lerobot.datasets.lerobot_dataset import LeRobotDataset
++
+     output_path = Path(args.output_root)

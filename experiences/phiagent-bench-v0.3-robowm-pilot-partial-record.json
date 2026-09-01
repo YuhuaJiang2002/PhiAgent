@@ -1,0 +1,45 @@
+{
+  "record_id": "2026-09-01.phiagent-bench-v0.3-robowm-pilot-partial",
+  "recorded_at": "2026-09-01T12:48:56Z",
+  "status": "PARTIAL",
+  "scope": "Pinned RoboWM-Bench episode execution on Isaac Sim 5.1, frozen replay integrity, and pre-registered blind real-trial intake",
+  "summary": "The frozen Franka-pick episode 0 executes successfully on one RTX PRO 5000 under Isaac Sim 5.1, while PhiAgent-Bench continues to fail closed because the upstream replay does not export every L4 gate and no new blind physical trial exists.",
+  "evidence": [
+    "RoboWM-Bench revision 0a8b0eab3ebfb7993f6ab895f12eac41dfefa1c1 ran Franka-pick episode_000000 on physical GPU 1 and reported Total attempts: 1, Successes: 1, Success rate: 100.00%.",
+    "The frozen episode SHA-256 is 0d7c012eae5381346374f8b13c6785eb5f539404df6e12d2854495a2fcb4e631 and pose.jsonl SHA-256 is 7bde01322ce53bde15712d1a3b2271f1cabc4223a11dfdeb6ccb846ccea5c2e5; the command adapter verifies both before emission.",
+    "The runtime used Python 3.11.16, torch 2.7.0+cu128, Isaac Sim 5.1, driver 580.126.20, and one NVIDIA RTX PRO 5000 72GB Blackwell; logs, package inventory, GPU state, source revision, result, and hashes are preserved on the shared checkpoint volume.",
+    "Three patches apply cleanly to a pristine upstream worktree: lazy optional LeRobot import, optional offline teleoperation import, and absent get_part_scores handling. None changes task dynamics, action data, success predicates, or scene assets.",
+    "Twenty focused benchmark/real-evidence tests pass and targeted Ruff plus diff checks pass.",
+    "Recorded blind evidence now includes a pre-registration manifest that cryptographically freezes action, calibration, initial-state video, and prediction before execution; post-registration mutation is rejected."
+  ],
+  "lessons": [
+    "Headless Isaac Lab tasks with camera observations require --enable_cameras; --headless alone is insufficient.",
+    "An optional per-part diagnostic must not turn a successful task replay into a failure when the selected environment does not implement that diagnostic.",
+    "Upstream task success is useful integration evidence but cannot substitute for explicit collision, joint-limit, velocity, singularity, and contact measurements.",
+    "Blind-review claims need a pre-execution hash commitment, not only a later reviewer boolean."
+  ],
+  "limitations": [
+    "The task emits 121 missing NuRec field messages and one PhysX filter-cardinality warning; visual-background fidelity and contact filtering need separate resolution.",
+    "The replay result remains task_outcome_only with physical_gate_complete=false because full PhiAgent L4 telemetry is absent.",
+    "The Isaac environment retains optional-package version conflicts outside the tested replay path, and no full LeRobot dataset export was attempted.",
+    "No new RM65/AG2F90-D physical trial was run; the hardware adapter remains evidence-only and execution-disabled."
+  ],
+  "next_actions": [
+    "Instrument RoboWM/Isaac state to export joint-limit, velocity, collision, Jacobian singularity, contact-stage, and final-state evidence into a complete L4 record.",
+    "Resolve or deliberately disable the missing NuRec visual field and audit the 11-versus-5 PhysX filter mismatch before using rendered observations as benchmark evidence.",
+    "Collect pre-registered RM65/AG2F90-D trials across at least three independent sessions under the frozen blind protocol."
+  ],
+  "run_dir": "/mnt/checkpoint/guoyijun/phiagent-bench-runtime/runs/20260901T220000Z-robowm-franka-pick-episode0-pro5000-gpu1-v6",
+  "supersedes": [
+    "2026-08-31.phiagent-bench-v0.2-hardware-registry-partial"
+  ],
+  "tags": [
+    "phiagent-bench",
+    "robowm-bench",
+    "isaac-sim-5.1",
+    "rtx-pro-5000",
+    "frozen-replay",
+    "blind-review",
+    "partial"
+  ]
+}

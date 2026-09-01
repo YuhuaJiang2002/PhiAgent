@@ -45,6 +45,7 @@ class RealRobotTrialEvidence:
     trial_id: str
     robot_id: str
     hardware_serial: str
+    pre_registered_case_manifest: Path
     action: Path
     calibration: Path
     initial_state_video: Path
@@ -69,6 +70,11 @@ class RealRobotTrialEvidence:
             trial_id=str(payload["trial_id"]),
             robot_id=str(payload["robot_id"]),
             hardware_serial=str(payload["hardware_serial"]),
+            pre_registered_case_manifest=_file(
+                root,
+                payload.get("pre_registered_case_manifest"),
+                "pre-registered case manifest",
+            ),
             action=_file(root, payload.get("action"), "action condition"),
             calibration=_file(root, payload.get("calibration"), "calibration"),
             initial_state_video=_file(
@@ -91,6 +97,42 @@ class RealRobotTrialEvidence:
             raise ValueError("action coordinate frame does not identify the physical robot")
         if tuple(action.channels) != BWM_EEF_CHANNELS:
             raise ValueError("real-robot action channels do not match the reviewed BWM EEF contract")
+        registration = json.loads(self.pre_registered_case_manifest.read_text())
+        if registration.get("trial_id") != self.trial_id:
+            raise ValueError("pre-registration trial_id does not match the trial")
+        if registration.get("robot_id") != self.robot_id or registration.get(
+            "hardware_serial"
+        ) != self.hardware_serial:
+            raise ValueError("pre-registration hardware identity does not match the trial")
+        if not str(registration.get("case_id", "")).strip() or not str(
+            registration.get("protocol_id", "")
+        ).strip():
+            raise ValueError("pre-registration must name case_id and protocol_id")
+        if not str(registration.get("adapter_name", "")).strip():
+            raise ValueError("pre-registration must name the hardware adapter")
+        registered_at = _time(registration.get("registered_at"), "registered_at")
+        if registered_at < self.prediction_created_at:
+            raise ValueError("pre-registration cannot precede prediction creation")
+        if registered_at > self.execution_started_at:
+            raise ValueError("pre-registration must precede physical execution")
+        frozen_hashes = registration.get("artifact_hashes")
+        preregistered_files = {
+            "action": self.action,
+            "calibration": self.calibration,
+            "initial_state_video": self.initial_state_video,
+            "prediction_video": self.prediction_video,
+        }
+        if not isinstance(frozen_hashes, Mapping) or set(frozen_hashes) != set(
+            preregistered_files
+        ):
+            raise ValueError("pre-registration requires the frozen pre-execution artifact set")
+        changed = [
+            name
+            for name, path in preregistered_files.items()
+            if str(frozen_hashes[name]) != _sha256(path)
+        ]
+        if changed:
+            raise ValueError("a pre-registered artifact changed before trial collection")
         calibration = json.loads(self.calibration.read_text())
         if calibration.get("robot_id") != self.robot_id:
             raise ValueError("calibration robot_id does not match the trial")
@@ -106,16 +148,25 @@ class RealRobotTrialEvidence:
         if len(rows) < 2:
             raise ValueError("telemetry requires at least two synchronized samples")
         safety = json.loads(self.safety_log.read_text())
-        required_safety = {"preflight_passed", "collision_count", "emergency_stop_triggered"}
+        required_safety = {
+            "preflight_passed",
+            "collision_count",
+            "emergency_stop_triggered",
+            "force_limit_violation",
+        }
         if not required_safety <= set(safety):
             raise ValueError("safety log is missing required fields")
         if safety["preflight_passed"] is not True:
             raise ValueError("physical safety preflight did not pass")
         outcome = json.loads(self.outcome.read_text())
-        if outcome.get("blind_review") is not True or not isinstance(
-            outcome.get("task_success"), bool
+        required_outcome_booleans = ("task_success", "human_intervention")
+        if outcome.get("blind_review") is not True or any(
+            not isinstance(outcome.get(name), bool) for name in required_outcome_booleans
         ):
-            raise ValueError("outcome must contain a blind boolean task-success review")
+            raise ValueError("outcome must contain blind task and intervention reviews")
+        stage_success = outcome.get("stage_success_rate")
+        if not isinstance(stage_success, (int, float)) or not 0.0 <= float(stage_success) <= 1.0:
+            raise ValueError("outcome stage_success_rate must be in [0, 1]")
 
     def to_evidence(self) -> dict[str, Any]:
         safety = json.loads(self.safety_log.read_text())
@@ -123,6 +174,7 @@ class RealRobotTrialEvidence:
         files = {
             key: value
             for key, value in {
+                "pre_registered_case_manifest": self.pre_registered_case_manifest,
                 "action": self.action,
                 "calibration": self.calibration,
                 "initial_state_video": self.initial_state_video,

@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-import json
+import hashlib
 import importlib.util
+import json
 import re
 import shutil
 import subprocess
@@ -66,6 +67,44 @@ class RoboWMBenchAdapter:
     checkout: Path
     expected_revision: str
 
+    def verify_frozen_episode(
+        self,
+        *,
+        trajectory_root: Path,
+        episode_index: int,
+        episode_sha256: str,
+        pose_sha256: str,
+    ) -> dict[str, Any]:
+        """Fail closed when a pinned upstream trajectory input has changed."""
+
+        root = trajectory_root.expanduser().resolve()
+        candidates = (root / f"episode_{episode_index:06d}.json", root / f"{episode_index}.json")
+        episode = next((path for path in candidates if path.is_file()), None)
+        if episode is None:
+            raise ValueError(f"frozen RoboWM episode {episode_index} is missing from {root}")
+        pose = root / "pose.jsonl"
+        if not pose.is_file():
+            raise ValueError(f"frozen RoboWM pose file is missing: {pose}")
+
+        def digest(path: Path) -> str:
+            value = hashlib.sha256()
+            with path.open("rb") as stream:
+                for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                    value.update(chunk)
+            return value.hexdigest()
+
+        actual_episode = digest(episode)
+        actual_pose = digest(pose)
+        if actual_episode != episode_sha256 or actual_pose != pose_sha256:
+            raise ValueError("frozen RoboWM episode or pose hash mismatch")
+        return {
+            "episode": str(episode),
+            "episode_sha256": actual_episode,
+            "pose": str(pose),
+            "pose_sha256": actual_pose,
+            "status": "verified",
+        }
+
     def preflight(self) -> dict[str, Any]:
         checkout = self.checkout.expanduser().resolve()
         script = checkout / "scripts" / "robot" / "eval_franka.py"
@@ -117,6 +156,8 @@ class RoboWMBenchAdapter:
             str(episode_index),
             "--device",
             device,
+            "--headless",
+            "--enable_cameras",
             "--part_scores",
         ]
 
@@ -227,7 +268,6 @@ def real_evidence_from_recorded_trial(
     *,
     adapter_name: str,
     session_id: str,
-    stage_success_rate: float,
     protocol_id: str,
     trial_index: int,
     reviewer_id_hash: str,
@@ -255,7 +295,7 @@ def real_evidence_from_recorded_trial(
         session_id=session_id,
         attempted=True,
         task_success=bool(outcome["task_success"]),
-        stage_success_rate=float(stage_success_rate),
+        stage_success_rate=float(outcome["stage_success_rate"]),
         safety_violation=safety_violation,
         human_intervention=bool(outcome.get("human_intervention", False)),
         collision_count=collision_count,

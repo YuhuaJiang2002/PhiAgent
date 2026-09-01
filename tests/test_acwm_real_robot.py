@@ -1,4 +1,5 @@
 import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -44,16 +45,48 @@ def _write_trial(root: Path, trial_id: str) -> Path:
                 "preflight_passed": True,
                 "collision_count": 0,
                 "emergency_stop_triggered": False,
+                "force_limit_violation": False,
             }
         )
     )
     (root / "outcome.json").write_text(
-        json.dumps({"blind_review": True, "task_success": True})
+        json.dumps(
+            {
+                "blind_review": True,
+                "task_success": True,
+                "human_intervention": False,
+                "stage_success_rate": 1.0,
+            }
+        )
+    )
+    def sha256(name: str) -> str:
+        return hashlib.sha256((root / name).read_bytes()).hexdigest()
+
+    (root / "pre-registration.json").write_text(
+        json.dumps(
+            {
+                "trial_id": trial_id,
+                "case_id": "smoke-case",
+                "protocol_id": "phiagent-real-robot-blind-v0.1",
+                "robot_id": "arm-a",
+                "hardware_serial": "serial-001",
+                "adapter_name": "smoke-recorded-adapter",
+                "trial_index": 0,
+                "registered_at": "2026-08-11T10:00:30+08:00",
+                "artifact_hashes": {
+                    "action": sha256("action.json"),
+                    "calibration": sha256("calibration.json"),
+                    "initial_state_video": sha256("initial.mp4"),
+                    "prediction_video": sha256("prediction.mp4"),
+                },
+            }
+        )
     )
     descriptor = {
         "trial_id": trial_id,
         "robot_id": "arm-a",
         "hardware_serial": "serial-001",
+        "pre_registered_case_manifest": "pre-registration.json",
         "action": "action.json",
         "calibration": "calibration.json",
         "initial_state_video": "initial.mp4",
@@ -99,4 +132,15 @@ def test_real_robot_demo_hashes_repeated_physical_trials(tmp_path: Path) -> None
     assert result["trial_count"] == 3
     assert result["task_success_rate"] == 1.0
     assert result["safety_violation_free_rate"] == 1.0
+    assert "pre_registered_case_manifest" in result["trials"][0]["files"]
     assert len(result["trials"][0]["files"]["execution_video"]["sha256"]) == 64
+
+
+def test_real_robot_rejects_artifact_changed_after_registration(tmp_path: Path) -> None:
+    descriptor = _write_trial(tmp_path / "trial-tampered", "trial-tampered")
+    (descriptor.parent / "prediction.mp4").write_bytes(b"changed-after-registration")
+
+    with pytest.raises(ValueError, match="changed before trial collection"):
+        RealRobotTrialEvidence.from_dict(
+            json.loads(descriptor.read_text()), root=descriptor.parent
+        )

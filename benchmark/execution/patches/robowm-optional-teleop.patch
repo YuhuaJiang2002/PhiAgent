@@ -1,0 +1,26 @@
+diff --git a/source/lehome/lehome/devices/__init__.py b/source/lehome/lehome/devices/__init__.py
+index 71c16ab..03e44c5 100644
+--- a/source/lehome/lehome/devices/__init__.py
++++ b/source/lehome/lehome/devices/__init__.py
+@@ -10,4 +10,8 @@ from .keyboard import (
+ # from .gamepad import XboxController
+-from .hybrid.xlerobot_hybrid_controller import XlerobotHybridController
+-
++# Hardware teleoperation is optional during offline trajectory replay.
++try:
++    from .hybrid.xlerobot_hybrid_controller import XlerobotHybridController
++except Exception:  # pragma: no cover
++    XlerobotHybridController = None  # type: ignore
++
+ # Optional LeRobot devices.
+@@ -28,6 +32,8 @@ __all__ = [
+     "XlerobotKeyboard",
+-    "XlerobotHybridController",  # 添加这一行
+     # "XboxController",  # 注释掉，因为可能不存在
+ ]
+-
++
++if XlerobotHybridController is not None:
++    __all__.append("XlerobotHybridController")
++
+ # Only export LeRobot devices if they imported successfully.

@@ -16,7 +16,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from phiagent.benchmark.adapters import RoboWMBenchAdapter, h2r_judge_packet
+from phiagent.acwm.real_robot import RealRobotTrialEvidence
+from phiagent.benchmark.adapters import (
+    RoboWMBenchAdapter,
+    h2r_judge_packet,
+    real_evidence_from_recorded_trial,
+)
 from phiagent.benchmark.embodiments import EmbodimentRegistry
 from phiagent.benchmark.h2r import H2RAnnotation, H2RJudgeOutput, aggregate_h2r_judges
 from phiagent.benchmark.hardware import HardwareAdapterManifest
@@ -131,6 +136,8 @@ def _parser() -> argparse.ArgumentParser:
     robowm.add_argument("--output-root", type=Path, required=True)
     robowm.add_argument("--episode-index", type=int, required=True)
     robowm.add_argument("--device", default="cpu")
+    robowm.add_argument("--episode-sha256")
+    robowm.add_argument("--pose-sha256")
 
     robowm_preflight = subparsers.add_parser(
         "robowm-preflight", help="inspect optional Isaac Lab 5.1 prerequisites"
@@ -159,6 +166,18 @@ def _parser() -> argparse.ArgumentParser:
     freeze.add_argument("--manifest", type=Path, required=True)
     freeze.add_argument("--repository-root", type=Path, default=Path.cwd())
     freeze.add_argument("--output", type=Path)
+
+    real_trial = subparsers.add_parser(
+        "real-trial-check",
+        help="validate and hash a recorded blind real-robot trial without commanding hardware",
+    )
+    real_trial.add_argument("--descriptor", type=Path, required=True)
+    real_trial.add_argument("--adapter-manifest", type=Path, required=True)
+    real_trial.add_argument("--protocol", type=Path, required=True)
+    real_trial.add_argument("--session-id", required=True)
+    real_trial.add_argument("--trial-index", type=int, required=True)
+    real_trial.add_argument("--reviewer-id-hash", required=True)
+    real_trial.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -300,6 +319,18 @@ def main() -> int:
         return 0
     if args.command == "robowm-command":
         adapter = RoboWMBenchAdapter(args.checkout, args.revision)
+        if bool(args.episode_sha256) != bool(args.pose_sha256):
+            raise ValueError("frozen replay requires both episode and pose SHA-256 values")
+        frozen = (
+            adapter.verify_frozen_episode(
+                trajectory_root=args.trajectory_root,
+                episode_index=args.episode_index,
+                episode_sha256=args.episode_sha256,
+                pose_sha256=args.pose_sha256,
+            )
+            if args.episode_sha256
+            else None
+        )
         command = adapter.command(
             task=args.task,
             trajectory_root=args.trajectory_root,
@@ -307,7 +338,10 @@ def main() -> int:
             episode_index=args.episode_index,
             device=args.device,
         )
-        _write({"command": command, "shell_preview": shlex.join(command)}, None)
+        _write(
+            {"command": command, "shell_preview": shlex.join(command), "frozen_inputs": frozen},
+            None,
+        )
         return 0
     if args.command == "robowm-preflight":
         adapter = RoboWMBenchAdapter(args.checkout, args.revision)
@@ -376,6 +410,39 @@ def main() -> int:
                 args.manifest,
                 repository_root=args.repository_root,
             ),
+            args.output,
+        )
+        return 0
+    if args.command == "real-trial-check":
+        descriptor = args.descriptor.expanduser().resolve()
+        trial = RealRobotTrialEvidence.from_dict(_json(descriptor), root=descriptor.parent)
+        protocol = _json(args.protocol)
+        protocol_id = str(protocol.get("protocol_id", ""))
+        registration = _json(trial.pre_registered_case_manifest)
+        if registration.get("protocol_id") != protocol_id:
+            raise ValueError("pre-registration protocol_id does not match the selected protocol")
+        adapter = HardwareAdapterManifest.from_json(args.adapter_manifest)
+        if registration.get("adapter_name") != adapter.adapter_name:
+            raise ValueError("pre-registration adapter does not match the selected adapter")
+        if registration.get("trial_index") != args.trial_index:
+            raise ValueError("pre-registration trial_index does not match the requested trial")
+        evidence = real_evidence_from_recorded_trial(
+            trial,
+            adapter_name=adapter.adapter_name,
+            session_id=args.session_id,
+            protocol_id=protocol_id,
+            trial_index=args.trial_index,
+            reviewer_id_hash=args.reviewer_id_hash,
+            pre_registered=True,
+        )
+        _write(
+            {
+                "status": "validated_recorded_evidence",
+                "hardware_control_invoked": False,
+                "adapter_execution_enabled": adapter.execution_enabled,
+                "evidence_only": adapter.evidence_only,
+                "evidence": evidence.to_dict(),
+            },
             args.output,
         )
         return 0

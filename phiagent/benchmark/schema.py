@@ -331,6 +331,7 @@ class RealEvidence:
         raw_hashes = _mapping(payload["artifact_hashes"], "real.artifact_hashes")
         artifact_hashes = {str(name): str(value) for name, value in raw_hashes.items()}
         required_hashes = {
+            "pre_registered_case_manifest",
             "action",
             "calibration",
             "initial_state_video",

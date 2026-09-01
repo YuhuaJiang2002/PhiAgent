@@ -11,7 +11,40 @@
     "isaac_sim": "5.1",
     "isaac_lab": "bundled-upstream",
     "minimum_gpu_vram_gb": 24,
-    "recommended_gpu": "one isolated NVIDIA GPU per replay worker"
+    "recommended_gpu": "one isolated NVIDIA GPU per replay worker",
+    "required_environment": {
+      "OMNI_KIT_ACCEPT_EULA": "YES",
+      "PYNPUT_BACKEND": "dummy"
+    },
+    "required_flags": ["--headless", "--enable_cameras"]
+  },
+  "compatibility_patches": [
+    "patches/robowm-lazy-lerobot.patch",
+    "patches/robowm-optional-teleop.patch",
+    "patches/robowm-optional-part-scores.patch"
+  ],
+  "frozen_pilot_input": {
+    "task": "Franka-pick",
+    "episode_index": 0,
+    "episode_path": "GT/pick/episode_000000.json",
+    "episode_bytes": 15354,
+    "episode_sha256": "0d7c012eae5381346374f8b13c6785eb5f539404df6e12d2854495a2fcb4e631",
+    "pose_path": "GT/pick/pose.jsonl",
+    "pose_bytes": 1086,
+    "pose_sha256": "7bde01322ce53bde15712d1a3b2271f1cabc4223a11dfdeb6ccb846ccea5c2e5"
+  },
+  "validated_pilot": {
+    "date": "2026-09-01",
+    "gpu": "NVIDIA RTX PRO 5000 72GB Blackwell",
+    "driver": "580.126.20",
+    "attempts": 1,
+    "successes": 1,
+    "status": "complete_with_render_warnings",
+    "physical_gate_complete": false,
+    "warnings": [
+      "The optional NuRec/Gaussian visual field is absent from the published task assets.",
+      "The PhysX contact-filter wildcard reports 5 matches where the scene config expects 11."
+    ]
   },
   "pilot_tasks": [
     "pick",
