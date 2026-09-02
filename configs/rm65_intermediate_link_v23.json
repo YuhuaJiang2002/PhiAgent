@@ -1,0 +1,22 @@
+{
+  "schema_version": "phiagent-rm65-intermediate-link-config/1.0",
+  "input_state": "realman-rm65-ag2f90c-source-constrained-v21/state/rm65_synchronized_state.npz",
+  "side": "right",
+  "reviewed_joint_1based": 4,
+  "reviewed_offset_deg": 90.0,
+  "optimization": {
+    "metric_eef_position_scale_m": 0.005,
+    "metric_eef_rotation_scale_deg": 3.0,
+    "smooth_sigma_frames": 0.65,
+    "projected_eef_scale_px": 3.0,
+    "projected_axis_scale": 0.02,
+    "projected_joint_center_scale_px": 4.0
+  },
+  "camera": [45.0, -25.0, 1.15, 0.0, 0.1, 0.1],
+  "left_base_xyz_rpy": [-0.21, -0.28, 0.19, 1.5708, -0.87266, -1.5708],
+  "right_base_xyz_rpy": [0.21, -0.28, 0.19, -1.5708, 0.87266, -1.5708],
+  "table_half_size_xy": [0.55, 0.35],
+  "table_center_y": 0.10,
+  "selection": "v22 rejected for 0.53 m hidden-depth EEF drift; v24 rejected for 228.35 rad/s^2 acceleration and near-singular Jacobian; v23 selected by visual, temporal, joint-limit, velocity and Jacobian gates",
+  "claim_boundary": "Manual image-space joint-4 review regularized by the v21 metric pose; not calibrated encoder or camera ground truth."
+}
