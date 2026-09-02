@@ -1,0 +1,30 @@
+{
+  "schema_version": "phiagent-rm65-reviewed-gripper-axis/1.1",
+  "description": "V21 reviewed wrist-to-distal-tip image directions. DX/DY are source-image vectors. The right-arm view_depth=0.25 value was selected by a documented monocular depth sweep to retain the visible elbow-high IK branch; it is not measured depth.",
+  "frames": [0, 24, 40, 48, 72, 96, 120, 144, 168, 191],
+  "left_dx_dy_view_depth": [
+    [140, -95, 2.75],
+    [115, -95, 2.75],
+    [150, -95, 2.75],
+    [85, -70, 2.75],
+    [140, -120, 2.75],
+    [110, -80, 2.75],
+    [140, -110, 2.75],
+    [50, -115, 2.75],
+    [-70, -160, 3.0],
+    [-15, -130, 3.0]
+  ],
+  "right_dx_dy_view_depth": [
+    [-110, 160, 0.25],
+    [-125, 130, 0.25],
+    [-120, 90, 0.25],
+    [-120, 80, 0.25],
+    [-125, 70, 0.25],
+    [-120, 165, 0.25],
+    [-125, 95, 0.25],
+    [-120, 90, 0.25],
+    [-120, 65, 0.25],
+    [-120, 65, 0.25]
+  ],
+  "claim_boundary": "Manual RGB review; image direction is observed, while camera-depth and image-perpendicular width axes are kinematic proxies rather than calibrated metric ground truth."
+}
