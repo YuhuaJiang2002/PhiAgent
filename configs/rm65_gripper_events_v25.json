@@ -1,0 +1,11 @@
+{
+  "schema_version": "phiagent-rm65-reviewed-gripper-events/1.0",
+  "left": {
+    "frames": [0, 24, 40, 64, 76, 96, 112, 180, 191],
+    "closed_01": [0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0],
+    "gaussian_sigma_frames": 0.8
+  },
+  "right_policy": "preserve v23 command because the final source-visible right gripper is already open",
+  "review_evidence": "Source frames 150, 157, 162, 168, 171 and 176 show the near/left gripper carrying the folded garment; release begins around frame 184 and is complete by frame 191.",
+  "claim_boundary": "Human visual event review; no encoder, force or cloth-contact labels."
+}
