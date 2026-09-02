@@ -77,9 +77,9 @@ Click a preview below to open its MP4.
 
 [![PhiAgent folding video and synchronized RM65-B MuJoCo replay](demo/showcase/rm65-ag2f90c-source-vs-simulation-v16.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#rm65-simulation-replay)
 
-[Play the synchronized source-versus-simulation MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-source-vs-simulation-v17.mp4),
-[watch the simulation alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-simulation-only-v17.mp4),
-or inspect the [measured audit](demo/showcase/rm65-ag2f90c-source-vs-simulation-v17-audit.json)
+[Play the synchronized source-versus-simulation MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-source-vs-simulation-v26.mp4),
+[watch the simulation alone](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-simulation-only-v26.mp4),
+or inspect the [measured audit](demo/showcase/rm65-ag2f90c-source-vs-simulation-v26-audit.json)
 and [method description](docs/RM65_SIMULATION_REPLAY_DEMO.md).
 
 This demo shows that the source-conditioned folding motion can be realized in
@@ -94,9 +94,13 @@ a working kinematic simulation result. It does not by
 itself claim cloth dynamics, collision-safe control, calibrated camera
 extrinsics, or recorded real-robot execution.
 
-The v17 web media uses H.264/AVC (`avc1`, High@4.1), `yuv420p`, and front-loaded
-MP4 metadata for native playback in current desktop and mobile browsers. The
-trajectory and simulation frames are unchanged from the audited v16 result.
+The v26 web media uses H.264/AVC (`avc1`, High profile), `yuv420p`, and
+front-loaded MP4 metadata for native playback in current desktop and mobile
+browsers. The 192 arm joint states are retained while the reviewed gripper
+timeline corrects the final bilateral grasp: the left releases by frame 191
+and the right remains closed. The archived
+[v17 comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/rm65-ag2f90c-source-vs-simulation-v17.mp4)
+remains available.
 
 ### Supplemental real-scene action-conditioned comparison
 

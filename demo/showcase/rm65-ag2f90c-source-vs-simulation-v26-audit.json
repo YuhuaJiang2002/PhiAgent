@@ -1,0 +1,64 @@
+{
+  "schema_version": "phiagent-rm65-replay-publication/1.0",
+  "version": "v26",
+  "status": "WORKING_WITHIN_SOURCE_CONDITIONED_VISUAL_REPLAY_SCOPE",
+  "source_video": {
+    "frames": 192,
+    "fps": 24.0,
+    "width": 1024,
+    "height": 768
+  },
+  "comparison_video": {
+    "path": "rm65-ag2f90c-source-vs-simulation-v26.mp4",
+    "sha256": "df1a285e9c7754ae16a14ad627f50b185405b721caf5ffdf4474da92cf619886",
+    "codec": "h264 High",
+    "pixel_format": "yuv420p",
+    "frames": 192,
+    "fps": 24.0,
+    "width": 2048,
+    "height": 768,
+    "duration_seconds": 8.0,
+    "browser_transcode_psnr_db": 47.520566,
+    "browser_transcode_ssim": 0.994877
+  },
+  "simulation_video": {
+    "path": "rm65-ag2f90c-simulation-only-v26.mp4",
+    "sha256": "a64c9a0ea3465b046bf781409e5ab5eed7faa61d8b93126abf8c1609f857b07e",
+    "codec": "h264 High",
+    "pixel_format": "yuv420p",
+    "frames": 192,
+    "fps": 24.0,
+    "width": 1024,
+    "height": 768,
+    "duration_seconds": 8.0
+  },
+  "finite_state": true,
+  "arm_state_invariance": {
+    "left_q_bit_exact": true,
+    "right_q_bit_exact": true
+  },
+  "eef_fk_residual_m": {
+    "left": {
+      "mean": 0.0007233620166712196,
+      "rmse": 0.0008690742552971239,
+      "p90": 0.0014089029063228727,
+      "max": 0.003776076877248887
+    },
+    "right": {
+      "mean": 0.0,
+      "rmse": 0.0,
+      "p90": 0.0,
+      "max": 0.0
+    }
+  },
+  "gripper": {
+    "left_half_command_crossing_frames": [32, 71, 104, 186],
+    "right_half_command_crossing_frames": [32, 71, 104],
+    "review_frames": {
+      "171_closed_left_right": [1.0, 1.0],
+      "184_closed_left_right": [0.6363636363636365, 1.0],
+      "191_closed_left_right": [0.0, 1.0]
+    }
+  },
+  "claim_boundary": "Source-conditioned URDF/FK visual replay with manually reviewed cross-embodiment gripper events; gripper commands are not encoder, force, contact, cloth-attachment, or real-execution measurements."
+}

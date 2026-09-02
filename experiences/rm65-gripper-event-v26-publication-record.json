@@ -1,0 +1,35 @@
+{
+  "record_id": "2026-09-02.rm65-gripper-event-v26-publication-working",
+  "recorded_at": "2026-09-02T19:28:00+08:00",
+  "status": "WORKING",
+  "scope": "Publish the corrected bilateral final-grasp timeline as versioned GitHub Pages media without replacing the archived RM65 replay assets.",
+  "summary": "V26 publishes the eight-second, 192-frame dual-RM65 replay with unchanged arm joint states and corrected final gripper events: both sides remain closed at frame 171, the left releases by frame 191, and the right remains closed.",
+  "evidence": [
+    "The browser comparison is H.264 High, yuv420p, 2048x768, 24 FPS, 192 frames and 8.0 seconds with SHA-256 df1a285e9c7754ae16a14ad627f50b185405b721caf5ffdf4474da92cf619886.",
+    "The simulation-only media is H.264 High, yuv420p, 1024x768, 24 FPS, 192 frames and 8.0 seconds with SHA-256 a64c9a0ea3465b046bf781409e5ab5eed7faa61d8b93126abf8c1609f857b07e.",
+    "Both public MP4 files place the moov atom before mdat for progressive browser playback.",
+    "Left and right arm q arrays are bit-exact to the reviewed input state; gripper commands at frames 171, 184 and 191 are [1.0,1.0], [0.6363636364,1.0] and [0.0,1.0].",
+    "The browser transcode measured 47.520566 dB PSNR and 0.994877 SSIM against the rendered comparison source."
+  ],
+  "lessons": [
+    "Cross-embodiment gripper events require side-specific temporal review; copying one side's release event to the other introduces an unsupported state change.",
+    "Versioned media paths and archived links allow the corrected replay to become the default without deleting earlier audited evidence."
+  ],
+  "limitations": [
+    "The gripper events are reviewed image-space mappings to normalized AG2F90 commands, not encoder, force, contact or cloth-attachment measurements."
+  ],
+  "next_actions": [
+    "Verify the GitHub Pages workflow and public v26 media URLs after the main-branch push."
+  ],
+  "supersedes": [
+    "2026-08-29.rm65-visible-axis-tool-roll-v16-working"
+  ],
+  "tags": [
+    "rm65",
+    "ag2f90",
+    "gripper-events",
+    "github-pages",
+    "publication",
+    "working"
+  ]
+}
