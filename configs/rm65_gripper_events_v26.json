@@ -1,0 +1,18 @@
+{
+  "schema_version": "phiagent-rm65-reviewed-gripper-events/1.1",
+  "left": {
+    "frames": [0, 24, 40, 64, 76, 96, 112, 180, 191],
+    "closed_01": [0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0],
+    "gaussian_sigma_frames": 0.8
+  },
+  "right": {
+    "frames": [0, 24, 40, 64, 76, 96, 112, 191],
+    "closed_01": [0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0],
+    "gaussian_sigma_frames": 0.8
+  },
+  "review_evidence": {
+    "left": "The near/left gripper carries the folded garment through frame 176, begins release around frame 184 and is open by frame 191.",
+    "right": "Crops from frames 150, 157, 162, 168, 171, 176, 184 and 191 show the far/right dexterous-looking fingers remaining together with no source-visible reopening event."
+  },
+  "claim_boundary": "Human visual event review and cross-embodiment open/closed mapping; no encoder, force or contact labels."
+}
