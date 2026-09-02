@@ -56,6 +56,11 @@ strategies, not calibrated cloth physics or real-robot execution. See the
   Some published visual-transfer demos instead use video-generation and
   compositing baselines; these are appearance or motion-transfer results, not
   automatically physics-verified robot executions.
+- **RGB-to-relative-depth** optionally runs CacheVDA-B-FP16 in its own isolated
+  environment and returns an audited relative-depth visualization plus timing
+  metadata. Its output is affine-ambiguous and must not be treated as metres or
+  calibrated RGB-D sensing; see the
+  [CacheVDA integration](docs/CACHEVDA_RGB_TO_RELATIVE_DEPTH.md).
 - **Teacher pipeline** refers to the modular perception -> EPL -> retargeting ->
   simulation -> repair path used to generate measurable supervision and
   diagnostics before training a unified model.
@@ -261,6 +266,35 @@ The three refinement stages are:
 | WA-MPJPE | 15.686847 mm | **15.117784 mm** | 15.135564 mm | **+0.551283 mm** | **+3.514%** |
 | RTE | 1.131513% | **1.106384%** | 1.107845% | **+0.023668 pct-pt** | **+2.092%** |
 | Accel | 7.051547 m/s² | **6.344561 m/s²** | 6.442513 m/s² | **+0.609033 m/s²** | **+8.637%** |
+
+### RGB-to-relative-depth comparison
+
+#### Robot-arm RGB-to-relative-depth comparison
+
+[![Robot-arm Original RGB versus PhiAgent relative-depth comparison](demo/showcase/cachevda-original-rgb-vs-phiagent.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/cachevda-original-rgb-vs-phiagent.mp4)
+
+[Play MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/cachevda-original-rgb-vs-phiagent.mp4)
+
+#### Human-hand RGB-to-relative-depth comparison
+
+[![Human-hand Original RGB versus PhiAgent relative-depth comparison](demo/showcase/cachevda-first-minute-rgb-vs-phiagent.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/cachevda-first-minute-rgb-vs-phiagent.mp4)
+
+[Play the first-minute MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/cachevda-first-minute-rgb-vs-phiagent.mp4)
+
+CacheVDA reuses four-level DINOv2 features for the 10 overlapping frames while
+retaining full 32-frame DPT decoding. On a single NVIDIA RTX PRO 5000 72GB
+Blackwell GPU, parallel preprocessing, batched GPU-to-CPU transfer, online
+alignment, and NVENC reduce measured full-video latency from 54.447 to 19.423
+ms/input frame (**2.803×**).
+
+On the local BONN(110) evaluation, both methods use the same six 110-frame
+sequences and the official evaluator:
+
+| Metric | Native VDA Large | PhiAgent | Relative gain |
+|---|---:|---:|---:|
+| AbsRel ↓ | 0.052968 | **0.049917** | **+5.76%** |
+| δ1 ↑ | 0.985524 | **0.986158** | **+0.064%** |
+| RMSE ↓ | 0.204281 | **0.197437** | **+3.35%** |
 
 ### Confidence-routed three-hand comparison
 
