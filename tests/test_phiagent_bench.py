@@ -2,17 +2,21 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from dataclasses import replace
 from pathlib import Path
 
 import pytest
 
-from phiagent.benchmark.adapters import RoboWMBenchAdapter
+from phiagent.benchmark.adapters import HarnessEvalWAdapter, RoboWMBenchAdapter
+from phiagent.benchmark.batch import BatchController, compile_submission, plan_batch_run
 from phiagent.benchmark.embodiments import EmbodimentRegistry
 from phiagent.benchmark.h2r import H2RAnnotation, H2RJudgeOutput, aggregate_h2r_judges
 from phiagent.benchmark.hardware import HardwareAdapterManifest
 from phiagent.benchmark.integrity import verify_freeze_manifest
 from phiagent.benchmark.metrics import BenchmarkPolicy, evaluate_submission, simulation_pass
+from phiagent.benchmark.physical_gate import simulation_evidence_from_trace
+from phiagent.benchmark.real_plan import create_real_trial_plan
 from phiagent.benchmark.schema import BenchmarkSuite, ScalarEvidence, Submission
 from phiagent.benchmark.trajectory import (
     ActionTrajectory,
@@ -325,3 +329,389 @@ def test_public_visual_pilot_is_hash_frozen_and_explicitly_l1_only() -> None:
         "f6_surface_transformation",
     }
     assert all(case.required_dimensions == ("l1_visual",) for case in suite.cases)
+
+
+def test_visual_evidence_does_not_pass_only_by_existing() -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    submission = Submission.from_json(SMOKE / "submission-reference.json")
+    weak = replace(
+        submission.records[0].visual,
+        goal_completion=0.1,
+        action_completion=0.1,
+        contact_transfer=0.1,
+        embodiment_correctness=0.1,
+        video_quality=0.1,
+    )
+    report = evaluate_submission(
+        suite,
+        replace(submission, records=(replace(submission.records[0], visual=weak),)),
+        BenchmarkPolicy(bootstrap_iterations=100),
+    )
+    assert report["per_case"][0]["gates"]["l1_visual"] is False
+    assert report["per_case"][0]["diagnostics"]["l1_visual"]["checks"]["h2r_core"][
+        "pass"
+    ] is False
+
+
+def test_repeated_simulation_and_real_protocol_are_enforced() -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    submission = Submission.from_json(SMOKE / "submission-reference.json")
+    source = submission.records[0]
+    simulations = tuple(
+        replace(source.simulation, episode_id=f"episode-{index}", seed=index)
+        for index in range(5)
+    )
+    repeated_real = tuple(
+        replace(
+            source.real,
+            trial_id=f"trial-{index}",
+            trial_index=index,
+            session_id=f"session-{index % 3}",
+        )
+        for index in range(10)
+    )
+    record = replace(
+        source,
+        simulation=None,
+        simulations=simulations,
+        real=None,
+        real_trials=repeated_real,
+    )
+    policy = BenchmarkPolicy(
+        minimum_simulation_episodes=5,
+        minimum_real_trials=10,
+        minimum_real_sessions=3,
+        bootstrap_iterations=100,
+    )
+    report = evaluate_submission(suite, replace(submission, records=(record,)), policy)
+    assert report["protocol_complete"] is True
+    assert report["dimension_scores"]["l4_sim"] == 1.0
+    assert report["dimension_scores"]["l5_real"] == 1.0
+    assert report["real_audit"]["requested_trials"] == 10
+    assert report["real_audit"]["protocol_complete_case_count"] == 1
+
+    insufficient = replace(record, real_trials=repeated_real[:9])
+    rejected = evaluate_submission(
+        suite,
+        replace(submission, records=(insufficient,)),
+        policy,
+    )
+    assert rejected["protocol_complete"] is False
+    assert rejected["per_case"][0]["gates"]["l5_real"] is False
+
+
+def test_formal_simulation_policy_requires_hash_bound_episode_provenance() -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    submission = Submission.from_json(SMOKE / "submission-reference.json")
+    report = evaluate_submission(
+        suite,
+        submission,
+        BenchmarkPolicy(
+            require_simulation_provenance=True,
+            bootstrap_iterations=100,
+        ),
+    )
+    diagnostics = report["per_case"][0]["diagnostics"]["l4_sim"]
+    assert diagnostics["provenance_complete"] is False
+    assert diagnostics["protocol_complete"] is False
+    assert report["per_case"][0]["gates"]["l4_sim"] is False
+
+
+def test_real_gate_cannot_pass_when_simulation_fails() -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    submission = Submission.from_json(SMOKE / "submission-reference.json")
+    failed_simulation = replace(submission.records[0].simulation, task_success=False)
+    report = evaluate_submission(
+        suite,
+        replace(
+            submission,
+            records=(replace(submission.records[0], simulation=failed_simulation),),
+        ),
+        BenchmarkPolicy(bootstrap_iterations=100),
+    )
+    assert report["per_case"][0]["diagnostics"]["l5_real"]["valid_success_count"] == 1
+    assert report["per_case"][0]["gates"]["l5_real"] is False
+
+
+def test_batch_run_is_resumable_hash_bound_and_compilable(tmp_path: Path) -> None:
+    worker = tmp_path / "worker.py"
+    worker.write_text(
+        """
+import argparse, json
+from pathlib import Path
+p = argparse.ArgumentParser()
+p.add_argument('--job-dir', type=Path, required=True)
+p.add_argument('--case-id', required=True)
+p.add_argument('--stage', required=True)
+a = p.parse_args()
+a.job_dir.mkdir(parents=True, exist_ok=True)
+if a.stage == 'generate':
+    patch = {'case_id': a.case_id, 'generated_uri': str(a.job_dir / 'generated.mp4')}
+    (a.job_dir / 'generated.mp4').write_bytes(b'video')
+else:
+    patch = {
+        'case_id': a.case_id,
+        'visual': {
+            'goal_completion': 1.0, 'action_completion': 1.0,
+            'contact_transfer': 1.0, 'embodiment_correctness': 1.0,
+            'video_quality': 1.0, 'judge_count': 3, 'evidence_frames': 25,
+            'protocol': 'fixture', 'diagnostics': {'fixture': True}
+        }
+    }
+(a.job_dir / 'record-patch.json').write_text(json.dumps(patch))
+""".strip()
+        + "\n"
+    )
+    method = tmp_path / "method.json"
+    method.write_text(
+        json.dumps(
+            {
+                "schema_version": "0.2.0",
+                "method": "batch-fixture",
+                "working_directory": str(tmp_path),
+                "candidates_per_case": 1,
+                "seed": 7,
+                "stages": [
+                    {
+                        "name": "generate",
+                        "command": [
+                            sys.executable,
+                            str(worker),
+                            "--job-dir",
+                            "{job_dir}",
+                            "--case-id",
+                            "{case_id}",
+                            "--stage",
+                            "generate",
+                        ],
+                        "expected_outputs": ["generated.mp4", "record-patch.json"],
+                    },
+                    {
+                        "name": "visual",
+                        "depends_on": ["generate"],
+                        "command": [
+                            sys.executable,
+                            str(worker),
+                            "--job-dir",
+                            "{job_dir}",
+                            "--case-id",
+                            "{case_id}",
+                            "--stage",
+                            "visual",
+                        ],
+                        "expected_outputs": ["record-patch.json"],
+                    },
+                ],
+            }
+        )
+        + "\n"
+    )
+    run_dir = tmp_path / "run"
+    manifest = plan_batch_run(
+        suite_path=PUBLIC_VISUAL_PILOT / "suite.json",
+        method_path=method,
+        output_dir=run_dir,
+    )
+    assert manifest["job_count"] == 6
+    controller = BatchController(run_dir)
+    status = controller.run(max_workers=3)
+    assert status["complete"] is True
+    assert controller.run(max_workers=3) == status
+
+    output = tmp_path / "submission.json"
+    payload = compile_submission(run_dir=run_dir, output=output)
+    assert payload["schema_version"] == "0.2.0"
+    assert len(payload["records"]) == 3
+    assert all(record["visual"]["goal_completion"] == 1.0 for record in payload["records"])
+
+    first_job = manifest["jobs"][0]
+    artifact = run_dir / "jobs" / first_job / "generated.mp4"
+    artifact.write_bytes(b"tampered")
+    with pytest.raises(ValueError, match="artifact changed"):
+        BatchController(run_dir).run()
+
+
+def test_batch_retry_is_bounded_to_one_attempt_per_invocation(tmp_path: Path) -> None:
+    method = tmp_path / "method.json"
+    method.write_text(
+        json.dumps(
+            {
+                "schema_version": "0.2.0",
+                "method": "failing-fixture",
+                "working_directory": str(tmp_path),
+                "stages": [
+                    {
+                        "name": "fail",
+                        "command": [sys.executable, "-c", "raise SystemExit(2)"],
+                    }
+                ],
+            }
+        )
+    )
+    run_dir = tmp_path / "run"
+    manifest = plan_batch_run(
+        suite_path=PUBLIC_VISUAL_PILOT / "suite.json",
+        method_path=method,
+        output_dir=run_dir,
+    )
+    controller = BatchController(run_dir)
+    first = controller.run(max_workers=3)
+    assert first["counts"]["failed"] == 3
+    second = controller.run(max_workers=3, retry_failed=True)
+    assert second["counts"]["failed"] == 3
+    assert all(
+        json.loads((run_dir / "jobs" / job / "status.json").read_text())["attempts"] == 2
+        for job in manifest["jobs"]
+    )
+
+
+def test_harnesseval_adapter_is_visual_only_and_emits_explicit_argv(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setattr(
+        HarnessEvalWAdapter,
+        "preflight",
+        lambda self: {
+            "status": "ready",
+            "executable": "/usr/bin/harnesseval",
+            "claim_boundary": "visual only",
+        },
+    )
+    command = HarnessEvalWAdapter(tmp_path, "revision").command(
+        results=tmp_path / "results",
+        model_id="phiagent-test",
+        run_root=tmp_path / "run",
+        manifest=tmp_path / "manifest.json",
+        plan_root=tmp_path / "plans",
+    )
+    assert command[:2] == ["/usr/bin/harnesseval", "eval"]
+    assert command[command.index("--model-id") + 1] == "phiagent-test"
+
+
+def test_real_plan_expands_trials_and_stays_blocked_for_evidence_only_adapter(
+    tmp_path: Path,
+) -> None:
+    suite = BenchmarkSuite.from_json(SMOKE / "suite.json")
+    source_submission = Submission.from_json(SMOKE / "submission-reference.json")
+    case = replace(
+        suite.cases[0],
+        annotation={
+            **suite.cases[0].annotation,
+            "real_protocol_id": "phiagent-real-robot-blind-v0.2",
+        },
+    )
+    suite_v2 = replace(
+        suite,
+        cases=(case,),
+        schema_version="0.2.0",
+        policy_id="phiagent-real-pilot-v0.2",
+    )
+    source_record = source_submission.records[0]
+    simulations = tuple(
+        replace(
+            source_record.simulation,
+            episode_id=f"episode-{index}",
+            initial_state_id=f"state-{index}",
+            seed=index,
+            artifact_hashes={"trace": f"{index + 1:064x}"},
+        )
+        for index in range(5)
+    )
+    submission_v2 = replace(
+        source_submission,
+        records=(
+            replace(
+                source_record,
+                simulation=None,
+                simulations=simulations,
+                real=None,
+            ),
+        ),
+        schema_version="0.2.0",
+    )
+    suite_path = tmp_path / "suite.json"
+    submission_path = tmp_path / "submission.json"
+    suite_path.write_text(json.dumps(suite_v2.to_dict()))
+    submission_path.write_text(json.dumps(submission_v2.to_dict()))
+    output = tmp_path / "real-plan"
+    summary = create_real_trial_plan(
+        suite_path=suite_path,
+        submission_path=submission_path,
+        policy_path=ROOT / "benchmark" / "policies" / "real-pilot-v0.2.json",
+        protocol_path=ROOT
+        / "benchmark"
+        / "protocols"
+        / "real-robot-blind-v0.2.json",
+        adapter_path=ROOT / "benchmark" / "adapters" / "rm65-ag2f90d-recorded.json",
+        session_ids=("session-a", "session-b", "session-c"),
+        output_dir=output,
+        random_seed=7,
+    )
+    assert summary["planned_trial_count"] == 10
+    assert summary["session_count"] == 3
+    assert summary["hardware_control_invoked"] is False
+    assert summary["status"] == "blocked_pending_site_authorization"
+    assert len(summary["schedule_hashes"]["operator_schedule_sha256"]) == 64
+    assert len(summary["inputs"]["policy_sha256"]) == 64
+    schedule = json.loads((output / "operator-schedule.json").read_text())
+    assert len(schedule["rows"]) == 10
+    assert all("method" not in row for row in schedule["rows"])
+
+
+def test_physical_gate_derives_rates_from_every_sample() -> None:
+    payload = {
+        "schema_version": "0.2.0",
+        "backend": "mujoco-3.3.7",
+        "source_revision": "fixture-revision",
+        "episode_id": "episode-001",
+        "initial_state_id": "state-001",
+        "seed": 7,
+        "task_success": True,
+        "stage_results": [True, True],
+        "contact_results": [True, True],
+        "samples": [
+            {
+                "timestamp_s": timestamp,
+                "ik_success": True,
+                "joint_limit_violation": False,
+                "velocity_violation": False,
+                "forbidden_collision": index == 1,
+                "singularity": False,
+            }
+            for index, timestamp in enumerate((0.0, 0.1, 0.2, 0.3))
+        ],
+    }
+    evidence = simulation_evidence_from_trace(payload, trace_sha256="a" * 64)
+    assert evidence.physical_gate_complete is True
+    assert evidence.collision_rate == 0.25
+    assert evidence.physically_valid is False
+    assert evidence.artifact_hashes["physical_gate_trace"] == "a" * 64
+
+
+def test_physical_gate_rejects_incomplete_or_unsorted_samples() -> None:
+    sample = {
+        "timestamp_s": 0.0,
+        "ik_success": True,
+        "joint_limit_violation": False,
+        "velocity_violation": False,
+        "forbidden_collision": False,
+        "singularity": False,
+    }
+    payload = {
+        "schema_version": "0.2.0",
+        "backend": "mujoco",
+        "source_revision": "revision",
+        "episode_id": "episode",
+        "initial_state_id": "state",
+        "seed": 0,
+        "task_success": True,
+        "stage_results": [True],
+        "contact_results": [True],
+        "samples": [sample, sample],
+    }
+    with pytest.raises(ValueError, match="strictly increasing"):
+        simulation_evidence_from_trace(payload, trace_sha256="a" * 64)
+    payload["samples"] = [sample, {key: value for key, value in sample.items() if key != "singularity"}]
+    payload["samples"][1]["timestamp_s"] = 0.1
+    with pytest.raises(ValueError, match="lacks required flags"):
+        simulation_evidence_from_trace(payload, trace_sha256="a" * 64)

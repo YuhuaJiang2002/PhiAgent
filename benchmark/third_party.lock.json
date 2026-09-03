@@ -16,6 +16,14 @@
       "integration": "external command/result adapter",
       "license_observation": "No repository-wide top-level LICENSE file at the pinned revision; bundled IsaacLab and Phantom components have their own licenses.",
       "vendored": false
+    },
+    {
+      "name": "HarnessEval-W",
+      "url": "https://github.com/mirros-lab/harnesseval-w",
+      "revision": "ed4ccc6486b8271723ee8baea60d89b32d0a7518",
+      "integration": "external visual-world evaluator adapter; evidence-tree scores remain supplementary to metric geometry, simulation, and hardware gates",
+      "license_observation": "Repository README declares Apache-2.0 at the pinned revision.",
+      "vendored": false
     }
   ]
 }

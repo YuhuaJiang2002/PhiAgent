@@ -1,6 +1,6 @@
 # Status
 
-Evidence date: 2026-09-01. Status labels describe acceptance evidence, not code
+Evidence date: 2026-09-04. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
@@ -448,20 +448,26 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
-- PhiAgent-Bench v0.1: `phiagent.benchmark` now provides versioned suite and
+- PhiAgent-Bench v0.2 alpha: `phiagent.benchmark` now provides versioned suite and
   submission contracts, a clean-room implementation of the public H2R-Bench
   M1--M5/H2RCore equations, named-frame L2/L3 metrics, fail-closed L4 physics
   gates, non-cherry-picked L5 real-audit denominators, a policy-utility measure,
-  a pinned external RoboWM-Bench command/result adapter, and an evidence-only
-  dual-RM65/AG2F90-D hardware manifest. The synthetic smoke fixture closes all
-  software paths. A hash-frozen three-case public L1 pilot, an eight-asset
+  pinned external RoboWM-Bench and HarnessEval-W adapters, and an evidence-only
+  dual-RM65/AG2F90-D hardware manifest. V0.2 adds policy-bound visual thresholds,
+  repeated simulation and blind real evidence, a resumable dependency-ordered
+  batch controller, SHA-256 content-addressed outputs, explicit GPU resource
+  binding, a per-step physical-gate trace normalizer, and randomized ten-trial /
+  three-session real plans. The synthetic smoke fixture closes the software
+  paths. A hash-frozen three-case public L1 pilot, an eight-asset
   embodiment source registry, an Isaac Lab 5.1 runtime preflight, and a
   pre-registered hash-bound real blind-review protocol are also present. The
   existing public RM65 replay is imported separately as
   incomplete evidence: it records 192/192 IK success but does not promote its
   FK self-consistency or legacy image-space score to action truth, cloth task
-  success, or real execution. Official H2R annotations/evaluator code, a local
-  Isaac Lab 5.1 run, model-based M5 inference, and new real trials remain
+  success, or real execution. HarnessEval-W is supplemental L1 evidence and
+  cannot promote L2--L5. Official H2R annotations/evaluator code, a frozen
+  metric/action test set, model-specific batch workers, complete repeated
+  Isaac/MuJoCo traces, an approved site executor, and new real trials remain
   unavailable, so the benchmark is `PARTIAL`, not a completed leaderboard.
 
 - Photorealistic two-full-body-humanoid blanket folding, strict rejection:

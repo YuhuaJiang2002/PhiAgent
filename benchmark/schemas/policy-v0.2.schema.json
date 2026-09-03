@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuhuajiang2002.github.io/PhiAgent/schemas/phiagent-bench-policy-0.2.0.json",
+  "title": "PhiAgent-Bench policy v0.2.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "policy_id", "minimum_h2r_core",
+    "minimum_contact_transfer", "minimum_embodiment_correctness",
+    "minimum_ik_success_rate", "maximum_violation_rate",
+    "minimum_simulation_episodes", "minimum_simulation_pass_rate",
+    "require_simulation_provenance",
+    "minimum_real_trials", "minimum_real_sessions",
+    "minimum_real_success_rate", "bootstrap_iterations", "bootstrap_seed"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "policy_id": {"type": "string", "minLength": 1},
+    "claim_boundary": {"type": "string"},
+    "geometry_rules": {"$ref": "#/$defs/rules"},
+    "action_rules": {"$ref": "#/$defs/rules"},
+    "minimum_h2r_core": {"type": "number", "minimum": 0, "maximum": 100},
+    "minimum_contact_transfer": {"$ref": "#/$defs/rate"},
+    "minimum_embodiment_correctness": {"$ref": "#/$defs/rate"},
+    "minimum_ik_success_rate": {"$ref": "#/$defs/rate"},
+    "maximum_violation_rate": {"$ref": "#/$defs/rate"},
+    "minimum_simulation_episodes": {"type": "integer", "minimum": 1},
+    "minimum_simulation_pass_rate": {"$ref": "#/$defs/rate"},
+    "require_simulation_provenance": {"type": "boolean"},
+    "minimum_real_trials": {"type": "integer", "minimum": 1},
+    "minimum_real_sessions": {"type": "integer", "minimum": 1},
+    "minimum_real_success_rate": {"$ref": "#/$defs/rate"},
+    "require_real_eligibility_checks": {"type": "boolean"},
+    "bootstrap_iterations": {"type": "integer", "minimum": 100},
+    "bootstrap_seed": {"type": "integer"}
+  },
+  "$defs": {
+    "rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "rules": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["threshold", "direction", "unit"],
+        "properties": {
+          "threshold": {"type": "number"},
+          "direction": {"enum": ["min", "max"]},
+          "unit": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

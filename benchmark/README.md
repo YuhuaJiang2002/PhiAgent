@@ -1,4 +1,4 @@
-# PhiAgent-Bench (v0.1)
+# PhiAgent-Bench (v0.2 alpha)
 
 PhiAgent-Bench is a source-conditioned, cross-embodiment benchmark contract:
 
@@ -12,13 +12,19 @@ human / ego video
 ```
 
 Status: **PARTIAL**. The dependency-free schema, clean-room H2R aggregation,
-L1--L5 aggregation, pinned RoboWM command adapter, recorded-hardware evidence
-adapter, smoke suite, CLI, and CPU tests work. A frozen RoboWM `Franka-pick`
+L1--L5 aggregation, policy-bound repeated trials, resumable batch controller,
+content-addressed artifacts, pinned RoboWM and HarnessEval-W adapters,
+recorded-hardware evidence adapter, smoke suite, CLI, and CPU tests work. A frozen RoboWM `Franka-pick`
 episode has run successfully in Isaac Lab 5.1 (`1/1` upstream task success) on
 an RTX PRO 5000; it is deliberately not promoted to a full L4 physical pass
 because the upstream replay does not export every required safety/physics gate.
 Official H2R annotations, model-based video-quality inference, and new hardware
 trials are not claimed to have run.
+
+The v0.1 fixtures remain readable for compatibility. New formal runs use the
+v0.2 schemas and must name a frozen policy. The development policy is useful for
+pipeline qualification; the real-pilot policy requires five complete simulation
+episodes plus ten recorded trials distributed over at least three sessions.
 
 ## What the five levels mean
 
@@ -54,6 +60,20 @@ are not redistributed here.
 L4 treats a RoboWM task-success log as `task_outcome_only`. It does **not**
 fabricate collision, singularity, or velocity evidence. Full L4 passage requires
 `physical_gate_complete=true` from a backend that measured every declared gate.
+
+For a full L4 candidate, each simulator writes a per-step trace matching
+[`physical-gate-trace-v0.2.schema.json`](schemas/physical-gate-trace-v0.2.schema.json).
+The normalizer derives rates from all samples and keeps intended contacts
+separate from forbidden collisions:
+
+```bash
+python -m phiagent.benchmark.cli physical-gate \
+  --trace benchmark/examples/physical-gate-trace-v0.2.example.json \
+  --output /tmp/physical-evidence.json
+```
+
+No caller-supplied aggregate can override a bad sample. A complete trace is
+still simulator evidence, not hardware evidence.
 
 L5 never commands a robot. It imports an existing PhiAgent
 `RealRobotTrialEvidence` bundle containing action, calibration, videos, telemetry,
@@ -126,6 +146,94 @@ python -m phiagent.benchmark.cli robowm-command \
 
 The command is emitted, not executed. Isaac Sim 5.1 and the bundled Isaac Lab
 environment remain optional heavyweight dependencies.
+
+## Batch generation and evaluation
+
+The v0.2 controller expands `suite × candidate × ordered stage` into immutable
+jobs. Commands are argv arrays, never shell strings. It records seeds, source
+hashes, git state, package inventory, hostname, stdout/stderr hashes, physical
+GPU inventory for GPU stages, and expected outputs in a local SHA-256 CAS. A
+completed job is verified again on resume, so changed or missing artifacts fail
+closed.
+
+Start from [`method-v0.2.example.json`](examples/method-v0.2.example.json) and
+replace the two worker paths with a model generator and evaluator that emit
+declared `record-patch.json` files:
+
+```bash
+python -m phiagent.benchmark.cli batch-plan \
+  --suite /path/to/frozen-suite-v0.2.json \
+  --method /path/to/method-v0.2.json \
+  --output-dir runs/phiagent-bench/BATCH-ID
+
+python -m phiagent.benchmark.cli batch-run \
+  --run-dir runs/phiagent-bench/BATCH-ID --max-workers 8 \
+  --gpu-device 0 --gpu-device 1 --gpu-device 2 --gpu-device 3
+
+python -m phiagent.benchmark.cli batch-status \
+  --run-dir runs/phiagent-bench/BATCH-ID
+
+python -m phiagent.benchmark.cli batch-compile \
+  --run-dir runs/phiagent-bench/BATCH-ID \
+  --selection /path/to/frozen-selection.json \
+  --output /tmp/submission-v0.2.json
+```
+
+GPU stages must declare `resources.gpus` and explicitly bind the same number of
+devices. `--gpu-device` enables collision-free local leasing and overrides the
+template's development binding; without a supplied pool the method must set
+`CUDA_VISIBLE_DEVICES` itself. The controller refuses an implicit GPU selection.
+The built-in executor is single-host. A cluster scheduler may claim
+the same immutable job manifests, but a Slurm/Kubernetes/Ray backend is not yet
+implemented here.
+
+## HarnessEval-W integration
+
+[HarnessEval-W](https://github.com/mirros-lab/harnesseval-w) is pinned as an
+external Apache-2.0 dependency. Its evidence-tree evaluation over observation
+quality, transition correctness, and world persistence is useful for replacing
+one-shot visual impressions with case-specific, auditable questions. For
+PhiAgent, the most useful skills are embodiment identity, gripper state,
+contact/action phase, protected background/object state, and occlusion/revisit
+consistency.
+
+It is an **L1 supplementary panel**, not a physical oracle. A visually inferred
+physics score cannot supply metric camera geometry, EEF/joint truth, collision
+telemetry, simulator success, or a real-robot result. H2RCore and HarnessEval-W
+scores therefore remain separate until a frozen robot-specific calibration set
+establishes how to combine them.
+
+```bash
+python -m phiagent.benchmark.cli harnesseval-preflight \
+  --checkout /path/to/harnesseval-w \
+  --revision ed4ccc6486b8271723ee8baea60d89b32d0a7518
+```
+
+The paper reports stronger human alignment than the compared visual-world
+baseline, but those self-reported results do not validate PhiAgent's action or
+hardware layers. See [arXiv:2608.16859](https://arxiv.org/abs/2608.16859).
+
+## Repeated blind real-robot protocol
+
+Only L4-passing cases enter real planning. The planner randomizes case order,
+hides method identity from the operator/reviewer schedule, and retains the
+coordinator mapping separately. It never commands hardware:
+
+```bash
+python -m phiagent.benchmark.cli real-plan \
+  --suite /path/to/frozen-suite-v0.2.json \
+  --submission /tmp/submission-v0.2.json \
+  --policy benchmark/policies/real-pilot-v0.2.json \
+  --protocol benchmark/protocols/real-robot-blind-v0.2.json \
+  --adapter-manifest benchmark/adapters/rm65-ag2f90d-recorded.json \
+  --session-id session-a --session-id session-b --session-id session-c \
+  --output-dir /tmp/real-plan
+```
+
+The checked-in RM65/AG2F90-D adapter remains evidence-only and execution is
+disabled, so this command correctly returns `blocked_pending_site_authorization`.
+An approved site executor, calibrated hardware, and genuinely recorded trials
+are required before any L5 claim.
 
 The exact tested environment, frozen episode hashes, compatibility patches,
 warnings, and claim boundary are recorded in
@@ -217,6 +325,9 @@ success first, then simulation and visual performance; incomplete submissions
 remain visible but have `eligible=false` and no rank. Public reports should
 always include the five-dimensional vector and real-audit denominators, not one
 scalar that lets appearance compensate for failed physics.
+
+The implementation boundary and remaining path to a public frozen leaderboard
+are tracked in [`ROADMAP.md`](ROADMAP.md).
 
 ## Upstream boundaries
 

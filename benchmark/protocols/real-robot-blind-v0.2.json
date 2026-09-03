@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.2.0",
+  "protocol_id": "phiagent-real-robot-blind-v0.2",
+  "default_timeout_s": 120.0,
+  "eligibility": {
+    "requires_complete_l4_pass": true,
+    "adapter_execution_enabled": true,
+    "adapter_not_evidence_only": true,
+    "site_safety_approved": true,
+    "calibration_bound_to_robot_serial": true,
+    "action_and_scene_hash_frozen_before_execution": true
+  },
+  "design": {
+    "minimum_trials_per_case_and_embodiment": 10,
+    "minimum_independent_sessions": 3,
+    "randomize_case_order": true,
+    "fixed_timeout_per_case": true,
+    "operator_and_outcome_reviewer_separated": true,
+    "reviewer_blinded_to_method_and_seed": true,
+    "all_attempts_retained": true,
+    "human_intervention_counts_as_failure": true
+  },
+  "required_artifacts": [
+    "pre_registered_case_manifest",
+    "calibration",
+    "initial_state_video",
+    "predicted_video",
+    "executed_action",
+    "execution_video",
+    "timestamped_joint_eef_gripper_telemetry",
+    "force_and_safety_log",
+    "blind_stage_and_task_outcome"
+  ],
+  "required_eligibility_checks": [
+    "adapter_execution_enabled",
+    "calibration_bound_to_robot_serial",
+    "action_and_scene_hash_frozen_before_execution",
+    "site_safety_approved"
+  ],
+  "initial_anchor_embodiments": [
+    "dual RealMan RM65-B + ChangingTek CTAG2F90-D"
+  ],
+  "safety_boundary": "This protocol plans, freezes, and validates evidence only. A separately reviewed site executor is required for all physical control."
+}

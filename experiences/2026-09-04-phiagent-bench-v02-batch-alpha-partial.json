@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-04.phiagent-bench-v0.2-batch-alpha-partial",
+  "recorded_at": "2026-09-04T00:14:46+08:00",
+  "scope": "Policy-bound repeated evaluation, resumable batch execution, complete L4 trace normalization, blinded L5 planning, and HarnessEval-W visual integration",
+  "status": "PARTIAL",
+  "summary": "PhiAgent-Bench now has a tested v0.2 batch-and-evidence harness suitable for populating frozen submissions, while the public metric/action split, model workers, repeated full simulator traces, and authorized real trials remain outstanding.",
+  "evidence": [
+    "The v0.2 parser and evaluator enforce policy IDs, visual pass thresholds, exact suite coverage, named coordinate frames, repeated simulation episodes, repeated real trials, unique trial identities, and a strict L4-before-L5 gate.",
+    "The batch fixture expands three frozen public cases into six dependency-ordered jobs, runs them concurrently, resumes without recomputation, compiles immutable record patches, and detects mutation of both original and content-addressed artifacts.",
+    "The controller records suite/method hashes, deterministic candidate seeds, git state, package inventory, hostname, commands, hashed logs, declared resources, and physical GPU inventory; local GPU pools use collision-free device leases.",
+    "The physical-gate CLI derives IK, joint-limit, velocity, forbidden-collision, and singularity rates from every ordered simulator sample. Its checked-in example normalizes to a complete zero-violation record bound to trace SHA-256 a05b14a76d2122c5d158bf707769b3ba3a5f6be1fc82244bfc2171aefea29dd0.",
+    "The real planner admits only L4-passing cases, creates ten randomized trials over at least three sessions under the frozen pilot policy, separates operator and coordinator schedules, and hashes all plan inputs and outputs without invoking hardware.",
+    "HarnessEval-W is pinned at ed4ccc6486b8271723ee8baea60d89b32d0a7518 and exposed only as supplementary L1 observation/transition/persistence evidence; it cannot satisfy metric action, simulator, or real-robot gates.",
+    "Schema validation, targeted Ruff, and 30 benchmark plus recorded-real tests pass. The full repository run reports 978 passed and 5 skipped; its two failures are outside this change in existing JoyAI tests for absent ffmpeg/ffprobe and an expected server timeout argument."
+  ],
+  "lessons": [
+    "A task-success log cannot represent a physical gate; the benchmark must recompute safety rates from complete per-step fields and distinguish intended contact from forbidden collision.",
+    "GPU concurrency needs explicit resource declarations and device leasing. Max worker count alone can silently place every process on the same card.",
+    "Content-addressed stores need unique temporary files under concurrent identical writes; one shared temporary path creates a real race even when final contents are identical.",
+    "Visual-world agent evaluators can make L1 review more auditable, but visually inferred physics must remain separate from calibrated geometry, telemetry, simulation, and hardware evidence.",
+    "Retries must be bounded per invocation; treating every failed job as immediately ready creates an infinite retry loop."
+  ],
+  "limitations": [
+    "The only frozen public suite is visual-only and lacks camera, scene, q/EEF/gripper/contact, and outcome ground truth required for L2-L5.",
+    "No H3, Wan, JoyAI, LingBot, or PhiAgent model-specific worker has yet populated a v0.2 batch submission on real inputs.",
+    "The built-in scheduler is single-host; no Slurm, Kubernetes, or Ray dispatcher has been implemented or measured.",
+    "The previously successful RoboWM episode exports task outcome only, not five repeated complete physical traces under this contract.",
+    "The RM65/AG2F90-D adapter remains evidence-only and execution-disabled; no new ten-trial, three-session blind hardware campaign exists."
+  ],
+  "next_actions": [
+    "Freeze a licensed core L1-L4 suite with hidden annotations and synchronized metric/action truth, then implement model workers against the v0.2 job manifest.",
+    "Instrument Isaac Lab or MuJoCo to emit complete physical-gate traces for at least five frozen initial states per case.",
+    "Calibrate the robot-specific HarnessEval-W skill panel against independent human review while continuing to report it separately from H2RCore.",
+    "After site safety authorization, connect a site-owned executor and retain all ten trials across three sessions, including failures and interventions."
+  ],
+  "supersedes": [
+    "2026-09-01.phiagent-bench-v0.3-robowm-pilot-partial"
+  ],
+  "tags": [
+    "phiagent-bench",
+    "batch",
+    "physical-gate",
+    "blind-real-evaluation",
+    "harnesseval-w",
+    "partial"
+  ]
+}

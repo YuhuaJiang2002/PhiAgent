@@ -16,6 +16,8 @@ from typing import Any, Mapping
 
 
 SCHEMA_VERSION = "0.1.0"
+SCHEMA_VERSION_V2 = "0.2.0"
+SUPPORTED_SCHEMA_VERSIONS = (SCHEMA_VERSION, SCHEMA_VERSION_V2)
 DIMENSIONS = ("l1_visual", "l2_geometry", "l3_action", "l4_sim", "l5_real")
 TRACKS = ("h2r_transfer", "action_reconstruction", "cross_embodiment", "policy_utility")
 TASK_FAMILIES = (
@@ -271,9 +273,18 @@ class SimulationEvidence:
     collision_rate: float
     singularity_rate: float
     source_revision: str
+    episode_id: str | None = None
+    initial_state_id: str | None = None
+    seed: int | None = None
+    artifact_hashes: dict[str, str] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "SimulationEvidence":
+        raw_hashes = _mapping(payload.get("artifact_hashes", {}), "simulation.artifact_hashes")
+        artifact_hashes = {str(name): str(value) for name, value in raw_hashes.items()}
+        if any(not re.fullmatch(r"[0-9a-f]{64}", value) for value in artifact_hashes.values()):
+            raise ValueError("simulation artifact hashes must be lowercase SHA-256 digests")
+        raw_seed = payload.get("seed")
         return cls(
             backend=_identifier(payload["backend"], "simulation.backend"),
             attempted=_bool(payload["attempted"], "simulation.attempted"),
@@ -290,10 +301,22 @@ class SimulationEvidence:
             collision_rate=_rate(payload["collision_rate"], "collision_rate"),
             singularity_rate=_rate(payload["singularity_rate"], "singularity_rate"),
             source_revision=str(payload["source_revision"]).strip(),
+            episode_id=(
+                _identifier(payload["episode_id"], "simulation.episode_id")
+                if payload.get("episode_id") is not None
+                else None
+            ),
+            initial_state_id=(
+                _identifier(payload["initial_state_id"], "simulation.initial_state_id")
+                if payload.get("initial_state_id") is not None
+                else None
+            ),
+            seed=int(raw_seed) if raw_seed is not None else None,
+            artifact_hashes=artifact_hashes,
         )
 
     def to_dict(self) -> dict[str, Any]:
-        return self.__dict__.copy()
+        return {name: value for name, value in self.__dict__.items() if value is not None}
 
 
 @dataclass(frozen=True)
@@ -316,6 +339,9 @@ class RealEvidence:
     emergency_stop: bool
     force_limit_violation: bool
     blind_review: bool
+    trial_id: str | None = None
+    method_blind_code: str | None = None
+    eligibility_checks: dict[str, bool] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "RealEvidence":
@@ -346,6 +372,13 @@ class RealEvidence:
             for value in artifact_hashes.values()
         ):
             raise ValueError("real evidence requires the complete hash-bound artifact set")
+        raw_eligibility = _mapping(
+            payload.get("eligibility_checks", {}), "real.eligibility_checks"
+        )
+        eligibility_checks = {
+            str(name): _bool(value, f"real.eligibility_checks.{name}")
+            for name, value in raw_eligibility.items()
+        }
         return cls(
             protocol_id=_identifier(payload["protocol_id"], "real.protocol_id"),
             pre_registered=_bool(payload["pre_registered"], "real.pre_registered"),
@@ -365,6 +398,17 @@ class RealEvidence:
             emergency_stop=_bool(payload["emergency_stop"], "real.emergency_stop"),
             force_limit_violation=_bool(payload["force_limit_violation"], "real.force_limit_violation"),
             blind_review=_bool(payload["blind_review"], "real.blind_review"),
+            trial_id=(
+                _identifier(payload["trial_id"], "real.trial_id")
+                if payload.get("trial_id") is not None
+                else None
+            ),
+            method_blind_code=(
+                _identifier(payload["method_blind_code"], "real.method_blind_code")
+                if payload.get("method_blind_code") is not None
+                else None
+            ),
+            eligibility_checks=eligibility_checks,
         )
 
     @property
@@ -448,6 +492,11 @@ class SubmissionRecord:
     real: RealEvidence | None = None
     runtime: RuntimeEvidence | None = None
     policy_utility: PolicyUtilityEvidence | None = None
+    simulations: tuple[SimulationEvidence, ...] = ()
+    real_trials: tuple[RealEvidence, ...] = ()
+    candidate_id: str | None = None
+    generation_seed: int | None = None
+    candidate_index: int | None = None
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "SubmissionRecord":
@@ -461,6 +510,43 @@ class SubmissionRecord:
         real = optional("real")
         runtime = optional("runtime")
         utility = optional("policy_utility")
+        raw_simulations = payload.get("simulations", ())
+        raw_real_trials = payload.get("real_trials", ())
+        if not isinstance(raw_simulations, (list, tuple)) or not isinstance(
+            raw_real_trials, (list, tuple)
+        ):
+            raise ValueError("simulations and real_trials must be arrays")
+        if simulation is not None and raw_simulations:
+            raise ValueError("use either simulation or simulations, not both")
+        if real is not None and raw_real_trials:
+            raise ValueError("use either real or real_trials, not both")
+        simulations = tuple(
+            SimulationEvidence.from_dict(_mapping(item, "simulation attempt"))
+            for item in raw_simulations
+        )
+        real_trials = tuple(
+            RealEvidence.from_dict(_mapping(item, "real trial")) for item in raw_real_trials
+        )
+        if simulations:
+            episode_ids = [item.episode_id for item in simulations if item.episode_id is not None]
+            if len(episode_ids) != len(set(episode_ids)):
+                raise ValueError("simulation episode IDs must be unique within a case")
+        if real_trials:
+            trial_indices = [item.trial_index for item in real_trials]
+            if len(trial_indices) != len(set(trial_indices)):
+                raise ValueError("real trial_index values must be unique within a case")
+            for label, values in (
+                ("trial_id", [item.trial_id for item in real_trials if item.trial_id]),
+                (
+                    "method_blind_code",
+                    [item.method_blind_code for item in real_trials if item.method_blind_code],
+                ),
+            ):
+                if len(values) != len(set(values)):
+                    raise ValueError(f"real {label} values must be unique within a case")
+        candidate_index = payload.get("candidate_index")
+        if candidate_index is not None and int(candidate_index) < 0:
+            raise ValueError("candidate_index cannot be negative")
         return cls(
             case_id=_identifier(payload["case_id"], "case_id"),
             generated_uri=str(payload["generated_uri"]).strip(),
@@ -471,7 +557,62 @@ class SubmissionRecord:
             real=RealEvidence.from_dict(real) if real is not None else None,
             runtime=RuntimeEvidence.from_dict(runtime) if runtime is not None else None,
             policy_utility=PolicyUtilityEvidence.from_dict(utility) if utility is not None else None,
+            simulations=simulations,
+            real_trials=real_trials,
+            candidate_id=(
+                _identifier(payload["candidate_id"], "candidate_id")
+                if payload.get("candidate_id") is not None
+                else None
+            ),
+            generation_seed=(
+                int(payload["generation_seed"])
+                if payload.get("generation_seed") is not None
+                else None
+            ),
+            candidate_index=int(candidate_index) if candidate_index is not None else None,
         )
+
+    @property
+    def simulation_evidence(self) -> tuple[SimulationEvidence, ...]:
+        return self.simulations or ((self.simulation,) if self.simulation is not None else ())
+
+    @property
+    def real_evidence(self) -> tuple[RealEvidence, ...]:
+        return self.real_trials or ((self.real,) if self.real is not None else ())
+
+    def to_dict(self) -> dict[str, Any]:
+        payload: dict[str, Any] = {
+            "case_id": self.case_id,
+            "generated_uri": self.generated_uri,
+        }
+        optional = {
+            "visual": self.visual,
+            "geometry": self.geometry,
+            "action": self.action,
+            "runtime": self.runtime,
+            "policy_utility": self.policy_utility,
+        }
+        payload.update(
+            {name: value.to_dict() for name, value in optional.items() if value is not None}
+        )
+        def real_payload(item: RealEvidence) -> dict[str, Any]:
+            value = item.to_dict()
+            value.pop("valid_success", None)
+            return {name: field_value for name, field_value in value.items() if field_value is not None}
+
+        if self.simulations:
+            payload["simulations"] = [item.to_dict() for item in self.simulations]
+        elif self.simulation is not None:
+            payload["simulation"] = self.simulation.to_dict()
+        if self.real_trials:
+            payload["real_trials"] = [real_payload(item) for item in self.real_trials]
+        elif self.real is not None:
+            payload["real"] = real_payload(self.real)
+        for name in ("candidate_id", "generation_seed", "candidate_index"):
+            value = getattr(self, name)
+            if value is not None:
+                payload[name] = value
+        return payload
 
 
 @dataclass(frozen=True)
@@ -479,10 +620,13 @@ class BenchmarkSuite:
     name: str
     version: str
     cases: tuple[BenchmarkCase, ...]
+    schema_version: str = SCHEMA_VERSION
+    policy_id: str | None = None
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "BenchmarkSuite":
-        if payload.get("schema_version") != SCHEMA_VERSION:
+        schema_version = str(payload.get("schema_version"))
+        if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
             raise ValueError(f"unsupported suite schema_version: {payload.get('schema_version')}")
         cases = tuple(BenchmarkCase.from_dict(_mapping(item, "case")) for item in payload["cases"])
         identifiers = [case.case_id for case in cases]
@@ -492,6 +636,12 @@ class BenchmarkSuite:
             name=_identifier(payload["name"], "suite name"),
             version=str(payload["version"]),
             cases=cases,
+            schema_version=schema_version,
+            policy_id=(
+                _identifier(payload["policy_id"], "policy_id")
+                if payload.get("policy_id") is not None
+                else None
+            ),
         )
 
     @classmethod
@@ -500,9 +650,10 @@ class BenchmarkSuite:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": SCHEMA_VERSION,
+            "schema_version": self.schema_version,
             "name": self.name,
             "version": self.version,
+            "policy_id": self.policy_id,
             "cases": [case.to_dict() for case in self.cases],
         }
 
@@ -513,10 +664,12 @@ class Submission:
     suite_name: str
     records: tuple[SubmissionRecord, ...]
     metadata: dict[str, Any]
+    schema_version: str = SCHEMA_VERSION
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "Submission":
-        if payload.get("schema_version") != SCHEMA_VERSION:
+        schema_version = str(payload.get("schema_version"))
+        if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
             raise ValueError(f"unsupported submission schema_version: {payload.get('schema_version')}")
         records = tuple(SubmissionRecord.from_dict(_mapping(item, "record")) for item in payload["records"])
         identifiers = [record.case_id for record in records]
@@ -527,8 +680,18 @@ class Submission:
             suite_name=_identifier(payload["suite_name"], "suite_name"),
             records=records,
             metadata=dict(_mapping(payload.get("metadata", {}), "metadata")),
+            schema_version=schema_version,
         )
 
     @classmethod
     def from_json(cls, path: Path) -> "Submission":
         return cls.from_dict(_mapping(json.loads(path.read_text()), "submission"))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": self.schema_version,
+            "method": self.method,
+            "suite_name": self.suite_name,
+            "metadata": self.metadata,
+            "records": [record.to_dict() for record in self.records],
+        }

@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.2.0",
+  "policy_id": "phiagent-development-v0.2",
+  "claim_boundary": "Development thresholds for pipeline qualification; not an official H2R pass line or a frozen blind-test policy.",
+  "minimum_h2r_core": 70.0,
+  "minimum_contact_transfer": 0.6,
+  "minimum_embodiment_correctness": 0.6,
+  "minimum_ik_success_rate": 0.99,
+  "maximum_violation_rate": 0.0,
+  "minimum_simulation_episodes": 1,
+  "minimum_simulation_pass_rate": 1.0,
+  "require_simulation_provenance": false,
+  "minimum_real_trials": 1,
+  "minimum_real_sessions": 1,
+  "minimum_real_success_rate": 0.5,
+  "bootstrap_iterations": 2000,
+  "bootstrap_seed": 20260831
+}

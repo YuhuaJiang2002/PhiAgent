@@ -1,0 +1,43 @@
+name: PhiAgent-Bench tests
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/phiagent-bench-tests.yml"
+      - "benchmark/**"
+      - "phiagent/benchmark/**"
+      - "phiagent/acwm/real_robot.py"
+      - "scripts/validate_phiagent_bench_schemas.py"
+      - "tests/test_phiagent_bench.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/phiagent-bench-tests.yml"
+      - "benchmark/**"
+      - "phiagent/benchmark/**"
+      - "phiagent/acwm/real_robot.py"
+      - "scripts/validate_phiagent_bench_schemas.py"
+      - "tests/test_phiagent_bench.py"
+
+permissions:
+  contents: read
+
+jobs:
+  cpu-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[dev]'
+      - run: python scripts/validate_phiagent_bench_schemas.py
+      - run: python -m pytest tests/test_phiagent_bench.py tests/test_acwm_real_robot.py -q
+      - run: >-
+          ruff check
+          phiagent/benchmark
+          scripts/validate_phiagent_bench_schemas.py
+          tests/test_phiagent_bench.py

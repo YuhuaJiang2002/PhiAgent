@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuhuajiang2002.github.io/PhiAgent/schemas/phiagent-bench-submission-0.2.0.json",
+  "title": "PhiAgent-Bench submission v0.2.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "method", "suite_name", "records"],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "method": {"type": "string", "minLength": 1},
+    "suite_name": {"type": "string", "minLength": 1},
+    "metadata": {"type": "object"},
+    "records": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/record"}
+    }
+  },
+  "$defs": {
+    "rate": {"type": "number", "minimum": 0, "maximum": 1},
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "generated_uri"],
+      "properties": {
+        "case_id": {"type": "string", "minLength": 1},
+        "generated_uri": {"type": "string", "minLength": 1},
+        "candidate_id": {"type": "string", "minLength": 1},
+        "candidate_index": {"type": "integer", "minimum": 0},
+        "generation_seed": {"type": "integer"},
+        "visual": {"$ref": "#/$defs/visual"},
+        "geometry": {"$ref": "#/$defs/scalar"},
+        "action": {"$ref": "#/$defs/scalar"},
+        "simulations": {"type": "array", "items": {"$ref": "#/$defs/simulation"}},
+        "real_trials": {"type": "array", "items": {"$ref": "#/$defs/real"}},
+        "runtime": {"$ref": "#/$defs/runtime"},
+        "policy_utility": {"$ref": "#/$defs/utility"}
+      }
+    },
+    "visual": {
+      "type": "object", "additionalProperties": false,
+      "required": ["goal_completion", "action_completion", "contact_transfer", "embodiment_correctness", "video_quality", "judge_count", "evidence_frames", "protocol"],
+      "properties": {
+        "goal_completion": {"$ref": "#/$defs/rate"},
+        "action_completion": {"$ref": "#/$defs/rate"},
+        "contact_transfer": {"$ref": "#/$defs/rate"},
+        "embodiment_correctness": {"$ref": "#/$defs/rate"},
+        "video_quality": {"$ref": "#/$defs/rate"},
+        "judge_count": {"type": "integer", "minimum": 1},
+        "evidence_frames": {"type": "integer", "minimum": 1},
+        "protocol": {"type": "string", "minLength": 1},
+        "diagnostics": {"type": "object"}
+      }
+    },
+    "scalar": {
+      "type": "object", "additionalProperties": false,
+      "required": ["coordinate_frame", "values"],
+      "properties": {
+        "coordinate_frame": {"type": "string", "minLength": 1},
+        "values": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "number", "minimum": 0}}
+      }
+    },
+    "simulation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["backend", "attempted", "physical_gate_complete", "physically_valid", "task_success", "stage_success_rate", "contact_success_rate", "ik_success_rate", "joint_limit_violation_rate", "velocity_violation_rate", "collision_rate", "singularity_rate", "source_revision"],
+      "properties": {
+        "backend": {"type": "string", "minLength": 1},
+        "attempted": {"type": "boolean"},
+        "physical_gate_complete": {"type": "boolean"},
+        "physically_valid": {"type": "boolean"},
+        "task_success": {"type": "boolean"},
+        "stage_success_rate": {"$ref": "#/$defs/rate"},
+        "contact_success_rate": {"$ref": "#/$defs/rate"},
+        "ik_success_rate": {"$ref": "#/$defs/rate"},
+        "joint_limit_violation_rate": {"$ref": "#/$defs/rate"},
+        "velocity_violation_rate": {"$ref": "#/$defs/rate"},
+        "collision_rate": {"$ref": "#/$defs/rate"},
+        "singularity_rate": {"$ref": "#/$defs/rate"},
+        "source_revision": {"type": "string"},
+        "episode_id": {"type": "string", "minLength": 1},
+        "initial_state_id": {"type": "string", "minLength": 1},
+        "seed": {"type": "integer"},
+        "artifact_hashes": {"type": "object", "additionalProperties": {"$ref": "#/$defs/sha"}}
+      }
+    },
+    "real": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocol_id", "pre_registered", "trial_index", "reviewer_id_hash", "artifact_hashes", "adapter", "robot_id", "hardware_serial", "session_id", "attempted", "task_success", "stage_success_rate", "safety_violation", "human_intervention", "collision_count", "emergency_stop", "force_limit_violation", "blind_review", "eligibility_checks"],
+      "properties": {
+        "protocol_id": {"type": "string", "minLength": 1},
+        "pre_registered": {"type": "boolean"},
+        "trial_index": {"type": "integer", "minimum": 0},
+        "reviewer_id_hash": {"$ref": "#/$defs/sha"},
+        "artifact_hashes": {"type": "object", "minProperties": 9, "maxProperties": 9, "additionalProperties": {"$ref": "#/$defs/sha"}},
+        "adapter": {"type": "string", "minLength": 1},
+        "robot_id": {"type": "string", "minLength": 1},
+        "hardware_serial": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1},
+        "attempted": {"type": "boolean"},
+        "task_success": {"type": "boolean"},
+        "stage_success_rate": {"$ref": "#/$defs/rate"},
+        "safety_violation": {"type": "boolean"},
+        "human_intervention": {"type": "boolean"},
+        "collision_count": {"type": "integer", "minimum": 0},
+        "emergency_stop": {"type": "boolean"},
+        "force_limit_violation": {"type": "boolean"},
+        "blind_review": {"type": "boolean"},
+        "trial_id": {"type": "string", "minLength": 1},
+        "method_blind_code": {"type": "string", "minLength": 1},
+        "eligibility_checks": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "boolean"}}
+      }
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generated_video_seconds", "latency_seconds", "gpu_hours", "peak_vram_gb", "candidate_count"],
+      "properties": {
+        "generated_video_seconds": {"type": "number", "minimum": 0},
+        "latency_seconds": {"type": "number", "minimum": 0},
+        "gpu_hours": {"type": "number", "minimum": 0},
+        "peak_vram_gb": {"type": "number", "minimum": 0},
+        "candidate_count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "utility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["real_only_success_rate", "real_plus_phiagent_success_rate", "evaluation_episodes", "matched_training_budget"],
+      "properties": {
+        "real_only_success_rate": {"$ref": "#/$defs/rate"},
+        "real_plus_phiagent_success_rate": {"$ref": "#/$defs/rate"},
+        "evaluation_episodes": {"type": "integer", "minimum": 1},
+        "matched_training_budget": {"type": "boolean"}
+      }
+    }
+  }
+}

@@ -18,15 +18,19 @@ from typing import Any
 
 from phiagent.acwm.real_robot import RealRobotTrialEvidence
 from phiagent.benchmark.adapters import (
+    HarnessEvalWAdapter,
     RoboWMBenchAdapter,
     h2r_judge_packet,
     real_evidence_from_recorded_trial,
 )
+from phiagent.benchmark.batch import BatchController, compile_submission, plan_batch_run
 from phiagent.benchmark.embodiments import EmbodimentRegistry
 from phiagent.benchmark.h2r import H2RAnnotation, H2RJudgeOutput, aggregate_h2r_judges
 from phiagent.benchmark.hardware import HardwareAdapterManifest
 from phiagent.benchmark.integrity import verify_freeze_manifest
 from phiagent.benchmark.metrics import BenchmarkPolicy, evaluate_submission
+from phiagent.benchmark.physical_gate import simulation_evidence_from_trace_file
+from phiagent.benchmark.real_plan import create_real_trial_plan
 from phiagent.benchmark.schema import BenchmarkSuite, Submission
 from phiagent.benchmark.trajectory import (
     ActionTrajectory,
@@ -103,18 +107,21 @@ def _parser() -> argparse.ArgumentParser:
     evaluate = subparsers.add_parser("evaluate", help="compute L1--L5 metrics")
     evaluate.add_argument("--suite", type=Path, required=True)
     evaluate.add_argument("--submission", type=Path, required=True)
+    evaluate.add_argument("--policy", type=Path)
     evaluate.add_argument("--output", type=Path)
 
     run = subparsers.add_parser("run", help="evaluate into a new provenance-complete run")
     run.add_argument("--suite", type=Path, required=True)
     run.add_argument("--submission", type=Path, required=True)
     run.add_argument("--output-dir", type=Path, required=True)
+    run.add_argument("--policy", type=Path)
     run.add_argument("--bootstrap-iterations", type=int, default=2_000)
     run.add_argument("--bootstrap-seed", type=int, default=20260831)
 
     leaderboard = subparsers.add_parser("leaderboard", help="rank complete submissions")
     leaderboard.add_argument("--suite", type=Path, required=True)
     leaderboard.add_argument("--submissions", type=Path, nargs="+", required=True)
+    leaderboard.add_argument("--policy", type=Path)
     leaderboard.add_argument("--output", type=Path)
 
     judge = subparsers.add_parser("h2r-score", help="aggregate three structured H2R judges")
@@ -153,6 +160,12 @@ def _parser() -> argparse.ArgumentParser:
     action.add_argument("--event-tolerance-s", type=float, default=0.15)
     action.add_argument("--output", type=Path)
 
+    physical_gate = subparsers.add_parser(
+        "physical-gate", help="normalize a complete per-step simulator trace into L4 evidence"
+    )
+    physical_gate.add_argument("--trace", type=Path, required=True)
+    physical_gate.add_argument("--output", type=Path, required=True)
+
     hardware = subparsers.add_parser("adapter-check", help="check an L5 hardware manifest")
     hardware.add_argument("--manifest", type=Path, required=True)
     hardware.add_argument("--suite", type=Path, required=True)
@@ -178,6 +191,67 @@ def _parser() -> argparse.ArgumentParser:
     real_trial.add_argument("--trial-index", type=int, required=True)
     real_trial.add_argument("--reviewer-id-hash", required=True)
     real_trial.add_argument("--output", type=Path, required=True)
+
+    batch_plan = subparsers.add_parser(
+        "batch-plan", help="expand a suite and method manifest into immutable jobs"
+    )
+    batch_plan.add_argument("--suite", type=Path, required=True)
+    batch_plan.add_argument("--method", type=Path, required=True)
+    batch_plan.add_argument("--output-dir", type=Path, required=True)
+
+    batch_run = subparsers.add_parser(
+        "batch-run", help="run or resume dependency-ordered benchmark jobs"
+    )
+    batch_run.add_argument("--run-dir", type=Path, required=True)
+    batch_run.add_argument("--max-workers", type=int, default=1)
+    batch_run.add_argument("--retry-failed", action="store_true")
+    batch_run.add_argument(
+        "--gpu-device",
+        action="append",
+        default=[],
+        help="physical GPU index/UUID in the local scheduling pool; repeat for multiple GPUs",
+    )
+
+    batch_status = subparsers.add_parser("batch-status", help="summarize batch job states")
+    batch_status.add_argument("--run-dir", type=Path, required=True)
+    batch_status.add_argument("--output", type=Path)
+
+    batch_compile = subparsers.add_parser(
+        "batch-compile", help="compile selected immutable job evidence into a submission"
+    )
+    batch_compile.add_argument("--run-dir", type=Path, required=True)
+    batch_compile.add_argument("--selection", type=Path)
+    batch_compile.add_argument("--output", type=Path, required=True)
+
+    real_plan = subparsers.add_parser(
+        "real-plan", help="create a blinded repeated-trial schedule without hardware control"
+    )
+    real_plan.add_argument("--suite", type=Path, required=True)
+    real_plan.add_argument("--submission", type=Path, required=True)
+    real_plan.add_argument("--policy", type=Path, required=True)
+    real_plan.add_argument("--protocol", type=Path, required=True)
+    real_plan.add_argument("--adapter-manifest", type=Path, required=True)
+    real_plan.add_argument("--session-id", action="append", required=True)
+    real_plan.add_argument("--random-seed", type=int, default=20260831)
+    real_plan.add_argument("--output-dir", type=Path, required=True)
+
+    harness_preflight = subparsers.add_parser(
+        "harnesseval-preflight", help="verify a pinned external HarnessEval-W checkout"
+    )
+    harness_preflight.add_argument("--checkout", type=Path, required=True)
+    harness_preflight.add_argument("--revision", required=True)
+    harness_preflight.add_argument("--output", type=Path)
+
+    harness_command = subparsers.add_parser(
+        "harnesseval-command", help="emit a pinned HarnessEval-W visual evaluation command"
+    )
+    harness_command.add_argument("--checkout", type=Path, required=True)
+    harness_command.add_argument("--revision", required=True)
+    harness_command.add_argument("--results", type=Path, required=True)
+    harness_command.add_argument("--model-id", required=True)
+    harness_command.add_argument("--run-root", type=Path, required=True)
+    harness_command.add_argument("--manifest", type=Path, required=True)
+    harness_command.add_argument("--plan-root", type=Path, required=True)
     return parser
 
 
@@ -205,7 +279,8 @@ def main() -> int:
     if args.command == "evaluate":
         suite = BenchmarkSuite.from_json(args.suite)
         submission = Submission.from_json(args.submission)
-        _write(evaluate_submission(suite, submission), args.output)
+        policy = BenchmarkPolicy.from_json(args.policy) if args.policy else BenchmarkPolicy()
+        _write(evaluate_submission(suite, submission, policy), args.output)
         return 0
     if args.command == "run":
         output_dir = args.output_dir.expanduser().resolve()
@@ -218,9 +293,13 @@ def main() -> int:
         submission_payload = _json(submission_path)
         suite = BenchmarkSuite.from_dict(suite_payload)
         submission = Submission.from_dict(submission_payload)
-        policy = BenchmarkPolicy(
-            bootstrap_iterations=args.bootstrap_iterations,
-            bootstrap_seed=args.bootstrap_seed,
+        policy = (
+            BenchmarkPolicy.from_json(args.policy)
+            if args.policy
+            else BenchmarkPolicy(
+                bootstrap_iterations=args.bootstrap_iterations,
+                bootstrap_seed=args.bootstrap_seed,
+            )
         )
         report = evaluate_submission(suite, submission, policy)
         _write(suite_payload, output_dir / "suite.json")
@@ -228,7 +307,7 @@ def main() -> int:
         _write(report, output_dir / "report.json")
         _write(
             {
-                "schema_version": "0.1.0",
+                "schema_version": "0.2.0",
                 "recorded_at": datetime.now(timezone.utc).isoformat(),
                 "hostname": socket.gethostname(),
                 "platform": platform.platform(),
@@ -241,8 +320,11 @@ def main() -> int:
                     "submission_sha256": _sha256(submission_path),
                 },
                 "policy": {
-                    "bootstrap_iterations": args.bootstrap_iterations,
-                    "bootstrap_seed": args.bootstrap_seed,
+                    **policy.to_dict(),
+                    "source": str(args.policy.expanduser().resolve()) if args.policy else None,
+                    "source_sha256": _sha256(args.policy.expanduser().resolve())
+                    if args.policy
+                    else None,
                 },
                 "gpu_selection": {
                     "mode": "cpu_only",
@@ -264,9 +346,13 @@ def main() -> int:
         return 0
     if args.command == "leaderboard":
         suite = BenchmarkSuite.from_json(args.suite)
-        rows = [evaluate_submission(suite, Submission.from_json(path)) for path in args.submissions]
+        policy = BenchmarkPolicy.from_json(args.policy) if args.policy else BenchmarkPolicy()
+        rows = [
+            evaluate_submission(suite, Submission.from_json(path), policy)
+            for path in args.submissions
+        ]
 
-        def key(row: dict[str, Any]) -> tuple[float, float, float]:
+        def primary_key(row: dict[str, Any]) -> tuple[float, float, float]:
             real = row["real_audit"]["e2e_valid_success_rate"]
             sim = row["dimension_scores"]["l4_sim"]
             visual = row["h2r_core"]
@@ -276,23 +362,101 @@ def main() -> int:
                 float(visual) if visual is not None else -1.0,
             )
 
-        rows.sort(key=lambda row: (bool(row["complete"]), *key(row)), reverse=True)
+        def dimension_complete(row: dict[str, Any], dimension: str) -> bool:
+            required_rows = [
+                case for case in row["per_case"] if case["gates"][dimension] is not None
+            ]
+            return bool(required_rows) and all(
+                dimension not in case["missing_dimensions"] for case in required_rows
+            )
+
+        def view(
+            key_name: str,
+            score: Any,
+            eligible: Any,
+        ) -> list[dict[str, Any]]:
+            ordered = sorted(
+                rows,
+                key=lambda row: (
+                    bool(eligible(row)),
+                    float(score(row)) if score(row) is not None else -1.0,
+                    row["method"],
+                ),
+                reverse=True,
+            )
+            current_rank = 0
+            output_rows: list[dict[str, Any]] = []
+            for row in ordered:
+                accepted = bool(eligible(row))
+                if accepted:
+                    current_rank += 1
+                output_rows.append(
+                    {
+                        "rank": current_rank if accepted else None,
+                        "eligible": accepted,
+                        "method": row["method"],
+                        key_name: score(row),
+                    }
+                )
+            return output_rows
+
+        primary_rows = sorted(
+            rows,
+            key=lambda row: (
+                bool(row["complete"] and row["protocol_complete"]),
+                *primary_key(row),
+            ),
+            reverse=True,
+        )
+        primary = [
+            {
+                "rank": rank
+                if row["complete"] and row["protocol_complete"]
+                else None,
+                "eligible": row["complete"] and row["protocol_complete"],
+                "method": row["method"],
+                "dimension_scores": row["dimension_scores"],
+                "h2r_core": row["h2r_core"],
+                "real_audit": row["real_audit"],
+                "efficiency": row["efficiency"],
+            }
+            for rank, row in enumerate(primary_rows, start=1)
+        ]
         _write(
             {
-                "schema_version": "0.1.0",
+                "schema_version": "0.2.0",
                 "suite": suite.name,
-                "leaderboard": [
-                    {
-                        "rank": rank if row["complete"] else None,
-                        "eligible": row["complete"],
-                        "method": row["method"],
-                        "dimension_scores": row["dimension_scores"],
-                        "h2r_core": row["h2r_core"],
-                        "real_audit": row["real_audit"],
-                        "efficiency": row["efficiency"],
-                    }
-                    for rank, row in enumerate(rows, start=1)
-                ],
+                "leaderboard": primary,
+                "leaderboards": {
+                    "primary_gated": primary,
+                    "visual_h2r_core": view(
+                        "h2r_core",
+                        lambda row: row["h2r_core"],
+                        lambda row: dimension_complete(row, "l1_visual"),
+                    ),
+                    "action_l3": view(
+                        "l3_score",
+                        lambda row: row["dimension_scores"]["l3_action"],
+                        lambda row: dimension_complete(row, "l3_action"),
+                    ),
+                    "simulation_l4": view(
+                        "l4_score",
+                        lambda row: row["dimension_scores"]["l4_sim"],
+                        lambda row: dimension_complete(row, "l4_sim"),
+                    ),
+                    "real_e2e": view(
+                        "e2e_valid_success_rate",
+                        lambda row: row["real_audit"]["e2e_valid_success_rate"],
+                        lambda row: dimension_complete(row, "l5_real"),
+                    ),
+                    "policy_utility": view(
+                        "mean_delta_real_success_rate",
+                        lambda row: row["policy_utility"][
+                            "mean_delta_real_success_rate"
+                        ],
+                        lambda row: row["policy_utility"]["matched_records"] > 0,
+                    ),
+                },
             },
             args.output,
         )
@@ -386,6 +550,20 @@ def main() -> int:
             args.output,
         )
         return 0
+    if args.command == "physical-gate":
+        evidence = simulation_evidence_from_trace_file(args.trace)
+        _write(
+            {
+                "status": "normalized_physical_gate",
+                "claim_boundary": (
+                    "Rates are derived from every trace sample. Task and contact outcomes "
+                    "remain assertions of the named simulator backend, not real-robot proof."
+                ),
+                "evidence": evidence.to_dict(),
+            },
+            args.output,
+        )
+        return 0
     if args.command == "adapter-check":
         manifest = HardwareAdapterManifest.from_json(args.manifest)
         suite = BenchmarkSuite.from_json(args.suite)
@@ -426,6 +604,18 @@ def main() -> int:
             raise ValueError("pre-registration adapter does not match the selected adapter")
         if registration.get("trial_index") != args.trial_index:
             raise ValueError("pre-registration trial_index does not match the requested trial")
+        calibration = _json(trial.calibration)
+        site_safety_approved = registration.get("site_safety_approved", False)
+        if not isinstance(site_safety_approved, bool):
+            raise ValueError("pre-registration site_safety_approved must be boolean")
+        eligibility_checks = {
+            "adapter_execution_enabled": adapter.execution_enabled
+            and not adapter.evidence_only,
+            "calibration_bound_to_robot_serial": calibration.get("hardware_serial")
+            == trial.hardware_serial,
+            "action_and_scene_hash_frozen_before_execution": True,
+            "site_safety_approved": site_safety_approved,
+        }
         evidence = real_evidence_from_recorded_trial(
             trial,
             adapter_name=adapter.adapter_name,
@@ -434,6 +624,12 @@ def main() -> int:
             trial_index=args.trial_index,
             reviewer_id_hash=args.reviewer_id_hash,
             pre_registered=True,
+            method_blind_code=(
+                str(registration["method_blind_code"])
+                if registration.get("method_blind_code")
+                else None
+            ),
+            eligibility_checks=eligibility_checks,
         )
         _write(
             {
@@ -441,10 +637,82 @@ def main() -> int:
                 "hardware_control_invoked": False,
                 "adapter_execution_enabled": adapter.execution_enabled,
                 "evidence_only": adapter.evidence_only,
+                "eligible_for_l5": all(eligibility_checks.values()),
+                "eligibility_checks": eligibility_checks,
                 "evidence": evidence.to_dict(),
             },
             args.output,
         )
+        return 0
+    if args.command == "batch-plan":
+        _write(
+            plan_batch_run(
+                suite_path=args.suite,
+                method_path=args.method,
+                output_dir=args.output_dir,
+            ),
+            None,
+        )
+        return 0
+    if args.command == "batch-run":
+        _write(
+            BatchController(args.run_dir).run(
+                max_workers=args.max_workers,
+                retry_failed=args.retry_failed,
+                gpu_devices=tuple(args.gpu_device),
+            ),
+            None,
+        )
+        return 0
+    if args.command == "batch-status":
+        _write(BatchController(args.run_dir).status(), args.output)
+        return 0
+    if args.command == "batch-compile":
+        payload = compile_submission(
+            run_dir=args.run_dir,
+            output=args.output,
+            selection_path=args.selection,
+        )
+        _write(
+            {
+                "status": "compiled",
+                "method": payload["method"],
+                "case_count": len(payload["records"]),
+                "output": str(args.output.expanduser().resolve()),
+            },
+            None,
+        )
+        return 0
+    if args.command == "real-plan":
+        _write(
+            create_real_trial_plan(
+                suite_path=args.suite,
+                submission_path=args.submission,
+                policy_path=args.policy,
+                protocol_path=args.protocol,
+                adapter_path=args.adapter_manifest,
+                session_ids=tuple(args.session_id),
+                output_dir=args.output_dir,
+                random_seed=args.random_seed,
+            ),
+            None,
+        )
+        return 0
+    if args.command == "harnesseval-preflight":
+        _write(
+            HarnessEvalWAdapter(args.checkout, args.revision).preflight(),
+            args.output,
+        )
+        return 0
+    if args.command == "harnesseval-command":
+        command = HarnessEvalWAdapter(args.checkout, args.revision).command(
+            results=args.results,
+            model_id=args.model_id,
+            run_root=args.run_root,
+            manifest=args.manifest,
+            plan_root=args.plan_root,
+        )
+        _write({"command": command, "shell_preview": shlex.join(command)}, None)
         return 0
     raise AssertionError(f"unhandled command: {args.command}")
 

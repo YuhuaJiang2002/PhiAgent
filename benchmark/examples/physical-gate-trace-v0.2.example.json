@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.2.0",
+  "backend": "mujoco-3.3.7",
+  "source_revision": "replace-with-backend-revision",
+  "episode_id": "case-001-seed-20260831",
+  "initial_state_id": "frozen-state-001",
+  "seed": 20260831,
+  "task_success": true,
+  "stage_results": [true, true, true],
+  "contact_results": [true, true],
+  "samples": [
+    {
+      "timestamp_s": 0.0,
+      "ik_success": true,
+      "joint_limit_violation": false,
+      "velocity_violation": false,
+      "forbidden_collision": false,
+      "singularity": false
+    },
+    {
+      "timestamp_s": 0.04,
+      "ik_success": true,
+      "joint_limit_violation": false,
+      "velocity_violation": false,
+      "forbidden_collision": false,
+      "singularity": false
+    }
+  ]
+}

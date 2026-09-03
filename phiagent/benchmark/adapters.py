@@ -29,6 +29,74 @@ ROBOWM_TASKS = {
 }
 
 
+@dataclass(frozen=True)
+class HarnessEvalWAdapter:
+    """Pinned external adapter for visual-world evidence trees.
+
+    HarnessEval-W is intentionally supplementary: its visually inferred physics
+    and causality scores cannot set PhiAgent's L4 or L5 gates.
+    """
+
+    checkout: Path
+    expected_revision: str
+
+    def preflight(self) -> dict[str, Any]:
+        checkout = self.checkout.expanduser().resolve()
+        if not (checkout / "pyproject.toml").is_file():
+            raise ValueError(f"HarnessEval-W checkout is incomplete: {checkout}")
+        completed = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=checkout,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        revision = completed.stdout.strip()
+        if revision != self.expected_revision:
+            raise ValueError(
+                f"HarnessEval-W revision mismatch: expected {self.expected_revision}, got {revision}"
+            )
+        executable = shutil.which("harnesseval")
+        return {
+            "checkout": str(checkout),
+            "revision": revision,
+            "executable": executable,
+            "status": "ready" if executable else "checkout_ready_cli_missing",
+            "claim_boundary": (
+                "Observation, transition, and persistence evidence only; this adapter "
+                "cannot satisfy metric action, simulation, or real-robot gates."
+            ),
+        }
+
+    def command(
+        self,
+        *,
+        results: Path,
+        model_id: str,
+        run_root: Path,
+        manifest: Path,
+        plan_root: Path,
+    ) -> list[str]:
+        state = self.preflight()
+        executable = state["executable"]
+        if not executable:
+            raise ValueError("HarnessEval-W CLI is not installed in the active environment")
+        return [
+            str(executable),
+            "eval",
+            "--results",
+            str(results.expanduser().resolve()),
+            "--model-id",
+            model_id,
+            "--run-root",
+            str(run_root.expanduser().resolve()),
+            "--manifest",
+            str(manifest.expanduser().resolve()),
+            "--plan-root",
+            str(plan_root.expanduser().resolve()),
+        ]
+
+
 def h2r_judge_packet(case: BenchmarkCase) -> dict[str, Any]:
     """Return the public-evidence contract without leaking it into generation prompts."""
 
@@ -272,6 +340,8 @@ def real_evidence_from_recorded_trial(
     trial_index: int,
     reviewer_id_hash: str,
     pre_registered: bool,
+    method_blind_code: str | None = None,
+    eligibility_checks: dict[str, bool] | None = None,
 ) -> RealEvidence:
     """Normalize a validated, hash-bound real trial; never commands hardware."""
 
@@ -302,4 +372,7 @@ def real_evidence_from_recorded_trial(
         emergency_stop=emergency_stop,
         force_limit_violation=force_violation,
         blind_review=bool(outcome["blind_review"]),
+        trial_id=trial.trial_id,
+        method_blind_code=method_blind_code,
+        eligibility_checks=dict(eligibility_checks or {}),
     )

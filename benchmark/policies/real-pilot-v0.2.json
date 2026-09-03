@@ -1,0 +1,19 @@
+{
+  "schema_version": "0.2.0",
+  "policy_id": "phiagent-real-pilot-v0.2",
+  "claim_boundary": "Frozen pilot policy for recorded evidence. Hardware execution requires a separate site authorization and approved executor.",
+  "minimum_h2r_core": 70.0,
+  "minimum_contact_transfer": 0.6,
+  "minimum_embodiment_correctness": 0.6,
+  "minimum_ik_success_rate": 0.99,
+  "maximum_violation_rate": 0.0,
+  "minimum_simulation_episodes": 5,
+  "minimum_simulation_pass_rate": 1.0,
+  "require_simulation_provenance": true,
+  "minimum_real_trials": 10,
+  "minimum_real_sessions": 3,
+  "minimum_real_success_rate": 0.5,
+  "require_real_eligibility_checks": true,
+  "bootstrap_iterations": 10000,
+  "bootstrap_seed": 20260831
+}

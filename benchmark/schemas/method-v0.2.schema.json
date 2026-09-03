@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuhuajiang2002.github.io/PhiAgent/schemas/phiagent-bench-method-0.2.0.json",
+  "title": "PhiAgent-Bench batch method manifest v0.2.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "method", "stages"],
+  "properties": {
+    "schema_version": {"const": "0.2.0"},
+    "method": {"type": "string", "minLength": 1},
+    "working_directory": {"type": "string", "minLength": 1},
+    "candidates_per_case": {"type": "integer", "minimum": 1},
+    "seed": {"type": "integer"},
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "command"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "command": {
+            "type": "array", "minItems": 1,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "depends_on": {
+            "type": "array", "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "expected_outputs": {
+            "type": "array", "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          },
+          "environment": {"type": "object", "additionalProperties": {"type": "string"}},
+          "resources": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "gpus": {"type": "integer", "minimum": 0},
+              "cpus": {"type": "integer", "minimum": 1},
+              "gpu_memory_gb": {"type": "number", "exclusiveMinimum": 0}
+            }
+          }
+        }
+      }
+    }
+  }
+}

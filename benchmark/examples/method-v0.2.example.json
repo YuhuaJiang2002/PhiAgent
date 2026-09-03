@@ -1,0 +1,29 @@
+{
+  "schema_version": "0.2.0",
+  "method": "replace-with-method-name",
+  "working_directory": ".",
+  "candidates_per_case": 2,
+  "seed": 20260831,
+  "stages": [
+    {
+      "name": "generate",
+      "command": [
+        "python", "path/to/generate_worker.py", "--case", "{case_json}",
+        "--seed", "{generation_seed}", "--output-dir", "{job_dir}"
+      ],
+      "expected_outputs": ["generated.mp4", "record-patch.json"],
+      "environment": {"CUDA_VISIBLE_DEVICES": "0"},
+      "resources": {"gpus": 1, "cpus": 8, "gpu_memory_gb": 48}
+    },
+    {
+      "name": "evaluate",
+      "depends_on": ["generate"],
+      "command": [
+        "python", "path/to/evaluate_worker.py", "--case", "{case_json}",
+        "--candidate-id", "{candidate_id}", "--output-dir", "{job_dir}"
+      ],
+      "expected_outputs": ["record-patch.json"],
+      "resources": {"gpus": 0, "cpus": 4}
+    }
+  ]
+}

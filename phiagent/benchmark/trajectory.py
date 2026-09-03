@@ -143,11 +143,20 @@ def _lerp(left: tuple[float, ...], right: tuple[float, ...], alpha: float) -> tu
 def _quat_interp(
     left: tuple[float, ...], right: tuple[float, ...], alpha: float
 ) -> tuple[float, ...]:
-    if sum(a * b for a, b in zip(left, right)) < 0:
+    dot = sum(a * b for a, b in zip(left, right))
+    if dot < 0:
         right = tuple(-value for value in right)
-    mixed = _lerp(left, right, alpha)
-    norm = math.sqrt(sum(value * value for value in mixed))
-    return tuple(value / norm for value in mixed)
+        dot = -dot
+    dot = min(1.0, max(0.0, dot))
+    if dot > 0.9995:
+        mixed = _lerp(left, right, alpha)
+        norm = math.sqrt(sum(value * value for value in mixed))
+        return tuple(value / norm for value in mixed)
+    angle = math.acos(dot)
+    denominator = math.sin(angle)
+    left_weight = math.sin((1.0 - alpha) * angle) / denominator
+    right_weight = math.sin(alpha * angle) / denominator
+    return tuple(left_weight * a + right_weight * b for a, b in zip(left, right))
 
 
 def _sample_vectors(
@@ -211,6 +220,17 @@ def _event_f1(
     return 2.0 * precision * recall / (precision + recall) if precision + recall else 0.0
 
 
+def _quantile(values: list[float], probability: float) -> float:
+    ordered = sorted(values)
+    if len(ordered) == 1:
+        return ordered[0]
+    position = probability * (len(ordered) - 1)
+    lower = int(math.floor(position))
+    upper = int(math.ceil(position))
+    alpha = position - lower
+    return ordered[lower] + alpha * (ordered[upper] - ordered[lower])
+
+
 def compare_action_trajectories(
     reference: ActionTrajectory,
     candidate: ActionTrajectory,
@@ -232,8 +252,8 @@ def compare_action_trajectories(
     coverage = len(covered) / len(reference.timestamps_s)
     if not covered:
         raise ValueError("candidate trajectory does not overlap the reference timeline")
-    position_squared: list[float] = []
-    orientation_squared: list[float] = []
+    position_errors: list[float] = []
+    orientation_errors: list[float] = []
     joint_squared: list[float] = []
     gripper_absolute: list[float] = []
     for index, timestamp in covered:
@@ -241,14 +261,16 @@ def compare_action_trajectories(
         candidate_quaternion = _sample_vectors(
             candidate, candidate.eef_quaternions_xyzw, timestamp, quaternion=True
         )
-        position_squared.append(
-            sum(
+        position_errors.append(
+            math.sqrt(
+                sum(
                 (a - b) ** 2
                 for a, b in zip(reference.eef_positions_m[index], candidate_position)
+                )
             )
         )
-        orientation_squared.append(
-            _orientation_error_deg(reference.eef_quaternions_xyzw[index], candidate_quaternion) ** 2
+        orientation_errors.append(
+            _orientation_error_deg(reference.eef_quaternions_xyzw[index], candidate_quaternion)
         )
         if reference.joint_names and candidate.joint_names:
             if reference.joint_names != candidate.joint_names:
@@ -263,11 +285,22 @@ def compare_action_trajectories(
             gripper_absolute.append(abs(reference.gripper_width_m[index] - candidate_width))
 
     metrics = {
-        "eef_position_rmse_m": math.sqrt(sum(position_squared) / len(position_squared)),
-        "eef_orientation_rmse_deg": math.sqrt(
-            sum(orientation_squared) / len(orientation_squared)
+        "eef_position_rmse_m": math.sqrt(
+            sum(value * value for value in position_errors) / len(position_errors)
         ),
+        "eef_position_p50_m": _quantile(position_errors, 0.50),
+        "eef_position_p95_m": _quantile(position_errors, 0.95),
+        "eef_position_endpoint_m": position_errors[-1],
+        "eef_orientation_rmse_deg": math.sqrt(
+            sum(value * value for value in orientation_errors) / len(orientation_errors)
+        ),
+        "eef_orientation_p95_deg": _quantile(orientation_errors, 0.95),
+        "eef_orientation_endpoint_deg": orientation_errors[-1],
         "trajectory_coverage": coverage,
+        "start_time_offset_s": abs(
+            candidate.timestamps_s[0] - reference.timestamps_s[0]
+        ),
+        "end_time_offset_s": abs(candidate.timestamps_s[-1] - reference.timestamps_s[-1]),
     }
     if joint_squared:
         metrics["joint_rmse_rad"] = math.sqrt(sum(joint_squared) / len(joint_squared))
