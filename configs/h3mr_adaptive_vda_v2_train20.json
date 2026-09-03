@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "method": "Stage-3-BIR + Adaptive VDA",
+  "implementation_version": "adaptive-vda-v2-hand-root-depth-v1",
+  "candidate_generation_uses_3d_gt": false,
+  "routing": {
+    "v1_hard_if": "valid_keyframes < 4 OR scale_relative_mad > 0.20",
+    "v2_ordinary_otherwise": true,
+    "fallback": "preserve Stage-3-BIR when VDA support, center, or penetration gates fail"
+  },
+  "v2": {
+    "wrist_patch_radius_px": 5,
+    "wrist_patch_percentile": 25.0,
+    "minimum_valid_patch_pixels": 10,
+    "minimum_robust_anchors": 4,
+    "temporal_outlier_sigma_mad": 3.0,
+    "temporal_outlier_floor_m": 0.02,
+    "remove_sequence_median_bias": true,
+    "residual_clip_m": 0.04,
+    "fusion_beta": 0.5,
+    "maximum_applied_depth_shift_m": 0.02,
+    "absolute_center_gate_m": 0.15,
+    "bir_transition_frames": 15,
+    "penetration_gate": "reject any new Stage-3 winding-number penetration or energy increase"
+  },
+  "frozen_train20_hard_sequences": [
+    "subject1_ego__k2__2"
+  ],
+  "reported_protocol": {
+    "dataset": "H2O Train20",
+    "sequences": 20,
+    "single_hand_trajectories": 40,
+    "shared_valid_hand_frames": 25352,
+    "setting": "GT-2D upper-bound",
+    "metrics_lower_is_better": [
+      "PA-MPJPE",
+      "W-MPJPE",
+      "WA-MPJPE",
+      "RTE",
+      "Accel"
+    ]
+  }
+}

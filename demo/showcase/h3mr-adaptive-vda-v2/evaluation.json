@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "name": "Native HaWoR vs Stage-3-BIR vs Stage-3-BIR + Adaptive VDA",
+  "status": "WORKING",
+  "method": {
+    "baselines": ["Native HaWoR", "Stage-3-BIR"],
+    "v1_hard_route": "valid_keyframes < 4 OR scale_relative_mad > 0.20",
+    "v2_ordinary_route": "all other frozen Train20 sequences",
+    "fallback": "unchanged Stage-3-BIR when evidence or penetration safety gates fail",
+    "candidate_generation_uses_3d_gt": false
+  },
+  "protocol": {
+    "dataset": "H2O Train20",
+    "setting": "GT-2D upper-bound",
+    "sequence_count": 20,
+    "single_hand_trajectory_count": 40,
+    "shared_valid_hand_frames": 25352,
+    "all_metrics_lower_is_better": true
+  },
+  "metrics": {
+    "pa_mpjpe_mm": {
+      "native_hawor": 7.0002340332458886,
+      "stage3_bir": 6.904048585965078,
+      "stage3_bir_plus_adaptive_vda": 6.9040485887205465,
+      "relative_improvement_vs_native_percent": 1.374031840486089,
+      "relative_improvement_vs_stage3_percent": -3.991091180423584e-8
+    },
+    "w_mpjpe_mm": {
+      "native_hawor": 26.08366288989077,
+      "stage3_bir": 24.995810062596007,
+      "stage3_bir_plus_adaptive_vda": 23.94106056110721,
+      "relative_improvement_vs_native_percent": 8.214346036552895,
+      "relative_improvement_vs_stage3_percent": 4.219705217984252
+    },
+    "wa_mpjpe_mm": {
+      "native_hawor": 15.686847405841426,
+      "stage3_bir": 15.135564627021823,
+      "stage3_bir_plus_adaptive_vda": 14.58475339344978,
+      "relative_improvement_vs_native_percent": 7.025592739438845,
+      "relative_improvement_vs_stage3_percent": 3.639185237851443
+    },
+    "rte_percent": {
+      "native_hawor": 1.1315131494541775,
+      "stage3_bir": 1.1078454328201075,
+      "stage3_bir_plus_adaptive_vda": 1.0315381308188267,
+      "relative_improvement_vs_native_percent": 8.835515405506067,
+      "relative_improvement_vs_stage3_percent": 6.8879014834257655
+    },
+    "accel_m_s2": {
+      "native_hawor": 7.051546503391933,
+      "stage3_bir": 6.442513306403177,
+      "stage3_bir_plus_adaptive_vda": 6.40673265170019,
+      "relative_improvement_vs_native_percent": 9.144289857289815,
+      "relative_improvement_vs_stage3_percent": 0.5553834815897944
+    }
+  },
+  "routing_outcome": {
+    "v1_hard_sequences": 1,
+    "v2_ordinary_sequences": 19,
+    "v2_active_sequences": 11,
+    "v2_penetration_fallback_sequences": 7,
+    "v2_evidence_fallback_sequences": 1,
+    "frozen_hard_sequence": "subject1_ego__k2__2"
+  },
+  "safety_audit": {
+    "status": "passed",
+    "stage3_baseline_exactly_reproduced": true,
+    "candidate_hashes_passed": true,
+    "modified_numeric_fields_are_finite": true,
+    "new_penetration_frames": 0,
+    "maximum_camera_world_consistency_error_m": 1.63e-7,
+    "maximum_within_hand_local_geometry_change_m": 2.9802322387695312e-8
+  },
+  "demo": {
+    "sequence": "subject2_ego__h2__3",
+    "methods": ["Native HaWoR", "Stage-3-BIR", "Stage-3-BIR + Adaptive VDA"],
+    "frames": [0, 300],
+    "fps": 30,
+    "duration_seconds": 10,
+    "resolution": [1920, 1080],
+    "codec": "H.264",
+    "selection": "first 300 frames of the pre-frozen ordinary-sequence pilot; no GT-based clip selection",
+    "gt_usage": "trajectory visualization and final official metrics only",
+    "video_file": "comparison-three-way.mp4",
+    "video_sha256": "2b0c5540dc47e308e7c144e44fa38fdbf8e24be5699c89e633ac85feb0b4a0b0",
+    "poster_file": "poster-three-way.jpg",
+    "poster_sha256": "4f4c9fb7870fd1c42826a141303e2508a8b6ad03842dcaa937ea5fd42bb25b6e"
+  },
+  "claim_boundaries": [
+    "Train20 participated in method development and is not an external test set.",
+    "The Stage-3-BIR input is a GT-2D upper-bound rather than full production inference.",
+    "V2 does not improve every active sequence on every metric.",
+    "The demo sequence is an ordinary-sequence development pilot, not a claim of universal improvement."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-03.h3mr-adaptive-vda-v2-strict-fallback",
+  "recorded_at": "2026-09-03T11:09:57+08:00",
+  "status": "WORKING",
+  "scope": "Strict native-fallback release validation for H3MR Stage-3-BIR plus Adaptive VDA",
+  "summary": "The final release candidate makes every rejected V2 route a bit-exact fallback for all original Stage-3-BIR fields, retains the accepted aggregate metrics, and passes a fresh full-pipeline audit.",
+  "evidence": [
+    "A fresh one-command run completed generation, official evaluation, and audit with exit status zero over 20 sequences and 40 hand trajectories.",
+    "All 38 ordinary-route hand outputs passed the fallback-exactness condition; the 16 hand outputs from eight rejected ordinary sequences preserve every original Stage-3-BIR field bit-for-bit.",
+    "All 38 ordinary-route hand outputs passed finite modified-field, coordinate consistency, reprojection, camera-field, validity-mask, and local-geometry checks; both hard-route outputs are exact frozen-V1 copies.",
+    "W-MPJPE, WA-MPJPE, RTE, and Accel remain 23.941061 mm, 14.584753 mm, 1.031538%, and 6.406733 m/s^2, respectively, with PA-MPJPE numerically invariant at 6.904049 mm.",
+    "Eleven Adaptive VDA and cache-adapter regression tests plus targeted Ruff and Python compilation checks pass."
+  ],
+  "lessons": [
+    "A semantic fallback must preserve every protected field exactly; recomputing an unchanged 2D projection can introduce needless floating-point differences even when evaluation metrics are unaffected.",
+    "Fail-closed output-state handling must distinguish candidate generation from later evaluate and audit phases so immutable candidates can be consumed without permitting result overwrites."
+  ],
+  "limitations": [
+    "The accepted metrics remain H2O Train20 GT-2D upper-bound development evidence rather than an independent test-set result.",
+    "The full runner consumes external precomputed model outputs and private evaluation assets; the repository contains the fusion, routing, evaluation adapter, and audit code but not upstream checkpoints."
+  ],
+  "next_actions": [
+    "Obtain user review before committing or pushing the prepared repository changes.",
+    "Run the frozen release on a predeclared external challenge set before making a broad generalization claim."
+  ],
+  "run_dir": "/data1/phiagent/phiagent-h3mr-adaptive-vda-v2-release-final-20260903",
+  "supersedes": [
+    "2026-09-03.h3mr-adaptive-vda-v2-working"
+  ],
+  "tags": [
+    "h3mr",
+    "adaptive-vda",
+    "strict-fallback",
+    "h2o",
+    "release-validation"
+  ]
+}

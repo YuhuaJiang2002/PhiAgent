@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-03.h3mr-adaptive-vda-v2-working",
+  "recorded_at": "2026-09-03T10:56:53+08:00",
+  "status": "WORKING",
+  "scope": "H3MR Stage-3-BIR plus frozen V1 hard recovery and V2 ordinary-sequence VDA post-processing",
+  "summary": "A one-command, GT-free candidate-generation pipeline reproduces the accepted H2O Train20 Adaptive VDA result and passes structural integrity audits without modifying the Stage-3-BIR source predictions.",
+  "evidence": [
+    "A real replay processed 20 H2O Train20 sequences, 40 hand tracks, and 25,352 shared valid hand frames; candidate generation completed before the first GT read.",
+    "The frozen route selected subject1_ego__k2__2 for exact V1 dense recovery and the remaining 19 sequences for ordinary V2 processing.",
+    "Against the fixed Stage-3-BIR baseline, W-MPJPE changed from 24.995810 to 23.941061 mm, WA-MPJPE from 15.135565 to 14.584753 mm, RTE from 1.107845% to 1.031538%, and Accel from 6.442513 to 6.406733 m/s^2; PA-MPJPE remained numerically invariant.",
+    "The structural audit passed output SHA, finite-value, unchanged-field, valid-mask, camera-field, coordinate-consistency, reprojection, and within-hand geometry checks, with no temporary files.",
+    "Ten targeted Adaptive VDA and cache-adapter tests passed, git diff whitespace checks passed, and the public comparison asset is a 10-second, 300-frame, 1920x1080 H.264 video with SHA-256 11162a27f802e5179da17c07d30803dd55f32ca5228496f9f032393def1ab118."
+  ],
+  "lessons": [
+    "VDA is safest as a confidence-gated world-translation correction that preserves camera-space hand predictions and BIR outputs, rather than as an unconditional replacement for the full SLAM trajectory.",
+    "Separating candidate generation from GT evaluation and freezing candidate hashes is required to support causal attribution of the measured increment to Adaptive VDA.",
+    "The frozen V1 difficult-sequence route and the V2 ordinary-sequence route solve different failure regimes and should remain explicit in both code and reporting."
+  ],
+  "limitations": [
+    "The evidence is from the H2O Train20 development split under a GT-2D upper-bound protocol and does not establish independent test-set generalization.",
+    "Not every ordinary sequence improves every metric; the aggregate result must not be described as universal per-sequence improvement.",
+    "This release consumes precomputed Stage-3-BIR predictions, VDA depth observations, scale evidence, and a frozen V1 hard-sequence candidate; it does not package upstream model checkpoints."
+  ],
+  "next_actions": [
+    "Evaluate the frozen method on a predeclared independent challenge set without selecting sequences from final GT improvements.",
+    "Report Native, scale-only, dense-only, V1-only, V2-only, and adaptive routes under one frozen validity and evaluation protocol."
+  ],
+  "run_dir": "/data1/phiagent/phiagent-h3mr-adaptive-vda-v2-release-smoke-20260903",
+  "supersedes": [],
+  "tags": [
+    "h3mr",
+    "adaptive-vda",
+    "h2o",
+    "world-translation",
+    "ablation",
+    "demo"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-03.h3mr-adaptive-vda-three-way-demo",
+  "recorded_at": "2026-09-03T11:52:21+08:00",
+  "status": "WORKING",
+  "scope": "Three-way Native HaWoR, Stage-3-BIR, and Stage-3-BIR plus Adaptive VDA demo",
+  "summary": "A reproducible compositor now presents all three methods on one fixed timeline and reports Adaptive VDA improvements against both Native HaWoR and Stage-3-BIR.",
+  "evidence": [
+    "The H.264 output is 1920x1080, 30 FPS, 300 frames, and 10 seconds; a complete decode audit passes and the video SHA-256 is 47e0b4ace938328641f175214f854eff620137fdcdcb82c42ba864e71e488766.",
+    "Five sampled timeline positions were visually reviewed and show three synchronized RGB/skeleton panels plus aligned Native, Stage-3, and Adaptive right-hand world-root trajectories.",
+    "The embedded and public JSON metrics match the frozen Native HaWoR and final Adaptive VDA summaries with maximum absolute difference zero.",
+    "Against Native HaWoR, Adaptive VDA improves W-MPJPE 8.214%, WA-MPJPE 7.026%, RTE 8.836%, and Accel 9.144%; the additional gains over Stage-3-BIR are 4.220%, 3.639%, 6.888%, and 0.555%."
+  ],
+  "lessons": [
+    "A three-way presentation is necessary to separate the contribution of Stage-3-BIR from the additional contribution of Adaptive VDA.",
+    "Compositing already-audited, frame-aligned panels avoids another dependency on raw RGB while preserving the exact frozen clip and metric provenance."
+  ],
+  "limitations": [
+    "The video is a visualization of one pre-frozen ordinary development sequence and does not represent universal per-sequence improvement.",
+    "Trajectory panels and aggregate labels use GT for evaluation display; Adaptive candidate generation itself remains GT-free."
+  ],
+  "next_actions": [
+    "Obtain user approval before committing or pushing the new three-way demo and documentation.",
+    "Repeat the frozen comparison on an independent challenge set before claiming broad generalization."
+  ],
+  "run_dir": "/data1/phiagent/phiagent-h3mr-adaptive-vda-v2-three-way-demo-20260903",
+  "supersedes": [],
+  "tags": [
+    "h3mr",
+    "adaptive-vda",
+    "three-way-comparison",
+    "demo",
+    "github-pages"
+  ]
+}

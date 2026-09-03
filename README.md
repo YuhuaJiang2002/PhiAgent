@@ -271,6 +271,31 @@ The three refinement stages are:
 | RTE | 1.131513% | **1.106384%** | 1.107845% | **+0.023668 pct-pt** | **+2.092%** |
 | Accel | 7.051547 m/s² | **6.344561 m/s²** | 6.442513 m/s² | **+0.609033 m/s²** | **+8.637%** |
 
+#### Native HaWoR vs. Stage-3-BIR vs. Adaptive VDA
+
+[![Native HaWoR versus Stage-3-BIR versus Stage-3-BIR plus Adaptive VDA](demo/showcase/h3mr-adaptive-vda-v2/poster-three-way.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-adaptive-vda-v2/comparison-three-way.mp4)
+
+[Play the three-way 10-second comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-adaptive-vda-v2/comparison-three-way.mp4) · [Method and one-command pipeline](docs/H3MR_ADAPTIVE_VDA_V2.md) · [Evaluation evidence](https://yuhuajiang2002.github.io/PhiAgent/showcase/h3mr-adaptive-vda-v2/evaluation.json)
+
+Adaptive VDA preserves Stage-3-BIR as a protected baseline: the frozen V1
+dense recovery handles the single predeclared hard sequence, V2 applies a
+bounded hand-root depth correction to ordinary sequences, and failed confidence
+or penetration gates fall back without changing Stage-3-BIR. Candidate
+generation does not read 3D GT.
+
+| Metric ↓ | Native HaWoR | Stage-3-BIR | + Adaptive VDA | Gain vs. Native | Gain vs. Stage-3 |
+|---|---:|---:|---:|---:|---:|
+| PA-MPJPE | 7.000234 mm | 6.904049 mm | **6.904049 mm** | **1.374%** | ≈0% |
+| W-MPJPE | 26.083663 mm | 24.995810 mm | **23.941061 mm** | **8.214%** | **4.220%** |
+| WA-MPJPE | 15.686847 mm | 15.135565 mm | **14.584753 mm** | **7.026%** | **3.639%** |
+| RTE | 1.131513% | 1.107845% | **1.031538%** | **8.836%** | **6.888%** |
+| Accel | 7.051547 m/s² | 6.442513 m/s² | **6.406733 m/s²** | **9.144%** | **0.555%** |
+
+These are H2O Train20 development results under the same GT-2D upper-bound
+protocol above. All three columns use the same sequences and evaluation
+definitions. Train20 is not an external test set, and the demo's first
+10-second window was fixed without using GT improvement to select the clip.
+
 ### RGB-to-relative-depth comparison
 
 #### Robot-arm RGB-to-relative-depth comparison

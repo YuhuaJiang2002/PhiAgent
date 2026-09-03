@@ -4,8 +4,33 @@ Evidence date: 2026-08-22. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
 
+Latest added evidence: 2026-09-03.
+
 ## WORKING
 
+- H3MR three-way comparison demo: a deterministic compositor places Native
+  HaWoR, Stage-3-BIR, and Stage-3-BIR + Adaptive VDA on the same fixed
+  300-frame/10-second H2O timeline, adds matched right-hand world-root
+  trajectories, and reports Adaptive gains against both baselines. The
+  1920x1080/30-FPS H.264 artifact decodes all 300 frames, uses web fast-start,
+  and has SHA-256
+  `2b0c5540dc47e308e7c144e44fa38fdbf8e24be5699c89e633ac85feb0b4a0b0`.
+  Its metric JSON matches the frozen Native and Adaptive summaries exactly.
+  This is WORKING development-set visualization, not independent test evidence;
+  GT is shown only in trajectory panels and final aggregate metrics.
+- H3MR Adaptive VDA V2 post-processing pipeline: the one-command CLI freezes
+  candidates before GT evaluation, selects one frozen V1 dense-recovery branch
+  and 19 ordinary V2 depth-residual branches from pre-GT evidence, and preserves
+  camera-space hand geometry, camera poses, validity masks, and non-whitelisted
+  BIR fields. A real H2O Train20 replay over 20 sequences, 40 hand tracks, and
+  25,352 shared valid hand frames exactly reproduces the accepted result:
+  W-MPJPE 24.995810 to 23.941061 mm, WA-MPJPE 15.135565 to 14.584753 mm,
+  RTE 1.107845% to 1.031538%, and Accel 6.442513 to 6.406733 m/s^2, while
+  PA-MPJPE is numerically invariant. The structural audit passes all output-SHA,
+  modified-field finite-value, field-invariance, camera/world consistency,
+  reprojection, and local-geometry checks. This is WORKING evidence for the fixed GT-2D
+  upper-bound Train20 development protocol, not an external generalization or
+  a claim that every sequence improves.
 - Persistent workflow framework and flower long-video reference graph: the
   standard-library `phiagent.workflows` runtime provides named nodes,
   conditional edges, JSON-hashed thread checkpoints, streamed events,

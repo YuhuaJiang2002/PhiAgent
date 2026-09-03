@@ -25,6 +25,13 @@ simulation = [
 retargeting = [
   "dex_retargeting==0.4.6",
 ]
+adaptive-vda = [
+  "numpy==1.26.4",
+]
+h3mr-demo = [
+  "numpy==1.26.4",
+  "opencv-python-headless==4.11.0.86",
+]
 
 [project.scripts]
 phiagent-visual-transfer = "phiagent.rendering.cli:main"

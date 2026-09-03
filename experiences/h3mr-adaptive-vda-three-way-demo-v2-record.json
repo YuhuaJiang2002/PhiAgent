@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-03.h3mr-adaptive-vda-three-way-demo-v2",
+  "recorded_at": "2026-09-03T11:55:32+08:00",
+  "status": "WORKING",
+  "scope": "Corrected three-way Native HaWoR, Stage-3-BIR, and Adaptive VDA demo",
+  "summary": "The corrected three-way demo keeps the verified visuals and metrics while labeling rejected ordinary V2 routes accurately as exact Stage-3-BIR fallbacks.",
+  "evidence": [
+    "The corrected H.264 output is 1920x1080, 30 FPS, 300 frames, and 10 seconds; all frames decode and the video SHA-256 is 2b0c5540dc47e308e7c144e44fa38fdbf8e24be5699c89e633ac85feb0b4a0b0.",
+    "The routing caption now states that 11 ordinary sequences apply V2 and eight are exact Stage-3 fallbacks, matching the implementation and structural audit.",
+    "The three displayed methods and both relative-improvement columns remain numerically unchanged from the frozen summaries."
+  ],
+  "lessons": [
+    "Fallback labels must name the protected method precisely: the V2 ordinary branch falls back to Stage-3-BIR, whereas Native HaWoR is a separate upstream baseline."
+  ],
+  "limitations": [
+    "The video remains a one-sequence development visualization with GT used only for trajectory display and final aggregate evaluation."
+  ],
+  "next_actions": [
+    "Obtain user review before committing or pushing the corrected asset."
+  ],
+  "run_dir": "/data1/phiagent/phiagent-h3mr-adaptive-vda-v2-three-way-demo-v2-20260903",
+  "supersedes": [
+    "2026-09-03.h3mr-adaptive-vda-three-way-demo"
+  ],
+  "tags": [
+    "h3mr",
+    "adaptive-vda",
+    "three-way-comparison",
+    "demo",
+    "correction"
+  ]
+}
