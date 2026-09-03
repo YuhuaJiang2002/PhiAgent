@@ -283,18 +283,18 @@ bounded hand-root depth correction to ordinary sequences, and failed confidence
 or penetration gates fall back without changing Stage-3-BIR. Candidate
 generation does not read 3D GT.
 
-| Metric ↓ | Native HaWoR | Stage-3-BIR | + Adaptive VDA | Gain vs. Native | Gain vs. Stage-3 |
-|---|---:|---:|---:|---:|---:|
-| PA-MPJPE | 7.000234 mm | 6.904049 mm | **6.904049 mm** | **1.374%** | ≈0% |
-| W-MPJPE | 26.083663 mm | 24.995810 mm | **23.941061 mm** | **8.214%** | **4.220%** |
-| WA-MPJPE | 15.686847 mm | 15.135565 mm | **14.584753 mm** | **7.026%** | **3.639%** |
-| RTE | 1.131513% | 1.107845% | **1.031538%** | **8.836%** | **6.888%** |
-| Accel | 7.051547 m/s² | 6.442513 m/s² | **6.406733 m/s²** | **9.144%** | **0.555%** |
+| Metric ↓ | Native HaWoR | Stage-3-BIR + Adaptive VDA | Overall gain vs. Native HaWoR |
+|---|---:|---:|---:|
+| PA-MPJPE | 7.000234 mm | **6.904049 mm** | **1.374%** |
+| W-MPJPE | 26.083663 mm | **23.941061 mm** | **8.214%** |
+| WA-MPJPE | 15.686847 mm | **14.584753 mm** | **7.026%** |
+| RTE | 1.131513% | **1.031538%** | **8.836%** |
+| Accel | 7.051547 m/s² | **6.406733 m/s²** | **9.144%** |
 
 These are H2O Train20 development results under the same GT-2D upper-bound
-protocol above. All three columns use the same sequences and evaluation
-definitions. Train20 is not an external test set, and the demo's first
-10-second window was fixed without using GT improvement to select the clip.
+protocol above. Both methods use the same sequences and evaluation definitions.
+Train20 is not an external test set. The demo shows a fixed 10-second segment;
+aggregate metrics cover all Train20 sequences.
 
 ### RGB-to-relative-depth comparison
 
