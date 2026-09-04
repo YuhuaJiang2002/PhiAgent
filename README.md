@@ -128,25 +128,27 @@ offline measurement only, not to composite the published robot pixels.
 
 ### Long egocentric silver five-finger robot-arm replacement
 
-[![First-person tabletop source and silver five-finger robot comparison](demo/showcase/joyai-ego-silver-five-finger-v1/tabletop-object-arrangement-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#joyai-ego-tabletop)
+[![First-person tabletop source and silver five-finger robot comparison](demo/showcase/joyai-ego-silver-five-finger-v2/tabletop-object-arrangement-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#joyai-ego-tabletop)
 
-[Play the 35.9-second tabletop comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-ego-silver-five-finger-v1/tabletop-object-arrangement-comparison.mp4)
-or [play the 40.2-second device/cable comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-ego-silver-five-finger-v1/device-cable-handling-comparison.mp4).
+[Play the 35.9-second tabletop comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-ego-silver-five-finger-v2/tabletop-object-arrangement-comparison.mp4)
+or [play the 40.2-second device/cable comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/joyai-ego-silver-five-finger-v2/device-cable-handling-comparison.mp4).
 Both cases convert complete first-person, bimanual human demonstrations into
 polished silver five-finger robot-arm visual proposals. Each source was run as
 four uninterrupted full-stream JoyAI candidates using seeds 17, 42, 73, and
 101; tabletop seed 101 and device/cable seed 73 were selected.
 
-[![First-person device/cable source and silver five-finger robot comparison](demo/showcase/joyai-ego-silver-five-finger-v1/device-cable-handling-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#joyai-ego-device-cable)
+[![First-person device/cable source and silver five-finger robot comparison](demo/showcase/joyai-ego-silver-five-finger-v2/device-cable-handling-poster.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#joyai-ego-device-cable)
 
-The tabletop right panel includes disclosed full-timeline SAM2 source-state
-projection outside the tracked robot support. The device/cable right panel is
-the selected direct RV2V stream. Both results remain `PARTIAL`: sampled visual
-review and exact timeline checks do not establish per-frame finger/contact
-correctness, robot kinematics, force closure, or real execution. Thin cables and
-finger occlusions are the highest-risk regions in the second clip. Read the
+The tabletop right panel uses the selected direct stream except for a disclosed
+18.5-25.5-second localized SAM2 source-state projection around the requested
+19-25-second repair interval. The device/cable right panel is the selected direct
+RV2V stream. Both comparison videos label the result panel `PhiAgent`. Both
+results remain `PARTIAL`: sampled visual review and exact timeline checks do not
+establish per-frame finger/contact correctness, robot kinematics, force closure,
+or real execution. Thin cables and finger occlusions are the highest-risk regions
+in the second clip. Read the
 [reproduction protocol and measured timing](docs/JOYAI_EGO_SILVER_FIVE_FINGER_RV2V.md)
-or inspect the [public evaluation record](demo/showcase/joyai-ego-silver-five-finger-v1/evaluation.json).
+or inspect the [corrected public evaluation record](demo/showcase/joyai-ego-silver-five-finger-v2/evaluation.json).
 
 ### Does the current web demo use EPL?
 

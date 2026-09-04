@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0.0",
+  "status": "PARTIAL",
+  "publication_revision": 2,
+  "case": "Corrected long first-person human-arm to silver five-finger robot-arm comparisons",
+  "corrections": [
+    "The baked right-panel label is PhiAgent rather than RV2V ROBOT.",
+    "The tabletop right panel uses the requested localized 19-25 second refinement rather than the later full-timeline background restoration."
+  ],
+  "supersedes_publication_path": "demo/showcase/joyai-ego-silver-five-finger-v1",
+  "presentation": {
+    "layout": "left=original human source; right=PhiAgent robot result",
+    "left_panel_label": "ORIGINAL",
+    "right_panel_label": "PhiAgent",
+    "clips": [
+      {
+        "case_id": "tabletop-object-arrangement",
+        "video": "tabletop-object-arrangement-comparison.mp4",
+        "video_sha256": "34c0b6938d52a13b6314f77a4f4525f5360768a4e3bff7a061516606ff7651da",
+        "poster": "tabletop-object-arrangement-poster.jpg",
+        "poster_sha256": "ec35518860308c1515c6a95b8171e3758d6b2974d15b2ce96d7b531dcc55753d",
+        "reference": "tabletop-object-arrangement-reference.png",
+        "reference_sha256": "bf1c8fc82191a147266706e35e5d492c8c3727fe32a0855f8b343583401ca059",
+        "frames": 862,
+        "fps": 24,
+        "duration_seconds": 35.917,
+        "width": 1280,
+        "height": 360,
+        "codec": "h264",
+        "profile": "High",
+        "pixel_format": "yuv420p",
+        "fast_start": true,
+        "audio": false
+      },
+      {
+        "case_id": "device-cable-handling",
+        "video": "device-cable-handling-comparison.mp4",
+        "video_sha256": "b3b8f01d7a509e104fc58968f89685106c3bcf8d88e71d8633e5f96797bb7062",
+        "poster": "device-cable-handling-poster.jpg",
+        "poster_sha256": "31369a955c34ac6d1f1f36dd8f9704b9c0f5d33282df9e9ada65db04e506fd1b",
+        "reference": "device-cable-handling-reference.png",
+        "reference_sha256": "b197a5ade57ac5b4f8431b08cc16fc84ec0d2c85b8abf110088157426c023fce",
+        "frames": 964,
+        "fps": 24,
+        "duration_seconds": 40.167,
+        "width": 1280,
+        "height": 360,
+        "codec": "h264",
+        "profile": "High",
+        "pixel_format": "yuv420p",
+        "fast_start": true,
+        "audio": false
+      }
+    ]
+  },
+  "generation": {
+    "model": "jdopensource/JoyAI-Video-Edit",
+    "repository_revision": "3478e4b8c9a79fe935157d1d477cd3e57bb41f1f",
+    "weights_revision": "e14d9ac50d4ad8e9f91b655bfab270c02a43923b",
+    "dit_sha256": "b3904b6fda53d13b230918bb616f322d12cfb2337b0e8d9dc203cdabc36605ba",
+    "num_inference_steps": 2,
+    "seeds": [17, 42, 73, 101],
+    "selected_seeds": {
+      "tabletop-object-arrangement": 101,
+      "device-cable-handling": 73
+    },
+    "continuous_causal_stream_per_seed": true,
+    "per_frame_seed_mixing": false,
+    "protocol_path": "configs/joyai/ego_silver_five_finger_rv2v_v2.json"
+  },
+  "timing": {
+    "hardware": "two NVIDIA A800 80GB GPUs; one main-model device and one VAE device",
+    "cold_service_start_seconds": 193.691,
+    "all_eight_candidate_client_wall_seconds": 1180.06,
+    "tabletop_object_arrangement": {
+      "pure_model_edit_seconds": 113.316,
+      "effective_model_fps": 7.634,
+      "selected_seed_client_wall_seconds": 139.37,
+      "direct_rv2v_warm_file_pipeline_seconds": 275.67,
+      "localized_refinement_primary_compute_seconds": 298.76
+    },
+    "device_cable_handling": {
+      "pure_model_edit_seconds": 128.609,
+      "effective_model_fps": 7.534,
+      "selected_seed_client_wall_seconds": 155.59,
+      "direct_rv2v_warm_file_pipeline_seconds": 292.34
+    }
+  },
+  "selection_and_review": {
+    "candidate_count_per_clip": 4,
+    "checks": [
+      "exact frame-count, frame-rate, codec, and complete-decode validation",
+      "whole-timeline contact sheets sampled every two seconds",
+      "same-timestamp comparison across all four seeds",
+      "upper-frame source-preservation PSNR",
+      "upper-frame temporal-difference mean and p95",
+      "native-resolution review of the localized tabletop refinement boundaries"
+    ],
+    "visual_review_scope": "sampled timeline review, not a claim that every generated finger and contact pixel was manually accepted",
+    "tabletop_localized_refinement": {
+      "method": "restore corresponding source-frame pixels outside the per-frame union of source-human and generated-robot SAM2 masks only within the localized transition window",
+      "selected_direct_rv2v_seed": 101,
+      "selected_direct_rv2v_lossless_sha256": "dfccbf24bc1061761f202507ba3cf35c0281a496e8992b1fd81cafe604fc28dd",
+      "localized_refined_lossless_sha256": "490ded67e0693ff33665665a0c8bf54d677278a129007b8bf9ea1df92715ca33",
+      "localized_refined_full_resolution_h264_sha256": "a4f2889236a0af412c1f38b72cb974a55d19dc8f0aa612eea34251cd8750d977",
+      "timeline_frames": 862,
+      "transition_frame_range_inclusive": [444, 612],
+      "transition_time_range_seconds": [18.5, 25.5],
+      "core_frame_range_half_open": [456, 600],
+      "core_time_range_seconds": [19.0, 25.0],
+      "outside_transition_candidate_max_abs_difference": 0,
+      "transition_endpoint_candidate_max_abs_difference": 0,
+      "core_robot_union_candidate_max_abs_difference": 0,
+      "core_safe_source_max_abs_difference": 0,
+      "candidate_safe_region_mean_absolute_error_from_source": 8.6296,
+      "refined_safe_region_mean_absolute_error_from_source": 0.0,
+      "boundary_transition_no_2x_spike": true
+    }
+  },
+  "limitations": [
+    "Both outputs are camera-frame visual edits rather than robot trajectories or recorded hardware execution.",
+    "The tabletop result includes disclosed SAM2-guided source-pixel restoration only in the 18.5-25.5-second transition window; it is not an untouched direct model sample in that interval.",
+    "The device clip's thin cables and finger occlusions remain the highest-risk locations for local sticking, deformation, or flicker.",
+    "No metric-depth, kinematic-feasibility, collision, force-closure, or sensor-contact evidence is provided."
+  ]
+}

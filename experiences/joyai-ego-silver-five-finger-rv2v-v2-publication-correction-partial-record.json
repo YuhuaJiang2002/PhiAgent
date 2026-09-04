@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-04.joyai-ego-silver-five-finger-rv2v-v2-publication-correction-partial",
+  "recorded_at": "2026-09-04T22:50:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Correct the public labels and tabletop refinement selection for the long egocentric silver five-finger RV2V demo",
+  "summary": "Publication revision 2 labels both result panels PhiAgent and promotes the requested localized 19-25-second tabletop refinement instead of the later full-timeline background-restoration result.",
+  "evidence": [
+    "The corrected browser comparisons decode completely as H.264 High, yuv420p, 1280x360, 24 FPS with exact 862- and 964-frame timelines.",
+    "The tabletop browser comparison SHA-256 is 34c0b6938d52a13b6314f77a4f4525f5360768a4e3bff7a061516606ff7651da and is derived from the localized refined lossless artifact with SHA-256 490ded67e0693ff33665665a0c8bf54d677278a129007b8bf9ea1df92715ca33.",
+    "The localized tabletop audit records a 19-25-second core, 18.5-25.5-second transition context, exact direct-candidate pixels outside the transition window, and exact safe source pixels within the core.",
+    "The device/cable browser comparison SHA-256 is b3b8f01d7a509e104fc58968f89685106c3bcf8d88e71d8633e5f96797bb7062; its visual result is unchanged from selected seed 73 apart from the corrected baked label."
+  ],
+  "lessons": [
+    "A public-media selector must distinguish a requested localized repair from a later full-timeline experimental refinement even when both derive from the same selected RV2V seed.",
+    "Product-facing comparison labels should name PhiAgent rather than exposing an internal RV2V processing label.",
+    "Versioned correction media preserve the earlier evidence while allowing the demo page to promote the user-selected result."
+  ],
+  "limitations": [
+    "This record validates the correction package before the follow-up main-branch push and Pages deployment.",
+    "The localized refinement remains a camera-frame SAM2 source-state projection, not evidence of robot kinematics or physical execution.",
+    "Thin cables and robot fingers in the device clip remain vulnerable to local sticking, deformation, or flicker."
+  ],
+  "next_actions": [
+    "Push the correction commit to main and verify the GitHub Pages workflow.",
+    "Verify the public revision-2 homepage, comparison videos, posters, and evaluation hashes."
+  ],
+  "supersedes": [
+    "2026-09-04.joyai-ego-silver-five-finger-rv2v-v1-partial"
+  ],
+  "tags": ["joyai", "rv2v", "ego-video", "five-finger", "localized-refinement", "publication-correction", "github-pages"]
+}

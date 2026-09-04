@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0.0",
+  "status": "RECORDED_AFTER_RUN",
+  "objective": "Correct the public comparison labels and publish the requested localized 19-25 second tabletop refinement instead of the later full-timeline background restoration",
+  "supersedes_publication_config": "configs/joyai/ego_silver_five_finger_rv2v_v1.json",
+  "publication": {
+    "authorization_confirmed": true,
+    "authorization_date": "2026-09-04",
+    "public_demo_root": "demo/showcase/joyai-ego-silver-five-finger-v2",
+    "left_panel_label": "ORIGINAL",
+    "right_panel_label": "PhiAgent"
+  },
+  "model": {
+    "id": "jdopensource/JoyAI-Video-Edit",
+    "repository_revision": "3478e4b8c9a79fe935157d1d477cd3e57bb41f1f",
+    "weights_revision": "e14d9ac50d4ad8e9f91b655bfab270c02a43923b",
+    "dit_sha256": "b3904b6fda53d13b230918bb616f322d12cfb2337b0e8d9dc203cdabc36605ba"
+  },
+  "inference": {
+    "model_width": 1248,
+    "model_height": 720,
+    "fps": 24,
+    "causal_chunk_frames": 8,
+    "num_inference_steps": 2,
+    "output_quality": 95,
+    "throughput_mode": true,
+    "noise_seeds": [17, 42, 73, 101],
+    "per_frame_seed_mixing": false
+  },
+  "cases": [
+    {
+      "case_id": "tabletop-object-arrangement",
+      "source": {
+        "sha256": "d17be447ba236a514344cb42681b440e835ad5292ef5988f7f4678ec49e56e47",
+        "original_width": 1920,
+        "original_height": 1080,
+        "original_fps": 30,
+        "original_frames": 1078,
+        "original_duration_seconds": 35.933
+      },
+      "normalized_source_frames": 862,
+      "causal_frames_with_cloned_tail": 865,
+      "selected_seed": 101,
+      "prompt_path": "configs/joyai/ego_silver_five_finger_clip_a_prompt_v1.txt",
+      "prompt_sha256": "bed8374f1b205ef900778fa9d8d0609a90a590f71fc99ae8d0517990867a5f3c",
+      "reference_path": "demo/showcase/joyai-ego-silver-five-finger-v2/tabletop-object-arrangement-reference.png",
+      "reference_sha256": "bf1c8fc82191a147266706e35e5d492c8c3727fe32a0855f8b343583401ca059",
+      "selected_direct_rv2v_lossless_sha256": "dfccbf24bc1061761f202507ba3cf35c0281a496e8992b1fd81cafe604fc28dd",
+      "postprocess": {
+        "method": "localized source-state projection outside the per-frame union of source-human and generated-robot SAM2 masks",
+        "transition_frame_range_inclusive": [444, 612],
+        "transition_time_range_seconds": [18.5, 25.5],
+        "core_frame_range_half_open": [456, 600],
+        "core_time_range_seconds": [19.0, 25.0],
+        "dilation_pixels": 5,
+        "feather_sigma": 1.5,
+        "outside_transition_candidate_exact": true,
+        "transition_endpoints_candidate_exact": true,
+        "core_safe_region_source_exact": true,
+        "core_robot_union_candidate_exact": true,
+        "localized_refined_lossless_sha256": "490ded67e0693ff33665665a0c8bf54d677278a129007b8bf9ea1df92715ca33"
+      }
+    },
+    {
+      "case_id": "device-cable-handling",
+      "source": {
+        "sha256": "1f27f5e3da37e3d36d5b8abe88c82055d7e946777022b550ffd87c93d149c6c3",
+        "original_width": 1920,
+        "original_height": 1080,
+        "original_fps": 30,
+        "original_frames": 1205,
+        "original_duration_seconds": 40.167
+      },
+      "normalized_source_frames": 964,
+      "causal_frames_with_cloned_tail": 969,
+      "selected_seed": 73,
+      "prompt_path": "configs/joyai/ego_silver_five_finger_clip_b_prompt_v1.txt",
+      "prompt_sha256": "d660c103ad7f9ab74a98388047abb1a868e75bd65ab4eab2578f84bc337679ae",
+      "reference_path": "demo/showcase/joyai-ego-silver-five-finger-v2/device-cable-handling-reference.png",
+      "reference_sha256": "b197a5ade57ac5b4f8431b08cc16fc84ec0d2c85b8abf110088157426c023fce",
+      "postprocess": {
+        "method": "none; selected full-stream JoyAI result"
+      }
+    }
+  ],
+  "claim_boundary": "Camera-frame visual robot-replacement proposals only. The videos do not establish metric depth, robot-base trajectories, joint feasibility, collision safety, force closure, sensor contact, or real-robot execution."
+}
