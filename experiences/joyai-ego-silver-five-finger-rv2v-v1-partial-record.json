@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-04.joyai-ego-silver-five-finger-rv2v-v1-partial",
+  "recorded_at": "2026-09-04T22:00:00+08:00",
+  "status": "PARTIAL",
+  "scope": "Publish two long first-person silver five-finger robot-arm RV2V comparisons with disclosed tabletop source-background restoration",
+  "summary": "Two complete bimanual source videos were converted with four full-stream JoyAI candidates each; seed 101 plus full-timeline background projection is published for the 35.917-second tabletop case and direct seed 73 for the 40.167-second device/cable case.",
+  "evidence": [
+    "The browser comparisons decode completely as H.264 High, yuv420p, 1280x360, 24 FPS with exact 862- and 964-frame timelines.",
+    "The selected direct model edits measured 113.316 seconds at 7.634 FPS and 128.609 seconds at 7.534 FPS on the recorded two-A800 service.",
+    "The tabletop source-state projection preserves candidate pixels exactly in the robot union, restores safe source pixels exactly, and passes the recorded flow non-regression gates.",
+    "The public package includes the exact source-aligned reference images, prompts, source hashes, model revisions, media hashes, timing, and claim boundary."
+  ],
+  "lessons": [
+    "Long first-person RV2V can run as one bounded causal stream without window seams, but visual quality remains distinct from physical validity.",
+    "Dynamic non-robot detail is better restored from the corresponding source frame than from a static clean plate, provided both source-human and candidate-robot support are protected.",
+    "Reference images must match first-person handedness, wrist entry, scale, and initial grasp rather than using a generic front-facing robot image."
+  ],
+  "limitations": [
+    "Timeline review was sampled rather than a claim of manual per-pixel acceptance for every frame.",
+    "Thin cables and robot fingers overlap repeatedly in the device clip and remain vulnerable to local sticking, deformation, or flicker.",
+    "The outputs contain no metric-depth, kinematic, force, sensor-contact, or real-robot evidence."
+  ],
+  "next_actions": [
+    "Obtain final user review of the prepared GitHub diff and browser preview before pushing main.",
+    "Add a dedicated lower-resolution and one-step benchmark before making any realtime claim."
+  ],
+  "supersedes": [],
+  "tags": ["joyai", "rv2v", "ego-video", "five-finger", "background-projection", "demo", "github-pages"]
+}

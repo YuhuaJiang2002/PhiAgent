@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0.0",
+  "status": "PARTIAL",
+  "case": "Two long first-person human-arm to silver five-finger robot-arm replacements",
+  "presentation": {
+    "layout": "left=original human source; right=PhiAgent robot result",
+    "clips": [
+      {
+        "case_id": "tabletop-object-arrangement",
+        "video": "tabletop-object-arrangement-comparison.mp4",
+        "video_sha256": "bb91b48b1d9ad2e6c892c1960b6321d15a0037ebaeb8464a1fdb1e1838a9d97d",
+        "poster": "tabletop-object-arrangement-poster.jpg",
+        "poster_sha256": "48a60588075de49a633091b58db0747526d3a68ad4c130cc17b99bf15db50bad",
+        "frames": 862,
+        "fps": 24,
+        "duration_seconds": 35.917,
+        "width": 1280,
+        "height": 360,
+        "codec": "h264",
+        "profile": "High",
+        "pixel_format": "yuv420p",
+        "fast_start": true,
+        "audio": false
+      },
+      {
+        "case_id": "device-cable-handling",
+        "video": "device-cable-handling-comparison.mp4",
+        "video_sha256": "82ede0b659b99b924d67440e62518bc27d32db2e4d77e182caf433eb90efb2f4",
+        "poster": "device-cable-handling-poster.jpg",
+        "poster_sha256": "77e0311d218854a335e3c56994de6f59652bd04d0b2e01ea1beefda222ade116",
+        "frames": 964,
+        "fps": 24,
+        "duration_seconds": 40.167,
+        "width": 1280,
+        "height": 360,
+        "codec": "h264",
+        "profile": "High",
+        "pixel_format": "yuv420p",
+        "fast_start": true,
+        "audio": false
+      }
+    ]
+  },
+  "generation": {
+    "model": "jdopensource/JoyAI-Video-Edit",
+    "repository_revision": "3478e4b8c9a79fe935157d1d477cd3e57bb41f1f",
+    "weights_revision": "e14d9ac50d4ad8e9f91b655bfab270c02a43923b",
+    "dit_sha256": "b3904b6fda53d13b230918bb616f322d12cfb2337b0e8d9dc203cdabc36605ba",
+    "num_inference_steps": 2,
+    "seeds": [17, 42, 73, 101],
+    "selected_seeds": {
+      "tabletop-object-arrangement": 101,
+      "device-cable-handling": 73
+    },
+    "continuous_causal_stream_per_seed": true,
+    "per_frame_seed_mixing": false,
+    "protocol_path": "configs/joyai/ego_silver_five_finger_rv2v_v1.json"
+  },
+  "timing": {
+    "hardware": "two NVIDIA A800 80GB GPUs; one main-model device and one VAE device",
+    "cold_service_start_seconds": 193.691,
+    "all_eight_candidate_client_wall_seconds": 1180.06,
+    "tabletop_object_arrangement": {
+      "pure_model_edit_seconds": 113.316,
+      "effective_model_fps": 7.634,
+      "selected_seed_client_wall_seconds": 139.37,
+      "direct_rv2v_warm_file_pipeline_seconds": 275.67,
+      "full_timeline_background_projection_rebuild_seconds": 127.739
+    },
+    "device_cable_handling": {
+      "pure_model_edit_seconds": 128.609,
+      "effective_model_fps": 7.534,
+      "selected_seed_client_wall_seconds": 155.59,
+      "direct_rv2v_warm_file_pipeline_seconds": 292.34
+    }
+  },
+  "selection_and_review": {
+    "candidate_count_per_clip": 4,
+    "checks": [
+      "exact frame-count, frame-rate, codec, and complete-decode validation",
+      "whole-timeline contact sheets sampled every two seconds",
+      "same-timestamp comparison across all four seeds",
+      "upper-frame source-preservation PSNR",
+      "upper-frame temporal-difference mean and p95",
+      "native-resolution review of the tabletop background-projection boundaries"
+    ],
+    "visual_review_scope": "sampled timeline review, not a claim that every generated finger and contact pixel was manually accepted",
+    "tabletop_background_projection": {
+      "method": "restore the corresponding source frame outside the per-frame union of source-human and generated-robot SAM2 masks",
+      "selected_direct_rv2v_seed": 101,
+      "refined_full_resolution_h264_sha256": "e130e84f542dc78fef6cea75e83c26f28015e973b3ddd0ca11a2f2f70e633b98",
+      "timeline_frames": 862,
+      "robot_union_candidate_max_abs_difference": 0,
+      "safe_source_max_abs_difference": 0,
+      "candidate_safe_region_mean_abs_difference_from_source": 9.239071389638632,
+      "refined_safe_region_mean_abs_difference_from_source": 0.0,
+      "flow_non_regression_gates_pass": true,
+      "refined_to_candidate_core_motion_mean": 0.9998789002613644,
+      "refined_to_candidate_core_jitter_p95": 0.9722327269861052,
+      "refined_to_candidate_boundary_jitter_p95": 0.9837662491751671
+    }
+  },
+  "limitations": [
+    "Both outputs are camera-frame visual edits rather than robot trajectories or recorded hardware execution.",
+    "The tabletop result includes disclosed SAM2-guided source-pixel restoration outside the robot support region; it is not an untouched direct model sample.",
+    "The device clip's thin cables and finger occlusions remain the highest-risk locations for local sticking, deformation, or flicker.",
+    "No metric-depth, kinematic-feasibility, collision, force-closure, or sensor-contact evidence is provided."
+  ]
+}
