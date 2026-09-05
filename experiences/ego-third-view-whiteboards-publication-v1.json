@@ -1,0 +1,12 @@
+{
+  "record_id": "ego-third-view-whiteboards-publication-v1",
+  "recorded_at": "2026-09-05T16:00:00Z",
+  "status": "PARTIAL",
+  "scope": "ego RGB to fixed third-person reconstruction recipe publication",
+  "summary": "Packaged the accepted two-whiteboard v21 scene and 16 stage adapters with an explicit-GPU provenance launcher. Real-input re-render passed and both MP4s match the accepted original byte-for-byte; generic end-to-end installation remains partial.",
+  "evidence": ["examples/ego_to_third_view/README.md", "examples/ego_to_third_view/evidence/verification.md", "examples/ego_to_third_view/evidence/accepted-v21-manifest.json"],
+  "lessons": ["Use GPU UUIDs in restricted containers; physical indices are renumbered.", "Remove invented background objects; two tall whiteboards reflect the reviewed scene type.", "Separate manual support and upright priors from predicted trajectories and geometric accuracy."],
+  "limitations": ["Requires private intermediate assets and separately licensed MANO/model weights.", "Source-specific anchor corners and held intervals are not generalized.", "Some archive-installed upstream revisions are unresolved.", "Initial Docker permission and GPU-index preflight attempts failed before rendering; corrected UUID run succeeded."],
+  "next_actions": ["Pin remaining upstream source revisions and validate a clean-room frontend rebuild.", "Externalize scene-specific anchors and intervals before using a new clip."],
+  "tags": ["egocentric", "view-conversion", "reconstruction", "whiteboards"]
+}

@@ -1,5 +1,16 @@
 # Status
 
+## Ego-view conversion update — 2026-09-05
+
+- WORKING: accepted two-whiteboard fixed-third-view renderer, replayed through
+  the packaged launcher on the real 360-frame input bundle; both generated MP4s
+  are byte-identical to the accepted v21 outputs. Six CPU packaging tests pass.
+- PARTIAL: reusable source-to-result recipe; manually reviewed scene anchors,
+  private intermediate assets, licensed models and incompletely pinned upstream
+  installations remain prerequisites. This is not arbitrary-video automation,
+  calibrated pose ground truth, or a robot policy.
+- Recipe and evidence: [ego to third view](../examples/ego_to_third_view/README.md).
+
 Evidence date: 2026-08-22. Status labels describe acceptance evidence, not code
 presence. Measured runs span `a800-1` through `a800-4` and `zhaoli`; artifact
 locations are recorded per experiment below.
