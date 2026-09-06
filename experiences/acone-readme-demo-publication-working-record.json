@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-06.acone-readme-demo-publication-working",
+  "recorded_at": "2026-09-06T10:59:20Z",
+  "status": "WORKING",
+  "scope": "Publish and verify the AC One MANO-to-MuJoCo comparison showcases in the README and GitHub Pages demo",
+  "summary": "The RGB-to-MANO-to-AC One diagnostic and the human/MuJoCo/composite three-panel comparison were committed to main as zhuhuanan, deployed by GitHub Pages, and verified at their public URLs.",
+  "evidence": [
+    "Commit 3b8192895bb8243ec63e127fce7529f1bd5db92f is present on origin/main and was authored with repository identity zhuhuanan.",
+    "GitHub Actions run 34028841587 for demo-pages.yml completed successfully for commit 3b8192895bb8243ec63e127fce7529f1bd5db92f.",
+    "GET https://yuhuajiang2002.github.io/PhiAgent/ returned HTTP 200 and contained the RGB → MANO → EEF → AC One card.",
+    "GET https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-camera-alignment-comparison.mp4 returned HTTP 200, video/mp4, and 11694531 bytes.",
+    "GET https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-human-sim-composite-comparison.mp4 returned HTTP 200, video/mp4, and 1868345 bytes.",
+    "The staged 611-record ledger validated successfully before the publication commit."
+  ],
+  "lessons": [
+    "A featured full-width demo card is appropriate for the 4:1 three-panel comparison.",
+    "Publishing the diagnostic and presentation views separately preserves their different evidentiary roles."
+  ],
+  "limitations": [
+    "The showcase demonstrates kinematic and screen-space alignment, not physical robot execution.",
+    "The replay does not simulate garment contact or cloth dynamics, and the camera transform is estimated rather than calibration-board measured."
+  ],
+  "next_actions": [
+    "Use the public demo and MP4 links for review.",
+    "Treat real-robot execution and contact-aware cloth simulation as separate acceptance milestones."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo",
+  "supersedes": [
+    "2026-09-04.acone-camera-alignment-readme-partial",
+    "2026-09-04.acone-rgb-mano-eef-readme-clarification",
+    "2026-09-04.acone-mano-gripper-readme-replacement-partial",
+    "2026-09-06.acone-three-panel-readme-partial",
+    "2026-09-06.acone-three-panel-demo-local-working"
+  ],
+  "tags": [
+    "github-pages",
+    "readme",
+    "showcase",
+    "ac-one",
+    "mujoco",
+    "publication",
+    "working"
+  ]
+}
