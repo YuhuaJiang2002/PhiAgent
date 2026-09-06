@@ -1,7 +1,5 @@
 # Ego RGB → fixed third-person replay
 
-当前用户确认版本：双高白板背景、无显示器/柜子/置物架，保留手物动作，闹钟采用显式直立修正。
-
 This is a **scene-specific research recipe**, not a one-command converter for arbitrary videos.
 The real-input demo is 360 frames / 30 FPS / 12 seconds (source seconds 4–16).
 The latest v21 renderer does **not** use a video diffusion model. Earlier generated
