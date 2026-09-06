@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-06.acone-three-panel-official-video-publication-working",
+  "recorded_at": "2026-09-06T13:48:24Z",
+  "status": "WORKING",
+  "scope": "Publish and verify the official human-left, simulation-center, official-result-right AC One three-panel replacement",
+  "summary": "The replacement video and regenerated poster were pushed to main as zhuhuanan, deployed successfully through GitHub Pages, and the public MP4 was verified byte-for-byte against the supplied source.",
+  "evidence": [
+    "Commit 370d9dea3d40b60071d05bab6ade60ad4f96af3a is present on origin/main and was authored with repository identity zhuhuanan.",
+    "GitHub Actions run 34037130324 for demo-pages.yml completed successfully for commit 370d9dea3d40b60071d05bab6ade60ad4f96af3a.",
+    "GET https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-human-sim-composite-comparison.mp4 returned 4997143 bytes.",
+    "The public MP4 SHA-256 is a46cd8fd3e04715768ddf3fb73cd0baf84497d76c6e954ed528d5a19372bad67, exactly matching the user-supplied source.",
+    "The deployed homepage returned the RGB → MANO → EEF → AC One card and its replacement-video source path."
+  ],
+  "lessons": [
+    "A cache-busting query parameter is useful for proving replacement of an asset published under an unchanged URL.",
+    "Comparing public and source SHA-256 values gives stronger publication evidence than checking HTTP status alone."
+  ],
+  "limitations": [
+    "The showcase remains a visual comparison and does not establish real-robot execution or contact-aware cloth simulation.",
+    "Browsers that cached the unchanged MP4 URL may need a hard refresh."
+  ],
+  "next_actions": [
+    "Use the public demo and MP4 link for review.",
+    "Treat physical execution and cloth-contact validation as separate milestones."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo",
+  "supersedes": [
+    "2026-09-06.acone-three-panel-official-video-replacement-partial"
+  ],
+  "tags": [
+    "github-pages",
+    "readme",
+    "demo-page",
+    "showcase",
+    "ac-one",
+    "three-panel",
+    "publication",
+    "working"
+  ]
+}
