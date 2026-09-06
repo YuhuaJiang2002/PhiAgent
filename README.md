@@ -349,6 +349,36 @@ sequences and the official evaluator:
 | δ1 ↑ | 0.985524 | **0.986158** | **+0.064%** |
 | RMSE ↓ | 0.204281 | **0.197437** | **+3.35%** |
 
+### RGB-to-MANO-to-AC One simulation
+
+[![Original RGB MANO projection versus AC One MuJoCo MANO and gripper replay](demo/showcase/acone-camera-alignment-comparison.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-camera-alignment-comparison.mp4)
+
+[Play the 39.2-second comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-camera-alignment-comparison.mp4)
+
+The pipeline is `RGB -> MANO reconstruction -> parallel-gripper EEF targets ->
+dual-X5 IK -> AC One MuJoCo replay`. The left panel overlays the reconstructed
+MANO skeletons on the original RGB, while the right panel renders the mapped MANO
+hands together with the dual-X5 parallel grippers in MuJoCo from the
+trajectory-derived camera. The EEF targets are computed from MANO keypoints and
+then mapped and smoothed in the X5 workspace; they are not measured robot states.
+The paired 1,176-frame diagnostic checks the MANO-to-EEF spatial relationship and
+viewpoint alignment. The camera transform is estimated rather than
+calibration-board measured, and the replay contains no object trajectory,
+contact dynamics, or physical-robot execution.
+
+### Human / MuJoCo / composite comparison
+
+[![Human RGB, gray-background MuJoCo, and source-scene robot composite](demo/showcase/acone-human-sim-composite-comparison.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-human-sim-composite-comparison.mp4)
+
+[Play the eight-second three-panel comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-human-sim-composite-comparison.mp4)
+
+This excerpt covers source seconds 6-14. The left panel is the human RGB input,
+the center panel is the dual-X5 kinematic MuJoCo replay on a gray background, and
+the right panel composites the robot render over the original scene. It
+demonstrates motion-phase and screen-space alignment only: the garment motion
+remains inherited from the source video and is not driven by simulated contact
+or cloth dynamics.
+
 ### Confidence-routed three-hand comparison
 
 [![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/three-hand-confidence-routed.mp4)

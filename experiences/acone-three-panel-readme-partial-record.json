@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-06.acone-three-panel-readme-partial",
+  "recorded_at": "2026-09-06T07:02:08Z",
+  "status": "PARTIAL",
+  "scope": "Add the AC One human, MuJoCo, and composited three-panel excerpt to the local README",
+  "summary": "An eight-second three-panel AC One comparison was copied into demo/showcase, given a frame-96 poster, and linked from a new README block immediately after the RGB-to-MANO-to-AC One diagnostic; it remains local and unpublished.",
+  "evidence": [
+    "The H.264 MP4 is 1536x384, yuv420p, 24 FPS, 192 frames, and fully decodes without ffmpeg errors.",
+    "The copied MP4 preserves source SHA-256 79850f9bbd630a1395fdc49d42496811ed4e41ab1050c341f224537618f7f15b.",
+    "The 1536x384 JPEG poster has SHA-256 5439469abf9a6c6da167cb6a7f1d794ea77cf7f9a49f9944e553e69677811cc3.",
+    "README.md identifies the left human RGB, center gray-background dual-X5 MuJoCo replay, and right source-scene robot composite.",
+    "git diff --check passes for README.md."
+  ],
+  "lessons": [
+    "The three-panel layout communicates source motion, kinematic simulation, and screen-space compositing more directly than either result alone.",
+    "The caption must state that garment motion remains source-video motion rather than simulated contact or cloth dynamics."
+  ],
+  "limitations": [
+    "The README and media files have not been committed, pushed, or deployed.",
+    "The comparison demonstrates visual and phase alignment only, not physical interaction or robot execution."
+  ],
+  "next_actions": [
+    "Review the local README rendering.",
+    "Commit and push only after explicit user approval."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo/showcase",
+  "supersedes": [],
+  "tags": [
+    "readme",
+    "showcase",
+    "ac-one",
+    "x5",
+    "mujoco",
+    "composite",
+    "partial"
+  ]
+}

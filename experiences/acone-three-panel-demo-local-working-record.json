@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-06.acone-three-panel-demo-local-working",
+  "recorded_at": "2026-09-06T09:50:12Z",
+  "status": "WORKING",
+  "scope": "Add and locally serve the AC One human, MuJoCo, and composited three-panel video on the demo web page",
+  "summary": "A full-width RGB-to-MANO-to-EEF-to-AC One card was added after the two VDA cards in demo/index.html, and the local demo plus MP4 were verified over HTTP on port 8001.",
+  "evidence": [
+    "demo/index.html passes Python HTMLParser parsing and git diff --check.",
+    "The card links the 192-frame, 1536x384, 24 FPS H.264 three-panel MP4 and its 1536x384 poster.",
+    "The card explicitly identifies human RGB, gray-background dual-X5 MuJoCo replay, and source-scene robot composite.",
+    "The card states that garment motion is inherited from the source rather than driven by simulated contact or cloth dynamics.",
+    "GET / contains the new card and HEAD /showcase/acone-human-sim-composite-comparison.mp4 returns HTTP 200 with Content-Length 1868345.",
+    "The static demo server is listening at 127.0.0.1:8001 because port 8000 is occupied by the existing video workbench."
+  ],
+  "lessons": [
+    "A three-panel 4:1 video should use the existing featured class so it receives a full-width row.",
+    "Serving on port 8001 preserves the unrelated service already bound to port 8000."
+  ],
+  "limitations": [
+    "The demo-page change and media remain local and have not been committed, pushed, or deployed.",
+    "The local HTTP server is temporary and will stop when its process or session ends."
+  ],
+  "next_actions": [
+    "Review http://localhost:8001/ through VS Code port forwarding.",
+    "Commit and push only after explicit user approval."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo",
+  "supersedes": [],
+  "tags": [
+    "demo-page",
+    "showcase",
+    "ac-one",
+    "mujoco",
+    "local-server",
+    "working"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-04.acone-mano-gripper-readme-replacement-partial",
+  "recorded_at": "2026-09-04T17:23:36Z",
+  "status": "PARTIAL",
+  "scope": "Replace the local README AC One showcase with the original-RGB MANO projection versus MuJoCo MANO-and-gripper diagnostic",
+  "summary": "The previous pure-gripper comparison was replaced by a complete 39.2-second diagnostic that shows MANO projection on original RGB beside mapped MANO hands and dual-X5 grippers in MuJoCo; README wording and poster were updated accordingly.",
+  "evidence": [
+    "The replacement H.264 MP4 is 1280x480, yuv420p, 30 FPS, 1176 frames, and fully decodes without ffmpeg errors.",
+    "The copied replacement video has SHA-256 d837fdbf04ece34f5bd5e540241126144ba0f53932120dd4ea9ee6b4774d54eb.",
+    "The replacement poster is taken from frame 240 and has SHA-256 ae5c123ae4de72212a4abc9a0e49afeb8da72e56245beb01b017670eef5a5ade.",
+    "Visual inspection confirms the left label MANO projection on original RGB and the right label MuJoCo MANO + gripper.",
+    "README.md now describes the RGB to MANO reconstruction to parallel-gripper EEF target to dual-X5 IK to AC One MuJoCo replay chain.",
+    "git diff --check passes for README.md."
+  ],
+  "lessons": [
+    "The MANO-plus-gripper diagnostic exposes the MANO-to-EEF spatial relationship more directly than the previous pure-gripper comparison.",
+    "The trajectory camera and MANO overlay must be named explicitly rather than described as a pure AC One main-camera robot replay."
+  ],
+  "limitations": [
+    "The README and replacement media remain local and have not been committed, pushed, or deployed.",
+    "The camera transform is estimated, and the simulation contains no object trajectory, contact dynamics, or physical execution."
+  ],
+  "next_actions": [
+    "Review the local README rendering.",
+    "Commit and push only after explicit user approval."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo/showcase",
+  "supersedes": [
+    "2026-09-04.acone-rgb-mano-eef-readme-clarification"
+  ],
+  "tags": [
+    "readme",
+    "showcase",
+    "ac-one",
+    "mano",
+    "eef",
+    "mujoco",
+    "replacement",
+    "partial"
+  ]
+}

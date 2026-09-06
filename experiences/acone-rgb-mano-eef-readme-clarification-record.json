@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-04.acone-rgb-mano-eef-readme-clarification",
+  "recorded_at": "2026-09-04T11:05:37Z",
+  "status": "PARTIAL",
+  "scope": "Clarify the data flow of the local AC One README showcase",
+  "summary": "The README now names the showcased pipeline as RGB to MANO reconstruction to parallel-gripper EEF targets to dual-X5 IK to AC One MuJoCo replay, while retaining the estimated-camera and non-physical claim boundary.",
+  "evidence": [
+    "README.md labels the section RGB-to-MANO-to-AC One simulation.",
+    "The caption states that EEF targets are computed from MANO keypoints, mapped and smoothed in the X5 workspace, and are not measured robot states.",
+    "The existing 1176-frame comparison video and poster paths are unchanged."
+  ],
+  "lessons": [
+    "MANO is the intermediate hand reconstruction, while the EEF trajectory is a derived parallel-gripper target rather than a direct RGB measurement."
+  ],
+  "limitations": [
+    "The README and media remain local and have not been committed, pushed, or deployed.",
+    "The camera is estimated and the replay has no object trajectory, contact dynamics, or physical execution."
+  ],
+  "next_actions": [
+    "Review the local README rendering and publish only after explicit approval."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo/showcase",
+  "supersedes": [
+    "2026-09-04.acone-camera-alignment-readme-partial"
+  ],
+  "tags": [
+    "readme",
+    "showcase",
+    "ac-one",
+    "mano",
+    "eef",
+    "mujoco",
+    "clarification",
+    "partial"
+  ]
+}

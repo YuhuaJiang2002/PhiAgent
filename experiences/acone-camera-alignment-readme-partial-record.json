@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-04.acone-camera-alignment-readme-partial",
+  "recorded_at": "2026-09-04T10:59:04Z",
+  "status": "PARTIAL",
+  "scope": "Add the MANO-to-AC One dual-X5 estimated-camera comparison immediately after the VDA section in the local README",
+  "summary": "The complete 39.2-second comparison and a generated poster are linked from a new README block after the VDA evaluation table; the change remains local and is not yet published remotely.",
+  "evidence": [
+    "The copied H.264 MP4 is 1280x480, yuv420p, 30 FPS, 1176 frames, and fully decodes without ffmpeg errors.",
+    "The copied MP4 preserves the source SHA-256 3f44dc7a8011a0ca2d57744cfd28a20361e0190716027415ddc09c50c5538333.",
+    "A 1280x480 JPEG poster was extracted at 8 seconds with SHA-256 d04fdc0365730ffb8dbc4965a2216f1e1884f6eeec3681a4e5769d6f75f64b13.",
+    "README.md links both poster and video under the new MANO-to-AC One camera-alignment comparison heading directly after the VDA table.",
+    "git diff --check passes for README.md."
+  ],
+  "lessons": [
+    "The full artifact is only 5.7 MB, so GitHub's ordinary 100 MB file limit does not require trimming or recompression.",
+    "The caption must separate an estimated AC One camera alignment visualization from calibrated camera geometry or physical execution evidence."
+  ],
+  "limitations": [
+    "The README and media files have not been committed, pushed, or deployed.",
+    "The AC One camera pose is estimated rather than calibration-board measured.",
+    "The MuJoCo replay contains no object trajectory, contact dynamics, or physical-robot execution."
+  ],
+  "next_actions": [
+    "Review the local README rendering.",
+    "Commit and push only after explicit user approval.",
+    "If desired, add the same card to demo/index.html as a separate publication step."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo/showcase",
+  "supersedes": [],
+  "tags": [
+    "readme",
+    "showcase",
+    "ac-one",
+    "x5",
+    "mano",
+    "mujoco",
+    "partial"
+  ]
+}
