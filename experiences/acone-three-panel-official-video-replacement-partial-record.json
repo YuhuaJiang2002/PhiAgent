@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0.0",
+  "record_id": "2026-09-06.acone-three-panel-official-video-replacement-partial",
+  "recorded_at": "2026-09-06T13:44:25Z",
+  "status": "PARTIAL",
+  "scope": "Replace the shared README and demo AC One three-panel showcase with the user-supplied human-left, simulation-center, official-right video",
+  "summary": "The shared AC One three-panel MP4 was replaced locally with the supplied 6-14 second official comparison, its poster was regenerated, and the running local demo served the exact replacement bytes.",
+  "evidence": [
+    "Source /data1/zhn/human-left-sim-center-official-right-6s-to-14s.mp4 has SHA-256 a46cd8fd3e04715768ddf3fb73cd0baf84497d76c6e954ed528d5a19372bad67.",
+    "The replacement is H.264, 3072x768, 24 FPS, 192 frames, 8.000 seconds, and 4997143 bytes.",
+    "FFmpeg completed full decode checks before and after copying the source into demo/showcase/acone-human-sim-composite-comparison.mp4.",
+    "A new 1536-pixel-wide JPEG poster was generated from replacement-video second 2.",
+    "README.md and demo/index.html both reference the shared demo/showcase/acone-human-sim-composite-comparison.mp4 path, so the binary replacement updates both surfaces.",
+    "After restarting the local demo on 127.0.0.1:8001, HTTP retrieval returned 4997143 bytes with the same source SHA-256."
+  ],
+  "lessons": [
+    "Keeping the established shared asset path updates README and demo together without duplicating the video.",
+    "The three-panel layout remains compatible with the existing full-width featured card."
+  ],
+  "limitations": [
+    "The replacement is local and has not yet been committed, pushed, or deployed to GitHub Pages.",
+    "The first HTTP verification attempt failed because the previous local server process had exited; verification passed after restarting the service.",
+    "A reused public asset URL may require a hard refresh after deployment because of browser or CDN caching."
+  ],
+  "next_actions": [
+    "Review the local page through VS Code forwarding at http://localhost:8001/.",
+    "Commit and push the two changed media assets only after explicit user approval."
+  ],
+  "run_dir": "/data1/zhn/PhiAgent/demo",
+  "supersedes": [
+    "2026-09-06.acone-readme-demo-publication-working"
+  ],
+  "tags": [
+    "readme",
+    "demo-page",
+    "showcase",
+    "ac-one",
+    "three-panel",
+    "replacement",
+    "partial"
+  ]
+}
