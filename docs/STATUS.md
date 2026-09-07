@@ -1,5 +1,26 @@
 # Status
 
+## Ego-view batch automation update — 2026-09-07
+
+- WORKING: packaged CPU timing replay on the real accepted v7 DiT/v35 SIM,
+  producing 1024×768, 288 frames, 24fps, 12 seconds with 37 repeated-frame
+  transitions. This confirms executable source-clock retiming, not a new visual
+  acceptance or an independent timing-quality measurement.
+- PARTIAL: scene-parameterized batch DAG, immutable source-world actor origin and
+  constant human limb lengths, shared-torso IK, pre/post full-frame review
+  contracts, hash-bound resume, bounded routed repairs, and delivery adapters.
+  CPU tests cover geometry, batch isolation and real FFmpeg operations; they do
+  not establish arbitrary-scene visual quality.
+- PARTIAL: same-NUMA selection/leases, pinned Sol/FBC integration and resident
+  multi-request H3 worker are implemented. The new generic GPU renderer and new
+  real H3 warm-request path have not been acceptance-tested. Historical v7 GPU
+  evidence is explicitly separate; unsupported optimization switches are rejected.
+- NOT STARTED: acceptance on additional real ego scenes, fully automatic raw-RGB
+  metric reconstruction, and an integrated autonomous visual-model reviewer.
+  Missing calibration or review stops visibly; no scene-specific fallback passes.
+- Guide: [batch automation](../examples/ego_to_third_view/AUTOMATION.md).
+  Evidence: [publication verification](../examples/ego_to_third_view/evidence/automation-verification.json).
+
 ## Ego-view conversion update — 2026-09-05
 
 - WORKING: accepted two-whiteboard fixed-third-view renderer, replayed through

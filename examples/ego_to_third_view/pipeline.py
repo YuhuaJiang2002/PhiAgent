@@ -15,7 +15,7 @@ GPU_STAGES = {'run_vggt_omega_ego', 'export_hawor_mano_meshes',
               'run_sam3d_ego_metric', 'track_ego_foundationpose',
               'refine_sam3d_layout', 'refine_static_multiview',
               'fix_clock_upright', 'render_lab_demo', 'audit_fp_trajectories',
-              'run_sam2_video_point_track'}
+              'run_sam2_video_point_track','render_whiteboard_v35'}
 
 
 def capture(command, cwd=None):

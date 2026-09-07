@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-07",
+  "status": "PARTIAL",
+  "cpu_tests": {
+    "command": "python -m unittest discover -s examples/ego_to_third_view/tests -q",
+    "local": {"total": 49, "passed": 44, "skipped_missing_ffmpeg": 5},
+    "remote_cpu_with_ffmpeg": {"total": 49, "passed": 49, "skipped": 0, "elapsed_s": 17.267},
+    "scope": "CPU contracts, geometry invariance, fake-media batch state machine, resident fake-backend lifecycle, and optional real FFmpeg integration; not GPU or unseen-scene visual acceptance"
+  },
+  "real_video_retime_replay": {
+    "input_dit_sha256": "543c7c48c3df55185a86f4a524b7eb6a00a97c2dd7f0abd58ab0cda4967e466b",
+    "input_sim_sha256": "2766159e7fcc6fccdf4d700cef2fb94e04638ede02dd8dfab6ae820c422987f9",
+    "output_sha256": "9b6cbbf11ed1bfc032790396306243551dfa3835ff6605f3e507a768d359b1a8",
+    "width": 1024, "height": 768, "frames": 288, "fps": 24, "duration_s": 12,
+    "repeat_transitions": 37,
+    "acceptance_scope": "Real accepted input hashes, successful encoding and clock check; no new visual acceptance or held-out timing measurement"
+  },
+  "external_sol_source": {
+    "revision": "6fb7eb11c3435555ec6d6adf0d5572d339d2c6eb",
+    "verified_files": 66,
+    "verification": "Pinned Git blobs and SHA256 manifest; external files not vendored"
+  },
+  "not_acceptance_tested": ["generic GPU mesh renderer", "new real H3 resident warm requests", "additional real ego scenes", "raw-RGB automatic frontend", "autonomous visual reviewer"]
+}

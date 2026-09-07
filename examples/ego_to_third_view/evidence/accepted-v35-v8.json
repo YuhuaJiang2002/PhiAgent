@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "scope": "Historical real-input evidence for one 12-second whiteboard manipulation clip; not arbitrary-video acceptance",
+  "sim": {"version":"v35","frames":288,"fps":24,"duration_s":12,"sha256":"2766159e7fcc6fccdf4d700cef2fb94e04638ede02dd8dfab6ae820c422987f9","upper_arm_m":0.36,"forearm_m":0.32,"root_xyz_m":[0.025,-0.52,0.27],"root_translation_m":0,"max_elbow_step_m":[0.03119,0.03565]},
+  "dit_original": {"version":"v7","sha256":"543c7c48c3df55185a86f4a524b7eb6a00a97c2dd7f0abd58ab0cda4967e466b","loading_seconds":244.64994546,"request_seconds":893.76598496,"denoising_seconds":803.4756,"backend":"triton","cache_compute":9,"cache_reuse":14,"hardware":"4x RTX PRO 5000 72GB; historical selected group crossed NUMA, not the new policy"},
+  "dit_retimed": {"version":"v8","sha256":"7f2a60ef370b0814b7f99b9590ffeae4bac434d52565614905e75c8512251560","frames":288,"fps":24,"duration_s":12,"repeat_transitions":37,"maximum_source_frame_step":3,"method":"PCHIP nearest-frame retiming, no new H3/SIM generation"},
+  "threeway_sha256": "c17c4fa8dbdbcc175269783f79e66172fcdfa503203da52d974c505671ae14cc",
+  "held_out_blue_horizontal_progress": {"progress":[0.1,0.25,0.5,0.75,0.9],"sim_frames":[120,125,130,136,142],"old_dit_frames":[104,109,114,120,125],"retimed_frames":[119,125,132,139,145],"after_error_s":[-0.0416667,0,0.0833333,0.125,0.125]},
+  "limitations": ["Not full-pose or physical-contact ground truth", "No matched new resident-worker warm speed benchmark", "No second real scene end-to-end acceptance yet", "Licensed weights, MANO assets and original RGB are not included"]
+}

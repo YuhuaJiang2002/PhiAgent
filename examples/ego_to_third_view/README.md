@@ -1,6 +1,21 @@
 # Ego RGB → fixed third-person replay
 
-This is a **scene-specific research recipe**, not a one-command converter for arbitrary videos.
+## Current: stable human rig, DiT timing and batch automation
+
+See [AUTOMATION.md](AUTOMATION.md) for the scene-independent batch interface,
+mandatory pre/post visual review, bounded repair, source-world actor invariants,
+same-NUMA resident H3/Sol/FBC integration and its current verification limits.
+The latest historical real-input result is **SIM v35 + DiT v7 → retimed v8**;
+[evidence and lessons](evidence/v35-v8-lessons.md) preserve what worked and what failed.
+
+This does **not** establish unattended conversion of arbitrary raw RGB: generic
+perception/calibration still requires a configured adapter or reviewed world bundle,
+and multi-real-scene acceptance remains pending. No legacy object IDs or long-edge
+coordinates are used as defaults in the new automation modules.
+
+## Historical v21 reconstruction recipe
+
+The recipe below is **scene-specific**, not a one-command converter for arbitrary videos.
 The real-input demo is 360 frames / 30 FPS / 12 seconds (source seconds 4–16).
 The latest v21 renderer does **not** use a video diffusion model. Earlier generated
 lab backgrounds were rejected because they introduced cabinets and a monitor.

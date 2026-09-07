@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "max_repairs": 2,
+  "stage_python": "/path/to/geometry-runtime/bin/python",
+  "settings": {
+    "stabilize": {"smoothing_s": 0.05, "ramp_s": 0.2, "max_correction_m": 0.06},
+    "render": {"foundationpose_root": "/path/to/external/FoundationPose"}
+  },
+  "h3": {
+    "python": "/path/to/verified-h3-runtime/bin/python",
+    "model_path": "/path/to/external/MiniMax-H3-model-view",
+    "sol_root": "/path/to/external/pinned-sol",
+    "num_gpus": 4,
+    "steps": 24,
+    "min_free_mib": 50000,
+    "max_utilization": 10,
+    "request_timeout_s": 3600
+  },
+  "clips": [
+    {"id": "kitchen-a", "source": "/data/kitchen-a/original.mp4", "bundle": "/data/kitchen-a/reviewed-world-bundle", "appearance": "/data/kitchen-a/appearance.png", "seed": 42},
+    {"id": "workbench-b", "source": "/data/workbench-b/original.mp4", "bundle": "/data/workbench-b/reviewed-world-bundle", "appearance": "/data/workbench-b/appearance.png", "seed": 43}
+  ]
+}

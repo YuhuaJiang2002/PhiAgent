@@ -1,0 +1,7 @@
+{
+  "dit_sha256": "543c7c48c3df55185a86f4a524b7eb6a00a97c2dd7f0abd58ab0cda4967e466b",
+  "sim_sha256": "2766159e7fcc6fccdf4d700cef2fb94e04638ede02dd8dfab6ae820c422987f9",
+  "anchors": [[0,0],[24,20],[64,50],[71,57],[79,66],[87,73],[94,80],[113,99],[132,114],[153,132],[181,168],[187,172],[191,175],[202,184],[216,195],[225,210],[240,221],[256,234],[287,287]],
+  "annotation": "Reviewed v35/v7 rendered-frame correspondences, exclusively for these two hashes. Never reuse for another video.",
+  "uncertainty_frames": [2,4]
+}
