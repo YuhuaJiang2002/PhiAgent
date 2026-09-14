@@ -463,6 +463,15 @@ locations are recorded per experiment below.
 
 ## PARTIAL
 
+- PlenopticDreamer V1 calibrated ego-to-exo DiT: an independent source package
+  under `examples/ego_to_third_view/plenopticdreamer_v1` provides the 2B camera
+  DiT adaptation, exact spatial-width context parallelism, progressive `k=1..4`
+  training, calibrated SynCam/MultiCam loading, online-caption resume, inference,
+  pinned assets, and physical-GPU provenance launch. Four CPU release-contract
+  tests and Python compilation pass. The imported source has not been rerun from
+  a clean PhiAgent GPU environment, no trained adaptation checkpoint is shipped,
+  and arbitrary uncalibrated ego RGB remains outside this V1 contract.
+
 - Photorealistic two-full-body-humanoid blanket folding, strict rejection:
   four frozen-seed MiniMax-H3 Ref2VA candidates ran at BF16/50 steps on four
   independent two-H200 lanes using a hash-bound 1024x768 first frame, static

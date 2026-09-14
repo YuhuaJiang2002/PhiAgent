@@ -1,0 +1,30 @@
+{
+  "cosmos_transfer_2_5": {
+    "repository": "https://github.com/nvidia-cosmos/cosmos-transfer2.5.git",
+    "commit": "2ff49d0717af02057ae79bc75c00fbff9da1b4e7"
+  },
+  "models": {
+    "base": {
+      "repository": "nvidia/Cosmos-Predict2.5-2B",
+      "revision": "15a82a2ec231bc318692aa0456a36537c806e7d4"
+    },
+    "vae": {
+      "repository": "nvidia/Cosmos-Predict2.5-2B",
+      "revision": "f176dc95b4a70f53ce01c4b302851595e7322b00"
+    },
+    "reason": {
+      "repository": "nvidia/Cosmos-Reason1-7B",
+      "revision": "3210bec0495fdc7a8d3dbb8d58da5711eab4b423"
+    }
+  },
+  "datasets": {
+    "syncam": {
+      "repository": "KlingTeam/SynCamVideo-Dataset",
+      "revision": "74e4fcaf4f20981ed67c2c129a50f01fb600e5c4"
+    },
+    "multicam": {
+      "repository": "KlingTeam/MultiCamVideo-Dataset",
+      "revision": "4e7d995480cfa915f7c3721e616ed14789d87ff7"
+    }
+  }
+}

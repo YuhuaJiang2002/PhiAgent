@@ -1,0 +1,10 @@
+cosmos-transfer2.5/
+.cache/
+checkpoints/
+datasets/
+download-state/
+outputs/
+runs/
+tools/download-env/
+__pycache__/
+*.py[cod]
