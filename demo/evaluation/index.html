@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Blind evaluation of 50 robot manipulation videos.">
+    <title>Robot Video Evaluation</title>
+    <style>
+
+      :root {
+        color-scheme: dark;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #090d16;
+        color: #eef2ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 15% 0%, rgba(73, 101, 255, 0.2), transparent 34rem),
+          #090d16;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 64px 0 80px;
+      }
+
+      header {
+        max-width: 760px;
+        margin-bottom: 40px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2.5rem, 7vw, 5rem);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+      }
+
+      h2 {
+        margin: 0 0 8px;
+        font-size: 1.15rem;
+      }
+
+      p {
+        color: #aeb8d0;
+        line-height: 1.6;
+      }
+
+      a {
+        color: #9db2ff;
+      }
+
+      .eyebrow {
+        color: #7ee7c8;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      article {
+        overflow: hidden;
+        border: 1px solid rgba(174, 184, 208, 0.16);
+        border-radius: 18px;
+        background: rgba(18, 24, 39, 0.82);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+      }
+
+      article.featured {
+        grid-column: 1 / -1;
+      }
+
+      video {
+        display: block;
+        width: 100%;
+        max-height: 72vh;
+        background: #02040a;
+      }
+
+      .copy {
+        padding: 20px;
+      }
+
+      .copy p {
+        margin: 0;
+        font-size: 0.92rem;
+      }
+
+      .copy .status-partial {
+        margin: 0 0 8px;
+        color: #ffc083;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .copy .status-working {
+        margin: 0 0 8px;
+        color: #7ee7c8;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .copy .status-accepted {
+        margin: 0 0 8px;
+        color: #7ee7c8;
+        font-size: 0.72rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .strategy-facts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 16px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .strategy-facts li {
+        padding: 6px 9px;
+        border: 1px solid rgba(126, 231, 200, 0.3);
+        border-radius: 999px;
+        color: #bcd7d0;
+        background: rgba(126, 231, 200, 0.06);
+        font-size: 0.72rem;
+      }
+
+      .occlusion-completion {
+        border-color: rgba(126, 231, 200, 0.44);
+        background:
+          radial-gradient(circle at 100% 0%, rgba(126, 231, 200, 0.11), transparent 28rem),
+          rgba(18, 24, 39, 0.9);
+      }
+
+      .occlusion-completion video {
+        aspect-ratio: 32 / 9;
+        object-fit: contain;
+      }
+
+      .evidence-boundary {
+        margin-top: 16px !important;
+        padding-top: 14px;
+        border-top: 1px solid rgba(174, 184, 208, 0.14);
+        color: #8f9bb6 !important;
+        font-size: 0.8rem !important;
+      }
+
+      .physical-followup {
+        margin-top: 14px;
+        padding: 14px;
+        border: 1px solid rgba(244, 191, 92, 0.25);
+        border-radius: 12px;
+        background: rgba(244, 191, 92, 0.055);
+      }
+
+      .physical-followup p {
+        margin: 0;
+        color: #b9c3d9;
+        font-size: 0.82rem;
+      }
+
+      .physical-followup strong {
+        color: #f4bf5c;
+      }
+
+      .evidence-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+
+      .repo-link {
+        display: inline-block;
+        margin-top: 24px;
+      }
+
+      .video-link {
+        display: inline-block;
+        margin-top: 12px;
+        font-size: 0.88rem;
+        font-weight: 650;
+      }
+
+      .support-card {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+        gap: 28px;
+        align-items: center;
+        margin: -8px 0 40px;
+        padding: 24px;
+        border: 1px solid rgba(126, 231, 200, 0.35);
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at 100% 0%, rgba(126, 231, 200, 0.14), transparent 22rem),
+          rgba(18, 24, 39, 0.82);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.2);
+      }
+
+      .support-copy h2,
+      .support-copy p {
+        margin: 0;
+      }
+
+      .support-copy h2 {
+        font-size: 1.45rem;
+      }
+
+      .support-copy p {
+        margin-top: 7px;
+        font-size: 0.9rem;
+      }
+
+      .support-button {
+        display: grid;
+        grid-template-columns: 22px 1fr auto;
+        gap: 11px;
+        align-items: center;
+        min-height: 58px;
+        padding: 0 15px;
+        border: 1px solid rgba(157, 178, 255, 0.7);
+        border-radius: 12px;
+        color: #07100d;
+        background: #9db2ff;
+        text-decoration: none;
+        transition: transform 160ms ease, background 160ms ease;
+      }
+
+      .support-button:hover {
+        transform: translateY(-2px);
+        background: #b4c4ff;
+      }
+
+      .support-button:focus-visible {
+        outline: 3px solid #7ee7c8;
+        outline-offset: 3px;
+      }
+
+      .support-button svg {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+      }
+
+      .support-button-label strong,
+      .support-button-label small {
+        display: block;
+      }
+
+      .support-button-label strong {
+        font-size: 0.92rem;
+      }
+
+      .support-button-label small {
+        margin-top: 3px;
+        color: rgba(7, 16, 13, 0.72);
+        font-size: 0.7rem;
+      }
+
+      .star-count {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        padding-left: 12px;
+        border-left: 1px solid rgba(7, 16, 13, 0.25);
+        font-size: 0.78rem;
+        font-weight: 750;
+      }
+
+      .support-status {
+        grid-column: 2;
+        margin: -17px 0 0;
+        color: #aeb8d0;
+        font-size: 0.72rem;
+      }
+
+      .support-card[data-opened="true"] .support-status {
+        color: #7ee7c8;
+      }
+
+      @media (max-width: 720px) {
+        main {
+          width: min(100% - 20px, 1120px);
+          padding-top: 40px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        article.featured {
+          grid-column: auto;
+        }
+
+        .support-card {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          padding: 20px;
+        }
+
+        .support-status {
+          grid-column: 1;
+          margin: -8px 0 0;
+        }
+      }
+          svg { display: block; width: 100%; height: auto; }
+      .metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 24px 0 36px; }
+      .metric { padding: 15px 17px; border: 1px solid rgba(174,184,208,0.16); border-radius: 14px; background: rgba(18,24,39,0.82); }
+      .metric .k { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px; }
+      .metric .v { font-size: 2rem; font-weight: 750; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+      .metric .s { color: #8f9bb6; font-size: 0.74rem; margin-top: 6px; }
+      .copy table { width: 100%; border-collapse: collapse; font-size: 0.86rem; margin-top: 4px; }
+      .copy th, .copy td { padding: 9px 10px; border-bottom: 1px solid rgba(174,184,208,0.14); text-align: left; }
+      .copy th { color: #8f9bb6; font-weight: 650; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; }
+      .copy td { color: #dfe6f7; font-variant-numeric: tabular-nums; }
+      .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.74rem; color: #8f9bb6; margin-top: 10px; }
+      .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+      @media (max-width: 720px) { .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Blind evaluation · 50 robot videos</p>
+        <h1>Robot Video Evaluation</h1>
+        <p>Four scoring systems judged the same 50 robot-manipulation videos against one human reference (grades A/B/C/D). Below: where each video landed, how the systems compare, and three examples.</p>
+      </header>
+
+      <section class="metrics" aria-label="Headline metrics"><div class="metric"><div class="k" style="color:#7ee7c8">PhiCheck</div><div class="v" style="color:#7ee7c8">88.0%</div><div class="s">44 / 50 correct</div></div><div class="metric"><div class="k" style="color:#9db2ff">PhiAudit</div><div class="v" style="color:#9db2ff">86.0%</div><div class="s">43 / 50 correct</div></div><div class="metric"><div class="k" style="color:#ffc083">HarnessEval-W (paper)</div><div class="v" style="color:#ffc083">78.0%</div><div class="s">39 / 50 correct</div></div><div class="metric"><div class="k" style="color:#c9a0ff">HarnessEval-W (success)</div><div class="v" style="color:#c9a0ff">62.0%</div><div class="s">31 / 50 correct</div></div></section>
+
+      <section class="grid" aria-label="Evaluation results">
+        <article class="featured">
+          <div class="copy">
+            <h2>Where every video landed</h2>
+            <p>Horizontal axis: human grade (D to A). Vertical axis: system score, normalised to 0-1 so the four panels share one scale. The dashed line is each system's own pass threshold.</p>
+<svg viewBox="0 0 1048 300" xmlns="http://www.w3.org/2000/svg"><text x="124" y="17" fill="#7ee7c8" font-size="13.5" font-weight="700" text-anchor="middle">PhiCheck</text><text x="124" y="33" fill="#7c8697" font-size="10.5" text-anchor="middle">88.0% · balanced 70.2</text><line x1="34" y1="262" x2="238" y2="262" stroke="rgba(174,184,208,0.10)"/><text x="28" y="265.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.00</text><line x1="34" y1="207.5" x2="238" y2="207.5" stroke="rgba(174,184,208,0.10)"/><text x="28" y="211" fill="#6f7a90" font-size="9.5" text-anchor="end">0.25</text><line x1="34" y1="153" x2="238" y2="153" stroke="rgba(174,184,208,0.10)"/><text x="28" y="156.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.50</text><line x1="34" y1="98.5" x2="238" y2="98.5" stroke="rgba(174,184,208,0.10)"/><text x="28" y="102" fill="#6f7a90" font-size="9.5" text-anchor="end">0.75</text><line x1="34" y1="44" x2="238" y2="44" stroke="rgba(174,184,208,0.10)"/><text x="28" y="47.5" fill="#6f7a90" font-size="9.5" text-anchor="end">1.00</text><line x1="34" y1="44" x2="238" y2="44" stroke="#f4bf5c" stroke-dasharray="4 4" stroke-opacity="0.45"/><text x="236" y="39" fill="rgba(244,191,92,0.7)" font-size="9.5" text-anchor="end">pass line</text><text x="60.519999999999996" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">D</text><text x="111.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">C</text><text x="162.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">B</text><text x="213.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">A</text><circle cx="42.519999999999996" cy="218.4" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="195.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="144.52" cy="131.20000000000002" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="153" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="87.6" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="204.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="213.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="144.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="234.75" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="180.25" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="102.52" cy="153" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="222.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="231.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="51.519999999999996" cy="180.25" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="51.519999999999996" cy="234.75" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="102.52" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="60.519999999999996" cy="234.75" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="111.52" cy="153" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="207.5" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="71.25" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="102.52" cy="207.5" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="51.519999999999996" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="60.519999999999996" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="111.52" cy="207.5" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="120.52" cy="153" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="111.52" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="153.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="144.52" cy="98.5" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="102.52" cy="80.33333333333334" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="189.33333333333334" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="111.52" cy="80.33333333333334" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="195.52" cy="80.33333333333334" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="120.52" cy="80.33333333333334" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="195.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="204.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="225.66666666666669" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="120.52" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="129.51999999999998" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="93.52" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="189.33333333333334" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="42.519999999999996" cy="80.33333333333334" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="162.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="171.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="102.52" cy="225.66666666666669" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="69.52" cy="262" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="51.519999999999996" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><text x="386" y="17" fill="#9db2ff" font-size="13.5" font-weight="700" text-anchor="middle">PhiAudit</text><text x="386" y="33" fill="#7c8697" font-size="10.5" text-anchor="middle">86.0% · balanced 67.5</text><line x1="296" y1="262" x2="500" y2="262" stroke="rgba(174,184,208,0.10)"/><text x="290" y="265.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.00</text><line x1="296" y1="207.5" x2="500" y2="207.5" stroke="rgba(174,184,208,0.10)"/><text x="290" y="211" fill="#6f7a90" font-size="9.5" text-anchor="end">0.25</text><line x1="296" y1="153" x2="500" y2="153" stroke="rgba(174,184,208,0.10)"/><text x="290" y="156.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.50</text><line x1="296" y1="98.5" x2="500" y2="98.5" stroke="rgba(174,184,208,0.10)"/><text x="290" y="102" fill="#6f7a90" font-size="9.5" text-anchor="end">0.75</text><line x1="296" y1="44" x2="500" y2="44" stroke="rgba(174,184,208,0.10)"/><text x="290" y="47.5" fill="#6f7a90" font-size="9.5" text-anchor="end">1.00</text><line x1="296" y1="87.6" x2="500" y2="87.6" stroke="#f4bf5c" stroke-dasharray="4 4" stroke-opacity="0.45"/><text x="498" y="82.6" fill="rgba(244,191,92,0.7)" font-size="9.5" text-anchor="end">pass line</text><text x="322.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">D</text><text x="373.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">C</text><text x="424.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">B</text><text x="475.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">A</text><circle cx="304.52" cy="227.12" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="457.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="406.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="355.52" cy="151.038" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="364.52" cy="152.128" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="466.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="313.52" cy="225.15800000000002" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="406.52" cy="74.084" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="304.52" cy="143.408" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="313.52" cy="137.74" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="355.52" cy="136.214" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="457.52" cy="73.43" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="466.52" cy="70.596" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="304.52" cy="146.45999999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="313.52" cy="153.872" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="373.52" cy="150.38400000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="304.52" cy="235.404" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="382.52" cy="148.858" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="391.52" cy="148.422" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="322.52" cy="144.498" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="304.52" cy="130.328" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="355.52" cy="232.13400000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="322.52" cy="157.142" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="313.52" cy="234.532" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="355.52" cy="151.474" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="364.52" cy="232.57" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="373.52" cy="231.48" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="406.52" cy="146.678" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="415.52" cy="149.29399999999998" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="355.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="364.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="364.52" cy="147.11399999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="373.52" cy="146.678" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="475.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="373.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="484.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="493.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="382.52" cy="152.564" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="391.52" cy="155.18" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="355.52" cy="155.18" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="364.52" cy="146.678" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="331.52" cy="157.142" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="313.52" cy="129.45600000000002" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="415.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="424.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="364.52" cy="141.664" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="322.52" cy="234.532" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="331.52" cy="133.162" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="471.02" cy="258" r="3.4" fill="none" stroke="#5c6675" stroke-width="1.2"/><circle cx="378.02" cy="258" r="3.4" fill="none" stroke="#5c6675" stroke-width="1.2"/><text x="386" y="297" fill="#6f7a90" font-size="9.5" text-anchor="middle">2 abstained</text><text x="648" y="17" fill="#ffc083" font-size="13.5" font-weight="700" text-anchor="middle">HarnessEval-W (paper)</text><text x="648" y="33" fill="#7c8697" font-size="10.5" text-anchor="middle">78.0% · balanced 30.2</text><line x1="558" y1="262" x2="762" y2="262" stroke="rgba(174,184,208,0.10)"/><text x="552" y="265.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.00</text><line x1="558" y1="207.5" x2="762" y2="207.5" stroke="rgba(174,184,208,0.10)"/><text x="552" y="211" fill="#6f7a90" font-size="9.5" text-anchor="end">0.25</text><line x1="558" y1="153" x2="762" y2="153" stroke="rgba(174,184,208,0.10)"/><text x="552" y="156.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.50</text><line x1="558" y1="98.5" x2="762" y2="98.5" stroke="rgba(174,184,208,0.10)"/><text x="552" y="102" fill="#6f7a90" font-size="9.5" text-anchor="end">0.75</text><line x1="558" y1="44" x2="762" y2="44" stroke="rgba(174,184,208,0.10)"/><text x="552" y="47.5" fill="#6f7a90" font-size="9.5" text-anchor="end">1.00</text><line x1="558" y1="47.277630000000016" x2="762" y2="47.277630000000016" stroke="#f4bf5c" stroke-dasharray="4 4" stroke-opacity="0.45"/><text x="760" y="42.277630000000016" fill="rgba(244,191,92,0.7)" font-size="9.5" text-anchor="end">pass line</text><text x="584.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">D</text><text x="635.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">C</text><text x="686.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">B</text><text x="737.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">A</text><circle cx="566.52" cy="66.69379999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="719.52" cy="53.0034" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="668.52" cy="46.397999999999996" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="47.55339999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="626.52" cy="46.572400000000016" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="719.52" cy="47.61879999999999" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="728.52" cy="46.834" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="575.52" cy="77.92079999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="74.30199999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="677.52" cy="50.71440000000001" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="57.254400000000004" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="45.198999999999984" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="63.9906" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="737.52" cy="45.24260000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="746.52" cy="46.071" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="575.52" cy="48.07660000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="87.33840000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="163.9436" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="575.52" cy="54.76920000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="635.52" cy="47.466200000000015" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="82.54239999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="584.52" cy="48.27279999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="584.52" cy="54.442200000000014" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="626.52" cy="89.7364" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="125.423" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="163.2678" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="107.00200000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="98.23840000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="626.52" cy="100.6146" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="668.52" cy="53.50479999999999" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="686.52" cy="47.27000000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="626.52" cy="53.940799999999996" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="635.52" cy="53.41759999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="644.52" cy="53.8536" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="644.52" cy="48.88319999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="728.52" cy="53.91899999999998" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="653.52" cy="53.46119999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="737.52" cy="53.940799999999996" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="746.52" cy="53.483000000000004" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="617.52" cy="54.28960000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="626.52" cy="53.8972" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="635.52" cy="54.11519999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="653.52" cy="48.534400000000005" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="593.52" cy="47.88040000000001" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="602.52" cy="48.2946" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="695.52" cy="48.55620000000002" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="704.52" cy="48.27279999999999" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="635.52" cy="100.571" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="149.3594" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="566.52" cy="100.5274" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><text x="910" y="17" fill="#c9a0ff" font-size="13.5" font-weight="700" text-anchor="middle">HarnessEval-W (success)</text><text x="910" y="33" fill="#7c8697" font-size="10.5" text-anchor="middle">62.0% · balanced 47.2</text><line x1="820" y1="262" x2="1024" y2="262" stroke="rgba(174,184,208,0.10)"/><text x="814" y="265.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.00</text><line x1="820" y1="207.5" x2="1024" y2="207.5" stroke="rgba(174,184,208,0.10)"/><text x="814" y="211" fill="#6f7a90" font-size="9.5" text-anchor="end">0.25</text><line x1="820" y1="153" x2="1024" y2="153" stroke="rgba(174,184,208,0.10)"/><text x="814" y="156.5" fill="#6f7a90" font-size="9.5" text-anchor="end">0.50</text><line x1="820" y1="98.5" x2="1024" y2="98.5" stroke="rgba(174,184,208,0.10)"/><text x="814" y="102" fill="#6f7a90" font-size="9.5" text-anchor="end">0.75</text><line x1="820" y1="44" x2="1024" y2="44" stroke="rgba(174,184,208,0.10)"/><text x="814" y="47.5" fill="#6f7a90" font-size="9.5" text-anchor="end">1.00</text><line x1="820" y1="44" x2="1024" y2="44" stroke="#f4bf5c" stroke-dasharray="4 4" stroke-opacity="0.45"/><text x="1022" y="39" fill="rgba(244,191,92,0.7)" font-size="9.5" text-anchor="end">pass line</text><text x="846.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">D</text><text x="897.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">C</text><text x="948.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">B</text><text x="999.52" y="284" fill="#8f9bb6" font-size="11" text-anchor="middle">A</text><circle cx="828.52" cy="172.075" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="981.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="930.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="888.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="990.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="999.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="128.475" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="118.18540000000002" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="939.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="94.61959999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="175.018" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="1008.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="1017.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="837.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="837.52" cy="95.73139999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="229.3" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="846.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="897.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="120.29999999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="855.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="864.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="97.78059999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="837.52" cy="164.0308" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="218.2256" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="164.0308" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="135.53820000000002" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="888.52" cy="104.97459999999998" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="948.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="957.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="906.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="915.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="888.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="981.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="897.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="990.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="999.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="906.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="915.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="888.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="837.52" cy="44" r="4" fill="#ff8b83" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="966.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="930.52" cy="44" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="879.52" cy="72.60159999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="188.425" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/><circle cx="828.52" cy="72.60159999999999" r="4" fill="#7ee7c8" fill-opacity="0.82" stroke="#0a0e17" stroke-width="0.8"/></svg>
+            <ul class="strategy-facts"><li>Green dot · verdict correct</li><li>Red dot · verdict wrong</li><li>Hollow dot · abstained (counted wrong)</li></ul>
+          </div>
+        </article>
+
+        <article class="featured">
+          <div class="copy">
+            <h2>Scoreboard</h2>
+            <table><thead><tr><th>System</th><th>Agreement</th><th>Correct</th><th>Success recall</th><th>Failure recall</th><th>Balanced acc.</th><th>Spearman rho</th></tr></thead><tbody><tr><td style="color:#7ee7c8;font-weight:700">PhiCheck</td><td>88.0%</td><td>44 / 50</td><td>78.6%</td><td>91.7%</td><td>70.2</td><td>0.553</td></tr><tr><td style="color:#9db2ff;font-weight:700">PhiAudit</td><td>86.0%</td><td>43 / 50</td><td>78.6%</td><td>88.9%</td><td>67.5</td><td>0.564</td></tr><tr><td style="color:#ffc083;font-weight:700">HarnessEval-W (paper)</td><td>78.0%</td><td>39 / 50</td><td>35.7%</td><td>94.4%</td><td>30.2</td><td>0.398</td></tr><tr><td style="color:#c9a0ff;font-weight:700">HarnessEval-W (success)</td><td>62.0%</td><td>31 / 50</td><td>100.0%</td><td>47.2%</td><td>47.2</td><td>0.410</td></tr></tbody></table>
+            <p class="evidence-boundary">Pass rules: PhiCheck requires every checkpoint to be satisfied in both passes; PhiAudit uses its own 80/100 line; HarnessEval-W (paper) uses 0.984965 (a threshold tuned on this same 50-case set, not its published criterion); HarnessEval-W (success) uses 1.0 (its own definition). Abstentions always count as errors.</p>
+          </div>
+        </article>
+
+<article class="featured"><video controls muted loop playsinline preload="metadata"><source src="showcase/s012_C02_B_s01.mp4" type="video/mp4">Your browser does not support embedded MP4 video.</video><div class="copy"><p class="status-working">PhiCheck verdict correct · human D</p><h2>C02_B_s01 · place the rigid object into the plate</h2><p>The human graded this D. PhiCheck asked the four task-card checkpoints twice and only 2 and 1 were satisfied, so it returned fail.</p><ul class="strategy-facts"><li>Human D</li><li>PhiCheck · correct</li></ul><p class="evidence-boundary">HarnessEval-W (paper) gave 0.9945 — essentially its ceiling. All nine of its component axes are near-perfect here: transition correctness 1.000, negative-constraint adherence 1.000, observation quality 0.989, world persistence 0.960. Not one of them asks whether the object actually ended up in the plate. Across the whole set, the 14 cases it correctly passed and the 19 cases it wrongly passed are indistinguishable on all nine axes — the largest gap is 0.019.</p><a class="video-link" href="showcase/s012_C02_B_s01.mp4">Open MP4</a></div></article><article class="featured"><video controls muted loop playsinline preload="metadata"><source src="showcase/s019_C03_A_s02.mp4" type="video/mp4">Your browser does not support embedded MP4 video.</video><div class="copy"><p class="status-working">PhiCheck verdict correct · human D</p><h2>C03_A_s02 · drop the object into the container</h2><p>The human set M1, M2, M3 and M5 to 0 — the motion never really happened. PhiCheck satisfied 1 and 0 checkpoints and returned fail.</p><ul class="strategy-facts"><li>Human D</li><li>PhiCheck · correct</li></ul><p class="evidence-boundary">Here the paper score was right (0.9506, fail), but HarnessEval-W (success) returned 1.0. Its task_success_score carries no partial credit: 19 of the 50 cases sit at exactly 1.0 while the human graded them C or D.</p><a class="video-link" href="showcase/s019_C03_A_s02.mp4">Open MP4</a></div></article>
+
+        <article class="featured">
+          <div class="copy">
+            <h2>How to read these numbers</h2>
+            <p class="evidence-boundary">With n = 50 the 95% confidence interval on agreement spans roughly 18-28 points: PhiCheck [78%, 96%] and HarnessEval-W (paper) [66%, 90%] overlap heavily. A paired McNemar test gives p = 0.302 for PhiCheck vs HarnessEval-W (paper) (not significant) and p = 0.007 vs HarnessEval-W (success) (significant); separating 88% from 78% would need roughly 218 cases per arm. The human reference has a single annotator and no inter-annotator agreement data, so the noise ceiling of the ground truth itself is unknown.</p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <script>
+      (function () {
+        var vids = Array.prototype.slice.call(document.querySelectorAll("video"));
+        if (!("IntersectionObserver" in window)) { vids.forEach(function (v) { v.play().catch(function () {}); }); return; }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { if (e.isIntersecting) { e.target.play().catch(function () {}); } else { e.target.pause(); } });
+        }, { threshold: 0.35 });
+        vids.forEach(function (v) { io.observe(v); });
+      })();
+    </script>
+  </body>
+</html>

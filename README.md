@@ -419,6 +419,47 @@ The Sudo row is a full tracked-robot appearance adaptation with a white shell,
 black joints/chest cavity, and dual-camera face. It does not claim exact Sudo R1
 mechanical geometry.
 
+### Robot video evaluation: PhiCheck vs HarnessEval-W
+
+[Play the C02_B_s01 example MP4](https://yuhuajiang2002.github.io/PhiAgent/evaluation/showcase/s012_C02_B_s01.mp4),
+[play the C03_A_s02 example MP4](https://yuhuajiang2002.github.io/PhiAgent/evaluation/showcase/s019_C03_A_s02.mp4),
+or open the [interactive comparison on the demo page](https://yuhuajiang2002.github.io/PhiAgent/#robot-video-evaluation).
+
+Fifty robot-manipulation clips (1344x768, 24 fps, 8 s) were scored by four systems
+against one human reference graded A/B/C/D.
+
+| System | Agreement | Correct | Success recall | Failure recall | Balanced acc. | Spearman rho |
+| --- | --- | --- | --- | --- | --- | --- |
+| **PhiCheck** | **88.0%** | 44 / 50 | 78.6% | 91.7% | 70.2 | 0.553 |
+| **PhiAudit** | 86.0% | 43 / 50 | 78.6% | 88.9% | 67.5 | 0.564 |
+| HarnessEval-W (paper) | 78.0% | 39 / 50 | 35.7% | 94.4% | 30.2 | 0.398 |
+| HarnessEval-W (success) | 62.0% | 31 / 50 | 100.0% | 47.2% | 47.2 | 0.410 |
+
+**PhiCheck** decomposes each task card into 3-5 yes/no checkpoints, feeds 33 evenly
+sampled frames in a single pass, and asks twice: once with reasoning enabled, once
+without. A clip passes only when every checkpoint is satisfied in both passes. Two
+model calls per video.
+
+**PhiAudit** is a 25-node multi-agent graph that scores seven weighted dimensions
+(M0-M6), cross-audits the evidence, and applies hard gates and coverage rules.
+Roughly 40 model calls per video.
+
+The two HarnessEval-W rows are one system under its two published scoring modes, and
+both are badly unbalanced. The paper score reaches 94.4% failure recall by calling 43
+of 50 clips failures, leaving 35.7% success recall. The success score reaches 100%
+success recall with only 47.2% failure recall. Only PhiCheck and PhiAudit occupy a
+balanced position, and the failure mode is structural: across the whole set the 14
+clips HarnessEval-W (paper) passes correctly and the 19 it passes wrongly are
+indistinguishable on all nine of its component axes, with a largest gap of 0.019.
+
+Scope note on these numbers. With n = 50 the 95% confidence interval on agreement
+spans roughly 18-28 points, and the PhiCheck and HarnessEval-W (paper) intervals
+overlap heavily. A paired McNemar test gives p = 0.302 for PhiCheck versus
+HarnessEval-W (paper), which is not significant, and p = 0.007 versus HarnessEval-W
+(success), which is. Separating 88% from 78% would need roughly 218 cases per arm.
+The human reference has a single annotator and no inter-annotator agreement data, so
+the noise ceiling of the ground truth itself is unknown.
+
 ## Primary goal
 
 The primary project goal is to reproduce Figure 8(b) of PhiZero: transfer motion
