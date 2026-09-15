@@ -1,0 +1,134 @@
+{
+  "frames": 81,
+  "height": 432,
+  "width": 768,
+  "noise_levels": [
+    0.1,
+    0.35,
+    0.65,
+    0.9
+  ],
+  "denoising_steps": 35,
+  "shift": 5.0,
+  "guidance": 1.5,
+  "text_dropout": 0.0,
+  "video_dropout": 0.0,
+  "overlap_probability": 0.0,
+  "schema": 2,
+  "name": "basic-fixed-val-v2-four-cases",
+  "context_parallel_size": 4,
+  "generation_seed": 20260911,
+  "protection": {
+    "training_identity": {
+      "dataset_hash": "60937d702e815ac8cb06ec4de2ecddb52c2e7483e498eff807999c160223daad",
+      "world_size": 24,
+      "context_parallel_size": 8,
+      "seed": 2026,
+      "gradient_accumulation": 1,
+      "max_steps": 16000,
+      "phase": "stage1",
+      "manifests": [
+        "datasets/manifests/syncam_scenes.jsonl",
+        "datasets/manifests/multicam_scenes.jsonl"
+      ],
+      "generated_manifest": null
+    },
+    "training_identity_sha256": "ad618e337f675f21c1962cfd63ca35d06540931b173452a40c1c22548e49f379",
+    "qualified_at_step": 6600
+  },
+  "cases": [
+    {
+      "id": "syncam-cam07",
+      "dataset": "syncam",
+      "scene_id": "SynCamVideo-Dataset/val/basic",
+      "source_cameras": [
+        "cam01",
+        "cam02",
+        "cam03",
+        "cam04"
+      ],
+      "target_camera": "cam07",
+      "seed": 20260911,
+      "prompt": "The video depicts a person standing outdoors in a natural setting, surrounded by tall trees with lush green foliage. The ground is covered with a mix of dirt and patches of grass, indicating a forested area. The lighting suggests it is daytime, with sunlight filtering through the trees, casting dappled shadows on the ground.\n\nThe individual is dressed in athletic attire, consisting of a long-sleeved shirt that is light brown at the top and dark gray at the bottom, paired with matching leggings. They also wear black knee-high socks and white sneakers. Their hair is tied back, possibly in a ponytail, which is secured with a white headband.\n\nInitially, the person stands still, facing slightly to the side. As the video progresses, they begin to move. They raise their arms above their head, bending their elbows and forming a sort of \"V\" shape with their hands. This movement appears to be part of a stretching or warm-up routine. The person's posture shifts slightly as they lean forward, maintaining balance while performing this action. The overall scene conveys a sense of preparation for physical activity in a serene, natural environment.",
+      "input_sha256": {
+        "datasets/extracted/syncam/SynCamVideo-Dataset/val/basic/videos/cam01.mp4": "4e7472134330d2814d4eed57fd5152ab4e141c0d831a57ed77145eb19601358d",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/val/basic/videos/cam02.mp4": "7ad7a6e1072024551c14a8be12eb7299d7672404d616001fac390b95e32bd1a2",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/val/basic/videos/cam03.mp4": "9f5526ae693cda4edb806f1226de826d0057bb3c8c83a2ecc7ebd4e32274f779",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/val/basic/videos/cam04.mp4": "81efa4092bbcf98511a041ece3841bdb8439a9a57ed6077f327f512388df7da6",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/val/basic/videos/cam07.mp4": "ab8ca8e79d72ff3aa54cab651e8d75a2649d8d8a2f5b61ed20fb5121a74b0d9f",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/val/basic/cameras/camera_extrinsics.json": "4fd8e241f2621e130facb74e05f3f6fc8480d3e54836f108137ad2566aed684a"
+      },
+      "partition": "official_val"
+    },
+    {
+      "id": "syncam-scene2501-cam09",
+      "dataset": "syncam",
+      "scene_id": "SynCamVideo-Dataset/train/f24_aperture5/scene2501",
+      "source_cameras": [
+        "cam01",
+        "cam02",
+        "cam03",
+        "cam04"
+      ],
+      "target_camera": "cam09",
+      "seed": 20260911,
+      "prompt": "A woman stands on a cobblestone courtyard in front of an ornate building with classical architecture. The building features a central arched doorway flanked by two rectangular windows, all framed by intricate stonework. Above the doorway, there is a balcony with a decorative railing. The walls of the building are painted in warm tones, with some sections showing signs of weathering. The woman is dressed casually in a striped tank top and dark pants. She begins to move, extending her arms outward and then bending slightly at the knees, as if preparing to dance or perform a physical activity. Her movements are fluid and graceful, suggesting a sense of rhythm and flow. The cobblestones underfoot add texture to the scene, enhancing the historical ambiance of the setting. The overall atmosphere is one of calm and elegance, with the woman's actions adding a dynamic element to the otherwise static environment.",
+      "partition": "stage1_unsampled",
+      "input_sha256": {
+        "datasets/extracted/syncam/SynCamVideo-Dataset/train/f24_aperture5/scene2501/videos/cam01.mp4": "9643d5d06a386bbfbd4c2912bd18c46cbbd2f3e97921bb17f6f161b769169713",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/train/f24_aperture5/scene2501/videos/cam02.mp4": "5201b193d5bf95071eb128184563231701a6f25677108986c528581ad96f8fe2",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/train/f24_aperture5/scene2501/videos/cam03.mp4": "7a15424e2c69d43e4d14aaa91c679b1aa45683dc52353f32ad553030e9bbf367",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/train/f24_aperture5/scene2501/videos/cam04.mp4": "60b2ba9d411e900dee8379ffaa32a23dff641268266c373f8c8f3138eaf60800",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/train/f24_aperture5/scene2501/videos/cam09.mp4": "2a854307318170935c807b600d0ed8a9ec5c26b3378a79599407c314488fdeaa",
+        "datasets/extracted/syncam/SynCamVideo-Dataset/train/f24_aperture5/scene2501/cameras/camera_extrinsics.json": "26078fba78a51b0dab949020db5b151d5e80a33de92af4695cc1e58aecdb9dfa"
+      }
+    },
+    {
+      "id": "multicam-scene737-cam08",
+      "dataset": "multicam",
+      "scene_id": "MultiCamVideo-Dataset/train/f24_aperture5/scene737",
+      "source_cameras": [
+        "cam01",
+        "cam02",
+        "cam03",
+        "cam04"
+      ],
+      "target_camera": "cam08",
+      "seed": 20260911,
+      "prompt": "In this animated scene, a festive winter evening unfolds with a cozy, illuminated storefront as the focal point. The shop's awning glows warmly against the cool blue tones of the night sky, which is dotted with twinkling stars and a few floating hot air balloons. Snow blankets the ground, adding to the wintry atmosphere.\n\nInside the store, a cheerful Santa Claus sits behind the counter, surrounded by various holiday decorations including wreaths and ornaments. He appears to be interacting with customers, creating a lively and inviting ambiance. To his right, a black cat perches on the counter, observing the activity with curiosity.\n\nOutside, a young boy with short hair, dressed in a patterned sweater and jeans, walks past the storefront. His movement suggests he might be heading towards another part of the festive town. The background reveals more details of the winter wonderland, including a decorated Christmas tree and other illuminated structures that enhance the magical feel of the scene. The overall mood is one of warmth, joy, and celebration amidst the cold winter night.",
+      "partition": "stage1_unsampled",
+      "input_sha256": {
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam01.mp4": "edd8436833dc777f0ff4bc9f1252003c15d1bf4aa73495cf94866befd6e9517d",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam02.mp4": "b3d9761783d7eef631b9a6fad1a9a75e807e738622bfb926452b13bea1d12296",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam03.mp4": "c7c42ca063bce2ca347dc9bc86739f3de2b12a6def624bfa5260b3309e776d8d",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam04.mp4": "760cdac1aecb257d2dc15ecbd03a20c0923b7578e1f190bebc9d3ce9e25c31f1",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam08.mp4": "bff7a8b7e795db0a492cf188e454d430febdb588ccd4010519f4b0babcc8ed24",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/cameras/camera_extrinsics.json": "019b68497da5fc8a8de4f164733d0b8c330cc81ae36eb6e2bd73829cfe9b4943"
+      }
+    },
+    {
+      "id": "multicam-scene737-cam06",
+      "dataset": "multicam",
+      "scene_id": "MultiCamVideo-Dataset/train/f24_aperture5/scene737",
+      "source_cameras": [
+        "cam01",
+        "cam02",
+        "cam03",
+        "cam04"
+      ],
+      "target_camera": "cam06",
+      "seed": 20260911,
+      "prompt": "In this animated scene, a festive winter evening unfolds with a cozy, illuminated storefront as the focal point. The shop's awning glows warmly against the cool blue tones of the night sky, which is dotted with twinkling stars and a few floating hot air balloons. Snow blankets the ground, adding to the wintry atmosphere.\n\nInside the store, a cheerful Santa Claus sits behind the counter, surrounded by various holiday decorations including wreaths and ornaments. He appears to be interacting with customers, creating a lively and inviting ambiance. To his right, a black cat perches on the counter, observing the activity with curiosity.\n\nOutside, a young boy with short hair, dressed in a patterned sweater and jeans, walks past the storefront. His movement suggests he might be heading towards another part of the festive town. The background reveals more details of the winter wonderland, including a decorated Christmas tree and other illuminated structures that enhance the magical feel of the scene. The overall mood is one of warmth, joy, and celebration amidst the cold winter night.",
+      "partition": "stage1_unsampled",
+      "input_sha256": {
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam01.mp4": "edd8436833dc777f0ff4bc9f1252003c15d1bf4aa73495cf94866befd6e9517d",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam02.mp4": "b3d9761783d7eef631b9a6fad1a9a75e807e738622bfb926452b13bea1d12296",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam03.mp4": "c7c42ca063bce2ca347dc9bc86739f3de2b12a6def624bfa5260b3309e776d8d",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam04.mp4": "760cdac1aecb257d2dc15ecbd03a20c0923b7578e1f190bebc9d3ce9e25c31f1",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/videos/cam06.mp4": "d9cfb9a2b519f522852261f007dd9079e3ba5fecc6e466528120eeb0bdcd5261",
+        "datasets/extracted/multicam/MultiCamVideo-Dataset/train/f24_aperture5/scene737/cameras/camera_extrinsics.json": "019b68497da5fc8a8de4f164733d0b8c330cc81ae36eb6e2bd73829cfe9b4943"
+      }
+    }
+  ],
+  "scope": "Four calibrated target cases: two SynCam targets from different scenes and two MultiCam targets. The official validation scene and both qualified stage-1-unsampled scenes are retained. Every validation rechecks usage and the fixed training plan. Full user videos are qualitative only and excluded from all supervised error averages."
+}

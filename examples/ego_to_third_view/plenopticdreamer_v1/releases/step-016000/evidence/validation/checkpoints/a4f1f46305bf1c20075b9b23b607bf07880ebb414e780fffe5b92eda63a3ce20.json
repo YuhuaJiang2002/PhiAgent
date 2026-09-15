@@ -1,0 +1,8 @@
+{
+  "snapshot_sha256": "a4f1f46305bf1c20075b9b23b607bf07880ebb414e780fffe5b92eda63a3ce20",
+  "snapshot_bytes": 2240098149,
+  "checkpoint_step": 16000,
+  "source_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "source_bytes": 6703192745,
+  "tensor_count": 196
+}

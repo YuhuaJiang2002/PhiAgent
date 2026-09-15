@@ -1,0 +1,166 @@
+{
+  "actual_checkpoint_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "adapter_module_sha256": "3b263f3d50007ed541793029056f8891c4eb756300f691767be2e9a1dedf1f0e",
+  "camera_sha256": "e08cf5cbbbfc95c103ddf6de8625bc67c2b4e612e536a332d3c9773508e66e53",
+  "checkpoint": "/mnt/datasets-livsyn/llq/OUTPUTS/basic_stage1_24gpu/step-016000.pt",
+  "compute_apps": [
+    {
+      "gpu_uuid": "GPU-13de3787-aaba-3287-8dfc-ddbe91199bf8",
+      "pid": 3729946,
+      "process_name": "/data0/WM-RM/pi05/openpi/.venv/bin/python",
+      "used_memory_mib": 83308
+    }
+  ],
+  "compute_apps_before_generation": [
+    {
+      "gpu_uuid": "GPU-13de3787-aaba-3287-8dfc-ddbe91199bf8",
+      "pid": 3729946,
+      "process_name": "/data0/WM-RM/pi05/openpi/.venv/bin/python",
+      "used_memory_mib": 83308
+    }
+  ],
+  "created_at": "2026-09-15T02:58:18.504236+00:00",
+  "expected_checkpoint_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "finished_at": "2026-09-15T03:14:22.854482+00:00",
+  "generation_command": "bash -c 'source \"$1\"; shift; exec \"$@\"' plenoptic-phiagent /mnt/datasets-livsyn/llq/plenoptic-repro/tools/activate_h20.sh /mnt/datasets-livsyn/llq/plenoptic-repro/../ENVIRONMENTS/plenoptic-h20/bin/python -m torch.distributed.run --nproc_per_node=4 --master_port=29694 /mnt/datasets-livsyn/llq/plenoptic-repro/tools/infer_custom_validation.py --checkpoint /mnt/datasets-livsyn/llq/OUTPUTS/basic_stage1_24gpu/step-016000.pt --suite /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/suite.json --output /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/generation",
+  "git": {
+    "available": true,
+    "deployed_source_sha256": {
+      "phiagent/rendering/plenoptic.py": "c7c037813b5ab54690ab8e8d517672e572fc3a015712292eb50a4246a1fc90b8",
+      "scripts/evaluate_plenoptic_heldout.py": "7008ca7cc476cca8dc36bb3be1683cb48e94fab33aae820eef95b759d5178345",
+      "scripts/prepare_plenoptic_taco_ego_exo.py": "12fa0fce02c291b3f77299fe7eb2e30575f9ed32457d7e8665752583cd867704",
+      "scripts/run_plenoptic_phiagent.py": "0d137229fb3d5cd33a1798cc414cf6e9f3c0cf2ecaab9c52de1026ce7d5f8cb1"
+    },
+    "revision": "ae92f90f04ae590945467c93cd7eab230c3ac8ac",
+    "status_short": [
+      " M examples/ego_to_third_view/automation/mesh_renderer.py",
+      " M examples/ego_to_third_view/stages/export_hawor_mano_meshes.py",
+      " M examples/ego_to_third_view/stages/run_sam2_video_point_track.py",
+      "?? examples/ego_to_third_view/adapters/livego_calibrated_bundle.py",
+      " M README.md",
+      " M docs/STATUS.md",
+      " M experiences/ledger.jsonl",
+      "?? docs/PLENOPTIC_EXTERNAL_RENDERER.md",
+      "?? phiagent/rendering/plenoptic.py",
+      "?? scripts/evaluate_plenoptic_heldout.py",
+      "?? scripts/prepare_plenoptic_taco_ego_exo.py",
+      "?? scripts/run_plenoptic_phiagent.py",
+      "?? tests/test_plenoptic.py"
+    ]
+  },
+  "hostname": "h20-1",
+  "inference_record": "/mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/generation/taco-20230927-032-ego-to-exo21218078-k1-camera-only-final/inference.json",
+  "invocation": "/mnt/datasets-livsyn/llq/ENVIRONMENTS/plenoptic-h20/bin/python /mnt/datasets-livsyn/llq/plenoptic-repro/integrations/phiagent/scripts/run_plenoptic_phiagent.py --runtime-root /mnt/datasets-livsyn/llq/plenoptic-repro --checkpoint /mnt/datasets-livsyn/llq/OUTPUTS/basic_stage1_24gpu/step-016000.pt --source-video /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego.mp4 --original-video /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego.mp4 --camera-npz /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego-to-external-cameras.npz --camera-provenance /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/camera-provenance.json --prompt-file /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/prompt.txt --case-id taco-20230927-032-ego-to-exo21218078-k1-camera-only-final --seed 20260912 --output /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2 --physical-gpus 4 5 6 7 --master-port 29694 --expected-checkpoint-sha256 f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3 --source-git-state /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/source-git-state.json",
+  "launcher_sha256": "93f916b2e3b8f648f04fe783654cf950fe3a14c68506fbec751c82bf32b9e382",
+  "output_sha256": "f4fb63a6d48942542c99a23ecc39bf0a0dcf22a565b1a661b112ffa352d94a85",
+  "preflight_command": "bash -c 'source \"$1\"; shift; exec \"$@\"' plenoptic-phiagent /mnt/datasets-livsyn/llq/plenoptic-repro/tools/activate_h20.sh /mnt/datasets-livsyn/llq/plenoptic-repro/../ENVIRONMENTS/plenoptic-h20/bin/python /mnt/datasets-livsyn/llq/plenoptic-repro/tools/infer_custom_validation.py --checkpoint /mnt/datasets-livsyn/llq/OUTPUTS/basic_stage1_24gpu/step-016000.pt --suite /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/suite.json --output /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/preflight --check-only",
+  "runner_sha256": "aedca2250d3e61d19b8fe144e98560ed382eebb055cf5e2d242a54de02b2b893",
+  "runtime_root": "/mnt/datasets-livsyn/llq/plenoptic-repro",
+  "runtime_versions": {
+    "packages": {
+      "decord": "0.6.0",
+      "numpy": "2.2.6",
+      "opencv-python": "4.11.0.86",
+      "torch": "2.7.0+cu128",
+      "torchvision": "0.22.0+cu128",
+      "transformers": "4.51.3"
+    },
+    "python": "3.10.12"
+  },
+  "scheduler": {
+    "active": false,
+    "available": true,
+    "phase": "complete",
+    "pid": 1918263,
+    "run_id": "20260914-200636-331307-h20-1",
+    "state_file": "/mnt/datasets-livsyn/llq/plenoptic-repro/../OUTPUTS/.runtime/h20-1/fixed-validation-h20-1.json"
+  },
+  "scheduler_before_generation": {
+    "active": false,
+    "available": true,
+    "phase": "complete",
+    "pid": 1918263,
+    "run_id": "20260914-200636-331307-h20-1",
+    "state_file": "/mnt/datasets-livsyn/llq/plenoptic-repro/../OUTPUTS/.runtime/h20-1/fixed-validation-h20-1.json"
+  },
+  "schema": 1,
+  "selected_gpus": [
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 4,
+      "utilization_percent": 0,
+      "uuid": "GPU-c88dde9b-2dd9-d071-2dd7-adb5376e6946"
+    },
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 5,
+      "utilization_percent": 0,
+      "uuid": "GPU-b2614ac9-0289-4ad3-4c4d-559c59b29a3d"
+    },
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 6,
+      "utilization_percent": 0,
+      "uuid": "GPU-34005226-7d82-4fa8-9847-9db2229e2e73"
+    },
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 7,
+      "utilization_percent": 0,
+      "uuid": "GPU-a5b88b24-0b9c-3dec-394a-8a4ceb722496"
+    }
+  ],
+  "selected_gpus_before_generation": [
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 4,
+      "utilization_percent": 0,
+      "uuid": "GPU-c88dde9b-2dd9-d071-2dd7-adb5376e6946"
+    },
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 5,
+      "utilization_percent": 0,
+      "uuid": "GPU-b2614ac9-0289-4ad3-4c4d-559c59b29a3d"
+    },
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 6,
+      "utilization_percent": 0,
+      "uuid": "GPU-34005226-7d82-4fa8-9847-9db2229e2e73"
+    },
+    {
+      "memory_free_mib": 97505,
+      "memory_total_mib": 97871,
+      "memory_used_mib": 3,
+      "name": "NVIDIA H20",
+      "physical_index": 7,
+      "utilization_percent": 0,
+      "uuid": "GPU-a5b88b24-0b9c-3dec-394a-8a4ceb722496"
+    }
+  ],
+  "source_git_state_sha256": "ef536881dab06c9388f32433da226df0af58bceaec8745ff2cb13c4071b49021",
+  "source_sha256": "0e24f368796c8ccb3eb728cbe1fcf56d0c1c03939645855c6ad1c58ffac63103",
+  "status": "generated"
+}

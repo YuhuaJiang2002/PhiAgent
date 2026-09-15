@@ -1,0 +1,335 @@
+{
+  "status": "evaluated",
+  "checkpoint_step": 16000,
+  "checkpoint_sha256": "a4f1f46305bf1c20075b9b23b607bf07880ebb414e780fffe5b92eda63a3ce20",
+  "k": 4,
+  "checkpoint_source_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "execution_host": "h20-1",
+  "context_parallel_size": 4,
+  "cuda_visible_devices": "1,4,0,3",
+  "suite_name": "basic-fixed-val-v2-four-cases",
+  "suite_sha256": "ad5afb0f0469872a9aa312fc535b6f9a0cd71fd75e3c91159553e7c66e2ce6dd",
+  "cases": [
+    {
+      "case_id": "syncam-cam07",
+      "scene_id": "SynCamVideo-Dataset/val/basic",
+      "dataset": "syncam",
+      "partition": "official_val",
+      "qualitative_only": false,
+      "has_target_reference": true,
+      "generation_skipped": false,
+      "losses": [
+        {
+          "noise_level": 0.1,
+          "target_mse": 0.4020921405743816,
+          "training_normalized_mse": 0.08041842811487632
+        },
+        {
+          "noise_level": 0.35,
+          "target_mse": 0.13538278085508126,
+          "training_normalized_mse": 0.027076556171016255
+        },
+        {
+          "noise_level": 0.65,
+          "target_mse": 0.0747235004959347,
+          "training_normalized_mse": 0.01494470009918694
+        },
+        {
+          "noise_level": 0.9,
+          "target_mse": 0.06280440526337852,
+          "training_normalized_mse": 0.012560881052675704
+        }
+      ],
+      "target_mse": 0.168750706797194,
+      "training_normalized_mse": 0.0337501413594388,
+      "video_directory": "syncam-cam07",
+      "seconds": 703.154,
+      "image_metrics": {
+        "schema": 1,
+        "frames": 81,
+        "height": 432,
+        "width": 768,
+        "generated_vs_target": {
+          "rgb_mse": 0.034953973211782785,
+          "rgb_mae": 0.13016224630258041,
+          "psnr_db": 14.565034509375316,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.47281941334074207
+        },
+        "copy_source_vs_target": {
+          "rgb_mse": 0.04691051316284349,
+          "rgb_mae": 0.15838064736008714,
+          "psnr_db": 13.287298161986046,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.39830296545860916
+        },
+        "psnr_gain_over_copy_db": 1.2777363473892702,
+        "ssim_gain_over_copy": 0.07451644788213291,
+        "generated_source_rgb_mae": 0.10804067691156984,
+        "definition": "All aligned frames at 432x768. RGB MSE/MAE use [0,1]; PSNR uses clip-mean RGB MSE, capped at 100 dB. SSIM uses BT.601 luminance, an 11x11 Gaussian window (sigma=1.5), population covariance and valid pixels. The generated MP4 is decoded after encoding. The baseline copies the first conditioning camera. Pixel errors measure agreement with the target; they are not estimated camera rotation/translation errors."
+      }
+    },
+    {
+      "case_id": "syncam-scene2501-cam09",
+      "scene_id": "SynCamVideo-Dataset/train/f24_aperture5/scene2501",
+      "dataset": "syncam",
+      "partition": "stage1_unsampled",
+      "qualitative_only": false,
+      "has_target_reference": true,
+      "generation_skipped": false,
+      "losses": [
+        {
+          "noise_level": 0.1,
+          "target_mse": 0.17845685756244933,
+          "training_normalized_mse": 0.03569137151248987
+        },
+        {
+          "noise_level": 0.35,
+          "target_mse": 0.061345275981459856,
+          "training_normalized_mse": 0.012269055196291971
+        },
+        {
+          "noise_level": 0.65,
+          "target_mse": 0.03979443290329652,
+          "training_normalized_mse": 0.007958886580659304
+        },
+        {
+          "noise_level": 0.9,
+          "target_mse": 0.060171152907620255,
+          "training_normalized_mse": 0.012034230581524051
+        }
+      ],
+      "target_mse": 0.08494192983870649,
+      "training_normalized_mse": 0.0169883859677413,
+      "video_directory": "syncam-scene2501-cam09",
+      "seconds": 688.119,
+      "image_metrics": {
+        "schema": 1,
+        "frames": 81,
+        "height": 432,
+        "width": 768,
+        "generated_vs_target": {
+          "rgb_mse": 0.02821234469308635,
+          "rgb_mae": 0.1289791547756094,
+          "psnr_db": 15.495608186672609,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.12700833169405476
+        },
+        "copy_source_vs_target": {
+          "rgb_mse": 0.030435209016627805,
+          "rgb_mae": 0.13594809293847865,
+          "psnr_db": 15.16623711342996,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.12483877547740324
+        },
+        "psnr_gain_over_copy_db": 0.32937107324264936,
+        "ssim_gain_over_copy": 0.002169556216651519,
+        "generated_source_rgb_mae": 0.14027367543564892,
+        "definition": "All aligned frames at 432x768. RGB MSE/MAE use [0,1]; PSNR uses clip-mean RGB MSE, capped at 100 dB. SSIM uses BT.601 luminance, an 11x11 Gaussian window (sigma=1.5), population covariance and valid pixels. The generated MP4 is decoded after encoding. The baseline copies the first conditioning camera. Pixel errors measure agreement with the target; they are not estimated camera rotation/translation errors."
+      }
+    },
+    {
+      "case_id": "multicam-scene737-cam08",
+      "scene_id": "MultiCamVideo-Dataset/train/f24_aperture5/scene737",
+      "dataset": "multicam",
+      "partition": "stage1_unsampled",
+      "qualitative_only": false,
+      "has_target_reference": true,
+      "generation_skipped": false,
+      "losses": [
+        {
+          "noise_level": 0.1,
+          "target_mse": 0.3642469248052962,
+          "training_normalized_mse": 0.07284938496105924
+        },
+        {
+          "noise_level": 0.35,
+          "target_mse": 0.09101064358188167,
+          "training_normalized_mse": 0.018202128716376335
+        },
+        {
+          "noise_level": 0.65,
+          "target_mse": 0.04986594037127599,
+          "training_normalized_mse": 0.009973188074255197
+        },
+        {
+          "noise_level": 0.9,
+          "target_mse": 0.05105603467548348,
+          "training_normalized_mse": 0.010211206935096697
+        }
+      ],
+      "target_mse": 0.13904488585848432,
+      "training_normalized_mse": 0.027808977171696864,
+      "video_directory": "multicam-scene737-cam08",
+      "seconds": 690.543,
+      "image_metrics": {
+        "schema": 1,
+        "frames": 81,
+        "height": 432,
+        "width": 768,
+        "generated_vs_target": {
+          "rgb_mse": 0.12214764897868126,
+          "rgb_mae": 0.2684364279473792,
+          "psnr_db": 9.131148876378358,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.25577118259079046
+        },
+        "copy_source_vs_target": {
+          "rgb_mse": 0.10370009545815223,
+          "rgb_mae": 0.24502948980597744,
+          "psnr_db": 9.842208438334307,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.26279107060898926
+        },
+        "psnr_gain_over_copy_db": -0.711059561955949,
+        "ssim_gain_over_copy": -0.0070198880181988055,
+        "generated_source_rgb_mae": 0.22843956239756455,
+        "definition": "All aligned frames at 432x768. RGB MSE/MAE use [0,1]; PSNR uses clip-mean RGB MSE, capped at 100 dB. SSIM uses BT.601 luminance, an 11x11 Gaussian window (sigma=1.5), population covariance and valid pixels. The generated MP4 is decoded after encoding. The baseline copies the first conditioning camera. Pixel errors measure agreement with the target; they are not estimated camera rotation/translation errors."
+      }
+    },
+    {
+      "case_id": "multicam-scene737-cam06",
+      "scene_id": "MultiCamVideo-Dataset/train/f24_aperture5/scene737",
+      "dataset": "multicam",
+      "partition": "stage1_unsampled",
+      "qualitative_only": false,
+      "has_target_reference": true,
+      "generation_skipped": false,
+      "losses": [
+        {
+          "noise_level": 0.1,
+          "target_mse": 0.32349817068736725,
+          "training_normalized_mse": 0.06469963413747344
+        },
+        {
+          "noise_level": 0.35,
+          "target_mse": 0.06434573662633636,
+          "training_normalized_mse": 0.012869147325267272
+        },
+        {
+          "noise_level": 0.65,
+          "target_mse": 0.029675058432975722,
+          "training_normalized_mse": 0.005935011686595144
+        },
+        {
+          "noise_level": 0.9,
+          "target_mse": 0.03149064688415577,
+          "training_normalized_mse": 0.006298129376831153
+        }
+      ],
+      "target_mse": 0.11225240315770878,
+      "training_normalized_mse": 0.02245048063154175,
+      "video_directory": "multicam-scene737-cam06",
+      "seconds": 691.49,
+      "image_metrics": {
+        "schema": 1,
+        "frames": 81,
+        "height": 432,
+        "width": 768,
+        "generated_vs_target": {
+          "rgb_mse": 0.10441401947564939,
+          "rgb_mae": 0.24985977840654588,
+          "psnr_db": 9.812411855086205,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.24094717000803448
+        },
+        "copy_source_vs_target": {
+          "rgb_mse": 0.09715686278586412,
+          "rgb_mae": 0.23650639036247248,
+          "psnr_db": 10.125265170944164,
+          "psnr_capped_at_100_db": false,
+          "luma_ssim": 0.2606911788833261
+        },
+        "psnr_gain_over_copy_db": -0.31285331585795895,
+        "ssim_gain_over_copy": -0.019744008875291624,
+        "generated_source_rgb_mae": 0.25662582878420764,
+        "definition": "All aligned frames at 432x768. RGB MSE/MAE use [0,1]; PSNR uses clip-mean RGB MSE, capped at 100 dB. SSIM uses BT.601 luminance, an 11x11 Gaussian window (sigma=1.5), population covariance and valid pixels. The generated MP4 is decoded after encoding. The baseline copies the first conditioning camera. Pixel errors measure agreement with the target; they are not estimated camera rotation/translation errors."
+      }
+    }
+  ],
+  "qualitative_cases": [],
+  "total_cases": 4,
+  "qualitative_suite_sha256": "2b7060fcf99a345b18e8fbff27de74a655e4e3f312fe65cb9e5b438c7a47b9e7",
+  "holdout_proof": {
+    "status": "passed",
+    "checkpoint_step": 16000,
+    "protected_until_step": 16000,
+    "scenes": 2,
+    "training_identity_sha256": "ad618e337f675f21c1962cfd63ca35d06540931b173452a40c1c22548e49f379",
+    "definition": "Unseen in checkpoint ledgers and unsampled throughout this fixed stage-1 plan; these scenes are still members of the original training manifest."
+  },
+  "generation_seed": 20260911,
+  "gpu_memory_peaks": [
+    {
+      "rank": 0,
+      "allocated_gib": 30.879467964172363,
+      "reserved_gib": 44.103515625
+    },
+    {
+      "rank": 1,
+      "allocated_gib": 11.618431568145752,
+      "reserved_gib": 27.609375
+    },
+    {
+      "rank": 2,
+      "allocated_gib": 11.618431568145752,
+      "reserved_gib": 27.609375
+    },
+    {
+      "rank": 3,
+      "allocated_gib": 11.617672443389893,
+      "reserved_gib": 27.609375
+    }
+  ],
+  "video_batch_size": 1,
+  "fixed_case_batch_size": 1,
+  "generation_batches": [
+    {
+      "batch_index": 1,
+      "batch_size": 1,
+      "case_ids": [
+        "syncam-cam07"
+      ],
+      "qualitative_only": false,
+      "seconds": 745.358
+    },
+    {
+      "batch_index": 2,
+      "batch_size": 1,
+      "case_ids": [
+        "syncam-scene2501-cam09"
+      ],
+      "qualitative_only": false,
+      "seconds": 719.579
+    },
+    {
+      "batch_index": 3,
+      "batch_size": 1,
+      "case_ids": [
+        "multicam-scene737-cam08"
+      ],
+      "qualitative_only": false,
+      "seconds": 718.416
+    },
+    {
+      "batch_index": 4,
+      "batch_size": 1,
+      "case_ids": [
+        "multicam-scene737-cam06"
+      ],
+      "qualitative_only": false,
+      "seconds": 720.734
+    }
+  ],
+  "case_timing_policy": "Shared batch compute time divided equally, plus per-case video saving time.",
+  "scene_count": 3,
+  "target_mse": 0.1262474814130234,
+  "training_normalized_mse": 0.02524949628260468,
+  "loss_only": false,
+  "skip_standard_videos": false,
+  "seconds": 2904.161,
+  "created_at": "2026-09-14T20:58:50.949018+08:00",
+  "scope": "Four calibrated target cases: two SynCam targets from different scenes and two MultiCam targets. The official validation scene and both qualified stage-1-unsampled scenes are retained. Every validation rechecks usage and the fixed training plan. Full user videos are qualitative only and excluded from all supervised error averages.",
+  "metric_definition": "Equal average over the fixed supervised cases and noise levels; target_mse divides only by target elements; training_normalized_mse also includes zeroed source elements in its denominator. No condition dropout or overlap. Compare checkpoints with the same suite hash, k and CP=4; these are monitoring metrics, not paper benchmark scores. Custom user-video cases have no target truth and are excluded from all loss aggregates.",
+  "run_id": "20260914-200636-331307-h20-1"
+}

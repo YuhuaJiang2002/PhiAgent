@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "run_id": "20260914-200636-331307-h20-1",
+  "status": "complete",
+  "checkpoint_step": 16000,
+  "checkpoint": "/mnt/datasets-livsyn/llq/OUTPUTS/validation/checkpoints/a4f1f46305bf1c20075b9b23b607bf07880ebb414e780fffe5b92eda63a3ce20.pt",
+  "checkpoint_sha256": "a4f1f46305bf1c20075b9b23b607bf07880ebb414e780fffe5b92eda63a3ce20",
+  "checkpoint_source_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "clips": [
+    {
+      "case_id": "syncam-cam07",
+      "generated": "videos/syncam-cam07/20260914-200636-331307-h20-1/generated_checkpoint016000.mp4",
+      "comparison": "videos/syncam-cam07/20260914-200636-331307-h20-1/comparison_checkpoint016000.mp4",
+      "inference": "videos/syncam-cam07/20260914-200636-331307-h20-1/inference.json",
+      "comparison_metadata": "videos/syncam-cam07/20260914-200636-331307-h20-1/comparison.json",
+      "frames": 81,
+      "generated_sha256": "b74af5cd44a687590e7aba4f60fbd186529199397d38f6043ae2ccd8d828812f",
+      "comparison_sha256": "b5fa8ca19fda64ee4ea9d330e8f78ada924a7e399cd6d9b6dad84502c7e420e0"
+    },
+    {
+      "case_id": "syncam-scene2501-cam09",
+      "generated": "videos/syncam-scene2501-cam09/20260914-200636-331307-h20-1/generated_checkpoint016000.mp4",
+      "comparison": "videos/syncam-scene2501-cam09/20260914-200636-331307-h20-1/comparison_checkpoint016000.mp4",
+      "inference": "videos/syncam-scene2501-cam09/20260914-200636-331307-h20-1/inference.json",
+      "comparison_metadata": "videos/syncam-scene2501-cam09/20260914-200636-331307-h20-1/comparison.json",
+      "frames": 81,
+      "generated_sha256": "f832dc2b67d841a2a3d1581fd7d59607ee615845eefa54e1121a39b80b4eefe5",
+      "comparison_sha256": "4b50f5a823850cf009960f4fc18d1142f149ea80c82626ba3a805007fe0830bd"
+    },
+    {
+      "case_id": "multicam-scene737-cam08",
+      "generated": "videos/multicam-scene737-cam08/20260914-200636-331307-h20-1/generated_checkpoint016000.mp4",
+      "comparison": "videos/multicam-scene737-cam08/20260914-200636-331307-h20-1/comparison_checkpoint016000.mp4",
+      "inference": "videos/multicam-scene737-cam08/20260914-200636-331307-h20-1/inference.json",
+      "comparison_metadata": "videos/multicam-scene737-cam08/20260914-200636-331307-h20-1/comparison.json",
+      "frames": 81,
+      "generated_sha256": "0ae04145a4c937c10f639835df6ae829f52f0d3364773334011e7c58bf06e699",
+      "comparison_sha256": "40bbd527d5f3dec2b593eb3778326e30e87dd66a7ce255d7a6f361eff3da55d7"
+    },
+    {
+      "case_id": "multicam-scene737-cam06",
+      "generated": "videos/multicam-scene737-cam06/20260914-200636-331307-h20-1/generated_checkpoint016000.mp4",
+      "comparison": "videos/multicam-scene737-cam06/20260914-200636-331307-h20-1/comparison_checkpoint016000.mp4",
+      "inference": "videos/multicam-scene737-cam06/20260914-200636-331307-h20-1/inference.json",
+      "comparison_metadata": "videos/multicam-scene737-cam06/20260914-200636-331307-h20-1/comparison.json",
+      "frames": 81,
+      "generated_sha256": "262c2710de0a428807c7c78b4393580869ceee2dcd2412d39048dadd7f25cf7b",
+      "comparison_sha256": "0f6683f84707ecf21a199af6debed48c14a9e32dcfa0db7f68093a3e2b1030c4"
+    }
+  ],
+  "groups": [],
+  "loss_history_complete": true,
+  "pipeline_config": null,
+  "video_config": null,
+  "stage": "stage1",
+  "created_at": "2026-09-14T20:07:14.159879+08:00",
+  "updated_at": "2026-09-14T20:59:03.682682+08:00",
+  "error": null
+}

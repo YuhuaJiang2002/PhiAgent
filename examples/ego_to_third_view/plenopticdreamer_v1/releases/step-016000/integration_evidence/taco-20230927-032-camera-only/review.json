@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "rejected",
+  "checkpoint_step": 16000,
+  "case_id": "taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+  "reviewed_frames": 81,
+  "total_frames": 81,
+  "source_sha256": "0e24f368796c8ccb3eb728cbe1fcf56d0c1c03939645855c6ad1c58ffac63103",
+  "camera_sha256": "e08cf5cbbbfc95c103ddf6de8625bc67c2b4e612e536a332d3c9773508e66e53",
+  "heldout_target_sha256": "3196450b30ebe3ffc1501fc49a8214ef6fddac66752b7d098653acdaf5957638",
+  "generated_sha256": "f4fb63a6d48942542c99a23ecc39bf0a0dcf22a565b1a661b112ffa352d94a85",
+  "comparison_sha256": "14b79365075cc8db997d1d258caf08cd8f0b3192479ec9d1e78d6c274e8b58a2",
+  "target_free_generation": true,
+  "quantitative": {
+    "generated_vs_target": {
+      "rgb_mse": 0.06452563142665463,
+      "rgb_mae": 0.1920892564285878,
+      "psnr_db": 11.90267736900016,
+      "luma_ssim": 0.37265628399898937
+    },
+    "copy_source_vs_target": {
+      "rgb_mse": 0.06534014776186986,
+      "rgb_mae": 0.20264613078615737,
+      "psnr_db": 11.848198877348981,
+      "luma_ssim": 0.3651498027133879
+    },
+    "gain_over_copy": {
+      "psnr_db": 0.054478491651179795,
+      "luma_ssim": 0.007506481285601441
+    },
+    "gain_over_step_010000": {
+      "rgb_mse_fraction": -0.215135178814047,
+      "rgb_mae_fraction": -0.15683714679236061,
+      "psnr_db": 1.0520513620808156,
+      "luma_ssim": 0.044915784925187996
+    }
+  },
+  "motion_diagnostic": {
+    "source_generated_energy_correlation": 0.6713564765192063,
+    "target_generated_energy_correlation": 0.11520664644903793,
+    "source_mean_frame_difference": 0.04290316626429558,
+    "generated_mean_frame_difference": 0.023497700691223145,
+    "target_mean_frame_difference": 0.0032210573554039
+  },
+  "visual_review": {
+    "camera_and_composition": "fail: output remains a close overhead source-like view; the fixed exo target shows the complete seated person, table, chair, and surrounding room",
+    "action_timing": "partially preserved from the ego source",
+    "hand_object_contact": "visually present but insufficient to compensate for the failed camera gate",
+    "identity_and_scene": "source table, hands, pan, and roller remain recognizable",
+    "temporal_stability": "generally stable and smoother than the ego source",
+    "decision": "reject for ego-to-fixed-exo use"
+  },
+  "scope": "Camera-only diagnostic with one unique ego RGB input repeated across the final checkpoint's four source-view slots. This does not test independent SIM control channels or accept ego-to-SIM-to-exo."
+}

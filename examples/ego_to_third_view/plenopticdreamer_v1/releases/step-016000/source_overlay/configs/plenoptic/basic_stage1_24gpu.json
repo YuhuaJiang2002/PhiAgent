@@ -1,0 +1,67 @@
+{
+  "world_size": 24,
+  "context_parallel_size": 8,
+  "gradient_accumulation": 1,
+  "learning_rate": 2e-05,
+  "betas": [
+    0.9,
+    0.999
+  ],
+  "weight_decay": 0.01,
+  "gradient_clip": 1.0,
+  "seed": 2026,
+  "max_steps": 16000,
+  "save_every": 100,
+  "activation_checkpointing": true,
+  "text_dropout": 0.2,
+  "video_dropout": 0.2,
+  "overlap_probability": 0.45,
+  "text_cache_entries": 256,
+  "cpu_threads": 4,
+  "output": "../OUTPUTS/basic_stage1_24gpu",
+  "data": {
+    "manifests": [
+      "../DATASETS/manifests/syncam_scenes.jsonl",
+      "../DATASETS/manifests/multicam_scenes.jsonl"
+    ],
+    "captions": "../DATASETS/captions/basic_stage1",
+    "split": "train",
+    "k": 1,
+    "frames": 81,
+    "height": 432,
+    "width": 768,
+    "seed": 2026,
+    "captioned_only": false,
+    "caption_mode": "online"
+  },
+  "phase": "stage1",
+  "context_schedule": [
+    {
+      "until_step": 10000,
+      "k": 1
+    },
+    {
+      "until_step": 14000,
+      "k": 2
+    },
+    {
+      "until_step": 15000,
+      "k": 3
+    },
+    {
+      "until_step": 16000,
+      "k": 4
+    }
+  ],
+  "paper_reference": "https://arxiv.org/html/2601.05239v1#S4.SS2",
+  "sampling_policy": "uniform_target_video_over_full_union; no extra dataset oversampling",
+  "dp_backend": "nccl",
+  "rdma_hca": "=mlx5_1,mlx5_2,mlx5_3,mlx5_4",
+  "rdma_gid_index": 3,
+  "rdma_tc": 236,
+  "cluster_nodes": [
+    0,
+    2,
+    3
+  ]
+}

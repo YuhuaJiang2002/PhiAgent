@@ -1,0 +1,55 @@
+{
+  "status": "preflight_passed",
+  "checkpoint_step": 16000,
+  "k": 4,
+  "context_parallel_size": 4,
+  "cases": [
+    {
+      "case_id": "taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+      "video_shape": [
+        5,
+        3,
+        81,
+        432,
+        768
+      ],
+      "target_input_zero": true,
+      "camera_provenance": {
+        "calibrated": true,
+        "camera_npz": {
+          "frames": 81,
+          "sha256": "e08cf5cbbbfc95c103ddf6de8625bc67c2b4e612e536a332d3c9773508e66e53",
+          "source_target_baseline_max": 1.420661449432373,
+          "source_target_baseline_min": 1.379388689994812
+        },
+        "dataset": "TACO-v1",
+        "frame": "TACO_capture_world",
+        "images_undistorted": true,
+        "license": "CC-BY-4.0",
+        "per_frame_aligned": true,
+        "pose_convention": "opencv_c2w",
+        "published_distortion_coefficients_retained_as_metadata": true,
+        "published_rectify_alpha": 0.0,
+        "schema": 1,
+        "selected_original_frames": {
+          "count": 81,
+          "last": 160,
+          "start": 0,
+          "stride": 2
+        },
+        "sequence": "20230927_032",
+        "source_camera": "head_mounted_egocentric",
+        "source_image_transform": "1920x1080 resized to 768x432",
+        "source_pose_conversion": "inverse of published per-frame world_to_camera",
+        "source_target_baseline_max_m": 1.420661449432373,
+        "source_target_baseline_min_m": 1.379388689994812,
+        "target_camera": "fixed_allocentric_21218078",
+        "target_image_transform": "Published rectified allocentric RGB used without reapplying distCoeff, matching the official K/R/T projector; center crop 2048x1152 at y=174; resize to 768x432",
+        "target_pose_conversion": "inverse of published fixed R,T world_to_camera",
+        "target_rgb_present_in_generation_directory": false,
+        "triplet": "(dust, roller, pan)",
+        "unit": "m"
+      }
+    }
+  ]
+}

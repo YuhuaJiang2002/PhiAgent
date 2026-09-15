@@ -1,0 +1,26 @@
+{
+  "status": "preflight_passed",
+  "checkpoint_step": 16000,
+  "k": 4,
+  "cases": 4,
+  "supervised_cases": 4,
+  "qualitative_cases": 0,
+  "split": "fixed_validation_v2",
+  "execution_host": "h20-1",
+  "suite": "configs/plenoptic/fixed_validation_v2.json",
+  "context_parallel_size": 4,
+  "holdout_proof": {
+    "status": "passed",
+    "checkpoint_step": 16000,
+    "protected_until_step": 16000,
+    "scenes": 2,
+    "training_identity_sha256": "ad618e337f675f21c1962cfd63ca35d06540931b173452a40c1c22548e49f379",
+    "definition": "Unseen in checkpoint ledgers and unsampled throughout this fixed stage-1 plan; these scenes are still members of the original training manifest."
+  },
+  "video_batch_size": 1,
+  "fixed_case_batch_size": 1,
+  "skip_standard_videos": false,
+  "planned_generation_batches": 4,
+  "checkpoint_source_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "generation_seed": 20260911
+}

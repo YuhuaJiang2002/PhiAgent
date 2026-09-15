@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "release_id": "plenopticdreamer-v1-step-016000",
+  "status": "historical_reproduction_snapshot",
+  "captured_at": "2026-09-15T10:58:53+08:00",
+  "binding_kind": "post_run_release_manifest",
+  "checkpoint_embedded_source_hash": false,
+  "weights_included": false,
+  "upstream": {
+    "repository": "https://github.com/nvidia-cosmos/cosmos-transfer2.5.git",
+    "commit": "2ff49d0717af02057ae79bc75c00fbff9da1b4e7",
+    "source_archive_sha256": "e447944ff3fcc4f4ecfb64d961e6200ae39d7aef20dd1f3fe38a69bfebf99b47"
+  },
+  "source_overlay": {
+    "directory": "source_overlay",
+    "file_count": 36,
+    "capture_archive_sha256": "a2e4e552257c8b26eb5b692b42a6d5a6031fdeb61932c219660adb469f750d93"
+  },
+  "integration_overlay": {
+    "directory": "integration_overlay",
+    "file_count": 4,
+    "description": "Exact deployed PhiAgent preparation, target-free launch, and held-out evaluation adapters used by the TACO check."
+  },
+  "evidence": {
+    "directory": "evidence",
+    "file_count": 15,
+    "capture_archive_sha256": "d3daff754d5b31446af2ee7bb36438465731b413d184b88c5e9bf1c1351fe33e"
+  },
+  "integration_evidence": {
+    "directory": "integration_evidence",
+    "file_count": 6,
+    "case_id": "taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+    "status": "rejected",
+    "review": "integration_evidence/taco-20230927-032-camera-only/review.json"
+  },
+  "payload": {
+    "manifest": "files.sha256",
+    "file_count": 61,
+    "manifest_sha256": "2dfa4cba708d3e5d7e59a197dd29de886dd8569664834d5543939716c130094c"
+  },
+  "training": {
+    "stage": "stage1",
+    "step": 16000,
+    "world_size": 24,
+    "context_parallel_size": 8,
+    "dataset_sha256": "60937d702e815ac8cb06ec4de2ecddb52c2e7483e498eff807999c160223daad",
+    "base_model_revision": "15a82a2ec231bc318692aa0456a36537c806e7d4",
+    "context_schedule": [
+      {"until_step": 10000, "k": 1},
+      {"until_step": 14000, "k": 2},
+      {"until_step": 15000, "k": 3},
+      {"until_step": 16000, "k": 4}
+    ]
+  },
+  "checkpoint": {
+    "kind": "resume",
+    "step": 16000,
+    "bytes": 6703192745,
+    "sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+    "identifier": "stage1:step-016000:f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3"
+  },
+  "inference_snapshot": {
+    "weights_included": false,
+    "bytes": 2240098149,
+    "tensor_count": 196,
+    "sha256": "a4f1f46305bf1c20075b9b23b607bf07880ebb414e780fffe5b92eda63a3ce20",
+    "source_checkpoint_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3"
+  },
+  "fixed_validation": {
+    "run_id": "20260914-200636-331307-h20-1",
+    "suite": "basic-fixed-val-v2-four-cases",
+    "suite_sha256": "ad5afb0f0469872a9aa312fc535b6f9a0cd71fd75e3c91159553e7c66e2ce6dd",
+    "cases": 4,
+    "frames_per_case": 81,
+    "target_mse": 0.1262474814130234,
+    "training_normalized_mse": 0.02524949628260468,
+    "rgb_mse": 0.07243199658979994,
+    "rgb_mae": 0.19435940185802875,
+    "psnr_db": 12.251050856878122,
+    "luma_ssim": 0.27413652440840547,
+    "copy_source_rgb_mse": 0.0695506701058719,
+    "copy_source_rgb_mae": 0.1939661551167539,
+    "copy_source_psnr_db": 12.105252221173618,
+    "copy_source_luma_ssim": 0.26165599760708197,
+    "interpretation": "Monitoring-only calibrated multiview suite; mixed by case and not an ego-to-SIM-to-exo acceptance result."
+  },
+  "camera_only_integration_check": {
+    "case_id": "taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+    "target_free_generation": true,
+    "reviewed_frames": 81,
+    "generated_sha256": "f4fb63a6d48942542c99a23ecc39bf0a0dcf22a565b1a661b112ffa352d94a85",
+    "psnr_db": 11.90267736900016,
+    "luma_ssim": 0.37265628399898937,
+    "psnr_gain_over_copy_db": 0.054478491651179795,
+    "ssim_gain_over_copy": 0.007506481285601441,
+    "status": "rejected",
+    "reason": "The output remains a close overhead source-like composition instead of the requested wide fixed exo view."
+  },
+  "environment": {
+    "python": "3.10.12",
+    "torch": "2.7.0+cu128",
+    "cuda": "12.8",
+    "torchvision": "0.22",
+    "numpy": "2.2.6",
+    "opencv": "4.11",
+    "decord": "0.6",
+    "transformers": "4.51.3",
+    "transformer_engine": "2.2+cu128.torch27",
+    "flash_attn": "2.7.3",
+    "triton": "3.3"
+  }
+}

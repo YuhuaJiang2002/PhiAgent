@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 from pathlib import Path
+import tempfile
 import unittest
 
 
@@ -69,6 +70,31 @@ class ReleaseContractTests(unittest.TestCase):
             text = path.read_text()
             self.assertNotIn("/mnt/datasets-livsyn", text, path)
             self.assertNotIn("/data3/llq", text, path)
+
+    def test_final_snapshot_payload_and_evidence_are_hash_bound(self):
+        verifier = load_module(
+            "v1_verify_final_release", ROOT / "tools/verify_final_release.py"
+        )
+        report = verifier.verify_release()
+        self.assertEqual(report["status"], "verified")
+        self.assertEqual(report["payload_files"], 61)
+        self.assertEqual(
+            report["checkpoint_sha256"],
+            "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+        )
+
+    def test_final_checkpoint_verifier_rejects_wrong_size(self):
+        verifier = load_module(
+            "v1_verify_final_release_checkpoint", ROOT / "tools/verify_final_release.py"
+        )
+        contract = json.loads(
+            (ROOT / "releases/step-016000/release.json").read_text()
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            wrong = Path(directory) / "step-016000.pt"
+            wrong.write_bytes(b"not the checkpoint")
+            with self.assertRaisesRegex(verifier.VerificationError, "size mismatch"):
+                verifier.verify_checkpoint(wrong, contract)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,74 @@
+{
+  "comparison": "/mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/heldout-evaluation/source-generated-heldout.mp4",
+  "comparison_sha256": "14b79365075cc8db997d1d258caf08cd8f0b3192479ec9d1e78d6c274e8b58a2",
+  "encoded": {
+    "height": 432,
+    "nb_read_frames": "81",
+    "r_frame_rate": "15/1",
+    "width": 2304
+  },
+  "evaluated_at": "2026-09-15T03:15:45.053987+00:00",
+  "evaluator_sha256": "9166b95a3b167167a6375895e812e08b0c56d0da7f2e363140a2c8b759a1e777",
+  "generated_sha256": "f4fb63a6d48942542c99a23ecc39bf0a0dcf22a565b1a661b112ffa352d94a85",
+  "generation_created_at": "2026-09-15T11:14:20.089916+08:00",
+  "generation_record": "/mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/generation/taco-20230927-032-ego-to-exo21218078-k1-camera-only-final/inference.json",
+  "has_target_reference_during_generation": false,
+  "heldout_target_absent_from_generation_inputs": true,
+  "heldout_target_sha256": "3196450b30ebe3ffc1501fc49a8214ef6fddac66752b7d098653acdaf5957638",
+  "invocation": "/mnt/datasets-livsyn/llq/ENVIRONMENTS/plenoptic-h20/bin/python /mnt/datasets-livsyn/llq/plenoptic-repro/integrations/phiagent/scripts/evaluate_plenoptic_heldout.py --runtime-root /mnt/datasets-livsyn/llq/plenoptic-repro --run-dir /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2 --source-video /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego.mp4 --target-video /data0/gyj/plenoptic-heldout/taco-dust-roller-pan-20230927-032-exo21218078-v2/external.mp4 --output /mnt/datasets-livsyn/llq/OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/heldout-evaluation --source-git-state /mnt/datasets-livsyn/llq/plenoptic-repro/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/source-git-state.json",
+  "metrics": {
+    "copy_source_vs_target": {
+      "luma_ssim": 0.3651498027133879,
+      "psnr_capped_at_100_db": false,
+      "psnr_db": 11.848198877348981,
+      "rgb_mae": 0.20264613078615737,
+      "rgb_mse": 0.06534014776186986
+    },
+    "definition": "All aligned frames at 432x768. RGB MSE/MAE use [0,1]; PSNR uses clip-mean RGB MSE, capped at 100 dB. SSIM uses BT.601 luminance, an 11x11 Gaussian window (sigma=1.5), population covariance and valid pixels. The generated MP4 is decoded after encoding. The baseline copies the first conditioning camera. Pixel errors measure agreement with the target; they are not estimated camera rotation/translation errors.",
+    "frames": 81,
+    "generated_source_rgb_mae": 0.16847522421169034,
+    "generated_vs_target": {
+      "luma_ssim": 0.37265628399898937,
+      "psnr_capped_at_100_db": false,
+      "psnr_db": 11.90267736900016,
+      "rgb_mae": 0.1920892564285878,
+      "rgb_mse": 0.06452563142665463
+    },
+    "height": 432,
+    "psnr_gain_over_copy_db": 0.054478491651179795,
+    "schema": 1,
+    "ssim_gain_over_copy": 0.007506481285601441,
+    "width": 768
+  },
+  "schema": 1,
+  "scope": "Held-out target pixels introduced only after target-free generation completed.",
+  "source_git": {
+    "available": true,
+    "deployed_source_sha256": {
+      "phiagent/rendering/plenoptic.py": "c7c037813b5ab54690ab8e8d517672e572fc3a015712292eb50a4246a1fc90b8",
+      "scripts/evaluate_plenoptic_heldout.py": "7008ca7cc476cca8dc36bb3be1683cb48e94fab33aae820eef95b759d5178345",
+      "scripts/prepare_plenoptic_taco_ego_exo.py": "12fa0fce02c291b3f77299fe7eb2e30575f9ed32457d7e8665752583cd867704",
+      "scripts/run_plenoptic_phiagent.py": "0d137229fb3d5cd33a1798cc414cf6e9f3c0cf2ecaab9c52de1026ce7d5f8cb1"
+    },
+    "revision": "ae92f90f04ae590945467c93cd7eab230c3ac8ac",
+    "status_short": [
+      " M examples/ego_to_third_view/automation/mesh_renderer.py",
+      " M examples/ego_to_third_view/stages/export_hawor_mano_meshes.py",
+      " M examples/ego_to_third_view/stages/run_sam2_video_point_track.py",
+      "?? examples/ego_to_third_view/adapters/livego_calibrated_bundle.py",
+      " M README.md",
+      " M docs/STATUS.md",
+      " M experiences/ledger.jsonl",
+      "?? docs/PLENOPTIC_EXTERNAL_RENDERER.md",
+      "?? phiagent/rendering/plenoptic.py",
+      "?? scripts/evaluate_plenoptic_heldout.py",
+      "?? scripts/prepare_plenoptic_taco_ego_exo.py",
+      "?? scripts/run_plenoptic_phiagent.py",
+      "?? tests/test_plenoptic.py"
+    ]
+  },
+  "source_sha256": "0e24f368796c8ccb3eb728cbe1fcf56d0c1c03939645855c6ad1c58ffac63103",
+  "status": "measured",
+  "suite_sha256": "26bb5debc3bc10d9744acf16981e3aa89c118c7a212892b705f2d8c0fa825e5f",
+  "target_reference_used_during_generation": false
+}

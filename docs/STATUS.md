@@ -467,10 +467,19 @@ locations are recorded per experiment below.
   under `examples/ego_to_third_view/plenopticdreamer_v1` provides the 2B camera
   DiT adaptation, exact spatial-width context parallelism, progressive `k=1..4`
   training, calibrated SynCam/MultiCam loading, online-caption resume, inference,
-  pinned assets, and physical-GPU provenance launch. Four CPU release-contract
-  tests and Python compilation pass. The imported source has not been rerun from
-  a clean PhiAgent GPU environment, no trained adaptation checkpoint is shipped,
-  and arbitrary uncalibrated ego RGB remains outside this V1 contract.
+  pinned assets, and physical-GPU provenance launch. The 24-H20 reproduction
+  completed step 16,000; its 6,703,192,745-byte checkpoint has SHA-256
+  `f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3`.
+  The exact 36-file final runtime overlay, four executed PhiAgent integration
+  files, 15 run-evidence files, six real-input integration-evidence files,
+  upstream source identity, and final evaluation tools are preserved under
+  `releases/step-016000` with a verified per-file manifest. Six CPU release-
+  contract tests and Python compilation pass. The weights are not shipped. The
+  four-case calibrated monitor is mixed—both SynCam cases beat copy-source
+  pixels and both MultiCam cases lose. A target-blind 81-frame TACO check gains
+  only 0.054478 dB PSNR over copying ego and remains a close overhead view
+  instead of the requested fixed wide exo view. Arbitrary ego RGB and full
+  ego-to-SIM-to-exo therefore remain unaccepted.
 
 - Photorealistic two-full-body-humanoid blanket folding, strict rejection:
   four frozen-seed MiniMax-H3 Ref2VA candidates ran at BF16/50 steps on four

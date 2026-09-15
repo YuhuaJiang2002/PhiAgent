@@ -1,0 +1,15 @@
+{
+  "step": 16000,
+  "micro_step": 16000,
+  "path": "../OUTPUTS/basic_stage1_24gpu/step-016000.pt",
+  "world_size": 24,
+  "base_revision": "15a82a2ec231bc318692aa0456a36537c806e7d4",
+  "schema": 1,
+  "trainer_version": 3,
+  "stage_id": "stage1",
+  "checkpoint_kind": "resume",
+  "retention": "permanent_stage_milestone",
+  "checkpoint_bytes": 6703192745,
+  "checkpoint_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "checkpoint_identifier": "stage1:step-016000:f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3"
+}

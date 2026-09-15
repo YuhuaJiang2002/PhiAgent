@@ -5,9 +5,11 @@ modify the existing geometry/H3 pipeline in the parent directory.
 
 **Status: PARTIAL.** The source package contains the training, checkpoint,
 inference, data, captioning, context-parallel, and verification paths used by
-the PlenopticDreamer stage-one recipe. Its CPU release checks pass. A clean GPU
-run has not yet been repeated from this PhiAgent checkout, and no trained
-PlenopticDreamer checkpoint is included.
+the PlenopticDreamer stage-one recipe. The final 16,000-step reproduction and
+its four-case fixed validation completed on H20 GPUs, and the exact final
+source overlay, checkpoint identity, and lightweight evidence are hash-bound
+under `releases/step-016000`. The weights themselves are not included, and the
+mixed calibrated-view results do not accept arbitrary ego-to-exo generation.
 
 ## What V1 implements
 
@@ -50,6 +52,37 @@ not infer metric calibration or an exo trajectory from arbitrary RGB alone.
 
 Model repositories, weights, datasets, captions, caches, and outputs stay in
 ignored directories and are never committed.
+
+## Final reproduction snapshot
+
+[`releases/step-016000`](releases/step-016000) is the immutable historical
+package for the completed run. It contains the 36-file custom source overlay,
+four exact PhiAgent integration files, 15 training/evaluation evidence files,
+six real-input integration evidence files, a 61-file SHA-256 inventory, the
+exact upstream Cosmos commit and source-archive hash, the resolved 24-GPU
+recipe, and the final checkpoint and inference-snapshot identities. It also
+preserves the fixed-suite runner and reporting tools used for the final
+evaluation.
+
+The final resume checkpoint is 6,703,192,745 bytes with SHA-256
+`f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3`.
+It is external to this repository. Verify the package, and optionally a
+separately transferred checkpoint, using only the standard library:
+
+```bash
+python tools/verify_final_release.py
+python tools/verify_final_release.py --checkpoint /path/to/step-016000.pt
+```
+
+The release binding is retrospective: the training checkpoint sidecar did not
+contain a source-tree digest. The package therefore preserves the exact retained
+final workspace and binds it at release time; it does not claim an impossible
+in-checkpoint build attestation after the fact.
+
+The captured custom overlay must be applied on top of the pinned public Cosmos
+Transfer 2.5 commit. Pulling the official repository recreates the base, but
+does not recreate the reproduction-specific model, trainer, progressive
+context, spatial-CP, or validation changes by itself.
 
 ## Pinned dependencies and assets
 
@@ -148,6 +181,26 @@ The CPU release contract does not import PyTorch or require a GPU:
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+The final fixed validation used four target-withheld calibrated cases, 81
+frames each. Averaged generated-versus-target metrics were RGB MSE `0.072432`,
+MAE `0.194359`, PSNR `12.251051 dB`, and luminance SSIM `0.274137`. The
+copy-first-source baseline was RGB MSE `0.069551`, MAE `0.193966`, PSNR
+`12.105252 dB`, and SSIM `0.261656`. Results were mixed by dataset and case:
+the model beat the copy baseline on both SynCam cases but lost on both MultiCam
+cases. These are monitoring metrics, not paper benchmark scores or an
+ego-to-SIM-to-exo acceptance result.
+
+The final weight also ran target-blind on all 81 frames of calibrated TACO
+sequence `20230927_032`, ego camera to fixed camera `21218078`. Relative to the
+step-010000 attempt, PSNR improved by `1.052051 dB` and SSIM by `0.044916`.
+Relative to copying the ego source, however, it gained only `0.054478 dB` and
+`0.007506` SSIM. The run supplied one unique ego RGB view, repeated across the
+final checkpoint's four source slots. Full chronological review rejects the
+output: it remains a close overhead, source-like view rather than the requested
+wide fixed exo view containing the complete person, table, chair, and room.
+This checkpoint may be kept as a low-trust visual proposal, but it is not an
+accepted ego-to-exo or ego-to-SIM-to-exo stage.
 
 The explicit GPU checks use small randomly initialized Camera DiTs; they test
 spatial-CP forward/backward equivalence and CP/DP gradient, freeze, checkpoint,

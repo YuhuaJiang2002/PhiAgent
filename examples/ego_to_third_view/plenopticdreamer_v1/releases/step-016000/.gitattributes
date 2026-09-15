@@ -1,0 +1,2 @@
+# Preserve the byte-exact historical source snapshot, including original spacing.
+source_overlay/** -whitespace

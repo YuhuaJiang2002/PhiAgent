@@ -1,0 +1,92 @@
+{
+  "status": "generated",
+  "checkpoint": "../OUTPUTS/basic_stage1_24gpu/step-016000.pt",
+  "checkpoint_step": 16000,
+  "checkpoint_sha256": "f7ad29d7e91e1e9674335b2368b079f63c8051e9d97a122b02bce97cac93d6b3",
+  "context_parallel_size": 4,
+  "cuda_visible_devices": "4,5,6,7",
+  "dataset": "custom",
+  "split": "val",
+  "case_id": "taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+  "scene_id": "phiagent/taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+  "custom_scene": {
+    "camera_file": "../DATASETS/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego-to-external-cameras.npz",
+    "camera_format": "opencv_npz",
+    "camera_provenance": {
+      "calibrated": true,
+      "camera_npz": {
+        "frames": 81,
+        "sha256": "e08cf5cbbbfc95c103ddf6de8625bc67c2b4e612e536a332d3c9773508e66e53",
+        "source_target_baseline_max": 1.420661449432373,
+        "source_target_baseline_min": 1.379388689994812
+      },
+      "dataset": "TACO-v1",
+      "frame": "TACO_capture_world",
+      "images_undistorted": true,
+      "license": "CC-BY-4.0",
+      "per_frame_aligned": true,
+      "pose_convention": "opencv_c2w",
+      "published_distortion_coefficients_retained_as_metadata": true,
+      "published_rectify_alpha": 0.0,
+      "schema": 1,
+      "selected_original_frames": {
+        "count": 81,
+        "last": 160,
+        "start": 0,
+        "stride": 2
+      },
+      "sequence": "20230927_032",
+      "source_camera": "head_mounted_egocentric",
+      "source_image_transform": "1920x1080 resized to 768x432",
+      "source_pose_conversion": "inverse of published per-frame world_to_camera",
+      "source_target_baseline_max_m": 1.420661449432373,
+      "source_target_baseline_min_m": 1.379388689994812,
+      "target_camera": "fixed_allocentric_21218078",
+      "target_image_transform": "Published rectified allocentric RGB used without reapplying distCoeff, matching the official K/R/T projector; center crop 2048x1152 at y=174; resize to 768x432",
+      "target_pose_conversion": "inverse of published fixed R,T world_to_camera",
+      "target_rgb_present_in_generation_directory": false,
+      "triplet": "(dust, roller, pan)",
+      "unit": "m"
+    },
+    "dataset": "custom",
+    "fps": 15,
+    "frames": 81,
+    "height": 432,
+    "original_video": "../DATASETS/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego.mp4",
+    "scene_id": "phiagent/taco-20230927-032-ego-to-exo21218078-k1-camera-only-final",
+    "split": "val",
+    "structurally_complete": true,
+    "videos": {
+      "source": "../DATASETS/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego.mp4"
+    },
+    "width": 768
+  },
+  "source_cameras": [
+    "source",
+    "source",
+    "source",
+    "source"
+  ],
+  "target_camera": "target",
+  "prompt": "A fixed wide third-person view of a person using a blue roller to dust a black pan on a round teal table. Preserve both hands, the tool-object interaction, the seated person's identity, and the static room layout.",
+  "seed": 20260912,
+  "input_sha256": {
+    "../DATASETS/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego-to-external-cameras.npz": "e08cf5cbbbfc95c103ddf6de8625bc67c2b4e612e536a332d3c9773508e66e53",
+    "../DATASETS/inputs/phiagent-taco-dust-roller-pan-20230927-032-ego-to-exo21218078-target-free-v2/ego.mp4": "0e24f368796c8ccb3eb728cbe1fcf56d0c1c03939645855c6ad1c58ffac63103"
+  },
+  "qualitative_only": true,
+  "has_target_reference": false,
+  "target_reference_used_during_generation": false,
+  "context_policy": "repeat_single_source",
+  "suite_sha256": "f60379316638234f7550d0da4b701b170d82c6c1ec5db8a0d400b065f7ea8932",
+  "video": "../OUTPUTS/phiagent/step-016000-taco-20230927-032-ego-to-exo21218078-k1-seed20260912-camera-only-final-v2/generation/taco-20230927-032-ego-to-exo21218078-k1-camera-only-final/generated.mp4",
+  "seconds": 645.664,
+  "k": 4,
+  "frames": 81,
+  "height": 432,
+  "width": 768,
+  "denoising_steps": 35,
+  "guidance": 1.5,
+  "shift": 5.0,
+  "created_at": "2026-09-15T11:14:20.089916+08:00"
+}
