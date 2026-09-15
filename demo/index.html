@@ -369,19 +369,19 @@
       </section>
 
       <section class="grid" aria-label="Demo videos">
-        <article class="featured" id="ego-to-third-view-v8">
+        <article class="featured" id="ego-to-third-view">
           <video controls muted loop playsinline preload="metadata">
-            <source src="showcase/ego-to-third-view-v8.mp4?v=1" type="video/mp4">
+            <source src="showcase/ego-sim-phiagent.mp4?rev=labels" type="video/mp4">
             Your browser does not support embedded MP4 video.
           </video>
           <div class="copy">
             <p class="status-partial">PARTIAL · reviewed single-scene result</p>
             <h2>Ego → simulation → fixed third-person video</h2>
-            <p><strong>Left:</strong> unchanged first-person tabletop action. <strong>Center:</strong> reconstructed SIM v35 with a stable human rig. <strong>Right:</strong> DiT v8 from the fixed third-person camera, event-aligned to SIM. The 12-second sequence moves the alarm clock, small blue cup/cylinder, and tall cylinder into place.</p>
-            <p class="evidence-boundary"><strong>Pipeline:</strong> hand/object perception and metric scene reconstruction → fixed-length shared-torso/contact stabilization → target-camera SIM → full-frame pre-review → H3 generation → full-frame post-review, bounded regeneration or timing repair → EGO | SIM | DiT delivery. The batch implementation includes pinned Sol-Attn and FirstBlockCache, output-error gates, an in-process resident worker, and same-NUMA four-GPU selection. Multi-node RDMA and a cross-CLI persistent service are not implemented or benchmarked. This is visual single-scene evidence, not force-verified physics, arbitrary-RGB automation, or real-robot execution.</p>
-            <a class="video-link" href="showcase/ego-to-third-view-v8.mp4?v=1">Open MP4</a>
+            <p><strong>Left — EGO:</strong> unchanged first-person tabletop action. <strong>Center — SIM:</strong> the reconstructed hands, fixed-length arms/shared torso, tracked objects, and synthetic scene are rasterized from a fixed target camera. <strong>Right — PhiAgent Generated Result:</strong> the appearance-rendered third-person result, event-aligned to SIM. The sequence moves the alarm clock, small blue cup/cylinder, and tall cylinder into place.</p>
+            <p class="evidence-boundary"><strong>SIM implementation:</strong> nvdiffrast rasterizes the static and dynamic triangle meshes and resolves target-view depth/occlusion; OpenCV supplies approximate projected shadows, material processing, and composition. It is a constrained geometric replay, not MuJoCo-style contact dynamics. <strong>Pipeline:</strong> hand/object perception and metric 3-D reconstruction → fixed-length shared-torso/contact stabilization → target-camera SIM → full-frame review → H3 generation → full-frame review and bounded regeneration/timing repair → EGO | SIM | PhiAgent delivery. Sol-Attn, FirstBlockCache, output-error gates, a batch-resident worker, and same-NUMA four-GPU selection are integrated. Multi-node RDMA and a cross-CLI persistent service are not implemented or benchmarked. This is visual single-scene evidence, not force-verified physics, arbitrary-RGB automation, or real-robot execution.</p>
+            <a class="video-link" href="showcase/ego-sim-phiagent.mp4?rev=labels">Open MP4</a>
             ·
-            <a class="video-link" href="showcase/ego-to-third-view-v8.json?v=1">Inspect evidence</a>
+            <a class="video-link" href="showcase/ego-sim-phiagent.json?rev=labels">Inspect evidence</a>
             ·
             <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/tree/main/examples/ego_to_third_view">Code and batch guide</a>
           </div>

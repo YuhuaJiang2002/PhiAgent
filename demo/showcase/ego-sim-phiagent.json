@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "title": "EGO to SIM to PhiAgent fixed third-person tabletop replay",
+  "status": "PARTIAL",
+  "media": {
+    "path": "ego-sim-phiagent.mp4",
+    "sha256": "55324abab61b4e295d99c1391ecbf1f508c9c0a0c605d99dfc7f10812dc4ed81",
+    "codec": "H.264/AVC",
+    "pixel_format": "yuv420p",
+    "width": 2304,
+    "height": 620,
+    "fps": 24,
+    "frames": 288,
+    "duration_s": 12,
+    "panels": [
+      "EGO",
+      "SIM | nvdiffrast geometric replay",
+      "PhiAgent Generated Result"
+    ]
+  },
+  "pipeline_source_snapshot": "ae92f90f04ae590945467c93cd7eab230c3ac8ac",
+  "sim_rendering": {
+    "classification": "Constrained target-camera geometric replay; not a contact-dynamics simulation",
+    "rasterizer": "nvdiffrast.torch.RasterizeCudaContext with FoundationPose nvdiffrast_render",
+    "rasterized_geometry": [
+      "Synthetic static room, table, mat, and partitions",
+      "Reconstructed MANO hand meshes",
+      "Fixed-length arm segments and shared torso mesh",
+      "Tracked alarm-clock and cylinder object meshes"
+    ],
+    "visibility": "Per-pixel nvdiffrast depth buffers compose static and dynamic meshes from the fixed target camera",
+    "opencv_role": [
+      "Observed mat-color and texture processing",
+      "Approximate soft projected shadows",
+      "Frame and three-panel video composition"
+    ],
+    "constraints": [
+      "Source-world actor origin is independent of the render camera",
+      "Upper-arm and forearm lengths remain constant",
+      "Both arms connect to one stable shared torso",
+      "Reviewed grasp intervals stabilize relative hand/object geometry",
+      "Object persistence and an upright-clock prior are imposed for this scene"
+    ],
+    "not_established": [
+      "Force closure",
+      "Collision-free dynamics",
+      "Physically simulated contact",
+      "Real-robot execution"
+    ]
+  },
+  "phiagent_generation": {
+    "input": "Reviewed target-camera SIM, source appearance evidence, and scene/action prompt",
+    "generator": "H3 Ref2VA path with PhiAgent review and repair orchestration",
+    "output": "Fixed third-person appearance-rendered video",
+    "timing_repair": "Monotone C1 PCHIP nearest-frame selection; no optical-flow synthesis or new H3/SIM generation",
+    "repeat_transitions": 37,
+    "maximum_source_frame_step": 3,
+    "annotation_uncertainty_frames": "approximately 2-4"
+  },
+  "component_hashes": {
+    "sim": "2766159e7fcc6fccdf4d700cef2fb94e04638ede02dd8dfab6ae820c422987f9",
+    "generated_source_before_labeling": "7f2a60ef370b0814b7f99b9590ffeae4bac434d52565614905e75c8512251560",
+    "previous_three_panel_delivery": "c17c4fa8dbdbcc175269783f79e66172fcdfa503203da52d974c505671ae14cc"
+  },
+  "publication_review": {
+    "date": "2026-09-15",
+    "inspected_frames": {"ranges": [[0, 287]]},
+    "result": "publish_with_limitations",
+    "observations": [
+      "All panel labels remain fixed and contain no experiment version numbers.",
+      "The clock, small blue cylinder, and tall cylinder remain identifiable through the sequence.",
+      "The fixed third-person camera, background, torso, arms, and action order remain visually continuous."
+    ]
+  },
+  "acceleration_scope": {
+    "implemented": [
+      "Pinned Sol-Attn and FirstBlockCache integration",
+      "Consumed-output numerical gates and bounded temporary-memory statistics",
+      "In-process multi-request resident H3 worker with independent cache epochs",
+      "Cooperative same-NUMA four-GPU UUID selection and leases"
+    ],
+    "not_claimed": [
+      "Matched real-H3 warm-request speedup for the resident/same-NUMA path",
+      "Cross-CLI persistent serving",
+      "Multi-node RDMA transport or benchmark"
+    ]
+  },
+  "limitations": [
+    "One historical real tabletop scene; no additional-scene end-to-end acceptance",
+    "Not unattended raw-RGB calibration or a built-in autonomous VLM",
+    "Not exact 3-D contact, force closure, collision certification, or real-robot execution",
+    "Nearest-frame timing repair can introduce visible cadence changes",
+    "The three-panel delivery is a lossy H.264 encode, not pixel-identical preservation"
+  ]
+}
