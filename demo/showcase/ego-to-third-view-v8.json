@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "title": "Ego to fixed third-person tabletop replay, SIM v35 and DiT v8",
+  "status": "PARTIAL",
+  "media": {
+    "path": "ego-to-third-view-v8.mp4",
+    "sha256": "c17c4fa8dbdbcc175269783f79e66172fcdfa503203da52d974c505671ae14cc",
+    "codec": "H.264/AVC",
+    "width": 2304,
+    "height": 620,
+    "fps": 24,
+    "frames": 288,
+    "duration_s": 12,
+    "panels": [
+      "EGO - UNCHANGED",
+      "SIM v35 - UNCHANGED",
+      "DiT v8 - EVENT-ALIGNED TIMELINE"
+    ]
+  },
+  "pipeline_source_snapshot": "ae92f90f04ae590945467c93cd7eab230c3ac8ac",
+  "component_hashes": {
+    "sim_v35": "2766159e7fcc6fccdf4d700cef2fb94e04638ede02dd8dfab6ae820c422987f9",
+    "dit_v7_source": "543c7c48c3df55185a86f4a524b7eb6a00a97c2dd7f0abd58ab0cda4967e466b",
+    "dit_v8": "7f2a60ef370b0814b7f99b9590ffeae4bac434d52565614905e75c8512251560"
+  },
+  "publication_review": {
+    "date": "2026-09-15",
+    "inspected_frames": {
+      "ranges": [[0, 287]]
+    },
+    "result": "publish_with_limitations",
+    "observations": [
+      "The clock, small blue cylinder, and tall cylinder remain identifiable through the full sequence.",
+      "The fixed third-person camera, background, torso, arms, and action order remain visually continuous.",
+      "SIM and DiT event neighborhoods were compared for the clock release, blue-cylinder carry and release, and tall-cylinder grip/carry/final hold."
+    ]
+  },
+  "timing": {
+    "method": "Monotone C1 PCHIP output-to-source map with nearest original-frame selection; no optical-flow synthesis and no new H3 or SIM generation.",
+    "anchor_count": 19,
+    "repeat_transitions": 37,
+    "maximum_source_frame_step": 3,
+    "annotation_uncertainty_frames": "approximately 2-4",
+    "held_out_blue_horizontal_progress_error_s": [-0.0416667, 0, 0.0833333, 0.125, 0.125]
+  },
+  "acceleration_scope": {
+    "implemented": [
+      "Pinned Sol-Attn and FirstBlockCache integration",
+      "Consumed-output numerical gates and bounded temporary-memory statistics",
+      "In-process multi-request resident H3 worker with independent cache epochs",
+      "Cooperative same-NUMA four-GPU UUID selection and leases"
+    ],
+    "not_claimed": [
+      "Matched real-H3 warm-request speedup for the new resident/same-NUMA path",
+      "Cross-CLI persistent serving",
+      "Multi-node RDMA transport or benchmark"
+    ]
+  },
+  "limitations": [
+    "One historical real tabletop scene; no additional-scene end-to-end acceptance",
+    "Not unattended raw-RGB calibration or a built-in autonomous VLM",
+    "Visual overlap and imposed contact constraints are not exact 3-D contact, force closure, or collision certification",
+    "Not real-robot execution",
+    "Nearest-frame retiming can introduce visible cadence changes",
+    "The unchanged EGO/SIM labels describe source content and timing; the three-panel delivery is a lossy H.264 encode, not pixel-identical preservation"
+  ]
+}

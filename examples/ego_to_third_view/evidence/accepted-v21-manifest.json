@@ -1,0 +1,19 @@
+{
+  "frames": 360,
+  "fps": 30,
+  "duration_s": 12,
+  "motion_source_sha256": {
+    "alarm_clock": "222aa2c7f8e0aa2b27396927c8dc1cce64bef71d70d90a5bdf680a80c91569c4",
+    "small_cylinder": "db9750298b77f9da9347f20b5dc9793179f432376f82ed72c4d9f38eaf7bc97c",
+    "tall_cylinder": "6d862fa7ef853c95855712ae898de9f9520f4d2541e5fa2d991b94274e922ffb"
+  },
+  "mat_color_from_observation_rgb": [
+    101.0,
+    116.0,
+    97.0
+  ],
+  "scene": "Synthetic fixed lab, not reconstruction of unseen room. Mat material colour estimated from observations; book/occluder residuals intentionally removed.",
+  "shadows": "Approximate soft projected shadows, not contact/physics evidence.",
+  "foreground_mask": "Table including contact region, hands and all objects; lossless FFV1.",
+  "elapsed_s": 44.54862059606239
+}

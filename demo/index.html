@@ -369,6 +369,24 @@
       </section>
 
       <section class="grid" aria-label="Demo videos">
+        <article class="featured" id="ego-to-third-view-v8">
+          <video controls muted loop playsinline preload="metadata">
+            <source src="showcase/ego-to-third-view-v8.mp4?v=1" type="video/mp4">
+            Your browser does not support embedded MP4 video.
+          </video>
+          <div class="copy">
+            <p class="status-partial">PARTIAL · reviewed single-scene result</p>
+            <h2>Ego → simulation → fixed third-person video</h2>
+            <p><strong>Left:</strong> unchanged first-person tabletop action. <strong>Center:</strong> reconstructed SIM v35 with a stable human rig. <strong>Right:</strong> DiT v8 from the fixed third-person camera, event-aligned to SIM. The 12-second sequence moves the alarm clock, small blue cup/cylinder, and tall cylinder into place.</p>
+            <p class="evidence-boundary"><strong>Pipeline:</strong> hand/object perception and metric scene reconstruction → fixed-length shared-torso/contact stabilization → target-camera SIM → full-frame pre-review → H3 generation → full-frame post-review, bounded regeneration or timing repair → EGO | SIM | DiT delivery. The batch implementation includes pinned Sol-Attn and FirstBlockCache, output-error gates, an in-process resident worker, and same-NUMA four-GPU selection. Multi-node RDMA and a cross-CLI persistent service are not implemented or benchmarked. This is visual single-scene evidence, not force-verified physics, arbitrary-RGB automation, or real-robot execution.</p>
+            <a class="video-link" href="showcase/ego-to-third-view-v8.mp4?v=1">Open MP4</a>
+            ·
+            <a class="video-link" href="showcase/ego-to-third-view-v8.json?v=1">Inspect evidence</a>
+            ·
+            <a class="video-link" href="https://github.com/YuhuaJiang2002/PhiAgent/tree/main/examples/ego_to_third_view">Code and batch guide</a>
+          </div>
+        </article>
+
         <article class="featured" id="joyai-late-contact">
           <video controls muted autoplay loop playsinline preload="metadata"
             poster="showcase/joyai-late-flower-contact-seed17-v1.jpg?v=2">

@@ -73,6 +73,58 @@ strategies, not calibrated cloth physics or real-robot execution. See the
 
 Click a preview below to open its MP4.
 
+### Ego → SIM → fixed third-person DiT replay
+
+[Play the 12-second EGO | SIM | DiT comparison](https://yuhuajiang2002.github.io/PhiAgent/#ego-to-third-view-v8)
+or open the [direct MP4](https://yuhuajiang2002.github.io/PhiAgent/showcase/ego-to-third-view-v8.mp4).
+The left panel preserves the first-person tabletop demonstration, the center
+panel replays the reconstructed motion as SIM v35, and the right panel shows the
+fixed third-person DiT result. In this historical single-scene result the person
+moves an alarm clock, a small blue cylinder/cup, and a tall cylinder into place.
+All three panels contain 288 frames at 24 FPS (12 seconds). DiT v8 preserves the
+accepted v7 visual content through monotone PCHIP nearest-frame selection and an
+H.264 re-encode; it performs no new H3 inference and introduces 37 repeated-frame
+transitions while aligning the action events.
+
+The reproducible code and detailed contracts live in
+[`examples/ego_to_third_view`](examples/ego_to_third_view):
+
+1. Scene-specific perception reconstructs camera-space MANO hands with HaWoR,
+   reviewed SAM2 object masks, VGGT-Omega camera/depth, SAM3D object geometry,
+   and FoundationPose trajectories. These historical adapters require external
+   model environments and licensed assets.
+2. The observations are aligned into an explicit metric `scene_world` bundle.
+   A stable shared torso, source-world actor origin, constant per-person arm
+   lengths, reviewed grasp intervals, object persistence, and an independent
+   target camera constrain the SIM replay. These are geometric/modeling
+   constraints, not force or collision certification.
+3. The batch DAG runs `reconstruct → stabilize → render → pre-review → generate
+   → post-review → deliver`. Every clip has hash-bound state, resumable stages,
+   isolated attempts, and a bounded repair budget; failed candidates remain
+   available instead of being overwritten.
+4. Pre- and post-generation review packets cover every frame and require nine
+   checks: actor origin, limb lengths, torso, contacts, identity, occlusion,
+   camera, timing, and background. A configured human/Codex/VLM reviewer may
+   accept, request input, route a repair upstream, regenerate DiT, or—only for an
+   otherwise accepted timing error—apply reviewed monotone retiming.
+
+The H3 path integrates pinned Sol-Attn and FirstBlockCache with consumed-output
+numerical gates, bounded temporary-memory statistics, text-encoder offload, a
+model-resident worker reused across requests within one batch invocation, and
+cooperative selection of four free GPU UUIDs on the same NUMA node. The published
+v7 run measured 244.65 seconds of loading and 803.48 seconds of denoising, but it
+used a cross-NUMA GPU group; the newer same-NUMA/resident path has CPU lifecycle
+tests, not a matched real-H3 warm-speed benchmark. Cross-CLI persistent serving
+and multi-node RDMA transport are not implemented or performance-validated here.
+
+This result is `PARTIAL`: it demonstrates one reviewed ego-to-fixed-third-view
+route and an event-aligned visual output. It does not establish unattended raw-RGB
+calibration, generalization to additional real scenes, exact 3-D contact, physics
+verification, or real-robot execution. See the
+[batch guide](examples/ego_to_third_view/AUTOMATION.md),
+[accepted-file evidence](examples/ego_to_third_view/evidence/accepted-v35-v8.json),
+and [publication record](demo/showcase/ego-to-third-view-v8.json).
+
 ### URDF-constrained RM65 simulation replay
 
 [![PhiAgent folding video and synchronized RM65-B MuJoCo replay](demo/showcase/rm65-ag2f90c-source-vs-simulation-v16.jpg)](https://yuhuajiang2002.github.io/PhiAgent/#rm65-simulation-replay)
