@@ -379,6 +379,19 @@ demonstrates motion-phase and screen-space alignment only: the garment motion
 remains inherited from the source video and is not driven by simulated contact
 or cloth dynamics.
 
+#### PhiAgent AC One Robot-Arm Joint-Angle Estimation
+
+[![ACONE-E0004 temporal real-camera and MuJoCo comparison from source seconds 60-120](demo/showcase/acone-e0004-temporal-real-mujoco-main-center-60-120s.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-e0004-temporal-real-mujoco-main-center-60-120s.mp4)
+
+[Play the one-minute three-panel comparison](https://yuhuajiang2002.github.io/PhiAgent/showcase/acone-e0004-temporal-real-mujoco-main-center-60-120s.mp4)
+
+The three panels have distinct roles: the left panel is the
+real video captured by AC One's main camera; the center panel is a simulation
+render from the matching main-camera viewpoint, driven by robot-joint motion
+predicted by PhiAgent; and the right panel is the complete panoramic simulation
+of the same PhiAgent-predicted joint motion. The resulting comparison video is
+presented as an output demo of the `RoboPEPP-ACOne` project.
+
 ### Confidence-routed three-hand comparison
 
 [![Confidence-routed three-hand comparison](demo/showcase/three-hand-confidence-routed.jpg)](https://yuhuajiang2002.github.io/PhiAgent/showcase/three-hand-confidence-routed.mp4)
