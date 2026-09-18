@@ -1,13 +1,16 @@
-# TI2V 方法实验
+# TI2V：任务约束的关系修复
 
-本目录收录 PhiAgent 的文本与首帧视频生成（TI2V）方法代码：技能优化、有限修正、关系证据修复、配对消融，以及原始请求的复核工具。模型推理和官方评分只在授权服务器运行；纯合成单元测试可在普通 CPU 上运行。
+本目录提供当前 TI2V 候选方法：将失败视频中的任务、实体和动作关系绑定后，编译成一处有限技能修改，再用固定的生成与选择协议验证。具体机制、相对 VideoWeaver 的改进假设和完整对比见 [METHOD.md](METHOD.md)，统一调用入口为 [method.py](method.py)。
 
-当前主线固定原五项视频门槛、选择规则和 EWMBench 官方评分，改进生成提示及技能。人工评审和 evaluator 改进由合作者负责，本目录没有启用新的双向偏好评审器。
+当前候选的视频质量评分尚未完成。历史 Ours-v2 在 BLEU、hsd 均值上领先 VideoWeaver 适配版，其余三项落后；不能据此宣称整体更好。模型推理和官方评分只在授权服务器运行；纯合成单元测试可在普通 CPU 上运行。
+
+当前主线固定原五项视频门槛、选择规则和 EWMBench 官方评分，改进生成提示及技能。人工评审已取消，evaluator 改进由合作者负责，本目录没有启用新的双向偏好评审器。
 
 ## 代码入口
 
 | 路径 | 内容 |
 |---|---|
+| `method.py` | 当前候选的统一提案入口、任务前提和决策留存 |
 | `integrations/skilladam_ti2v/backend.py` | 远端生成、原五门槛审查、选择和官方评分队列 |
 | `integrations/skilladam_ti2v/adapter.py` | 可选的官方 SkillAdam 适配器 |
 | `integrations/skilladam_ti2v/relational_repair.py` | 证据绑定、关系模板、有限文本替换 |

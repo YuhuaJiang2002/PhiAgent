@@ -1,5 +1,5 @@
 {
-  "scope": "Exact source snapshot from the working repository; experiment runs retain their own frozen source manifests",
+  "scope": "Source snapshot plus public method entry point and synthetic contracts; experiment runs retain their own frozen source manifests",
   "files": {
     "integrations/skilladam_ti2v/__init__.py": "b9b5185889f336c9a1f51b2605c6ff226157da0e1c73617d282b0fcd93505c9f",
     "integrations/skilladam_ti2v/adapter.py": "7e5cead544fd9a2e3e60c763053f6717d91080bd23ed336737ed432a9e4f7724",
@@ -34,6 +34,9 @@
     "scripts/run_ti2v_extended_generation.py": "9a768fdb8080ebd10f33f7f82d83319e9dd2c367dcdb82273842a0f47729a028",
     "tests/test_ti2v_extended_generation.py": "0521c016ffd100e24b4306ed913e28ea2a405f77e114feffe8cfcc6d5e0e04c6",
     "scripts/ti2v_frozen_manifest.py": "cd21361e135c06944ae0cc2851656e177246076776acb9311dbe53731b1205a9",
-    "tests/test_ti2v_frozen_manifest.py": "2cb7ad3bc5516aeef06fbcf8deb8b8853b0b7e1e095f98d8c7b3a71f00194f8f"
+    "tests/test_ti2v_frozen_manifest.py": "2cb7ad3bc5516aeef06fbcf8deb8b8853b0b7e1e095f98d8c7b3a71f00194f8f",
+    "method.py": "c9592ec00a7e29db51771e01b1daae594c57242b99722918f64b23974bf3d592",
+    "tests/test_method.py": "b5824f73c8f2b482e68b00b6557ebf0f3657a8a3fb7e230a8e0c9779bfb09d8b",
+    "evidence/historical-paired-analysis.json": "65c555db73faa854061aac5bad9e2a579da6e993153588e18c3cacdc1161adec"
   }
 }
