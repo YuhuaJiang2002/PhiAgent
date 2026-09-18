@@ -23,6 +23,9 @@
 | `qwen.lock` | 所有共用 Qwen 服务的任务共享同一个锁目标 |
 | `score-queue/` | 官方评分请求与结果队列，由独立评分服务处理 |
 
+冻结清单可由 `scripts.ti2v_frozen_manifest.freeze_manifest(run_root)` 生成。
+它只包括必需的输入、配置和源码，排除正在写入的日志与运行状态；缺少文件或源码符号链接越出实验目录时拒绝冻结。
+
 `auxiliary` 至少提供实际服务的 `endpoint` 和 `served_model`，另保存精确模型 revision、服务进程和 GPU 绑定。CPU 控制进程要求 `CUDA_VISIBLE_DEVICES=''`，GPU 服务进程必须使用验证后的物理设备。示例清单见 `configs/paired-generation.example.json`；占位符必须在服务器上解析并冻结。
 
 当前开发清单检查固定为 20 个案例及三个种子 20260910、20260911、20260912。更换数据集时必须新建协议，并同时更新清单验证，不能把开发结果直接当成完整测试集成绩。

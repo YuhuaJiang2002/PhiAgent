@@ -32,6 +32,8 @@
     "tests/test_video_meta_rsi.py": "debc47a4aa1f18e55618728a71c2c529c57d709fb42be92f1607a711996296f9",
     "tests/test_video_pareto_rsi.py": "6782187532064578cd35ee0c71ea121e2e84f7454aa7792df7d561f5db15a8d6",
     "scripts/run_ti2v_extended_generation.py": "9a768fdb8080ebd10f33f7f82d83319e9dd2c367dcdb82273842a0f47729a028",
-    "tests/test_ti2v_extended_generation.py": "0521c016ffd100e24b4306ed913e28ea2a405f77e114feffe8cfcc6d5e0e04c6"
+    "tests/test_ti2v_extended_generation.py": "0521c016ffd100e24b4306ed913e28ea2a405f77e114feffe8cfcc6d5e0e04c6",
+    "scripts/ti2v_frozen_manifest.py": "cd21361e135c06944ae0cc2851656e177246076776acb9311dbe53731b1205a9",
+    "tests/test_ti2v_frozen_manifest.py": "2cb7ad3bc5516aeef06fbcf8deb8b8853b0b7e1e095f98d8c7b3a71f00194f8f"
   }
 }
