@@ -1,45 +1,58 @@
-# TI2V 开发记录
+# TI2V development results
 
-截至 2026-09-18。以下均来自已多次使用的 20 案例 × 3 种子开发集；未达到完整公开基准的 SOTA 证据要求。
+Evidence snapshot: September 18, 2026. All completed results below use the previously opened 20-case development set with three seeds per case. They do not establish a full public-benchmark SOTA result.
 
-## 已完成的统一指标对比
+## Complete comparison under one scoring protocol
 
-| 方法 | BLEU ↑ | CLIP ↑ | hsd ↑ | dyn ↑ | nDTW ↑ |
+| Method | BLEU ↑ | CLIP ↑ | hsd ↑ | dyn ↑ | ndtw ↑ |
 |---|---:|---:|---:|---:|---:|
 | MiniMax | 0.201205 | 88.915442 | 0.298517 | 0.204933 | 0.293650 |
-| Ours-v2 | 0.215548 | 89.223632 | 0.337533 | 0.250167 | 0.333533 |
-| VideoWeaver 适配 | 0.206252 | 89.472307 | 0.332883 | 0.291683 | 0.357150 |
-| SkillAdam 完整循环适配 | 0.199855 | 89.133862 | 0.335967 | 0.259583 | 0.329717 |
-| PhiAgent-RSI | 0.217046 | 89.317654 | 0.320183 | 0.236467 | 0.327150 |
+| Historical Ours-v2 | 0.215548 | 89.223632 | 0.337533 | 0.250167 | 0.333533 |
+| VideoWeaver adaptation | 0.206252 | 89.472307 | 0.332883 | 0.291683 | 0.357150 |
+| SkillAdam full-loop adaptation | 0.199855 | 89.133862 | 0.335967 | 0.259583 | 0.329717 |
+| PhiAgent-RSI, prespecified primary | 0.217046 | 89.317654 | 0.320183 | 0.236467 | 0.327150 |
 
-来源是统一逐视频字幕 seed 协议下的官方代码评分，原实验标识为 `20260916T032105Z`。VideoWeaver 与 SkillAdam 行是任务适配，历史优化成本不同。Ours-v2 在 BLEU/hsd 均值上较高，在 CLIP/dyn/nDTW 上低于 VideoWeaver。
+Run `20260916T032105Z` scored all 60 outputs per row with the official metric code and a common per-video caption-seed protocol. VideoWeaver and SkillAdam are TI2V adaptations; historical optimization costs differ. Ours-v2 has higher BLEU and hsd means than VideoWeaver and lower CLIP, dyn, and ndtw. The paired intervals in [METHOD.md](METHOD.md) all cross zero.
 
-## 修复提案诊断
+## SkillAdam integration and crossed ablation
 
-前两轮有限关系修复均为 0/60 合格结构化修改，按预设条件停止，没有生成新视频。后续四臂实验首轮因 actor 字段不一致也全部为零，修正冗余字段编码后得到：
+SkillAdam completed two rounds and accepted both updates. The separate bounded PhiAgent optimizer rejected both and retained its initial skill. Small validation-batch gains did not establish complete-set superiority. The integration and frozen learned skill are documented in [SKILLADAM_EXPLORATION.md](SKILLADAM_EXPLORATION.md).
 
-| 分支 | 合格修改 | 案例数 | 调用数 | tokens |
+| Optimizer and frame sampling | BLEU ↑ | CLIP ↑ | hsd ↑ | dyn ↑ | ndtw ↑ |
+|---|---:|---:|---:|---:|---:|
+| PhiAgent bounded updates + uniform | 0.211015 | 89.192610 | 0.325833 | 0.245550 | 0.331750 |
+| PhiAgent bounded updates + event (prespecified primary) | 0.217046 | 89.317654 | 0.320183 | 0.236467 | 0.327150 |
+| SkillAdam + uniform | 0.199855 | 89.133862 | 0.335967 | 0.259583 | 0.329717 |
+| SkillAdam + PhiAgent event sampling | 0.205104 | 88.906126 | 0.319867 | 0.249867 | 0.312417 |
+
+Each row contains 60/60 results. Within each optimizer, both sampling variants reuse the same generated candidates. The SkillAdam-plus-event combination increased BLEU but reduced the other four metrics relative to SkillAdam plus uniform sampling. Under both optimizers, event sampling reduced hsd, dyn, and ndtw. These negative results are retained; evaluator development is outside the current work.
+
+The [evidence export](evidence/skilladam-exploration.json) copies existing server-produced means, decisions, and hashes without recomputing scores. Its optimization checkpoint was collected before final evaluation; the separate `final_results` section comes from the completed 60-output scoring archive.
+
+## Relation-proposal diagnostics
+
+The first two bounded relation-repair studies produced 0/60 admissible structured edits and stopped under their declared conditions without generating new videos. The first four-arm study also produced no admissible edits because the actor fields were inconsistent. After correcting that redundant encoding, the study obtained:
+
+| Arm | Admissible edits | Cases covered | Calls | Tokens |
 |---|---:|---:|---:|---:|
-| 联合决策 / 原始词表 | 15/60 | 6/20 | 78 | 228,254 |
-| 分离决策 / 原始词表 | 11/60 | 8/20 | 73 | 199,818 |
-| 联合决策 / 扩展词表 | 17/60 | 8/20 | 79 | 239,560 |
-| 分离决策 / 扩展词表 | 13/60 | 8/20 | 75 | 209,000 |
+| Joint / original vocabulary | 15/60 | 6/20 | 78 | 228,254 |
+| Factored / original vocabulary | 11/60 | 8/20 | 73 | 199,818 |
+| Joint / extended vocabulary | 17/60 | 8/20 | 79 | 239,560 |
+| Factored / extended vocabulary | 13/60 | 8/20 | 75 | 209,000 |
 
-复核覆盖 305 次原始返回、5,185 个图像负载以及全部 240 条分支决策。两轮合计 553 次调用、1,594,622 tokens。原始词表中分别有 9 和 7 条修改引用了任务未要求的撤回动作；历史记录保留，但不将这些修改用于新生成。
+Verification covered 305 raw responses, 5,185 image payloads, and all 240 arm decisions. The two four-arm studies together used 553 calls and 1,594,622 tokens. In the original-vocabulary arms, nine and seven edits respectively referred to withdrawal that the task did not request. Those records are retained but excluded from the new generation plan.
 
-这项诊断衡量提案覆盖率，不提供视频质量收益。摘要与计划绑定 SHA-256 分别为：
+These counts measure proposal coverage, not video-quality improvement. The summary and plans have SHA-256 bindings:
 
-- summary: `ac1c424d455c744a631ea4b6b63625ab38b1f0ffbae04f79abce743452444186`
-- plans: `57c92a11a836dc356ad5cde27429046888fe526f0e276d27f5d5fadca71afefc`
+- Summary: `ac1c424d455c744a631ea4b6b63625ab38b1f0ffbae04f79abce743452444186`
+- Plans: `57c92a11a836dc356ad5cde27429046888fe526f0e276d27f5d5fadca71afefc`
 
-## 配对生成
+## Paired generation
 
-新的三臂方案为父版本、联合扩展和分离扩展。全部 60 条记录保留，17/13 条修改均通过字面动作前提检查；相同完整提示去重后，共需 77 条原生视频。
+The three arms are parent, joint extended repair, and factored extended repair. Every arm retains all 60 records. The 17 and 13 edits pass the literal action precondition; sharing identical complete prompts and inputs requires 77 distinct native videos.
 
-恢复运行 `20260918T095225Z` 已冻结并提交远端执行，MiniMax 权重重新校验，生成 GPU 为 H200-2 的物理 0、1。官方评分服务使用原 wrapper。当前尚无这一轮的质量指标。
+Recovery run `20260918T095225Z` was frozen and submitted remotely after rechecking MiniMax weights, using physical GPUs 0 and 1 on H200-2. The scoring service retains the original wrapper. The collected snapshot includes the first completed native video, eight seconds at 1024×768, with verified SHA-256 `c0d2bdd26b12bc3dfa5d5a138218159252310e3d2e2b430894062995aa7bbefd`. Complete quality scores are pending.
 
-原五臂生成准备 `20260918T094146Z` 在读取完整条件模板审计后停止，任务视频数为 0；模型启动 warmup 单独保留成本。这个停止记录不与三臂结果合并。
+Preparation `20260918T094146Z` stopped after the full template-condition audit, before any task video. Startup warmup costs remain recorded separately. The first three-arm preparation, `20260918T094601Z`, incorrectly included its changing preparation log in the frozen manifest and was blocked by startup verification, also before any task video. Recovery corrected only the manifest scope: model, prompts, cases, selector, and original deadline were preserved. Warmup and failure receipts are retained for each attempt.
 
-三臂首次准备 `20260918T094601Z` 把仍在写入的准备日志纳入冻结清单，被启动自检拦截，任务视频为 0。恢复只修改清单收集范围，排除动态日志；模型、提示、案例、选择器和原总体截止时间保持不变。准备阶段的 warmup 与失败回执分别保存。
-
-恢复任务已完成首条原生视频并核验回执与 SHA-256：8 秒、1024×768，文件哈希 `c0d2bdd26b12bc3dfa5d5a138218159252310e3d2e2b430894062995aa7bbefd`。批量生成继续，官方质量分数尚未产生。
+This paired run has its own frozen parent and is not a completed SkillAdam-plus-repair experiment. The proposed composition and the comparison needed to isolate its contribution are described in [SKILLADAM_EXPLORATION.md](SKILLADAM_EXPLORATION.md).

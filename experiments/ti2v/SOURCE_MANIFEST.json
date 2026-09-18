@@ -37,6 +37,8 @@
     "tests/test_ti2v_frozen_manifest.py": "2cb7ad3bc5516aeef06fbcf8deb8b8853b0b7e1e095f98d8c7b3a71f00194f8f",
     "method.py": "c9592ec00a7e29db51771e01b1daae594c57242b99722918f64b23974bf3d592",
     "tests/test_method.py": "b5824f73c8f2b482e68b00b6557ebf0f3657a8a3fb7e230a8e0c9779bfb09d8b",
-    "evidence/historical-paired-analysis.json": "65c555db73faa854061aac5bad9e2a579da6e993153588e18c3cacdc1161adec"
+    "evidence/historical-paired-analysis.json": "65c555db73faa854061aac5bad9e2a579da6e993153588e18c3cacdc1161adec",
+    "evidence/skilladam-exploration.json": "d091a0c45f22c27a43cfb507b5ac8738bde9a081b73d860614b8d47f3ff02f43",
+    "evidence/skilladam-final-skill.md": "1b9426cd4089ca58995ca59330fb9a352219dfd587fe614f81e43a146bc8d1a4"
   }
 }
