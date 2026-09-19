@@ -1,0 +1,54 @@
+{
+  "status": "TEMPLATE_REQUIRES_REMOTE_FREEZING",
+  "arms": [
+    "parent",
+    "combined_extended",
+    "factored_extended"
+  ],
+  "protocol": {
+    "expected_hostname": "REPLACE_WITH_AUTHORIZED_REMOTE_HOSTNAME",
+    "seed": 20260918,
+    "max_seconds": 28800,
+    "max_native_calls_per_method": 77,
+    "max_auxiliary_calls_per_method": 77,
+    "generator": {
+      "model": "MiniMaxAI/MiniMax-H3",
+      "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+      "partition": "FL2VA",
+      "dtype": "bfloat16",
+      "steps": 50,
+      "duration_seconds": 8,
+      "short_edge": 768,
+      "aspect_ratio": "4:3",
+      "flow_shift": 12,
+      "audio_flow_shift": 3
+    },
+    "auxiliary": {
+      "model": "Qwen/Qwen3.8-27B",
+      "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0",
+      "endpoint": "http://127.0.0.1:REPLACE_PORT/v1/chat/completions",
+      "served_model": "REPLACE_WITH_ATTESTED_MODEL_NAME"
+    },
+    "grammar_python": "/REPLACE/grammar-environment/bin/python",
+    "native_pools": [
+      "/REPLACE/new-run/native-0"
+    ],
+    "literal_instruction_passthrough": true
+  },
+  "experiment": {
+    "reserved_at": "REPLACE_WITH_UNIX_TIME_AT_RESERVATION",
+    "max_seconds": 28800,
+    "generation_workers": 1,
+    "owned_native_pools": [
+      "/REPLACE/new-run/native-0"
+    ],
+    "stage_budgets": {
+      "generate": {
+        "native_calls": 77,
+        "auxiliary_calls": 77
+      }
+    }
+  },
+  "native_pool_total_call_budget": 78,
+  "budget_note": "77 is specific to the frozen 20260918 plan. Recompute distinct input/prompt/settings groups remotely before any new run, and add startup warmup to the pool budget. Do not allocate on score-selected subsets."
+}

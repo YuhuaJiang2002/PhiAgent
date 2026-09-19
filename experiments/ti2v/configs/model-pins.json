@@ -1,0 +1,44 @@
+{
+  "generation": {
+    "model": "MiniMaxAI/MiniMax-H3",
+    "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+    "partition": "FL2VA",
+    "dtype": "bfloat16",
+    "steps": 50,
+    "duration_seconds": 8,
+    "short_edge": 768,
+    "aspect_ratio": "4:3",
+    "flow_shift": 12,
+    "audio_flow_shift": 3
+  },
+  "auxiliary": {
+    "model": "Qwen/Qwen3.8-27B",
+    "revision": "1d4bf0f2ff6012fd82039f2fa52739d0dd7c60c0"
+  },
+  "ewmbench": {
+    "revision": "3a5531c0e6b6be51431251ed5617b9e48c852098",
+    "caption_seed_per_video": 0,
+    "metrics": [
+      "BLEUScore",
+      "CLIPScore",
+      "hsd",
+      "dyn",
+      "ndtw"
+    ]
+  },
+  "skilladam": {
+    "revision": "72ef9ba48bbadc059c8a2d099f1b7d531fc8288f",
+    "installation": "Separate optional author checkout; not vendored"
+  },
+  "native_runtime": {
+    "torch": "2.11.0+cu128",
+    "cuda": "12.8",
+    "sglang": "0.5.17",
+    "attention_backend": "torch_sdpa"
+  },
+  "generation_allowlist": [
+    "MiniMax",
+    "JoyAI"
+  ],
+  "joyai_run": "not evaluated in this experiment"
+}
