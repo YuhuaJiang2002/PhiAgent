@@ -4,7 +4,7 @@ This directory collects our exploration of SkillAdam for text-and-first-image vi
 
 Start with [SKILLADAM_EXPLORATION.md](SKILLADAM_EXPLORATION.md) for the integration, accepted updates, crossed ablation, and proposed composition with relation repair. [METHOD.md](METHOD.md) describes the repair algorithm and its comparison with VideoWeaver. [RESULTS.md](RESULTS.md) contains the full metric tables and negative results.
 
-The SkillAdam adaptation completed two optimization rounds and all 60 final outputs. Both updates passed their small validation batches; the final results did not outperform VideoWeaver across all five metrics. The newer repair candidate has proposal evidence and a paired generation run, but no completed quality scores in this release snapshot.
+The SkillAdam adaptation completed two optimization rounds and all 60 final outputs. Both updates passed their small validation batches; the final results did not outperform VideoWeaver across all five metrics. The relation-repair experiment is now fully scored: its primary raw-output comparison raises dyn but lowers the other four metric means, and all five 99% intervals include zero. See [PAIRED_RESULTS.md](PAIRED_RESULTS.md) for the complete result.
 
 ## Code entry points
 

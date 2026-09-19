@@ -39,6 +39,8 @@
     "tests/test_method.py": "b5824f73c8f2b482e68b00b6557ebf0f3657a8a3fb7e230a8e0c9779bfb09d8b",
     "evidence/historical-paired-analysis.json": "65c555db73faa854061aac5bad9e2a579da6e993153588e18c3cacdc1161adec",
     "evidence/skilladam-exploration.json": "d091a0c45f22c27a43cfb507b5ac8738bde9a081b73d860614b8d47f3ff02f43",
-    "evidence/skilladam-final-skill.md": "1b9426cd4089ca58995ca59330fb9a352219dfd587fe614f81e43a146bc8d1a4"
+    "evidence/skilladam-final-skill.md": "1b9426cd4089ca58995ca59330fb9a352219dfd587fe614f81e43a146bc8d1a4",
+    "evidence/paired-repair-analysis.json": "80da095bdd766698983c9dd90ccab8cf79674a7d7304cbd1913b3dfc4fef430c",
+    "evidence/paired-repair-scoring-cost.json": "2867a2a800ace72fdb6a0dbfec9a0c27bbca652a0561e84d8ee48e3db73d4e6c"
   }
 }

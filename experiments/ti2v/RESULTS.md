@@ -1,6 +1,6 @@
 # TI2V development results
 
-Evidence snapshot: September 18, 2026. All completed results below use the previously opened 20-case development set with three seeds per case. They do not establish a full public-benchmark SOTA result.
+Evidence snapshot: September 19, 2026. All completed results below use the previously opened 20-case development set with three seeds per case. They do not establish a full public-benchmark SOTA result.
 
 ## Complete comparison under one scoring protocol
 
@@ -51,7 +51,7 @@ These counts measure proposal coverage, not video-quality improvement. The summa
 
 The three arms are parent, joint extended repair, and factored extended repair. Every arm retains all 60 records. The 17 and 13 edits pass the literal action precondition; sharing identical complete prompts and inputs requires 77 distinct native videos.
 
-Recovery run `20260918T095225Z` was frozen and submitted remotely after rechecking MiniMax weights, using physical GPUs 0 and 1 on H200-2. The scoring service retains the original wrapper. The collected snapshot includes the first completed native video, eight seconds at 1024×768, with verified SHA-256 `c0d2bdd26b12bc3dfa5d5a138218159252310e3d2e2b430894062995aa7bbefd`. Complete quality scores are pending.
+Recovery run `20260918T095225Z` was frozen and submitted remotely after rechecking MiniMax weights, using physical GPUs 0 and 1 on H200-2. The scoring service retains the original wrapper. The collected snapshot includes the first completed native video, eight seconds at 1024×768, with verified SHA-256 `c0d2bdd26b12bc3dfa5d5a138218159252310e3d2e2b430894062995aa7bbefd`. All six raw/selected score requests and the case-paired analysis completed in scoring-only recovery `20260919T021424Z`, without regenerating any videos. The primary raw-output comparison improves dyn in mean but lowers BLEU, CLIP, hsd, and ndtw; all five primary 99% intervals cross zero. See [PAIRED_RESULTS.md](PAIRED_RESULTS.md) for all means, intervals, and the secondary negative findings.
 
 Preparation `20260918T094146Z` stopped after the full template-condition audit, before any task video. Startup warmup costs remain recorded separately. The first three-arm preparation, `20260918T094601Z`, incorrectly included its changing preparation log in the frozen manifest and was blocked by startup verification, also before any task video. Recovery corrected only the manifest scope: model, prompts, cases, selector, and original deadline were preserved. Warmup and failure receipts are retained for each attempt.
 
