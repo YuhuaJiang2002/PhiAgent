@@ -24,25 +24,29 @@ PROVIDERS = {
     "hunyuan": {
         "base_url": "https://api.hunyuan.cloud.tencent.com/v1",
         "env_var": "HUNYUAN_API_KEY",
+        "model_env": "HUNYUAN_MODEL",
         "model": "hunyuan-turbos-latest",
     },
     "dashscope": {
         "base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
         "env_var": "DASHSCOPE_API_KEY",
+        "model_env": "DASHSCOPE_MODEL",
         "model": "qwen-plus",
     },
     "openai": {
         "base_url": "https://api.openai.com/v1",
         "env_var": "OPENAI_API_KEY",
+        "model_env": "OPENAI_MODEL",
         "model": "gpt-5-mini",
     },
     "doubao": {
-        # Ark's regular OpenAI-compatible endpoint.  The coding endpoint is
-        # text/coding oriented and is not the endpoint to use for vision.
+        # Ark's regular OpenAI-compatible endpoint.  Coding Plan users can
+        # override this with ARK_BASE_URL in .env.
         "base_url": "https://ark.cn-beijing.volces.com/api/v3",
+        "base_url_env": "ARK_BASE_URL",
         "env_var": "ARK_API_KEY",
-        # Ark expects a deployed endpoint id (usually ``ep-...``), not a
-        # generic model name.  It can be supplied with --model or ARK_MODEL.
+        # Online inference commonly uses a deployed endpoint id (``ep-...``);
+        # Coding Plan also accepts its documented model aliases.
         "model": None,
         "model_env": "ARK_MODEL",
     },
@@ -116,7 +120,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--base-url",
-        help="Override the provider base URL (useful for another local replica).",
+        help="Override the provider base URL (or its *_BASE_URL value in .env).",
     )
     parser.add_argument(
         "--prompt",
@@ -239,7 +243,9 @@ def main() -> int:
         print(f"Set it temporarily with: export {env_var}='your-key'", file=sys.stderr)
         return 2
 
-    endpoint = f"{(args.base_url or config['base_url']).rstrip('/')}/chat/completions"
+    base_url_env = config.get("base_url_env")
+    base_url = args.base_url or (os.environ.get(base_url_env) if base_url_env else None) or config["base_url"]
+    endpoint = f"{base_url.rstrip('/')}/chat/completions"
     headers = {
         "Content-Type": "application/json",
         "User-Agent": "llm-api-connectivity-test/1.0",
