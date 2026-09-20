@@ -33,6 +33,11 @@ python -m ego_video_qc clip.mp4 \
   --min-duration 2 --max-duration 120 --sample-fps 4
 ```
 
+## LLM 视频质检 Prompt
+
+根据《灵生 Ego 数据质检规范-0901》整理的整条审核、局部 `bad` 切片、错误标签和结构化 JSON 输出方案见：
+[`docs/EGO_QC_PROMPT_SPEC.md`](docs/EGO_QC_PROMPT_SPEC.md)。
+
 ## 测试
 
 ```bash
