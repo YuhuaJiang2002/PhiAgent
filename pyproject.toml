@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ego-video-qc"
+version = "0.1.0"
+description = "Dependency-free preflight quality gates for egocentric videos"
+requires-python = ">=3.10,<3.15"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest==8.3.5"]
+
+[project.scripts]
+ego-video-qc = "ego_video_qc.cli:main"
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
