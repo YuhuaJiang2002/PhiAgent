@@ -14,6 +14,38 @@
 
 `bad` 出现在任务文本中时，只表示任务/内容标签，不等于审核状态为“无效”。筛选无效数据应使用 `review_status`，再把 `task_label` 作为单独字段保留。
 
+界面状态写入 JSON 时使用固定的英文值，避免后续筛选时混用中文和布尔值：
+
+| 界面显示 | JSON 字段和值 |
+| --- | --- |
+| 已标注 | `"annotation_status": "annotated"` |
+| 有效 | `"review_status": "valid"` |
+| 无效 | `"review_status": "invalid"` |
+
+因此，截图中的 Episode 4 应写为：
+
+```json
+{
+  "episode_index": 4,
+  "task_label": "bad盒子重复打开",
+  "annotation_status": "annotated",
+  "review_status": "invalid"
+}
+```
+
+截图中的 Episode 3 则应写为：
+
+```json
+{
+  "episode_index": 3,
+  "task_label": "打开医药箱,取出并检查每种物品的保质期,然后放入,再检查下一个,最后扣上盖子",
+  "annotation_status": "annotated",
+  "review_status": "valid"
+}
+```
+
+`annotation_status` 和 `review_status` 是两个独立字段：已标注但审核无效的数据仍然保留 `annotated`，只把 `review_status` 设为 `invalid`。
+
 ## 2. 从 MySQL 查询数据集和存储路径
 
 查询项目 7 下的全部数据集：
@@ -209,6 +241,21 @@ find "$DATASET" -type f \( \
   "parquet_path": "data/chunk-000/file-004.parquet"
 }
 ```
+
+多个 episode 放入 JSONL 时，每行是一个完整 JSON 对象，不能把多个对象包在一个数组里：
+
+```jsonl
+{"dataset_id":9677,"dataset_name":"20260831T1886-C260","episode_index":3,"task_label":"打开医药箱,取出并检查每种物品的保质期,然后放入,再检查下一个,最后扣上盖子","annotation_status":"annotated","review_status":"valid"}
+{"dataset_id":9677,"dataset_name":"20260831T1886-C260","episode_index":4,"task_label":"bad盒子重复打开","annotation_status":"annotated","review_status":"invalid","invalid_reason":"审核页面显示无效"}
+```
+
+构建无效数据集时只筛选：
+
+```python
+row["annotation_status"] == "annotated" and row["review_status"] == "invalid"
+```
+
+建议保留 `invalid_reason`。如果审核系统没有提供原因，就写 `null` 或 `"审核页面显示无效"`，不要编造具体原因。
 
 筛选规则建议：
 
