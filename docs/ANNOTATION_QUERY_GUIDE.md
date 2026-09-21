@@ -357,3 +357,64 @@ invalid-ego-dataset-YYYYMMDD-HHMMSS/
 ```
 
 `validation_report.json` 至少记录：生成时间、数据库查询条件、数据集数量、episode 数量、有效视频数量、缺失文件数量和状态分布。原始视频和 Parquet 可以继续留在原始数据目录，通过清单中的相对路径引用。
+
+
+## 9. 时间段标注：为什么构建清单里看不到 start/end
+
+审核页面显示的时间段并没有消失，而是来自另一套字段：平台接口返回的
+`annotationSegments`（数据库中通常对应 `annotation_segments_json`），每段包含
+`startSec`、`endSec`、任务文本和保留/丢弃状态；有些版本还会返回
+`splitMarkersSec`。`manifest.jsonl` 和 `meta/episodes.jsonl` 不是这个字段的导出物：
+
+- `manifest.jsonl` 只记录审核状态、无效原因、文件路径等构建信息；
+- `meta/episodes.jsonl` 的 `tasks` 只是该 episode 出现过的任务名称列表，不包含起止时间；
+- 构建副本中的 `data/**/*.parquet` 仍保留逐帧 `task_index`，因此可以恢复帧级近似区间。
+
+恢复本地区间时，必须用 `task_index` 读取 `meta/tasks.jsonl` 的文本映射，不要直接使用
+Parquet 行里的 `task` 文本；部分导出版本的行级 `task` 字段是旧值或不准确的。把连续相同
+`task_index` 的帧分组即可得到区间：
+
+```python
+import json
+import pyarrow.parquet as pq
+
+tasks = {}
+with open(DATASET / "meta/tasks.jsonl", encoding="utf-8") as f:
+    for line in f:
+        row = json.loads(line)
+        tasks[int(row["task_index"])] = row["task"]
+
+rows = pq.read_table(
+    DATASET / "data/chunk-000/file-000.parquet",
+    columns=["frame_index", "timestamp", "task_index"],
+).to_pylist()
+
+# 连续 task_index 的 [start, end) 分组；最后一段的结束时间用 episode_frames / fps。
+```
+
+这个恢复结果是按视频帧量化的近似值；若要与审核页面完全一致，应从审核接口导出
+`annotationSegments`，不要用 `meta/episodes.jsonl` 反推。例如截图对应的
+`dataset_id=8876, episode_index=0`：
+
+```text
+平台审核区间：任务 0:00.000–5:37.294；bad 5:37.294–5:39.800
+本地逐帧恢复：任务 0:00.000–5:37.280；bad 5:37.280–5:39.800
+```
+
+二者只相差帧边界/时间戳取整，说明构建阶段没有丢掉逐帧信息；此前结果文件看不到区间，
+是因为导出程序没有把 `annotationSegments` 或恢复后的 segments 字段写入清单。建议在
+后续构建的每行增加：
+
+```json
+{
+  "annotation_segments": [
+    {"start_sec": 0.0, "end_sec": 337.294, "task_label": "...", "status": "keep"},
+    {"start_sec": 337.294, "end_sec": 339.8, "task_label": "bad", "status": "drop"}
+  ],
+  "annotation_segments_source": "platform_api",
+  "annotation_segments_exact": true
+}
+```
+
+如果只能访问复制后的 LeRobot 文件，则将来源标为 `parquet_task_index`，并将
+`annotation_segments_exact` 设为 `false`。
