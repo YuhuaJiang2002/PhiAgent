@@ -418,3 +418,15 @@ rows = pq.read_table(
 
 如果只能访问复制后的 LeRobot 文件，则将来源标为 `parquet_task_index`，并将
 `annotation_segments_exact` 设为 `false`。
+
+
+## 10. 测试集永久排除清单
+
+构建测试集时，除了审核状态，还要检查采集任务名称与 episode 的实际任务标签是否属于同一任务类别。若出现“人工审核为 `valid`，但任务类别明显错配”，该 episode 不应作为有效样本参与规则评测：
+
+- 从 active `manifest.jsonl` 中移除；
+- 写入 `task_mismatch_exclusions.jsonl`（同时提供 CSV 便于查看）；
+- 移到隔离目录，不删除源文件；
+- 追加到全局 `/data1/zhn/ego_qc_runs/test_set_exclusions.jsonl`，后续抽样必须先按 `(dataset_id, episode_index)` 去重过滤。
+
+当前 `cus000001_mixed150` 的 active 清单为 142 条（42 valid + 100 invalid），原始 150 条清单保存在 `manifest.original_150.jsonl`。只有类别冲突明确的样本自动排除；“桌面物品”与“文件归档”等可能存在语义包含关系的边界样本进入 `task_mismatch_borderline_review.jsonl`，待人工确认后再决定是否排除。
