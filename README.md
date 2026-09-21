@@ -38,6 +38,9 @@ python -m ego_video_qc clip.mp4 \
 根据《灵生 Ego 数据质检规范-0901》整理的整条审核、局部 `bad` 切片、错误标签和结构化 JSON 输出方案见：
 [`docs/EGO_QC_PROMPT_SPEC.md`](docs/EGO_QC_PROMPT_SPEC.md)。
 
+150 条批量测试的误差分析和改进建议见：
+[`docs/PILOT_150_ERROR_ANALYSIS.md`](docs/PILOT_150_ERROR_ANALYSIS.md)。
+
 ## 测试
 
 ```bash

@@ -30,6 +30,19 @@
 - 如果只能得到任务类别，明确告诉模型任务细节不足，并允许输出 `needs_human_review`；
 - 不要把 `bad` 文本当作审核结论。
 
+### 1.1 任务指令缺失与候选任务
+
+对 150 条测试集的输入审计发现：只有 51 条 episode 有去除 `bad` 后的详细任务文本，99 条的 `meta/episodes.jsonl.tasks` 只剩 `bad` 或 `bad(原因)`。这 99 条恰好全部是人工 `invalid`，因此“任务文本缺失”不能被模型当成“没有任务”或“任务已完成”。
+
+输入预处理应按下面的优先级提供任务要求：
+
+1. 平台/人工维护的 episode 任务指令；
+2. 能通过 `task_index` 与 episode 对齐的 `meta/tasks.jsonl` 任务文本；
+3. 同一任务定义下的候选任务文本，并明确标记为 `candidate`，不能假装是确定指令；
+4. 如果候选文本互相冲突或只有任务类别，标记 `missing`/`ambiguous`，模型不得仅凭类别推断任务完成。
+
+`meta/tasks.jsonl` 中的 `bad`、`record action with object spatial relation`、URL、单字母和乱码必须过滤。候选任务来自同一数据集时，也必须保留候选来源和歧义状态；不能用某个 episode 的人工审核结果反推另一个 episode 的标签。
+
 视频输入优先使用 `left_rgb`，`right_rgb` 作为遮挡或视野不清时的复核视角。初轮不使用深度视频，避免把深度编码问题混入质检结果。
 
 ## 2. 判定层级
@@ -84,7 +97,16 @@
 3. 首尾是 `bad`，中间没有实际任务动作或任务未完成：`episode_review = invalid`，并将相应无效区间标为 `bad`；
 4. 无法判断 `bad` 是否位于主体任务中间，或无法判断删除后是否破坏手部/物体连续性：`episode_review = needs_human_review`。
 
-### 2.3 走动任务的例外
+### 2.3 原始平台口径与裁剪口径必须分开
+
+当前数据中的 `manifest.audit_status` 是平台整条 episode 的原始审核结果；本项目新增的“首尾 `bad` 可裁剪”是另一套处理策略。两者不能直接当作同一个真值：
+
+- **严格平台口径**：平台标为无效的设备屏幕、额外动作、模糊、干扰等，整条保持 `invalid`；
+- **裁剪口径**：只有位于首尾、切除后不破坏主体任务连续性的片段可以保留为 `valid + bad_segments`；
+- 主体任务中间的缺陷在两种口径下都不能通过剪切拼接恢复；
+- 评估时应同时保存 `platform_review` 与 `crop_policy_review`，否则会把“规则差异”误计为模型错误。
+
+### 2.4 走动任务的例外
 
 先判断任务是否需要走动，再判断手部是否出画：
 
@@ -119,7 +141,9 @@
 
 只依据视频中实际看到的内容，不得猜测没有出现的动作，不得读取或推断任何隐藏的人工审核标签。先检查整条视频，再检查时间片段。必须区分“整条无效”和“有效视频中的局部 bad 片段”。
 
-任务完成是首要标准；视频质量、第一人称视角、隐私、人脸、无关设备屏幕、手部/道具可见性和采集员无关行为是质量门禁。必须先识别仅位于边界、可以安全裁剪的 `bad`，再判断剩余区间是否包含真实、连续且完成的主体任务；主体任务中间的 `bad` 不得通过剪切拼接修复，不能把“有开头动作 + 有结尾动作”误认为任务完成。
+任务完成是首要标准；视频质量、第一人称视角、隐私、人脸、无关设备屏幕、手部/道具可见性和采集员无关行为是质量门禁。先独立完成一次质量缺陷扫描，再判断任务完成和边界裁剪；不能因为任务动作完整就跳过屏幕、人脸、模糊、静止和额外动作检查。必须先识别仅位于边界、可以安全裁剪的 `bad`，再判断剩余区间是否包含真实、连续且完成的主体任务；主体任务中间的 `bad` 不得通过剪切拼接修复，不能把“有开头动作 + 有结尾动作”误认为任务完成。
+
+如果任务指令状态是 `missing` 或 `ambiguous`，除非视频中存在明确的致命质量问题，否则不要输出 `valid`；应输出 `needs_human_review`，并在证据中说明缺少哪一项任务依据。
 
 如果证据不足，输出 needs_human_review，不要强行猜测。输出必须是合法 JSON，不要输出 Markdown、解释性前缀或额外文本。
 ```
@@ -144,10 +168,13 @@ episode_id: {episode_id}
 6. 是否有重复演示、抽烟、喝水、吃东西、聊天、抬头回应他人等干扰；
 7. 是否有闪烁、冻结、黑屏、丢帧、遮挡、模糊、过暗/过亮或明显色彩变化；
 8. 对开头无手、开头/结尾无关动作、开头人脸和多任务视频，判断是否可以只切除边界 `bad` 片段；同时检查切除后中间是否仍有真实、连续的任务动作和完成状态；不要裁剪主体任务中间的 `bad`。
+9. 将“质量缺陷扫描”和“任务完成判断”分开记录；即使任务完成，也必须检查屏幕、人脸、隐私、模糊、手部缺失、静止和额外动作。
+10. 如果任务要求缺失或互相冲突，先输出 `needs_human_review`，不要用任务类别猜测关键步骤。
 
 只输出下面结构的 JSON：
 {
   "episode_review": "valid | invalid | needs_human_review",
+  "task_instruction_status": "reliable | candidate | missing | ambiguous",
   "task_completion": "complete | partial | not_completed | unclear",
   "platform_invalid_reason": null,
   "error_tags": [],
@@ -159,6 +186,14 @@ episode_id: {episode_id}
       "action": "keep | bad",
       "reason_code": "task_not_completed | no_motion_over_10s | device_screen | face | privacy | extra_action | blur | center_blur | heat_blur | occlusion | freeze | missing_segment | corner_shadow | color_shift | hand_not_visible | hand_too_close | object_out_of_view | look_away | wrist_hook | other",
       "evidence": "只描述视频中可回看的事实"
+    }
+  ],
+  "quality_gate_evidence": [
+    {
+      "start_sec": 0.0,
+      "end_sec": 0.0,
+      "reason_code": "device_screen | face | privacy | extra_action | blur | freeze | hand_not_visible | no_motion_over_10s | other",
+      "observation": "独立质量扫描中可回看的事实"
     }
   ],
   "evidence": [
@@ -176,11 +211,14 @@ episode_id: {episode_id}
 要求：
 - valid 时 platform_invalid_reason 必须为 null；
 - invalid 时 platform_invalid_reason 必须是：未按要求完成任务、其他、包含多余动作、采集设备屏幕露出、全程静止无动作、发生意外干扰、手部露出少、视频模糊不清 之一；
+- invalid 时 platform_invalid_reason 不能为 null；如果模型无法选择主要原因，必须输出 `needs_human_review`；
 - 如果整条视频无效，segments 应覆盖主要无效区间并标为 bad；
 - 如果只有首尾局部问题且中间任务有效，episode_review 必须为 valid，并只把首尾问题区间标为 bad；
 - 如果首尾是 bad 但中间没有实际任务动作，episode_review 必须为 invalid，不能只输出裁剪区间后通过；
 - 如果 bad 位于主体任务中间，episode_review 必须为 invalid；不得通过删除中间片段并拼接前后视频来恢复 valid；
 - task_completion 必须针对安全裁剪后的 keep 区间判断；只有准备、点击设备、静止等待或收尾动作不算完成任务；
+- `quality_gate_evidence` 必须覆盖独立质量扫描发现的缺陷；不能只在 notes 中泛泛描述；
+- `task_instruction_status` 为 `missing`/`ambiguous` 时，不得在没有明确任务证据的情况下输出 valid；
 - 每个时间戳必须在 0 到视频时长之间；
 - 走动任务不能因为手部短暂出画就直接判无效；
 - 不要把任务文本中的 bad 当作审核结论。
