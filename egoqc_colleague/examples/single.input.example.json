@@ -1,0 +1,5 @@
+{
+  "request_id": "demo-single-video",
+  "video_path": "/absolute/path/to/your/video.mp4",
+  "task_description": "请替换为该视频对应的完整任务 SOP；不要填写人工有效性标签或人工分段答案。"
+}

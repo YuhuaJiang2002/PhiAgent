@@ -1,0 +1,37 @@
+# Credentials and machine-local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+HANDOVER.md
+
+# Runtime outputs and datasets
+frames/
+logs/
+out/
+runs/
+data/
+datasets/
+preds_*.jsonl
+metrics_*.json
+labels*.tsv
+review_*.json
+*dataset_index*.csv
+EVAL_INDEX.csv
+*.mp4
+*.mcap
+*.parquet
+*.jpg
+*.jpeg
+*.png
+examples/*.json
+!examples/*.example.json
+
+# Python and editors
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.DS_Store
