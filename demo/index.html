@@ -56,6 +56,27 @@
         color: #9db2ff;
       }
 
+      .roboagent-link {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 13px 20px;
+        border: 1px solid rgba(126, 231, 200, 0.45);
+        border-radius: 12px;
+        background: rgba(126, 231, 200, 0.1);
+        color: #7ee7c8;
+        font-weight: 650;
+        text-decoration: none;
+      }
+
+      .roboagent-link:hover {
+        background: rgba(126, 231, 200, 0.2);
+      }
+
+      .roboagent-link:focus-visible {
+        outline: 3px solid #9db2ff;
+        outline-offset: 4px;
+      }
+
       .eyebrow {
         color: #7ee7c8;
         font-size: 0.78rem;
@@ -348,6 +369,9 @@
           Human demonstrations translated into robot motion, simulation, and
           rendered video. Use the controls to play each demo directly on this page.
         </p>
+        <nav aria-label="Related demos">
+          <a class="roboagent-link" href="roboagent/">RoboAgent demos <span aria-hidden="true">↗</span></a>
+        </nav>
       </header>
 
       <section class="support-card" aria-labelledby="supportTitle">
