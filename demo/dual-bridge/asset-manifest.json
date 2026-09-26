@@ -1,0 +1,87 @@
+{
+  "source_report": "https://hwods8kg6v3.feishu.cn/wiki/PLHBwoAv2iFhzakHeTlc9shMnPb",
+  "accessed": "2026-09-26",
+  "media_status": "preview images published; original MP4 export unavailable through current browser download interface",
+  "assets": [
+    {
+      "file": "previews/071_source.jpg",
+      "sha256": "6a4401d312495c14aca67a3e8e4fa5be560fe3d93998f4264e65daf3aef6b396",
+      "source_attachment": "071_source.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0.032486,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/072_h3.jpg",
+      "sha256": "bd4677b16df6a6ad08e6668ffe8ec1e085184db881dbb08a9ead5e0808c64c33",
+      "source_attachment": "072_h3.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0.014098,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/073_s2s.jpg",
+      "sha256": "ac56f1958ef6b926d575f700478c5583ca004af780069783f47c389ad1e28c1d",
+      "source_attachment": "073_s2s.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/074_vw.jpg",
+      "sha256": "c9ac31df5d6b2367955e608b9511f05354ed383bf88351084c526802db49eab8",
+      "source_attachment": "074_vw.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/075_harness.jpg",
+      "sha256": "eb1e0b106a85c0196628f0c18b5d6c04b9fddb1b5f05da75f97216bcce1fda21",
+      "source_attachment": "075_harness.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/1_source.jpg",
+      "sha256": "648f18cf54c398b63396fd8fe9281d2b567915383bc5b5b31b8833acbed03690",
+      "source_attachment": "1_source.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0.033255,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/2_h3.jpg",
+      "sha256": "a1bef6cca159c15315e1884e8e0aab8f3d11fae985d96e114d857f87179c1f00",
+      "source_attachment": "2_h3.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/3_s2s.jpg",
+      "sha256": "adbb078687c1f03af665b7e12bcfee05d709e57184b326d9ddef65a1c9f11ce1",
+      "source_attachment": "3_s2s.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0.009185,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/4_vw.jpg",
+      "sha256": "d2e227966a6821a35abb8fad2918e3ce7a01e4b2643690d97fba67cbe9584ba1",
+      "source_attachment": "4_vw.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 0,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    },
+    {
+      "file": "previews/5_harness.jpg",
+      "sha256": "54de989255d3cfdeb6a5944dc0ef973afa0e82ea0859e74e3a6db0f8179e205e",
+      "source_attachment": "5_harness.mp4",
+      "type": "cropped unaltered browser player preview",
+      "reported_player_time_seconds": 1.511118,
+      "note": "Browser UI overlays and displayed timestamps retained. This is not a synchronized temporal panel."
+    }
+  ]
+}

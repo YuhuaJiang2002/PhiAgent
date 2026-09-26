@@ -1,0 +1,139 @@
+{
+  "source": {
+    "title": "RV2R进度报告",
+    "url": "https://hwods8kg6v3.feishu.cn/wiki/PLHBwoAv2iFhzakHeTlc9shMnPb",
+    "modified": "2026-09-23",
+    "accessed": "2026-09-26",
+    "status": "transcribed from supplied report; no benchmark rerun"
+  },
+  "protocol": {
+    "generator": "MiniMax-H3 Ref2VA",
+    "generator_revision": null,
+    "source_clips": 60,
+    "datasets": {
+      "TACO": 56,
+      "H2O": 4
+    },
+    "seed": 71020,
+    "generations_per_source_per_condition": 1,
+    "generated_videos": 240,
+    "metric": "Strict (report-defined RV2V protocol)",
+    "judges": [
+      "gemini-3.8-flash",
+      "gpt-5.4",
+      "qwen3-vl-plus"
+    ],
+    "weights": {
+      "G": 0.15,
+      "A": 0.15,
+      "C": 0.3,
+      "E": 0.3,
+      "Q": 0.1
+    },
+    "score_scale": 100
+  },
+  "results": [
+    {
+      "id": "bare",
+      "name": "Bare MiniMax-H3",
+      "G": 0.911,
+      "A": 0.917,
+      "C": 0.97,
+      "E": 0.832,
+      "Q": 0.773,
+      "strict": 89.21,
+      "first_place": 18,
+      "identity_flags": 29
+    },
+    {
+      "id": "soap2soap",
+      "name": "Soap2Soap conditioning",
+      "G": 0.926,
+      "A": 0.929,
+      "C": 0.957,
+      "E": 0.805,
+      "Q": 0.774,
+      "strict": 88.41,
+      "first_place": 12,
+      "identity_flags": 32
+    },
+    {
+      "id": "videoweaver",
+      "name": "VideoWeaver conditioning",
+      "G": 0.938,
+      "A": 0.936,
+      "C": 0.963,
+      "E": 0.809,
+      "Q": 0.772,
+      "strict": 89.01,
+      "first_place": 11,
+      "identity_flags": 38
+    },
+    {
+      "id": "dual-bridge",
+      "name": "Dual-Bridge",
+      "G": 0.942,
+      "A": 0.944,
+      "C": 0.963,
+      "E": 0.856,
+      "Q": 0.775,
+      "strict": 90.62,
+      "first_place": 19,
+      "identity_flags": 29
+    }
+  ],
+  "qualitative_examples": [
+    {
+      "id": "07_taco",
+      "scores": [
+        88.4,
+        97.5,
+        89.5,
+        97.6
+      ],
+      "files": [
+        "071_source",
+        "072_h3",
+        "073_s2s",
+        "074_vw",
+        "075_harness"
+      ],
+      "notes": [
+        "Human source demonstration.",
+        "Mismatched grippers; the left gripper fuses with the tray.",
+        "The report describes a plausible replacement.",
+        "One gripper merges during the clip; the other sticks to the tray.",
+        "The report describes a plausible replacement without the highlighted gripper fusion."
+      ]
+    },
+    {
+      "id": "08_taco",
+      "scores": [
+        83.2,
+        82.7,
+        81.4,
+        85.9
+      ],
+      "files": [
+        "1_source",
+        "2_h3",
+        "3_s2s",
+        "4_vw",
+        "5_harness"
+      ],
+      "notes": [
+        "Human source demonstration.",
+        "Mid-clip jaw/object fusion and a hallucinated cut in the board.",
+        "Two fingers become three; the board appears to split.",
+        "Mid-clip jaw/object fusion and a hallucinated split in the board.",
+        "Mid-clip jaw/object fusion remains, but the first and last frames retain two fingers and the board does not split."
+      ]
+    }
+  ],
+  "scope": {
+    "comparison": "conditioning adapters on a common frozen generator; not complete official baseline pipelines",
+    "uncertainty": "per-clip score files and confidence intervals not supplied",
+    "causal_attribution": "language-only and visual-only ablations not supplied",
+    "metric_validation": "report notes incomplete physical-error coverage"
+  }
+}

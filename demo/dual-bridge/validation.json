@@ -1,0 +1,45 @@
+{
+  "date": "2026-09-26",
+  "scope": "source transcription and publication validation; no benchmark execution",
+  "numeric_checks": [
+    {
+      "condition": "Bare MiniMax-H3",
+      "reported_strict": 89.21,
+      "rounded_component_reconstruction": 89.21,
+      "consistent_with_rounding": true
+    },
+    {
+      "condition": "Soap2Soap conditioning",
+      "reported_strict": 88.41,
+      "rounded_component_reconstruction": 88.425,
+      "consistent_with_rounding": true
+    },
+    {
+      "condition": "VideoWeaver conditioning",
+      "reported_strict": 89.01,
+      "rounded_component_reconstruction": 88.99,
+      "consistent_with_rounding": true
+    },
+    {
+      "condition": "Dual-Bridge",
+      "reported_strict": 90.62,
+      "rounded_component_reconstruction": 90.61,
+      "consistent_with_rounding": true
+    }
+  ],
+  "denominators_pass": true,
+  "html_local_assets_pass": true,
+  "asset_hashes_pass": true,
+  "citation_keys_pass": true,
+  "latex_compilation_pass": true,
+  "latex_overfull_boxes": 0,
+  "browser_checks": {
+    "desktop_width": 1280,
+    "mobile_width": 390,
+    "horizontal_page_overflow": false,
+    "loaded_preview_images": 10,
+    "strict_details_toggle": true
+  },
+  "media_status": "10 real player preview crops; full MP4 files not exported, source-report playback links provided",
+  "scientific_scope": "reported Strict comparison of conditioning adapters, no significance or bridge-isolation claim"
+}
