@@ -1,0 +1,117 @@
+{
+  "status": "ANALYSIS_COMPLETE",
+  "run_id": "20260918T084019Z",
+  "numpy": "2.3.5",
+  "scope": "Post-hoc development analysis on previously opened cases; not unseen confirmation or budget-matched superiority",
+  "case_count": 20,
+  "trials_per_case": 3,
+  "outputs_per_method": 60,
+  "seed": 20260918,
+  "replicates": 10000,
+  "ci_method": "Paired case-cluster bootstrap; 99% percentile intervals; five-metric Bonferroni approximation within each contrast, exploratory across contrasts",
+  "source_sha256": {
+    "minimax.csv": "e683ca734f6a3e277fde761e7bf33f52f816e7882236ba4ce08e7831033ddc0c",
+    "videoweaver.csv": "e873ef60d9910f4bd3acbd18f35cccd2df217186db6e6f13282ff674136257fd",
+    "ours_v2.csv": "58653dca0f65dd00892149181b9e98ce7a3eeaf92d1b7eed72311139b1842c81",
+    "analyze.py": "e877d22f369c7fa71ee60238fbb23c1f04a67e04194a9e4410d4275fd7cae99b"
+  },
+  "contrasts": {
+    "ours_v2_minus_videoweaver": {
+      "BLEUScore": {
+        "difference": 0.009295681491494179,
+        "ci99": [
+          -0.049841509203116086,
+          0.06740728197619315
+        ],
+        "target_mean": 0.21554809945325057,
+        "baseline_mean": 0.2062524179617564
+      },
+      "CLIPScore": {
+        "difference": -0.2486750284830729,
+        "ci99": [
+          -1.9027497908274338,
+          1.4244079888661623
+        ],
+        "target_mean": 89.22363166809082,
+        "baseline_mean": 89.4723066965739
+      },
+      "hsd": {
+        "difference": 0.004649999999999999,
+        "ci99": [
+          -0.04918350000000001,
+          0.06195324999999949
+        ],
+        "target_mean": 0.33753333333333335,
+        "baseline_mean": 0.33288333333333336
+      },
+      "dyn": {
+        "difference": -0.04151666666666667,
+        "ci99": [
+          -0.11698508333333332,
+          0.029667083333333275
+        ],
+        "target_mean": 0.2501666666666667,
+        "baseline_mean": 0.29168333333333335
+      },
+      "ndtw": {
+        "difference": -0.023616666666666668,
+        "ci99": [
+          -0.10218366666666666,
+          0.04673366666666661
+        ],
+        "target_mean": 0.3335333333333333,
+        "baseline_mean": 0.35715
+      }
+    },
+    "ours_v2_minus_minimax": {
+      "BLEUScore": {
+        "difference": 0.014342783391475678,
+        "ci99": [
+          -0.01670258687995374,
+          0.06746348678072273
+        ],
+        "target_mean": 0.21554809945325057,
+        "baseline_mean": 0.20120531606177489
+      },
+      "CLIPScore": {
+        "difference": 0.3081892649332682,
+        "ci99": [
+          -0.5909790757497151,
+          1.5431925004323321
+        ],
+        "target_mean": 89.22363166809082,
+        "baseline_mean": 88.91544240315756
+      },
+      "hsd": {
+        "difference": 0.03901666666666667,
+        "ci99": [
+          0.002133333333333334,
+          0.08991741666666656
+        ],
+        "target_mean": 0.33753333333333335,
+        "baseline_mean": 0.29851666666666676
+      },
+      "dyn": {
+        "difference": 0.04523333333333334,
+        "ci99": [
+          0.007150000000000001,
+          0.09323416666666656
+        ],
+        "target_mean": 0.2501666666666667,
+        "baseline_mean": 0.20493333333333333
+      },
+      "ndtw": {
+        "difference": 0.03988333333333335,
+        "ci99": [
+          -0.0005166666666666683,
+          0.0917839999999999
+        ],
+        "target_mean": 0.3335333333333333,
+        "baseline_mean": 0.2936499999999999
+      }
+    }
+  },
+  "new_generation_calls": 0,
+  "new_auxiliary_calls": 0,
+  "official_metrics_recomputed": false
+}

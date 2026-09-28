@@ -1,0 +1,49 @@
+{
+  "status": "COMPLETE",
+  "jobs": {
+    "extended_generate-combined_extended_raw-6b06ff9d58f1": {
+      "wall_seconds": 892.6391410827637,
+      "allocated_gpu_seconds": 863.2643904685974,
+      "videos": 60,
+      "state_sha256": "b7b486381059724c1596f01e5e5bab303ed913dee05f7d64fe5f3033600270bd"
+    },
+    "extended_generate-combined_extended_selected-4dec7518c4a8": {
+      "wall_seconds": 129.50294518470764,
+      "allocated_gpu_seconds": 99.93363046646118,
+      "videos": 60,
+      "state_sha256": "3a3523427e2f5e67adbf0691e5dd77d8012ab53a08ee54b22fa7042cb3ae77dd"
+    },
+    "extended_generate-factored_extended_raw-bf44fefcb8a0": {
+      "wall_seconds": 493.6069960594177,
+      "allocated_gpu_seconds": 463.98214197158813,
+      "videos": 60,
+      "state_sha256": "3e4d40a04e74588eac3e6a8f828d2766601b81f956306b0bfdf487e9a976fbcb"
+    },
+    "extended_generate-factored_extended_selected-37695a54587f": {
+      "wall_seconds": 132.61048579216003,
+      "allocated_gpu_seconds": 102.75060606002808,
+      "videos": 60,
+      "state_sha256": "341795d452eb2be9354d55f3c0c800ceb723d7768468621fb934f9ce5e835116"
+    },
+    "extended_generate-parent_raw-32c97d701e88": {
+      "wall_seconds": 549.8982832431793,
+      "allocated_gpu_seconds": 520.3016738891602,
+      "videos": 60,
+      "state_sha256": "6f241fed39e7669b009ff59b8a8798f77fa5c15eb29d7efcd2dc5c2cff498ff9"
+    },
+    "extended_generate-parent_selected-6346622b048f": {
+      "wall_seconds": 106.74564123153687,
+      "allocated_gpu_seconds": 76.82233738899231,
+      "videos": 60,
+      "state_sha256": "cdf2cf836878e36b9772dfcb905ae8992846a78b3d92233b69669183810197e3"
+    }
+  },
+  "scoring_gpu_seconds": 2127.0547802448273,
+  "scoring_job_wall_seconds": 2305.0034925937653,
+  "score_jobs": 6,
+  "new_generation_calls": 0,
+  "new_proposal_or_candidate_audit_calls": 0,
+  "source_generation_count": 77,
+  "hostname": "GCRAZGDL3008",
+  "at": 1789786633.152559
+}

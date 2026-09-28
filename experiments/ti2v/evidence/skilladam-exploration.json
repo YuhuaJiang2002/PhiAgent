@@ -1,0 +1,449 @@
+{
+  "run_id": "20260916T032105Z",
+  "scope": "Previously opened development cases; 20 cases and 3 seeds per case",
+  "export_note": "Selected fields copied from collected server results. Means and optimizer decisions are not recomputed.",
+  "source_sha256": {
+    "optimization-complete-evidence.json": "6073f27d437521ac9f91ba16231df461163184d1e68dbd575d5ec53f8b61de2f",
+    "official-results-current.json": "92708a445dc9d320d6a7ccc3ba6a680835af75ba06e2353637b96e2f20ca4a11",
+    "comparison-ablation-current.md": "07d24023d1a18fad6d8b3e0f4847b6defe936ee9d15e739526e6accfec8576f5"
+  },
+  "optimizer": {
+    "skilladam": {
+      "stage0": "Explicit shared initial skill; official supported Stage0 bypass",
+      "frozen_final_skill_sha256": "1b9426cd4089ca58995ca59330fb9a352219dfd587fe614f81e43a146bc8d1a4",
+      "iterations": [
+        {
+          "iteration": 0,
+          "training_case_ids": [
+            "gt_dataset/574/808158:20260910",
+            "gt_dataset/367/649524:20260910"
+          ],
+          "validation_case_ids": [
+            "gt_dataset/574/824748:20260910",
+            "gt_dataset/511/743247:20260910"
+          ],
+          "accepted": true,
+          "reason": "improved: BLEUScore, CLIPScore, hsd, dyn, ndtw",
+          "patch_attempts": 1,
+          "patch_mode": "strict",
+          "edit_budget": 4,
+          "sigma_sq": 0.00026450000000000014,
+          "v_ema_after": 2.645000000000001e-05,
+          "baseline": {
+            "primary": 0.428,
+            "metrics": {
+              "BLEUScore": 0.07122199982404709,
+              "CLIPScore": 86.23981475830078,
+              "dyn": 0.181,
+              "hsd": 0.497,
+              "ndtw": 0.428
+            },
+            "case_metrics": {
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              },
+              "gt_dataset/511/743247:20260910": {
+                "BLEUScore": 0.14244399964809418,
+                "CLIPScore": 90.40495300292969,
+                "hsd": 0.168,
+                "dyn": 0.266,
+                "ndtw": 0.111
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          },
+          "candidate": {
+            "primary": 0.4395,
+            "metrics": {
+              "BLEUScore": 0.07936900109052658,
+              "CLIPScore": 86.73148727416992,
+              "dyn": 0.191,
+              "hsd": 0.508,
+              "ndtw": 0.4395
+            },
+            "case_metrics": {
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              },
+              "gt_dataset/511/743247:20260910": {
+                "BLEUScore": 0.15873800218105316,
+                "CLIPScore": 91.38829803466797,
+                "hsd": 0.19,
+                "dyn": 0.286,
+                "ndtw": 0.134
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          }
+        },
+        {
+          "iteration": 1,
+          "training_case_ids": [
+            "gt_dataset/574/808158:20260910",
+            "gt_dataset/367/650191:20260910"
+          ],
+          "validation_case_ids": [
+            "gt_dataset/558/791059:20260910",
+            "gt_dataset/574/824748:20260910"
+          ],
+          "accepted": true,
+          "reason": "improved: BLEUScore, CLIPScore, hsd, ndtw",
+          "patch_attempts": 1,
+          "patch_mode": "strict",
+          "edit_budget": 4,
+          "sigma_sq": 0.029282,
+          "v_ema_after": 0.0029520049999999993,
+          "baseline": {
+            "primary": 0.639,
+            "metrics": {
+              "BLEUScore": 0.04983200132846832,
+              "CLIPScore": 82.46353149414062,
+              "dyn": 0.1915,
+              "hsd": 0.589,
+              "ndtw": 0.639
+            },
+            "case_metrics": {
+              "gt_dataset/558/791059:20260910": {
+                "BLEUScore": 0.09966400265693665,
+                "CLIPScore": 82.85238647460938,
+                "hsd": 0.352,
+                "dyn": 0.287,
+                "ndtw": 0.533
+              },
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          },
+          "candidate": {
+            "primary": 0.76,
+            "metrics": {
+              "BLEUScore": 0.10598249733448029,
+              "CLIPScore": 86.7269058227539,
+              "dyn": 0.1915,
+              "hsd": 0.74,
+              "ndtw": 0.76
+            },
+            "case_metrics": {
+              "gt_dataset/558/791059:20260910": {
+                "BLEUScore": 0.21196499466896057,
+                "CLIPScore": 91.37913513183594,
+                "hsd": 0.654,
+                "dyn": 0.287,
+                "ndtw": 0.775
+              },
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          }
+        }
+      ]
+    },
+    "phiagent": {
+      "stage0": "Explicit shared initial skill; official supported Stage0 bypass",
+      "frozen_final_skill_sha256": "bdafb91b96b2a21c3489de681ce9ea10b2dfd77bfeba2795e62e1bdfe89312ce",
+      "iterations": [
+        {
+          "iteration": 1,
+          "accepted": false,
+          "reason": "protected metric regressed: CLIPScore, hsd, dyn, ndtw",
+          "baseline": {
+            "primary": 0.428,
+            "metrics": {
+              "BLEUScore": 0.07122199982404709,
+              "CLIPScore": 86.23981475830078,
+              "hsd": 0.497,
+              "dyn": 0.181,
+              "ndtw": 0.428
+            },
+            "case_metrics": {
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              },
+              "gt_dataset/511/743247:20260910": {
+                "BLEUScore": 0.14244399964809418,
+                "CLIPScore": 90.40495300292969,
+                "hsd": 0.168,
+                "dyn": 0.266,
+                "ndtw": 0.111
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          },
+          "candidate": {
+            "primary": 0.195,
+            "metrics": {
+              "BLEUScore": 0.08225949853658676,
+              "CLIPScore": 85.81331634521484,
+              "hsd": 0.27649999999999997,
+              "dyn": 0.153,
+              "ndtw": 0.195
+            },
+            "case_metrics": {
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 81.14971160888672,
+                "hsd": 0.428,
+                "dyn": 0.158,
+                "ndtw": 0.307
+              },
+              "gt_dataset/511/743247:20260910": {
+                "BLEUScore": 0.16451899707317352,
+                "CLIPScore": 90.47692108154297,
+                "hsd": 0.125,
+                "dyn": 0.148,
+                "ndtw": 0.083
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          },
+          "edit_parse_valid": true,
+          "training_case_ids": [
+            "gt_dataset/574/808158:20260910",
+            "gt_dataset/367/649524:20260910"
+          ],
+          "validation_case_ids": [
+            "gt_dataset/574/824748:20260910",
+            "gt_dataset/511/743247:20260910"
+          ],
+          "current_skill_sha256": "bdafb91b96b2a21c3489de681ce9ea10b2dfd77bfeba2795e62e1bdfe89312ce"
+        },
+        {
+          "iteration": 2,
+          "accepted": false,
+          "reason": "no metric exceeded its strict improvement threshold",
+          "baseline": {
+            "primary": 0.639,
+            "metrics": {
+              "BLEUScore": 0.04983200132846832,
+              "CLIPScore": 82.46353149414062,
+              "hsd": 0.589,
+              "dyn": 0.1915,
+              "ndtw": 0.639
+            },
+            "case_metrics": {
+              "gt_dataset/558/791059:20260910": {
+                "BLEUScore": 0.09966400265693665,
+                "CLIPScore": 82.85238647460938,
+                "hsd": 0.352,
+                "dyn": 0.287,
+                "ndtw": 0.533
+              },
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          },
+          "candidate": {
+            "primary": 0.639,
+            "metrics": {
+              "BLEUScore": 0.04983200132846832,
+              "CLIPScore": 82.46353149414062,
+              "hsd": 0.589,
+              "dyn": 0.1915,
+              "ndtw": 0.639
+            },
+            "case_metrics": {
+              "gt_dataset/558/791059:20260910": {
+                "BLEUScore": 0.09966400265693665,
+                "CLIPScore": 82.85238647460938,
+                "hsd": 0.352,
+                "dyn": 0.287,
+                "ndtw": 0.533
+              },
+              "gt_dataset/574/824748:20260910": {
+                "BLEUScore": 0.0,
+                "CLIPScore": 82.07467651367188,
+                "hsd": 0.826,
+                "dyn": 0.096,
+                "ndtw": 0.745
+              }
+            },
+            "sample_count": 2,
+            "metadata": {}
+          },
+          "edit_parse_valid": true,
+          "training_case_ids": [
+            "gt_dataset/574/808158:20260910",
+            "gt_dataset/367/650191:20260910"
+          ],
+          "validation_case_ids": [
+            "gt_dataset/558/791059:20260910",
+            "gt_dataset/574/824748:20260910"
+          ],
+          "current_skill_sha256": "bdafb91b96b2a21c3489de681ce9ea10b2dfd77bfeba2795e62e1bdfe89312ce"
+        }
+      ]
+    }
+  },
+  "final_results": {
+    "minimax": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.201205",
+        "CLIPScore": "88.915442",
+        "dyn": "0.204933",
+        "hsd": "0.298517",
+        "ndtw": "0.29365"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "606572884feaf0b995e79aa8c63ffcc6fa41d428c73c0e6092cb2e9757e8c2a0",
+      "official_table_sha256": "e683ca734f6a3e277fde761e7bf33f52f816e7882236ba4ce08e7831033ddc0c",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    },
+    "ours_v2": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.215548",
+        "CLIPScore": "89.223632",
+        "dyn": "0.250167",
+        "hsd": "0.337533",
+        "ndtw": "0.333533"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "a358beb5f07e794f4d4cbe0e0ff81824e4220c1fa497fae29fd23700bf34c601",
+      "official_table_sha256": "58653dca0f65dd00892149181b9e98ce7a3eeaf92d1b7eed72311139b1842c81",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    },
+    "videoweaver": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.206252",
+        "CLIPScore": "89.472307",
+        "dyn": "0.291683",
+        "hsd": "0.332883",
+        "ndtw": "0.35715"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "127701526c0c626f42f9de2f024a132b21b4ae4cfd6b365e7072c959c40c289f",
+      "official_table_sha256": "e873ef60d9910f4bd3acbd18f35cccd2df217186db6e6f13282ff674136257fd",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    },
+    "skilladam": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.199855",
+        "CLIPScore": "89.133862",
+        "dyn": "0.259583",
+        "hsd": "0.335967",
+        "ndtw": "0.329717"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "b1bf8e1b431ae72991a42f674ce5d48c6e5fc69255ca6c4fc890a4c0b8f982ff",
+      "official_table_sha256": "e36ccadbb1460d8f12fde22ede6aa00e2f7e974d55f5dd0d447ca106de639842",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    },
+    "phiagent": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.217046",
+        "CLIPScore": "89.317654",
+        "dyn": "0.236467",
+        "hsd": "0.320183",
+        "ndtw": "0.32715"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "7218f2d4fcd228137690fdfba2b2023c7f3dc926ea8da673bbfeeea8cd7bbb6b",
+      "official_table_sha256": "a6518f626e70ddbd6aeb269da0ab0e13c62ee8cc09196efa0d009b5a170a7566",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    },
+    "phiagent_uniform": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.211015",
+        "CLIPScore": "89.19261",
+        "dyn": "0.24555",
+        "hsd": "0.325833",
+        "ndtw": "0.33175"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "01d93d5752be56274a9fb36c9e164c5ce37711e18789f458b71a97e240391d54",
+      "official_table_sha256": "f5fc6b39e4e1caf2e3dd2d361009a1a2dfb7baae722b6e4d0f2d3d1dba0ba9c5",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    },
+    "phiagent_sa_event": {
+      "status": "OFFICIAL_CODE_DEVELOPMENT_SCORED",
+      "mean_metrics": {
+        "task_id": "MEAN",
+        "episode_id": "",
+        "trial_id": "",
+        "BLEUScore": "0.205104",
+        "CLIPScore": "88.906126",
+        "dyn": "0.249867",
+        "hsd": "0.319867",
+        "ndtw": "0.312417"
+      },
+      "cases": 20,
+      "videos": 60,
+      "official_result_sha256": "4da3873c2ff84af47d0dc36f7bf31fbf4dbea23970bb7c6cc4f498bb6ef1c221",
+      "official_table_sha256": "b42f687dde6926b4607a81b3dd8969d59c77314cbad58bdadac9100bc701a054",
+      "full_benchmark_result": false,
+      "physical_success_established": false
+    }
+  }
+}
